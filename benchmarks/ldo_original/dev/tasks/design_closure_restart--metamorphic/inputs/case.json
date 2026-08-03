@@ -1,0 +1,54 @@
+{
+  "case_id": "design_closure_restart--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "restart_path_failure",
+      "restart_sequence_valid"
+    ],
+    "evidence_facts": [
+      "cold_start_shutdown_restart_all_pass",
+      "first_start_passes",
+      "restart_fails"
+    ],
+    "forbidden_actions": [
+      "claim_from_cold_start_only",
+      "qualify_from_first_start"
+    ],
+    "held_fixed": [
+      "enable_timing",
+      "load",
+      "supply_ramp"
+    ],
+    "mechanism_tags": [
+      "shutdown_leaves_a_trapped_internal_state",
+      "state_machine_escapes_both_initial_and_disabled_states"
+    ],
+    "recommended_actions": [
+      "fix_physical_reset_or_discharge_path",
+      "include_sequence_in_pvt_qualification",
+      "rerun_sequence"
+    ]
+  },
+  "family_id": "design_closure_restart",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "cold_start": "pass",
+      "final_state": "regulated",
+      "restart": "pass",
+      "shutdown": "pass"
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

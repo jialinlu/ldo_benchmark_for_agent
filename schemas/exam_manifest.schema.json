@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EvoLDO-Exam frozen release manifest",
+  "type": "object",
+  "required": ["schema_version", "release_id", "created_at", "tasks", "oracles", "skill_snapshot", "tool_snapshot", "policy", "agent_mount_policy"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "release_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string"},
+    "tasks": {"$ref": "#/$defs/tree"},
+    "oracles": {"$ref": "#/$defs/tree"},
+    "skill_snapshot": {"$ref": "#/$defs/tree"},
+    "tool_snapshot": {"$ref": "#/$defs/tree"},
+    "policy": {"type": "object", "minProperties": 1},
+    "repository_commit": {"type": ["string", "null"]},
+    "agent_mount_policy": {"type": "string"}
+  },
+  "$defs": {
+    "tree": {
+      "type": "object",
+      "required": ["present", "files", "digest"],
+      "properties": {
+        "present": {"type": "boolean"},
+        "file_count": {"type": "integer", "minimum": 0},
+        "files": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+        "digest": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ def synthesize(task, oracle):
 def main() -> int:
     tasks = discover_tasks(TASKS)
     inv = inventory(tasks)
-    assert inv["task_count"] == 36 and inv["family_count"] == 12, inv
+    assert inv["task_count"] == 120 and inv["family_count"] == 40, inv
     audit = audit_task_collection(TASKS, ORACLES)
     assert audit["passed"], audit
     scores = []

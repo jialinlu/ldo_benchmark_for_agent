@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Redacted public EvoLDO-Exam commitment",
+  "type": "object",
+  "required": ["schema_version", "release_id", "created_at", "trees", "policy_sha256", "redaction"],
+  "properties": {
+    "schema_version": {"const": "1.0-public"},
+    "release_id": {"type": "string"},
+    "created_at": {"type": "string"},
+    "trees": {"type": "object"},
+    "policy_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "repository_commit": {"type": ["string", "null"]},
+    "agent_mount_policy": {"type": ["string", "null"]},
+    "redaction": {"type": "string"}
+  }
+}

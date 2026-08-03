@@ -1,0 +1,17 @@
+{
+  "probe": {
+    "schema_version": "1.0",
+    "task_id": "protocol-smoke",
+    "question": "Does the passive RC output settle after a unit step?",
+    "analysis_regime": "tran",
+    "held_fixed": ["resistance", "capacitance", "step_amplitude"],
+    "probe_family": "transient_envelope",
+    "intervention": {"input_step_v": 1.0},
+    "measurement": {"voltage_at_time": ["1us", "5us"]},
+    "expected_use": "support",
+    "stop_condition": {"valid_measurements": 2},
+    "claim_boundary": "Passive RC and simulator-protocol check only."
+  },
+  "deck": "rc_tran.cir",
+  "measurement_names": ["vout_at_1us", "vout_at_5us"]
+}

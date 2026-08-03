@@ -22,6 +22,16 @@
   "license": "CC-BY-4.0",
   "lineage_id": "structure_pass_body",
   "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc"
+    ],
+    "required_held_fixed": []
+  },
   "prompt_file": "prompt.md",
   "schema_version": "1.0",
   "split": "dev",

@@ -1,5 +1,8 @@
 # EvoLDO-Exam release runbook
 
+For executable commands and mandatory stop conditions, use
+[`CONTROLLED_PILOT_RUNBOOK.md`](CONTROLLED_PILOT_RUNBOOK.md). This file is the short release checklist.
+
 This runbook describes a future sealed release. The public development set is not an exam.
 
 ## 1. Freeze

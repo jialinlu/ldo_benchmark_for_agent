@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Declared simulator tool ledger",
+  "type": "object",
+  "required": ["entries"],
+  "properties": {
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["probe", "status", "evidence_used"],
+        "properties": {
+          "probe": {"type": "object"},
+          "status": {"enum": ["OK", "INFRA_FAIL", "MEAS_FAIL", "PARSE_FAIL", "POLICY_FAIL"]},
+          "evidence_sha256": {"type": ["string", "null"]},
+          "evidence_used": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

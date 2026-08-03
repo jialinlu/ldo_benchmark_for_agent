@@ -29,6 +29,16 @@
         "timeout_seconds": {"type": "integer", "minimum": 1},
         "max_tool_calls": {"type": "integer", "minimum": 0}
       }
+    },
+    "probe_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_regimes", "allowed_probe_families", "required_held_fixed"],
+      "properties": {
+        "allowed_regimes": {"type": "array", "uniqueItems": true, "items": {"enum": ["op", "dc", "ac", "stb", "noise", "tran", "startup"]}},
+        "allowed_probe_families": {"type": "array", "uniqueItems": true, "items": {"enum": ["operating_point", "port_impedance", "three_point_trend", "loop_gain", "noise_transfer", "startup_escape", "transient_envelope"]}},
+        "required_held_fixed": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
     }
   }
 }

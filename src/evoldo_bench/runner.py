@@ -43,6 +43,8 @@ def run_agent_command(
             "EVOLDO_ANSWER_PATH": str(bundle_dir / "answer.json"),
             "EVOLDO_MODE": mode,
             "EVOLDO_TASK_ID": task.task_id,
+            "EVOLDO_TELEMETRY_PATH": str(bundle_dir / "telemetry.json"),
+            "EVOLDO_TOOL_LEDGER_PATH": str(bundle_dir / "tool_ledger.json"),
         }
     )
     started = utc_timestamp()

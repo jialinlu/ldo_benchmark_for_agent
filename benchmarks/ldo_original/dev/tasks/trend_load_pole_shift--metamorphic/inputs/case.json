@@ -1,0 +1,69 @@
+{
+  "case_id": "trend_load_pole_shift--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "load_moves_output_pole_up",
+      "load_pole_trend_confounded",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "load_and_cout_change_together",
+      "output_pole_frequency_increases_with_load",
+      "phase_margin_improves_in_supplied_range"
+    ],
+    "forbidden_actions": [
+      "claim_load_causality",
+      "generalize_beyond_supplied_load_range"
+    ],
+    "held_fixed": [
+      "cout",
+      "esr",
+      "loop_compensation"
+    ],
+    "mechanism_tags": [
+      "effective_output_resistance_falls_with_load",
+      "pole_motion_cannot_be_attributed_to_load"
+    ],
+    "recommended_actions": [
+      "repeat_load_sweep_at_fixed_cout",
+      "verify_no_light_load_instability"
+    ]
+  },
+  "family_id": "trend_load_pole_shift",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "held": [
+        "cout",
+        "esr",
+        "loop_compensation"
+      ],
+      "load_ma": [
+        1,
+        10,
+        100
+      ],
+      "output_pole_khz": [
+        5,
+        42,
+        310
+      ],
+      "phase_margin_deg": [
+        48,
+        61,
+        67
+      ]
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

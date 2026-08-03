@@ -25,8 +25,8 @@ class BundleAndAuditTests(unittest.TestCase):
     def test_collection_audit_passes(self):
         report = audit_task_collection(TASKS, ORACLES)
         self.assertTrue(report["passed"], report["violations"])
-        self.assertEqual(36, report["task_count"])
-        self.assertEqual(12, report["family_count"])
+        self.assertEqual(120, report["task_count"])
+        self.assertEqual(40, report["family_count"])
 
     def test_context_symlink_is_rejected(self):
         task = discover_tasks(TASKS)[0]

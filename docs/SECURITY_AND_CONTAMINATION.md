@@ -23,6 +23,11 @@ The benchmark must defend against accidental or deliberate access to:
 
 Runtime bundling hashes every copied file and records `oracle_included=false`.
 
+Controlled experiments additionally freeze context snapshots, bind task and answer-contract hashes, and
+normalize the tool ledger. Calls without a ledger, rejected probe contracts, and budget overruns are policy
+failures. This detects declared-protocol violations; only an operating-system sandbox can prevent a hostile
+agent from bypassing the gateway.
+
 ## What it does not enforce
 
 The reference runner is not a kernel sandbox. It cannot stop a hostile process from reading arbitrary host

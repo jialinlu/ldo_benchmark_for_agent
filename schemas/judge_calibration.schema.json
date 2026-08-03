@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explanation judge calibration result",
+  "type": "object",
+  "required": ["schema_version", "passed", "thresholds", "judges", "automation_allowed", "rule"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "passed": {"type": "boolean"},
+    "thresholds": {"type": "object"},
+    "judges": {"type": "object"},
+    "automation_allowed": {"type": "boolean"},
+    "rule": {"type": "string"}
+  }
+}

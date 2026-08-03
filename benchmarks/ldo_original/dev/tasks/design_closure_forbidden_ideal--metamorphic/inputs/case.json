@@ -1,0 +1,54 @@
+{
+  "case_id": "design_closure_forbidden_ideal--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "dut_policy_compliant",
+      "forbidden_ideal_device_present",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "ideal_current_source_is_inside_dut",
+      "no_ideal_sources_inside_dut"
+    ],
+    "forbidden_actions": [
+      "skip_forbidden_device_scan",
+      "waive_device_because_simulation_passes"
+    ],
+    "held_fixed": [
+      "allowed_device_list",
+      "dut_hierarchy"
+    ],
+    "mechanism_tags": [
+      "all_bias_and_startup_functions_are_physically_implemented",
+      "performance_depends_on_a_forbidden_implementation"
+    ],
+    "recommended_actions": [
+      "replace_with_physical_bias_circuit",
+      "rerun_all_qualification",
+      "retain_hierarchy_audit_in_qualification"
+    ]
+  },
+  "family_id": "design_closure_forbidden_ideal",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "dut_devices": [
+        "mos",
+        "resistor",
+        "mim_cap"
+      ],
+      "ideal_sources_inside_dut": 0
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

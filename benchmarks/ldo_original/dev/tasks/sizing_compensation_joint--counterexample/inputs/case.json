@@ -1,0 +1,62 @@
+{
+  "case_id": "sizing_compensation_joint--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "small_signal_and_transient",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "joint_compensation_candidate_valid",
+      "no_change",
+      "single_knob_solution_fails_speed"
+    ],
+    "evidence_facts": [
+      "bandwidth_and_settling_fail",
+      "bandwidth_passes",
+      "phase_margin_passes",
+      "settling_passes"
+    ],
+    "forbidden_actions": [
+      "accept_phase_margin_only",
+      "freeze_rzero_before_search"
+    ],
+    "held_fixed": [
+      "driver",
+      "load",
+      "pass_size"
+    ],
+    "mechanism_tags": [
+      "excess_dominant_compensation_trades_away_speed",
+      "pole_splitting_and_zero_placement_are_co_optimized"
+    ],
+    "recommended_actions": [
+      "open_rzero_and_driver_coupled_search",
+      "qualify_across_load_and_pvt"
+    ]
+  },
+  "family_id": "sizing_compensation_joint",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "candidate": {
+        "pm_deg": 72,
+        "settling_us": 8,
+        "ugf_mhz": 2
+      },
+      "limits": {
+        "settling_us_max": 3,
+        "ugf_mhz_min": 5
+      },
+      "variables": [
+        "cc"
+      ]
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

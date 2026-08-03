@@ -1,0 +1,50 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 5,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "migration",
+    "operating_point"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "full_design",
+    "simulation_assisted",
+    "weak_agent_airgap"
+  ],
+  "family_id": "migration_device_flavor",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "migration_device_flavor",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "three_point_trend",
+      "loop_gain",
+      "noise_transfer"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "noise"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "migration",
+  "task_id": "migration_device_flavor--counterexample",
+  "title": "Choose MOS flavor from headroom, leakage and speed constraints",
+  "variant": "counterexample",
+  "variant_relationship": "one decision-relevant condition"
+}

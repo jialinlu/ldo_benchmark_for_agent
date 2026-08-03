@@ -30,7 +30,28 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Run benchmark self-check
         run: python tools/run_self_check.py
+      - name: Exercise the uniform simulator protocol
+        run: |
+          workspace="$(mktemp -d)"
+          evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
+            --workspace "$workspace" -- \
+            python "$PWD/examples/simulators/analytic_probe_simulator.py"
       - name: Run contamination audit
         run: evoldo-bench audit
       - name: Run public-release security gate
         run: python tools/audit_public_release.py
+
+  open-simulator-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install package and ngspice
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ngspice
+          python -m pip install -e .
+      - name: Verify declared measurements through ngspice adapter
+        run: python -m unittest tests.test_phase2_and_closure.Phase2AndClosureTests.test_ngspice_adapter_parses_declared_measurements -v

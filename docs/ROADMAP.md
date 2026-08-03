@@ -1,93 +1,92 @@
 # Roadmap and acceptance gates
 
-## Phase 0 — contracts and threat model: implemented in v0.1.0
+This file separates **implemented infrastructure** from **empirical acceptance**. A command existing does
+not prove model capability, expert agreement, or PDK performance.
+
+## Phase 0 — contracts and threat model: implemented
+
+Delivered task, answer, oracle, score, probe, telemetry, exam, candidate, and qualification contracts;
+Python 3.9 validators; lineage/split rules; public-task/private-oracle architecture; contamination and
+public-release security policy; dual licensing and clean-room statement.
+
+Current gate: all 120 generated task contracts and public development oracles validate in CI.
+
+## Phase 1 — public benchmark core: implemented
+
+Delivered file-minimal bundles, timeout-bounded command execution, deterministic grading with critical
+caps, family/suite/level/variant aggregation, Markdown/JSON reports, deterministic task generation, and
+public self-checks.
+
+Gate: synthesized public-reference answers score 100, deliberate fatal conclusions are capped at 49,
+collection audit passes, and regeneration produces no diff.
+
+## Phase 2 — skill and simulator treatments: infrastructure implemented
 
 Delivered:
-
-- task, answer, oracle, score, and `AnalogProbeContract` schemas;
-- Python 3.9 custom validators;
-- family lineage and split rules;
-- public-task/private-oracle architecture;
-- error and contamination policy;
-- dual licensing and clean-room statement.
-
-Gate: 36 generated task contracts and 36 public development oracles validate in CI.
-
-## Phase 1 — 12-family public MVP: implemented in v0.1.0
-
-Delivered:
-
-- 12 original families and 36 canonical/metamorphic/counterexample instances;
-- direct command runner and file-minimal bundle;
-- deterministic grading with critical caps;
-- family-macro, suite, level, and variant aggregation;
-- Markdown/JSON scorecards;
-- public development self-check and tests.
-
-Gate: reference development answers score 100, deliberate fatal conclusion errors are capped at 49,
-collection audit passes, and task regeneration produces no diff.
-
-## Phase 2 — skill and simulator treatments: next
-
-Planned:
 
 - immutable skill/context snapshots and hashes;
-- model-adapter interface and three-rollout orchestration;
-- enforced probe contract before tool calls;
-- uniform simulator tool, no per-task routing;
-- tool budget and policy grader;
-- `skill_lift`, `simulation_lift`, `simulation_harm_rate`, and ineffective-probe rate;
-- task families with analytic and open-simulator evidence.
+- command-model adapter and repeated-rollout orchestration;
+- paired-treatment comparator for model/task/seed/budget/answer-contract equality;
+- enforced `AnalogProbeContract`, task probe policy, tool ledger, and call budget;
+- wrong-regime, confounded-intervention, invented-artifact, unrelated-probe, and measurement checks;
+- uniform JSON simulator adapter, optional ngspice batch adapter, and analytic protocol fixture;
+- `INFRA_FAIL` separation from circuit results;
+- Pass@1 confidence intervals, spec score, effort/cost/cache metrics, lift, harm, and ineffective probes.
 
-Acceptance gate:
+Remaining empirical gate: run direct/skill/simulation treatments with frozen real adapters and confirm that
+results replay exactly. A host sandbox remains deployment infrastructure, not part of the Python runner.
 
-- paired runs hold model, task, seed, budget, and answer contract fixed;
-- wrong regime, confounded intervention, invented deck, and unrelated probe are detected;
-- unavailable simulator is `INFRA_FAIL`, not a circuit answer.
+## Phase 3 — 40-family controlled pilot: corpus and release tooling implemented
 
-## Phase 3 — 40-family controlled pilot
+Delivered:
+
+- 40 original families / 120 canonical, metamorphic, and counterexample instances;
+- architecture-choice and L4 development coverage;
+- cryptographic freeze/verify manifest for sealed stores and treatment snapshots;
+- two-judge calibration metrics and automatic human-review routing;
+- static JSON/CSV/HTML score-versus-effort reporting.
+
+External acceptance work still required:
+
+- two analog engineers independently review/calibrate the numeric and closure set;
+- freeze heterogeneous judge model/prompt snapshots and meet accepted agreement/critical-recall gates;
+- run at least three model capability tiers with at least three rollouts;
+- verify strong/medium/weak separation and absence of length/call/suite dominance;
+- author hidden families outside this public repository; public families cannot become a sealed exam by
+  merely hiding their files.
+
+## Phase 4 — hardware-backed design closure: public contract implemented, real backends pending
+
+Delivered:
+
+- `SimulatorAdapter`, `NgspiceBatchAdapter`, and out-of-tree `SiteAdapter` boundaries;
+- immutable candidate manifests;
+- fresh-evidence gates for operating point, startup, shutdown/restart, stability, PSRR, noise, load
+  transient, PVT, and forbidden devices;
+- stale-evidence rejection;
+- evaluations, wall time, and gate robustness to first qualified candidate.
+
+External acceptance work still required:
+
+- select and license a redistributable open-PDK LDO reference suite;
+- implement and publish its model/deck/result parser without importing third-party benchmark tasks;
+- implement each approved private-site adapter outside the public repository;
+- run at least four design tasks exposing distinct OP/startup/stability/measurement failures;
+- compare cold and assisted sizing under the same candidate/qualification budget;
+- obtain PDK, simulator, originality, and analog-engineer sign-off.
+
+Private PDK assets must never enter the public repository, model context, or public CI.
+
+## Phase 5 — EvoLDO-Exam v1.0: planned
 
 Planned:
 
-- expand to 40 families and 120–200 instances;
-- add architecture choice and harder regime/difficulty variants;
-- sealed test store and release manifest;
-- two heterogeneous explanation judges;
-- human calibration set with two analog engineers;
-- baseline three model capability tiers with three rollouts.
+- 80 families / 240–400 instances covering L1–L4; L5 remains experimental;
+- genuinely hidden family lineages and private oracle store;
+- frozen model, skill, tool, simulator, judge, budget, and rollout policy;
+- reproducibility/regression dashboard and release canaries;
+- formal license, originality, PDK, security, and human-expert sign-off.
 
-Acceptance gate:
-
-- stable strong/medium/weak separation;
-- explanation judge meets frozen human-agreement thresholds;
-- score is not driven by output length, tool-call count, or one easy suite.
-
-## Phase 4 — hardware-backed design closure
-
-Planned:
-
-- public open-PDK simulator adapter after license and reproducibility selection;
-- private site adapter for an approved EDA/PDK stack;
-- immutable design candidate and qualification manifests;
-- OP, startup, shutdown/restart, STB, PSRR, noise, transient, PVT, and forbidden-device gates;
-- evaluations-to-qualification, wall time, robustness, and evidence scoring;
-- cold-versus-assisted sizing comparison.
-
-Acceptance gate:
-
-- at least four design tasks expose distinct OP/startup/stability/measurement failures;
-- only fresh qualification promotes a candidate;
-- private PDK assets never enter the public repository or model context.
-
-## Phase 5 — v1.0 and EvoLDO-Exam
-
-Planned:
-
-- 80 families and 240–400 instances covering L1–L4;
-- L5 innovation remains experimental;
-- frozen exam manifest, task/oracle hashes, judges, tools, budgets, and rollout policy;
-- reproducibility and regression dashboard;
-- license, originality, PDK, and human-expert sign-off.
-
-Acceptance gate: contamination audit passes, every result is replayable, and the formal scorecard exposes
-capability vectors rather than only a single leaderboard number.
+Acceptance gate: every reported result is replayable, the contamination audit passes, no hidden lineage is
+public or in training context, and the scorecard publishes capability vectors and effort rather than only
+a rank.

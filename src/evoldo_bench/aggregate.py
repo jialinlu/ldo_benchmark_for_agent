@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 from statistics import mean, pstdev
-from typing import Any, Dict, Iterable, List, Mapping, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
+
+from .telemetry import summarize_effort, wilson_interval
 
 
 def _summary(values: Sequence[float]) -> Dict[str, float]:
@@ -54,7 +56,45 @@ def paired_lift(reports: Mapping[str, Mapping[str, Any]]) -> Dict[str, Any]:
     direct = reports.get("direct_reasoning", {}).get("family_macro_score")
     skill = reports.get("agentic_skill", {}).get("family_macro_score")
     simulation = reports.get("simulation_assisted", {}).get("family_macro_score")
-    return {
+    result = {
         "skill_lift": None if direct is None or skill is None else round(float(skill) - float(direct), 6),
         "simulation_lift": None if skill is None or simulation is None else round(float(simulation) - float(skill), 6),
     }
+    direct_tasks = reports.get("direct_reasoning", {}).get("task_results", {})
+    skill_tasks = reports.get("agentic_skill", {}).get("task_results", {})
+    simulation_tasks = reports.get("simulation_assisted", {}).get("task_results", {})
+    shared = sorted(set(skill_tasks).intersection(simulation_tasks))
+    if shared:
+        harms = sum(1 for task_id in shared if float(simulation_tasks[task_id]) < float(skill_tasks[task_id]))
+        result["simulation_harm_rate"] = round(harms / len(shared), 6)
+    else:
+        result["simulation_harm_rate"] = None
+    return result
+
+
+def aggregate_rollouts(
+    scores: Iterable[Mapping[str, Any]],
+    telemetry: Iterable[Mapping[str, Any]],
+    model_id: str,
+    mode: str,
+) -> Dict[str, Any]:
+    """Aggregate repeated rollouts without conflating partial spec score and Pass@1."""
+    scores = list(scores)
+    telemetry = list(telemetry)
+    base = aggregate_scores(scores, mode=mode)
+    passed = sum(1 for score in scores if bool(score.get("passed")))
+    low, high = wilson_interval(passed, len(scores))
+    per_task: Dict[str, List[float]] = defaultdict(list)
+    for score in scores:
+        per_task[str(score["task_id"])].append(float(score["score"]))
+    base.update({
+        "schema_version": "1.1",
+        "model_id": model_id,
+        "rollout_count": len(scores),
+        "pass_at_1": round(passed / len(scores), 6) if scores else 0.0,
+        "pass_at_1_ci95": [round(low, 6), round(high, 6)],
+        "spec_score": round(mean(float(score["score"]) for score in scores) / 100.0, 6) if scores else 0.0,
+        "task_results": {task_id: round(mean(values), 6) for task_id, values in sorted(per_task.items())},
+        "effort": summarize_effort(telemetry),
+    })
+    return base

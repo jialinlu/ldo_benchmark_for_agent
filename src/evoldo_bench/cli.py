@@ -6,14 +6,21 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
-from .aggregate import aggregate_scores, paired_lift
+from .adapters import CommandAgentAdapter, NgspiceBatchAdapter, ProcessSimulatorAdapter
+from .aggregate import aggregate_rollouts, aggregate_scores, paired_lift
 from .bundle import build_runtime_bundle
+from .calibration import calibrate_judges, combine_judges
 from .contamination import audit_task_collection
 from .contracts import load_task, validate_answer, validate_oracle
 from .discovery import discover_tasks, get_task, inventory, validate_registry
 from .errors import BenchmarkError
+from .exam import create_private_canary, freeze_exam, redact_exam_manifest, verify_exam
+from .experiment import compare_treatments, run_experiment
 from .grading import grade_directory, grade_one
+from .leaderboard import write_leaderboard
 from .report import write_markdown
+from .probes import evaluate_probe_contract
+from .qualification import build_candidate_manifest, qualify_candidate, summarize_qualification_attempts
 from .runner import run_agent_command
 from .utils import dump_json, load_json
 
@@ -92,6 +99,95 @@ def build_parser() -> argparse.ArgumentParser:
     pair.add_argument("--direct", type=_path)
     pair.add_argument("--skill", type=_path)
     pair.add_argument("--simulation", type=_path)
+
+    experiment = sub.add_parser("experiment", help="run a frozen repeated-rollout treatment")
+    experiment.add_argument("--tasks-root", type=_path, default=DEFAULT_TASKS)
+    experiment.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
+    experiment.add_argument("--output", type=_path, required=True)
+    experiment.add_argument("--model-id", required=True)
+    experiment.add_argument("--mode", choices=sorted({"direct_reasoning", "agentic_skill", "simulation_assisted", "full_design", "weak_agent_airgap"}), required=True)
+    experiment.add_argument("--rollouts", type=int, default=3)
+    experiment.add_argument("--base-seed", type=int, default=2026)
+    experiment.add_argument("--context-dir", type=_path)
+    experiment.add_argument("--task-id", action="append", dest="task_ids")
+    experiment.add_argument("--timeout", type=int)
+    experiment.add_argument("--paired-modes", help="comma-separated modes; restrict every treatment to tasks eligible in all modes")
+    experiment.add_argument("agent_command", nargs="+", help="command template after --; supports {task_id}, {rollout}, {seed}")
+
+    experiment_report = sub.add_parser("experiment-report", help="aggregate scores and effort from an experiment directory")
+    experiment_report.add_argument("experiment_root", type=_path)
+    experiment_report.add_argument("--output", type=_path)
+    experiment_report.add_argument("--markdown", type=_path)
+
+    probe = sub.add_parser("validate-probe", help="enforce AnalogProbeContract and task-specific tool policy")
+    probe.add_argument("probe", type=_path)
+    probe.add_argument("--tasks-root", type=_path, default=DEFAULT_TASKS)
+    probe.add_argument("--task-id")
+    probe.add_argument("--available-artifact", action="append", default=[])
+
+    simulate = sub.add_parser("simulate-probe", help="execute a validated probe through a uniform simulator adapter")
+    simulate.add_argument("request", type=_path)
+    simulate.add_argument("--workspace", type=_path, required=True)
+    simulate.add_argument("--timeout", type=int, default=120)
+    simulate.add_argument("--ngspice", action="store_true")
+    simulate.add_argument("simulator_command", nargs="*")
+
+    freeze = sub.add_parser("freeze-exam", help="create a cryptographic release manifest for a sealed exam store")
+    freeze.add_argument("--tasks-root", type=_path, required=True)
+    freeze.add_argument("--oracle-root", type=_path, required=True)
+    freeze.add_argument("--policy", type=_path, required=True)
+    freeze.add_argument("--skill-root", type=_path)
+    freeze.add_argument("--tool-root", type=_path)
+    freeze.add_argument("--release-id", required=True)
+    freeze.add_argument("--output", type=_path, required=True)
+
+    verify = sub.add_parser("verify-exam", help="verify stores against a frozen exam manifest")
+    verify.add_argument("manifest", type=_path)
+    verify.add_argument("--tasks-root", type=_path, required=True)
+    verify.add_argument("--oracle-root", type=_path, required=True)
+    verify.add_argument("--skill-root", type=_path)
+    verify.add_argument("--tool-root", type=_path)
+
+    redact = sub.add_parser("redact-exam-manifest", help="create a public commitment without hidden filenames or policy contents")
+    redact.add_argument("manifest", type=_path)
+    redact.add_argument("--output", type=_path, required=True)
+
+    canary = sub.add_parser("create-exam-canary", help="create a private release canary before freezing a sealed store")
+    canary.add_argument("--release-id", required=True)
+    canary.add_argument("--output", type=_path, required=True)
+
+    candidate = sub.add_parser("candidate-manifest", help="hash an immutable design candidate")
+    candidate.add_argument("candidate_root", type=_path)
+    candidate.add_argument("--candidate-id", required=True)
+    candidate.add_argument("--parent-id", default="none")
+    candidate.add_argument("--output", type=_path)
+
+    qualify = sub.add_parser("qualify", help="apply fresh-evidence design-closure gates")
+    qualify.add_argument("candidate", type=_path)
+    qualify.add_argument("evidence", type=_path, help="JSON object with an evidence array")
+    qualify.add_argument("--output", type=_path)
+
+    calibration = sub.add_parser("calibrate-judges", help="compare two or more frozen judges with adjudicated human labels")
+    calibration.add_argument("human_records", type=_path, help="JSON object with a records array")
+    calibration.add_argument("judge_records", type=_path, help="JSON object with a records array")
+    calibration.add_argument("--max-mae", type=float, default=10.0)
+    calibration.add_argument("--minimum-critical-recall", type=float, default=0.9)
+    calibration.add_argument("--minimum-label-agreement", type=float, default=0.8)
+    calibration.add_argument("--output", type=_path)
+
+    combine = sub.add_parser("combine-judges", help="combine two judge records or route disagreement to human review")
+    combine.add_argument("judge_records", type=_path, help="JSON object with exactly two records")
+    combine.add_argument("--score-tolerance", type=float, default=10.0)
+
+    leaderboard = sub.add_parser("leaderboard", help="build static JSON/CSV/HTML score-versus-effort artifacts")
+    leaderboard.add_argument("reports", nargs="+", type=_path)
+    leaderboard.add_argument("--output-dir", type=_path, required=True)
+
+    compare = sub.add_parser("compare-treatments", help="verify paired treatments hold model, tasks, seeds, budgets, and answer contract fixed")
+    compare.add_argument("manifests", nargs="+", type=_path)
+
+    closure = sub.add_parser("closure-metrics", help="summarize evaluations and wall time to first qualified candidate")
+    closure.add_argument("attempts", type=_path, help="JSON object with an attempts array")
 
     return parser
 
@@ -172,6 +268,108 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if args.simulation:
                 reports["simulation_assisted"] = load_json(args.simulation)
             _print_json(paired_lift(reports))
+            return 0
+        if args.command_name == "experiment":
+            command = list(args.agent_command)
+            if command and command[0] == "--":
+                command = command[1:]
+            result = run_experiment(
+                args.tasks_root, args.oracle_root, args.output, CommandAgentAdapter(command),
+                args.model_id, args.mode, args.rollouts, args.base_seed, args.context_dir,
+                args.task_ids, args.timeout,
+                [value.strip() for value in args.paired_modes.split(",") if value.strip()] if args.paired_modes else None,
+            )
+            _print_json({"output": str(args.output), "run_count": result["run_count"], "context_snapshot": result["context_snapshot"]["snapshot_id"]})
+            return 0
+        if args.command_name == "experiment-report":
+            manifest = load_json(args.experiment_root / "experiment_manifest.json")
+            scores = []
+            telemetry = []
+            for row in manifest["rows"]:
+                if row.get("score_file"):
+                    scores.append(load_json(args.experiment_root / row["score_file"]))
+                telemetry.append(load_json(args.experiment_root / row["telemetry_file"]))
+            report = aggregate_rollouts(scores, telemetry, manifest["model_id"], manifest["mode"])
+            if args.output:
+                dump_json(args.output, report)
+            if args.markdown:
+                write_markdown(args.markdown, report)
+            _print_json(report)
+            return 0
+        if args.command_name == "validate-probe":
+            probe_data = load_json(args.probe)
+            task_id = args.task_id or probe_data.get("task_id")
+            task = get_task(args.tasks_root, task_id) if task_id else None
+            report = evaluate_probe_contract(probe_data, task, args.available_artifact)
+            _print_json(report)
+            return 0 if report["passed"] else 4
+        if args.command_name == "simulate-probe":
+            request = load_json(args.request)
+            if args.ngspice:
+                adapter = NgspiceBatchAdapter()
+            else:
+                command = list(args.simulator_command)
+                if command and command[0] == "--":
+                    command = command[1:]
+                adapter = ProcessSimulatorAdapter(command)
+            result = adapter.run(request, args.workspace, args.timeout)
+            _print_json(result)
+            return 0 if result.get("status") == "OK" else 5
+        if args.command_name == "freeze-exam":
+            result = freeze_exam(args.output, args.tasks_root, args.oracle_root, load_json(args.policy), args.skill_root, args.tool_root, ROOT, args.release_id)
+            _print_json(result)
+            return 0
+        if args.command_name == "verify-exam":
+            result = verify_exam(load_json(args.manifest), args.tasks_root, args.oracle_root, args.skill_root, args.tool_root)
+            _print_json(result)
+            return 0 if result["passed"] else 6
+        if args.command_name == "redact-exam-manifest":
+            result = redact_exam_manifest(load_json(args.manifest))
+            dump_json(args.output, result)
+            _print_json(result)
+            return 0
+        if args.command_name == "create-exam-canary":
+            _print_json(create_private_canary(args.output, args.release_id))
+            return 0
+        if args.command_name == "candidate-manifest":
+            result = build_candidate_manifest(args.candidate_root, args.candidate_id, args.parent_id)
+            if args.output:
+                dump_json(args.output, result)
+            _print_json(result)
+            return 0
+        if args.command_name == "qualify":
+            evidence = load_json(args.evidence).get("evidence", [])
+            result = qualify_candidate(load_json(args.candidate), evidence)
+            if args.output:
+                dump_json(args.output, result)
+            _print_json(result)
+            return 0 if result["qualified"] else 7
+        if args.command_name == "calibrate-judges":
+            result = calibrate_judges(
+                load_json(args.human_records).get("records", []),
+                load_json(args.judge_records).get("records", []),
+                args.max_mae,
+                args.minimum_critical_recall,
+                args.minimum_label_agreement,
+            )
+            if args.output:
+                dump_json(args.output, result)
+            _print_json(result)
+            return 0 if result["passed"] else 8
+        if args.command_name == "combine-judges":
+            result = combine_judges(load_json(args.judge_records).get("records", []), args.score_tolerance)
+            _print_json(result)
+            return 0 if result["status"] == "AGREED" else 9
+        if args.command_name == "leaderboard":
+            result = write_leaderboard(args.output_dir, [load_json(path) for path in args.reports])
+            _print_json({"entry_count": result["entry_count"], "output_dir": str(args.output_dir)})
+            return 0
+        if args.command_name == "compare-treatments":
+            result = compare_treatments([load_json(path) for path in args.manifests])
+            _print_json(result)
+            return 0 if result["passed"] else 10
+        if args.command_name == "closure-metrics":
+            _print_json(summarize_qualification_attempts(load_json(args.attempts).get("attempts", [])))
             return 0
     except (BenchmarkError, ValueError, OSError, json.JSONDecodeError) as exc:
         parser.error(str(exc))

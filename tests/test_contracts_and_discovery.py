@@ -20,10 +20,11 @@ class ContractAndDiscoveryTests(unittest.TestCase):
     def test_public_dev_inventory(self):
         tasks = discover_tasks(TASKS)
         data = inventory(tasks)
-        self.assertEqual(36, data["task_count"])
-        self.assertEqual(12, data["family_count"])
-        self.assertEqual({"canonical": 12, "counterexample": 12, "metamorphic": 12}, data["variant_counts"])
-        self.assertEqual(36, sum(data["suite_counts"].values()))
+        self.assertEqual(120, data["task_count"])
+        self.assertEqual(40, data["family_count"])
+        self.assertEqual({"canonical": 40, "counterexample": 40, "metamorphic": 40}, data["variant_counts"])
+        self.assertEqual(120, sum(data["suite_counts"].values()))
+        self.assertEqual(6, data["suite_counts"]["architecture_choice"])
 
     def test_every_oracle_is_valid_and_matches(self):
         for task in discover_tasks(TASKS):
@@ -38,7 +39,7 @@ class ContractAndDiscoveryTests(unittest.TestCase):
             ROOT / "benchmarks" / "ldo_original" / "registry.jsonl",
         )
         self.assertTrue(report["passed"], report)
-        self.assertEqual(36, report["row_count"])
+        self.assertEqual(120, report["row_count"])
 
     def test_answer_rejects_duplicate_controlled_tokens(self):
         task = discover_tasks(TASKS)[0]

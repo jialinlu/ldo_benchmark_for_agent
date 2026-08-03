@@ -1,0 +1,52 @@
+{
+  "case_id": "system_psrr_ripple--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "ac",
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "output_ripple_is_0p2mv",
+      "output_ripple_is_2mv"
+    ],
+    "evidence_facts": [
+      "input_ripple_is_20mv",
+      "psrr_is_100x_voltage_attenuation",
+      "psrr_is_10x_voltage_attenuation"
+    ],
+    "forbidden_actions": [
+      "multiply_by_40",
+      "reuse_0p2mv"
+    ],
+    "held_fixed": [
+      "frequency",
+      "linearity",
+      "operating_point"
+    ],
+    "mechanism_tags": [
+      "output_ripple_equals_input_divided_by_attenuation",
+      "weaker_psrr_passes_more_ripple"
+    ],
+    "recommended_actions": [
+      "report_0p2mv_and_check_downstream_limit",
+      "report_2mv_and_check_downstream_limit"
+    ]
+  },
+  "family_id": "system_psrr_ripple",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "frequency_khz": 100,
+      "input_ripple_mv": 20,
+      "psrr_db": 40
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

@@ -147,6 +147,16 @@ def validate_task(data: Dict[str, Any], root: Optional[Path] = None) -> Dict[str
         raise ContractError("budget.timeout_seconds must be a positive integer")
     if not isinstance(budget["max_tool_calls"], int) or budget["max_tool_calls"] < 0:
         raise ContractError("budget.max_tool_calls must be a non-negative integer")
+    if "probe_policy" in data:
+        policy = data["probe_policy"]
+        if not isinstance(policy, dict):
+            raise ContractError("task.probe_policy must be an object")
+        for field in ("allowed_regimes", "allowed_probe_families", "required_held_fixed"):
+            values = _string_list(policy.get(field, []), "task.probe_policy.%s" % field)
+            if field == "allowed_regimes" and any(value not in ALLOWED_PROBE_REGIMES for value in values):
+                raise ContractError("task probe policy contains unsupported regime")
+            if field == "allowed_probe_families" and any(value not in ALLOWED_PROBE_FAMILIES for value in values):
+                raise ContractError("task probe policy contains unsupported probe family")
     if root is not None:
         referenced = [data["prompt_file"], data["answer_template_file"]] + list(data["input_files"])
         for value in referenced:
@@ -233,6 +243,8 @@ def validate_probe_contract(data: Dict[str, Any]) -> Dict[str, Any]:
     if data["expected_use"] not in ALLOWED_PROBE_USES:
         raise ContractError("unsupported expected use: %s" % data["expected_use"])
     _string_list(data["held_fixed"], "probe.held_fixed")
+    if "source_artifacts" in data:
+        _string_list(data["source_artifacts"], "probe.source_artifacts")
     for field in ["intervention", "measurement", "stop_condition"]:
         if not isinstance(data[field], dict):
             raise ContractError("probe.%s must be an object" % field)

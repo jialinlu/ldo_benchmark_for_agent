@@ -1,0 +1,8 @@
+* Independently authored passive protocol fixture; not an LDO or PDK deck.
+VSTEP in 0 PULSE(0 1 0 1n 1n 20u 40u)
+R1 in out 10k
+C1 out 0 1n
+.tran 0.05u 10u
+.measure tran vout_at_1us FIND v(out) AT=1u
+.measure tran vout_at_5us FIND v(out) AT=5u
+.end

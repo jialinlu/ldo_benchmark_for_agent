@@ -24,7 +24,7 @@ class GradingAndAggregateTests(unittest.TestCase):
             scores.append(score)
         report = aggregate_scores(scores, mode="reference_dev_check")
         self.assertEqual(100.0, report["family_macro_score"])
-        self.assertEqual(12, report["family_count"])
+        self.assertEqual(40, report["family_count"])
 
     def test_critical_conclusion_failure_caps_score(self):
         task = discover_tasks(TASKS)[0]

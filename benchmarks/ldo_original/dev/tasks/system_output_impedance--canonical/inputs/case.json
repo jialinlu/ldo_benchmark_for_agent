@@ -1,0 +1,52 @@
+{
+  "case_id": "system_output_impedance--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "estimated_droop_is_20mv",
+      "estimated_droop_is_4mv",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "step_is_50ma",
+      "zout_is_400mohm",
+      "zout_is_80mohm"
+    ],
+    "forbidden_actions": [
+      "claim_peak_transient_without_bandwidth",
+      "reuse_4mv"
+    ],
+    "held_fixed": [
+      "frequency_regime",
+      "linearity",
+      "operating_point"
+    ],
+    "mechanism_tags": [
+      "delta_v_equals_zout_times_delta_i",
+      "higher_zout_increases_load_sensitivity"
+    ],
+    "recommended_actions": [
+      "report_20mv_estimate_and_verify_transient",
+      "report_4mv_estimate_and_verify_transient"
+    ]
+  },
+  "family_id": "system_output_impedance",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "frequency_regime": "quasi_static",
+      "load_step_ma": 50,
+      "zout_mohm": 80
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

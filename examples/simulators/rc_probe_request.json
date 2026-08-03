@@ -1,0 +1,20 @@
+{
+  "probe": {
+    "schema_version": "1.0",
+    "task_id": "protocol-smoke",
+    "question": "What is the first-order AC attenuation across the supplied frequency points?",
+    "analysis_regime": "ac",
+    "held_fixed": ["resistance_ohm", "capacitance_f"],
+    "probe_family": "port_impedance",
+    "intervention": {"frequency_hz": [1000, 10000, 100000]},
+    "measurement": {"gain_magnitude_and_phase": "at each frequency"},
+    "expected_use": "support",
+    "stop_condition": {"valid_points": 3},
+    "claim_boundary": "First-order RC fixture only."
+  },
+  "parameters": {
+    "resistance_ohm": 10000,
+    "capacitance_f": 1e-9,
+    "frequency_hz": [1000, 10000, 100000]
+  }
+}

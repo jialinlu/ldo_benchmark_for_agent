@@ -23,6 +23,22 @@
   "license": "CC-BY-4.0",
   "lineage_id": "diagnosis_wrong_probe",
   "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "loop_gain",
+      "startup_escape",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "startup",
+      "tran"
+    ],
+    "required_held_fixed": []
+  },
   "prompt_file": "prompt.md",
   "schema_version": "1.0",
   "split": "dev",

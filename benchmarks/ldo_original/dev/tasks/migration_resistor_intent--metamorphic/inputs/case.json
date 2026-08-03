@@ -1,0 +1,56 @@
+{
+  "case_id": "migration_resistor_intent--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_and_noise",
+      "dc_operating_point",
+      "execution_status",
+      "noise",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "resistor_migration_valid",
+      "resistor_noise_intent_not_met"
+    ],
+    "evidence_facts": [
+      "noise_and_area_pass",
+      "noise_fails",
+      "ratio_and_voltage_pass",
+      "ratio_passes"
+    ],
+    "forbidden_actions": [
+      "approve_on_ratio_only",
+      "copy_geometry_only"
+    ],
+    "held_fixed": [
+      "current_budget",
+      "feedback_ratio",
+      "temperature_range"
+    ],
+    "mechanism_tags": [
+      "electrical_intent_is_preserved",
+      "matching_ratio_alone_does_not_preserve_noise"
+    ],
+    "recommended_actions": [
+      "run_extracted_ratio_and_temp_checks",
+      "select_lower_noise_resistor_option_or_current"
+    ]
+  },
+  "family_id": "migration_resistor_intent",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "area": "pass",
+      "noise": "pass",
+      "ratio_error_pct": 0.1,
+      "voltage_rating": "pass"
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

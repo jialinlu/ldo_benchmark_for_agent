@@ -1,0 +1,65 @@
+{
+  "case_id": "trend_feedforward_cap_regime--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "feedforward_cap_has_optimum_window",
+      "feedforward_cap_improves_supplied_range",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "large_value_increases_peaking",
+      "middle_value_has_best_margin",
+      "peaking_falls",
+      "phase_margin_rises"
+    ],
+    "forbidden_actions": [
+      "assume_monotonic_improvement",
+      "claim_global_monotonicity"
+    ],
+    "held_fixed": [
+      "compensation",
+      "divider",
+      "load"
+    ],
+    "mechanism_tags": [
+      "zero_location_helps_then_high_frequency_coupling_hurts",
+      "zero_location_is_helpful_in_supplied_range"
+    ],
+    "recommended_actions": [
+      "search_around_middle_value_across_corners",
+      "verify_beyond_range_and_pvt"
+    ]
+  },
+  "family_id": "trend_feedforward_cap_regime",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "cff_pf": [
+        0,
+        0.2,
+        1.0
+      ],
+      "peaking_db": [
+        4.0,
+        0.8,
+        6.5
+      ],
+      "pm_deg": [
+        43,
+        66,
+        39
+      ]
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

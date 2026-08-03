@@ -1,0 +1,49 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 3,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "feedback_stability",
+    "trend"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "simulation_assisted"
+  ],
+  "family_id": "trend_load_pole_shift",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L2",
+  "license": "CC-BY-4.0",
+  "lineage_id": "trend_load_pole_shift",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "three_point_trend",
+      "loop_gain",
+      "noise_transfer",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "dc",
+      "ac",
+      "stb",
+      "noise",
+      "tran"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "trend",
+  "task_id": "trend_load_pole_shift--metamorphic",
+  "title": "Interpret output-pole motion across load current",
+  "variant": "metamorphic",
+  "variant_relationship": "representation only"
+}

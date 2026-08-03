@@ -1,0 +1,65 @@
+{
+  "case_id": "trend_reference_filter--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "noise_and_transient",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "reference_filter_reduces_noise_slows_startup",
+      "startup_bypass_decouples_tradeoff"
+    ],
+    "evidence_facts": [
+      "noise_decreases",
+      "startup_time_increases",
+      "startup_time_stays_flat"
+    ],
+    "forbidden_actions": [
+      "maximize_tau_without_restart_test",
+      "reuse_canonical_startup_penalty"
+    ],
+    "held_fixed": [
+      "load",
+      "loop",
+      "reference_noise"
+    ],
+    "mechanism_tags": [
+      "filter_bandwidth_rejects_noise_and_delays_reference",
+      "physical_bypass_accelerates_reference_during_startup"
+    ],
+    "recommended_actions": [
+      "choose_tau_from_noise_and_startup_limits",
+      "verify_bypass_turns_off_and_restart_works"
+    ]
+  },
+  "family_id": "trend_reference_filter",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "filter_tau_us": [
+        0.1,
+        1,
+        10
+      ],
+      "output_noise_uvrms": [
+        90,
+        48,
+        25
+      ],
+      "startup_us": [
+        1.2,
+        3.8,
+        24
+      ]
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

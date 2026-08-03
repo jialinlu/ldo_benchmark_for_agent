@@ -46,10 +46,18 @@ averages families before constructing suite and level scorecards.
 | `discovery.py` | task discovery, duplicate-ID protection, inventory |
 | `bundle.py` | minimal runtime bundle and forbidden-file audit |
 | `runner.py` | timeout-bounded command execution and provenance |
+| `experiment.py` | immutable context snapshots, repeated rollouts, paired-treatment controls |
+| `probes.py` | semantic probe-policy gate and anti-confounding checks |
+| `adapters.py` | model, simulator, ngspice, and private-site interfaces |
+| `telemetry.py` | token/cost/cache/tool/time normalization and confidence intervals |
 | `graders/deterministic.py` | exact/set/numeric checks and critical caps |
 | `grading.py` | external-oracle resolution and batch grading |
-| `aggregate.py` | family macro, suite/level vectors, treatment lift |
+| `aggregate.py` | family macro, Pass@1/spec score, suite vectors, lift and harm |
 | `contamination.py` | split lineage, leak, identity, and similarity guardrails |
+| `calibration.py` | two-judge calibration and disagreement routing |
+| `qualification.py` | immutable candidates and fresh hard-gate evidence |
+| `exam.py` | frozen release manifests and verification |
+| `leaderboard.py` | static JSON/CSV/HTML score-versus-effort artifacts |
 | `report.py` | human-readable Markdown scorecard |
 
 ## Trust boundaries
@@ -78,3 +86,21 @@ Future adapters should implement stable envelopes rather than modify graders per
 - `ExplanationJudgeAdapter`: evaluate prose only after human calibration.
 
 Per-task routing tables are forbidden in paired treatment comparisons because they encode answer strategy.
+
+`AgentAdapter`, `SimulatorAdapter`, and `SiteAdapter` are now implemented interfaces. The public repository
+ships a command agent, JSON process simulator, optional ngspice batch wrapper, and analytic protocol
+fixture. It deliberately does not ship a private-site adapter or private PDK content.
+
+## Control plane
+
+Each experiment freezes the context tree, task/answer hashes, model ID, rollout index, seed, and budget.
+`compare-treatments` rejects a causal lift comparison when any control field drifts. Tool calls are valid
+only when they appear in the normalized ledger and pass the task's probe policy. A host sandbox is still
+required to prevent an untrusted process from bypassing the declared tool gateway.
+
+## Candidate plane
+
+A design candidate is a content-addressed artifact tree. Qualification evidence names one hard gate and
+the exact candidate digest. Stale evidence is never inherited across candidates. A site adapter may map
+this contract to an approved simulator/PDK stack, but site identifiers and assets remain outside the public
+repository.

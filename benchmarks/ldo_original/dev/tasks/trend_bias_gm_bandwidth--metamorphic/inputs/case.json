@@ -1,0 +1,70 @@
+{
+  "case_id": "trend_bias_gm_bandwidth--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "bandwidth_improves_iq_cost",
+      "bias_effect_confounded_by_size",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "bias_and_device_size_change_together",
+      "iq_increases",
+      "phase_margin_stays_similar",
+      "ugf_increases"
+    ],
+    "forbidden_actions": [
+      "attribute_all_ugf_change_to_bias",
+      "maximize_bias_unconditionally"
+    ],
+    "held_fixed": [
+      "compensation",
+      "device_sizes",
+      "load"
+    ],
+    "mechanism_tags": [
+      "gm_and_capacitance_both_change",
+      "transconductance_increases_with_bias"
+    ],
+    "recommended_actions": [
+      "repeat_bias_sweep_at_fixed_geometry",
+      "select_bias_from_speed_and_iq_budgets"
+    ]
+  },
+  "family_id": "trend_bias_gm_bandwidth",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "bias_ua": [
+        2,
+        5,
+        12
+      ],
+      "iq_ua": [
+        9,
+        12,
+        19
+      ],
+      "pm_deg": [
+        59,
+        61,
+        60
+      ],
+      "ugf_mhz": [
+        1.8,
+        4.1,
+        8.0
+      ]
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

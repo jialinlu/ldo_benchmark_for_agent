@@ -1,0 +1,50 @@
+{
+  "case_id": "migration_corner_mapping--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "corner_mapping_invalid",
+      "corner_mapping_valid",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "device_speed_and_temperature_semantics_match",
+      "short_label_matches_but_semantics_differ"
+    ],
+    "forbidden_actions": [
+      "accept_label_match",
+      "map_by_short_name_only"
+    ],
+    "held_fixed": [
+      "model_release",
+      "supply",
+      "temperature"
+    ],
+    "mechanism_tags": [
+      "corner_intent_is_preserved_despite_labels",
+      "reported_robustness_covers_wrong_condition"
+    ],
+    "recommended_actions": [
+      "map_from_model_definitions_and_temperature",
+      "record_section_and_model_hashes"
+    ]
+  },
+  "family_id": "migration_corner_mapping",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "mapping": "same short label",
+      "source_corner": "slow_n_slow_p_high_temp",
+      "target_definition": "fast_n_fast_p_low_temp"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

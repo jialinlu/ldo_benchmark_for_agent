@@ -1,0 +1,55 @@
+{
+  "case_id": "sizing_driver_pass_coupling--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "dc_small_signal_transient",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "coupled_scaling_candidate_valid",
+      "driver_is_under_sized",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "driver_tracks_gate_capacitance",
+      "dropout_and_margin_pass",
+      "dropout_passes",
+      "gate_settling_is_slow",
+      "phase_margin_fails"
+    ],
+    "forbidden_actions": [
+      "increase_pass_only"
+    ],
+    "held_fixed": [
+      "bias_density",
+      "compensation",
+      "driver_to_pass_ratio"
+    ],
+    "mechanism_tags": [
+      "drive_resistance_and_gate_capacitance_stay_balanced",
+      "pass_gate_capacitance_exceeds_driver_capability"
+    ],
+    "recommended_actions": [
+      "co_optimize_driver_and_compensation",
+      "qualify_pvt_and_load_corners"
+    ]
+  },
+  "family_id": "sizing_driver_pass_coupling",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "driver_scale": 1,
+      "dropout": "pass",
+      "gate_settling": "slow",
+      "pass_scale": 4,
+      "phase_margin": "fail"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}
