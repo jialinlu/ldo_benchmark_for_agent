@@ -1,0 +1,86 @@
+{
+  "candidate_pin_order": [
+    "VDD",
+    "VSS",
+    "VREF",
+    "ENB",
+    "VOUT"
+  ],
+  "candidate_subckt": "evoldo_sky130_ldo",
+  "hard_rules": [
+    "no independent or controlled ideal source inside DUT",
+    "no .ic or .nodeset",
+    "all declared measurements must be present",
+    "fresh simulation evidence must match candidate digest"
+  ],
+  "injected_fault": "The pass array is intentionally marginal at the slow/cold point.",
+  "objective": "Meet regulation/current limits at distinct process/temperature points while passing the no-ideal-device and no-forced-state source scan.",
+  "pdk": "sky130",
+  "scenarios": [
+    {
+      "bench_template": "../../benches/pvt.sp.tpl",
+      "corner": "tt",
+      "limits": {
+        "quiescent_current": {
+          "max": 7e-05,
+          "min": 0.0
+        },
+        "supply_current": {
+          "max": 0.00106,
+          "min": 0.001
+        },
+        "vout_final": {
+          "max": 1.55,
+          "min": 1.4
+        }
+      },
+      "scenario_id": "tt_27c",
+      "temperature_c": 27
+    },
+    {
+      "bench_template": "../../benches/pvt.sp.tpl",
+      "corner": "ff",
+      "limits": {
+        "quiescent_current": {
+          "max": 7e-05,
+          "min": 0.0
+        },
+        "supply_current": {
+          "max": 0.00107,
+          "min": 0.001
+        },
+        "vout_final": {
+          "max": 1.55,
+          "min": 1.4
+        }
+      },
+      "scenario_id": "ff_hot",
+      "temperature_c": 85
+    },
+    {
+      "bench_template": "../../benches/pvt.sp.tpl",
+      "corner": "ss",
+      "limits": {
+        "quiescent_current": {
+          "max": 7e-05,
+          "min": 0.0
+        },
+        "supply_current": {
+          "max": 0.00107,
+          "min": 0.001
+        },
+        "vout_final": {
+          "max": 1.55,
+          "min": 1.38
+        }
+      },
+      "scenario_id": "ss_cold",
+      "temperature_c": -20
+    }
+  ],
+  "schema_version": "1.0",
+  "simulator": "ngspice",
+  "starter_candidate": "starter/ldo.sp",
+  "task_id": "sky130_ldo_pvt_policy",
+  "title": "Close public-PDK PVT corners and DUT policy"
+}

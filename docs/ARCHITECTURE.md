@@ -38,6 +38,14 @@ The agent writes only `answer.json` plus optional permitted artifacts in future 
 records command status and provenance. The grader produces task score objects. The aggregator macro-
 averages families before constructing suite and level scorecards.
 
+### Public-PDK closure plane
+
+The SKY130 track is deliberately separate from prompt/oracle scoring. A task contributes a faulty starter,
+a frozen testbench template, process/temperature scenarios, and numeric limits. `public_pdk.py` copies one
+candidate into an isolated run directory, renders only the pinned model path/corner/temperature, runs
+ngspice, and binds candidate, deck, and log hashes into each evidence digest. Model files are fetched into
+an ignored runtime checkout and must match the pinned source commit and entry-file hash.
+
 ## Components
 
 | Module | Responsibility |
@@ -56,6 +64,7 @@ averages families before constructing suite and level scorecards.
 | `contamination.py` | split lineage, leak, identity, and similarity guardrails |
 | `calibration.py` | two-judge calibration and disagreement routing |
 | `qualification.py` | immutable candidates and fresh hard-gate evidence |
+| `public_pdk.py` | SKY130 task validation, DUT policy scan, ngspice replay, measurement/spec classification |
 | `exam.py` | frozen release manifests and verification |
 | `leaderboard.py` | static JSON/CSV/HTML score-versus-effort artifacts |
 | `report.py` | human-readable Markdown scorecard |
@@ -104,3 +113,7 @@ A design candidate is a content-addressed artifact tree. Qualification evidence 
 the exact candidate digest. Stale evidence is never inherited across candidates. A site adapter may map
 this contract to an approved simulator/PDK stack, but site identifiers and assets remain outside the public
 repository.
+
+The public-PDK runner is not a generic shell gateway. It accepts one candidate netlist, rejects top-level
+bench content and hidden includes, and distinguishes `INFRA_FAIL`, `MEAS_FAIL`, `POLICY_FAIL`, and
+`CIRCUIT_FAIL`. The model checkout is a runtime dependency rather than benchmark content.

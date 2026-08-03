@@ -20,6 +20,7 @@ from .grading import grade_directory, grade_one
 from .leaderboard import write_leaderboard
 from .report import write_markdown
 from .probes import evaluate_probe_contract
+from .public_pdk import DEFAULT_TRACK_ROOT, load_closure_registry, run_closure_suite
 from .qualification import build_candidate_manifest, qualify_candidate, summarize_qualification_attempts
 from .runner import run_agent_command
 from .utils import dump_json, load_json
@@ -188,6 +189,18 @@ def build_parser() -> argparse.ArgumentParser:
 
     closure = sub.add_parser("closure-metrics", help="summarize evaluations and wall time to first qualified candidate")
     closure.add_argument("attempts", type=_path, help="JSON object with an attempts array")
+
+    closure_list = sub.add_parser("closure-list", help="list real public-PDK LDO design-closure tasks")
+    closure_list.add_argument("--track-root", type=_path, default=DEFAULT_TRACK_ROOT)
+
+    closure_run = sub.add_parser("closure-run", help="run real SKY130/ngspice design-closure gates")
+    closure_run.add_argument("--pdk-root", type=_path, required=True, help="model checkout root or sky130_pdk directory")
+    closure_run.add_argument("--track-root", type=_path, default=DEFAULT_TRACK_ROOT)
+    closure_run.add_argument("--output", type=_path, required=True)
+    closure_run.add_argument("--task-id", action="append", dest="task_ids")
+    closure_run.add_argument("--candidate", type=_path, help="one candidate netlist to qualify against every selected task")
+    closure_run.add_argument("--ngspice", default="ngspice")
+    closure_run.add_argument("--timeout", type=int, default=180)
 
     return parser
 
@@ -368,6 +381,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if args.command_name == "closure-metrics":
             _print_json(summarize_qualification_attempts(load_json(args.attempts).get("attempts", [])))
             return 0
+        if args.command_name == "closure-list":
+            registry = load_closure_registry(args.track_root)
+            _print_json({"task_count": len(registry["tasks"]), "tasks": registry["tasks"]})
+            return 0
+        if args.command_name == "closure-run":
+            registry = load_closure_registry(args.track_root)
+            task_ids = args.task_ids or [item["task_id"] for item in registry["tasks"]]
+            result = run_closure_suite(
+                task_ids, args.pdk_root, args.output, args.candidate, args.track_root,
+                args.ngspice, args.timeout,
+            )
+            dump_json(args.output / "suite_result.json", result)
+            _print_json(result)
+            return 0 if result["passed"] else 11
     except (BenchmarkError, ValueError, OSError, json.JSONDecodeError) as exc:
         parser.error(str(exc))
     return 1

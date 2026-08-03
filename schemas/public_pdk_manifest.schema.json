@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/evoldo/public-pdk-manifest.schema.json",
+  "title": "EvoLDO runtime-only public PDK manifest",
+  "type": "object",
+  "required": ["schema_version", "source_commit", "source_repository", "providers", "redistribution_policy"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "source_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "source_repository": {"type": "string", "format": "uri"},
+    "providers": {
+      "type": "object",
+      "required": ["sky130", "asap7"],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["authoritative_upstream", "entry_file", "entry_sha256", "license", "required_paths", "runtime", "verification_status"],
+        "properties": {
+          "authoritative_upstream": {"type": "string", "format": "uri"},
+          "entry_file": {"type": "string"},
+          "entry_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "osdi_file": {"type": "string"},
+          "osdi_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "license": {"type": "string"},
+          "required_paths": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+          "runtime": {"type": "string"},
+          "verification_status": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "redistribution_policy": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

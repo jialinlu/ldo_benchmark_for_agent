@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "tasks": [
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_operating_point/task.json",
+      "task_id": "sky130_ldo_operating_point",
+      "title": "Close nominal operating point and quiescent current"
+    },
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_cold_start/task.json",
+      "task_id": "sky130_ldo_cold_start",
+      "title": "Close true cold start from zero supply"
+    },
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_shutdown_restart/task.json",
+      "task_id": "sky130_ldo_shutdown_restart",
+      "title": "Close physical shutdown and restart"
+    },
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_load_transient/task.json",
+      "task_id": "sky130_ldo_load_transient",
+      "title": "Close capless load-transient behavior"
+    },
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_line_load_regulation/task.json",
+      "task_id": "sky130_ldo_line_load_regulation",
+      "title": "Close line and load regulation"
+    },
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_pvt_policy/task.json",
+      "task_id": "sky130_ldo_pvt_policy",
+      "title": "Close public-PDK PVT corners and DUT policy"
+    }
+  ],
+  "track_id": "public_pdk_ldo_design_closure"
+}

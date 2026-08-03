@@ -17,3 +17,21 @@ materials were authored independently for this project. The public Analog Design
 informed general reporting ideas such as separating Pass@1 from spec score and showing score versus effort;
 no task or hidden implementation detail was used. Users who run external benchmarks must obey their
 respective licenses and keep their materials outside this repository.
+
+## Runtime-only public PDK models
+
+The public design-closure track can fetch model files from:
+https://github.com/jialinlu/opensource-analog-circuits
+
+The checkout is pinned and hash-checked, remains in an ignored runtime directory, and is not redistributed
+by EvoLDO-Bench. The SKY130 model entry carries Apache-2.0 notices and points to the authoritative SkyWater
+PDK source: https://github.com/google/skywater-pdk
+
+The optional ASAP7 mirror is tied to the BSD-3-Clause OpenROAD upstream:
+https://github.com/The-OpenROAD-Project/asap7
+Its OSDI binary is platform-specific and its mirror-subtree notice placement still requires review, so it
+is fetch-only and is not counted as a qualified benchmark task.
+
+All LDO DUTs, fault injections, specifications, benches, and development reference netlists in this
+repository were independently authored for EvoLDO-Bench. No circuit from the model-source repository was
+copied or adapted.

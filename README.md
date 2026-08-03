@@ -29,8 +29,9 @@ The project has two layers:
 
 ## Current release
 
-This repository now contains a **40-family / 120-instance controlled public pilot**. It is not a sealed
-exam and does not claim a public- or private-PDK design result.
+This repository now contains a **40-family / 120-instance controlled reasoning pilot** plus **six real
+SKY130/ngspice LDO design-closure tasks**. It is not a sealed exam. The public-PDK circuit is a benchmark
+fixture, not a silicon or product-performance claim.
 
 | Capability | Implemented now |
 |---|---|
@@ -48,6 +49,7 @@ exam and does not claim a public- or private-PDK design result.
 | Exam operations | freeze/verify manifests for tasks, oracles, skills, tools, policy, and code revision |
 | Explanation judging | two-judge calibration and automatic human-review routing on disagreement |
 | Design closure | immutable candidate and fresh-evidence hard gates for OP through PVT/policy |
+| Real public-PDK track | six fault-injected SKY130 transistor tasks with pinned model provenance and CI replay |
 | Private PDK | out-of-tree `SiteAdapter` boundary; no private assets belong in this repository |
 
 A `dev` score measures public-task integration and public-task performance only. It must never be called
@@ -171,8 +173,28 @@ evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
 
 The gate detects wrong regimes, unrelated probes, confounded sweeps, held-fixed violations, invented
 artifacts, and measurement/regime mismatches. Unavailable executables, timeouts, and malformed simulator
-responses are `INFRA_FAIL`, never circuit answers. The analytic example is only a protocol fixture; the
-optional ngspice adapter accepts independently supplied redistributable decks and makes no PDK claim.
+responses are `INFRA_FAIL`, never circuit answers. The analytic example is only a protocol fixture. The
+separate public-PDK track below executes transistor-level SKY130 decks through ngspice.
+
+## Real public-PDK design closure
+
+Six independently authored tasks exercise nominal operating point, true cold start, shutdown/restart,
+load transient, line/load regulation, and PVT/policy closure. Each starter has one controlled fault, so an
+agent must modify the netlist and produce fresh simulator evidence rather than only explain what it would
+do.
+
+```bash
+python tools/fetch_public_pdk.py --provider sky130
+evoldo-bench closure-list
+evoldo-bench closure-run \
+  --pdk-root .runtime/public_pdks/opensource-analog-circuits \
+  --task-id sky130_ldo_cold_start \
+  --output runs/sky130-cold-start
+```
+
+The fetch step pins and hash-checks the public model source without vendoring PDK files. See
+[`benchmarks/ldo_design_closure/README.md`](benchmarks/ldo_design_closure/README.md) for the fault model,
+qualification commands, claim limits, and the conditional ASAP7 assessment.
 
 ## Scores and score-versus-effort results
 
@@ -238,7 +260,8 @@ Read [`docs/CONTROLLED_PILOT_RUNBOOK.md`](docs/CONTROLLED_PILOT_RUNBOOK.md),
 ## Repository layout
 
 ```text
-benchmarks/ldo_original/  original public tasks and isolated public development oracles
+benchmarks/ldo_original/  original public reasoning tasks and development oracles
+benchmarks/ldo_design_closure/ six SKY130 transistor-level closure tasks and development reference
 schemas/                  task, answer, probe, telemetry, exam, candidate, qualification contracts
 src/evoldo_bench/         runner, policy, adapters, grading, experiments, calibration, closure, reports
 tools/                    deterministic generator, self-check, and public-release security audit
@@ -249,11 +272,12 @@ docs/                     architecture, methods, runbooks, security, and roadmap
 
 ## What remains external work
 
-The code needed to run the controlled pilot, freeze an exam, calibrate supplied judge outputs, and enforce
-qualification evidence is present. The following are empirical or site-owned deliverables, not facts that
-software can manufacture: two-engineer task review, real baseline-model campaigns, acceptance of judge
-thresholds, a selected redistributable open-PDK LDO suite, private-site adapter implementation, and final
-exam sign-off. Their exact gates are tracked in [`docs/ROADMAP.md`](docs/ROADMAP.md).
+The code needed to run the controlled pilot, execute the six-task SKY130 development track, freeze an
+exam, calibrate supplied judge outputs, and enforce qualification evidence is present. The following are
+still empirical or site-owned deliverables, not facts that software can manufacture: two-engineer task
+review, real baseline-model campaigns, accepted judge thresholds, a portable qualified ASAP7 track,
+private-site adapter implementation, and final exam sign-off. Their gates are tracked in
+[`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Licensing and clean-room boundary
 

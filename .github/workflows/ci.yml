@@ -55,3 +55,32 @@ jobs:
           python -m pip install -e .
       - name: Verify declared measurements through ngspice adapter
         run: python -m unittest tests.test_phase2_and_closure.Phase2AndClosureTests.test_ngspice_adapter_parses_declared_measurements -v
+
+  public-pdk-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install package and open simulator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ngspice
+          python -m pip install -e .
+      - name: Fetch pinned and hash-checked SKY130 models
+        run: python tools/fetch_public_pdk.py --provider sky130
+      - name: Replay the six-task transistor-level development reference
+        run: |
+          evoldo-bench closure-run \
+            --pdk-root .runtime/public_pdks/opensource-analog-circuits \
+            --candidate benchmarks/ldo_design_closure/dev_reference/sky130_reference/ldo.sp \
+            --output runs/public-pdk-reference \
+            --timeout 300 > /tmp/public-pdk-closure.json
+          python - <<'PY'
+          import json
+          result = json.load(open("/tmp/public-pdk-closure.json"))
+          assert result["passed"] and result["passed_task_count"] == 6, result
+          print("qualified %d/%d public-PDK closure tasks" % (result["passed_task_count"], result["task_count"]))
+          PY

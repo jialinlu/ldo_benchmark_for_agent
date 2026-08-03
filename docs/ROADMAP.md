@@ -55,7 +55,7 @@ External acceptance work still required:
 - author hidden families outside this public repository; public families cannot become a sealed exam by
   merely hiding their files.
 
-## Phase 4 — hardware-backed design closure: public contract implemented, real backends pending
+## Phase 4 — public-PDK design closure: six-task development track implemented
 
 Delivered:
 
@@ -65,15 +65,19 @@ Delivered:
   transient, PVT, and forbidden devices;
 - stale-evidence rejection;
 - evaluations, wall time, and gate robustness to first qualified candidate.
+- pinned/hash-checked SKY130 model acquisition without vendoring PDK assets;
+- six independently authored transistor-level fault-injection tasks covering operating point, cold start,
+  shutdown/restart, load transient, line/load regulation, and PVT/policy;
+- rendered-deck execution, measurement/spec parsing, and explicit infrastructure/measurement/policy/circuit
+  failure classes;
+- a development reference replayed in open-source ngspice CI.
 
 External acceptance work still required:
 
-- select and license a redistributable open-PDK LDO reference suite;
-- implement and publish its model/deck/result parser without importing third-party benchmark tasks;
 - implement each approved private-site adapter outside the public repository;
-- run at least four design tasks exposing distinct OP/startup/stability/measurement failures;
 - compare cold and assisted sizing under the same candidate/qualification budget;
-- obtain PDK, simulator, originality, and analog-engineer sign-off.
+- add a portable ASAP7 execution job only after OSDI platform and license-notice review are closed;
+- obtain independent PDK, simulator, originality, numeric-threshold, and analog-engineer sign-off.
 
 Private PDK assets must never enter the public repository, model context, or public CI.
 
