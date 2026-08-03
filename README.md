@@ -165,8 +165,8 @@ intervention, measurement, intended evidence use, stop condition, and claim boun
 evoldo-bench validate-probe probe.json --task-id trend_compensation_cap--canonical
 
 evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
-  --workspace /tmp/evoldo-sim -- \
-  python /absolute/path/to/analytic_probe_simulator.py
+  --workspace /tmp/evoldo-sim \
+  --simulator-command python /absolute/path/to/analytic_probe_simulator.py
 ```
 
 The gate detects wrong regimes, unrelated probes, confounded sweeps, held-fixed violations, invented

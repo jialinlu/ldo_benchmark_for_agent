@@ -34,8 +34,8 @@ jobs:
         run: |
           workspace="$(mktemp -d)"
           evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
-            --workspace "$workspace" -- \
-            python "$PWD/examples/simulators/analytic_probe_simulator.py"
+            --workspace "$workspace" \
+            --simulator-command python "$PWD/examples/simulators/analytic_probe_simulator.py"
       - name: Run contamination audit
         run: evoldo-bench audit
       - name: Run public-release security gate

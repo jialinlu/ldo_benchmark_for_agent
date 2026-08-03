@@ -130,7 +130,7 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--workspace", type=_path, required=True)
     simulate.add_argument("--timeout", type=int, default=120)
     simulate.add_argument("--ngspice", action="store_true")
-    simulate.add_argument("simulator_command", nargs="*")
+    simulate.add_argument("--simulator-command", nargs="+", default=[])
 
     freeze = sub.add_parser("freeze-exam", help="create a cryptographic release manifest for a sealed exam store")
     freeze.add_argument("--tasks-root", type=_path, required=True)
@@ -308,10 +308,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if args.ngspice:
                 adapter = NgspiceBatchAdapter()
             else:
-                command = list(args.simulator_command)
-                if command and command[0] == "--":
-                    command = command[1:]
-                adapter = ProcessSimulatorAdapter(command)
+                adapter = ProcessSimulatorAdapter(list(args.simulator_command))
             result = adapter.run(request, args.workspace, args.timeout)
             _print_json(result)
             return 0 if result.get("status") == "OK" else 5

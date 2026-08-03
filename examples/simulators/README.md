@@ -5,8 +5,8 @@ proprietary tool. It is intentionally a first-order RC fixture, not an LDO perfo
 
 ```bash
 evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
-  --workspace /tmp/evoldo-sim -- \
-  python "$(pwd)/examples/simulators/analytic_probe_simulator.py"
+  --workspace /tmp/evoldo-sim \
+  --simulator-command python "$(pwd)/examples/simulators/analytic_probe_simulator.py"
 ```
 
 For a redistributable SPICE deck, stage the deck inside the tool workspace and use the optional open
