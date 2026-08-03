@@ -48,7 +48,8 @@ Delivered:
 
 External acceptance work still required:
 
-- two analog engineers independently review/calibrate the numeric and closure set;
+- two analog engineers independently review/calibrate the numeric and closure set using
+  [`ANALOG_EXPERT_REVIEW_GUIDE_ZH.md`](ANALOG_EXPERT_REVIEW_GUIDE_ZH.md);
 - freeze heterogeneous judge model/prompt snapshots and meet accepted agreement/critical-recall gates;
 - run at least three model capability tiers with at least three rollouts;
 - verify strong/medium/weak separation and absence of length/call/suite dominance;

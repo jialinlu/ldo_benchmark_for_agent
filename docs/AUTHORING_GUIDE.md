@@ -23,6 +23,9 @@ All variants share `family_id` and `lineage_id` and must remain in one split.
 9. Obtain two analog-engineer reviews for any numeric or design-closure task.
 10. Record source provenance and originality review before moving a family into a sealed split.
 
+Use [`ANALOG_EXPERT_REVIEW_GUIDE_ZH.md`](ANALOG_EXPERT_REVIEW_GUIDE_ZH.md) for the independent blind
+review, issue severity, coverage matrix, adjudication, and sign-off record.
+
 ## Rules for numeric tasks
 
 - Units must be explicit.

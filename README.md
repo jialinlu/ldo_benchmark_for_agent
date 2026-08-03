@@ -256,6 +256,9 @@ Never claim that:
 Read [`docs/CONTROLLED_PILOT_RUNBOOK.md`](docs/CONTROLLED_PILOT_RUNBOOK.md),
 [`docs/SECURITY_AND_CONTAMINATION.md`](docs/SECURITY_AND_CONTAMINATION.md), and
 [`docs/PUBLIC_RELEASE_SECURITY.md`](docs/PUBLIC_RELEASE_SECURITY.md) before publishing results.
+模拟设计专家可使用中文的
+[`双专家独立审题指南`](docs/ANALOG_EXPERT_REVIEW_GUIDE_ZH.md)完成物理、测试维度、oracle、评分和
+晶体管级闭环任务审阅。
 
 ## Repository layout
 
