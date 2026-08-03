@@ -1,0 +1,63 @@
+{
+  "case_id": "diagnosis_infra_vs_circuit--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "bench_stimulus",
+      "infra_license",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "enable_is_below_active_level",
+      "no_operating_point_evidence_exists",
+      "simulation_completed",
+      "simulator_stopped_before_elaboration"
+    ],
+    "forbidden_actions": [
+      "mark_candidate_as_circuit_fail",
+      "mark_license_failure",
+      "resize_pass_device_first",
+      "resize_transistors_from_this_log",
+      "treat_log_rewording_as_new_failure"
+    ],
+    "held_fixed": [
+      "dut_netlist",
+      "license_feature",
+      "load_condition",
+      "pdk_models",
+      "simulator_binary",
+      "submitted_netlist"
+    ],
+    "mechanism_tags": [
+      "bench_failure_precedes_sizing",
+      "disabled_dut_explains_zero_output",
+      "license_failure_is_not_circuit_failure",
+      "missing_evidence_blocks_design_claim"
+    ],
+    "recommended_actions": [
+      "correct_enable_stimulus",
+      "obtain_license_or_use_authorized_simulator",
+      "rerun_operating_point_before_tuning",
+      "rerun_same_candidate_before_tuning"
+    ]
+  },
+  "family_id": "diagnosis_infra_vs_circuit",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "log": [
+      "analog simulator startup",
+      "ERROR: required simulator license feature is unavailable",
+      "simulation terminated before netlist elaboration"
+    ],
+    "result_files": []
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

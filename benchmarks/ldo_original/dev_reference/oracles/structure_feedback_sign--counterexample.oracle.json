@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "structure_feedback_sign--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "positive_feedback",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "small_signal",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "pmos_polarity",
+        "error_amplifier_gain_sign",
+        "supply_and_load"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "pmos_gate_rises_when_output_is_low",
+        "pass_current_decreases_when_pmos_gate_rises"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "loop_amplifies_output_error",
+        "pmos_gate_to_current_inverting"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "correct_error_amplifier_polarity_before_compensation"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "tune_compensation_before_fixing_sign",
+        "accept_positive_feedback"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "structure_feedback_sign",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sign--counterexample"
+}

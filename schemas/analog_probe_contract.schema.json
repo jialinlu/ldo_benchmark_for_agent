@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jialinlu/ldo_benchmark_for_agent/schemas/analog_probe_contract.schema.json",
+  "title": "AnalogProbeContract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "task_id", "question", "analysis_regime", "held_fixed", "probe_family", "intervention", "measurement", "expected_use", "stop_condition", "claim_boundary"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "task_id": {"type": "string", "minLength": 1},
+    "question": {"type": "string", "minLength": 1},
+    "analysis_regime": {"enum": ["op", "dc", "ac", "stb", "noise", "tran", "startup"]},
+    "held_fixed": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "probe_family": {"enum": ["operating_point", "port_impedance", "three_point_trend", "loop_gain", "noise_transfer", "startup_escape", "transient_envelope"]},
+    "intervention": {"type": "object"},
+    "measurement": {"type": "object", "minProperties": 1},
+    "expected_use": {"enum": ["support", "falsify", "disambiguate"]},
+    "stop_condition": {"type": "object", "minProperties": 1},
+    "claim_boundary": {"type": "string", "minLength": 1}
+  }
+}

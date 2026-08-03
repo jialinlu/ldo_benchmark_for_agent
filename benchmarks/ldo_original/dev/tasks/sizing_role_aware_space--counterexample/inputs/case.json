@@ -1,0 +1,69 @@
+{
+  "case_id": "sizing_role_aware_space--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "sizing_configuration",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "role_aware_search_space",
+      "search_space_misses_startup_controls"
+    ],
+    "evidence_facts": [
+      "driver_and_compensation_control_gate_pole",
+      "forced_initial_condition_proves_regulation_path",
+      "pass_role_controls_dropout",
+      "startup_controls_absent_from_search"
+    ],
+    "forbidden_actions": [
+      "optimize_pass_size_only",
+      "search_illegal_width",
+      "treat_names_as_roles",
+      "use_nodeset_as_final_fix",
+      "vary_one_input_device_only"
+    ],
+    "held_fixed": [
+      "device_flavors",
+      "load_profile",
+      "supply",
+      "topology"
+    ],
+    "mechanism_tags": [
+      "coupled_parameters_must_be_searched_together",
+      "failure_role_must_drive_parameter_selection",
+      "legal_geometry_only",
+      "pass_size_alone_does_not_create_startup_path"
+    ],
+    "recommended_actions": [
+      "include_pass_driver_compensation_parameters",
+      "include_startup_strength_and_timing",
+      "preserve_input_pair_symmetry",
+      "run_cold_start_shutdown_restart"
+    ]
+  },
+  "family_id": "sizing_role_aware_space",
+  "scenario": {
+    "baseline_failure": [
+      "cold_start_timeout"
+    ],
+    "changed_from_canonical": "objective changes from dropout to startup; proposed space still contains pass size only",
+    "objective": "repair all-zero cold start while DC with forced initial condition already regulates",
+    "proposed_search": [
+      "M_PASS.nf"
+    ],
+    "roles": {
+      "C_TIMER": "startup_timer",
+      "M_KEEP": "startup_keeper",
+      "M_PASS": "pmos_pass",
+      "M_START": "startup_injector"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

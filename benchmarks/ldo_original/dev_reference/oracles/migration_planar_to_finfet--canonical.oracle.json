@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "migration_planar_to_finfet--canonical",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "migrate_intent_then_resize",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "pdk_migration",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "architecture",
+        "branch_current_target",
+        "headroom_budget",
+        "load_spec"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "target_uses_integer_fin_geometry",
+        "source_has_role_and_operating_point_intent"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "planar_width_is_not_portable",
+        "gm_id_and_headroom_are_migration_invariants"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "map_device_flavor_by_role",
+        "restore_operating_point_before_ac"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "copy_planar_width_literal",
+        "skip_target_pdk_legality"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "migration_planar_to_finfet",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "migration_planar_to_finfet--canonical"
+}

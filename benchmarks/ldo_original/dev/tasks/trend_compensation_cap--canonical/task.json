@@ -1,0 +1,33 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 3,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "feedback_stability",
+    "transient"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "simulation_assisted"
+  ],
+  "family_id": "trend_compensation_cap",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L2",
+  "license": "CC-BY-4.0",
+  "lineage_id": "trend_compensation_cap",
+  "originality": "independently_authored_evoldo_bench",
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "trend",
+  "task_id": "trend_compensation_cap--canonical",
+  "title": "Interpret a controlled three-point compensation-capacitor sweep",
+  "variant": "canonical",
+  "variant_relationship": "none"
+}

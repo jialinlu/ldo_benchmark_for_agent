@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "structure_pass_body--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "pmos_high_side_body_valid",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "dc_operating_point",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "device_flavor",
+        "vin_range",
+        "load_current"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "body_tied_to_highest_local_potential",
+        "source_is_input_supply"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "body_diode_reverse_biased",
+        "body_effect_minimized"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "verify_vds_vgs_vbs_across_corners"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_renaming_as_topology_change",
+        "ignore_body_connection"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "structure_pass_body",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--metamorphic"
+}

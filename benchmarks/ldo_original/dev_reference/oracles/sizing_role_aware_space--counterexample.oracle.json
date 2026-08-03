@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "sizing_role_aware_space--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "search_space_misses_startup_controls",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "sizing_configuration",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "topology",
+        "device_flavors",
+        "supply",
+        "load_profile"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "forced_initial_condition_proves_regulation_path",
+        "startup_controls_absent_from_search"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "failure_role_must_drive_parameter_selection",
+        "pass_size_alone_does_not_create_startup_path"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "include_startup_strength_and_timing",
+        "run_cold_start_shutdown_restart"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "optimize_pass_size_only",
+        "use_nodeset_as_final_fix"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "sizing_role_aware_space",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "sizing_role_aware_space--counterexample"
+}

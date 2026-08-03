@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jialinlu/ldo_benchmark_for_agent/schemas/answer.schema.json",
+  "title": "EvoLDO-Bench answer",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "task_id", "conclusion", "analysis_regime", "held_fixed", "evidence_facts", "mechanism_tags", "recommended_actions", "mechanism", "claim_boundary", "confidence"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "task_id": {"type": "string", "minLength": 1},
+    "conclusion": {"type": "string", "minLength": 1},
+    "analysis_regime": {"type": "string", "minLength": 1},
+    "held_fixed": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "evidence_facts": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "mechanism_tags": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "recommended_actions": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "mechanism": {"type": "string", "minLength": 1},
+    "claim_boundary": {"type": "string", "minLength": 1},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "numeric_results": {"type": "object", "additionalProperties": {"type": "number"}}
+  }
+}

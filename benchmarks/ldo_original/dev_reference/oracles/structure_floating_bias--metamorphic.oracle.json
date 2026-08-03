@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "structure_floating_bias--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "bias_path_complete",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "connectivity",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "hierarchy_flattening",
+        "global_net_rules",
+        "pin_directions"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "cascode_gate_has_dc_driver",
+        "bias_generator_is_supply_referenced"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "gate_has_defined_dc_path",
+        "cascode_operating_point_can_be_tested"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "verify_bias_voltage_and_device_saturation"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_hierarchy_as_disconnection",
+        "add_nodeset_as_connectivity_fix"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "structure_floating_bias",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "structure_floating_bias--metamorphic"
+}

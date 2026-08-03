@@ -1,0 +1,71 @@
+{
+  "case_id": "design_closure_cold_start--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "infra_license",
+      "insufficient_evidence",
+      "no_change",
+      "startup_path_missing"
+    ],
+    "evidence_facts": [
+      "all_zero_cold_start_fails",
+      "enable_is_valid",
+      "forced_initial_condition_reaches_regulation",
+      "simulation_did_not_start",
+      "startup_evidence_is_absent"
+    ],
+    "forbidden_actions": [
+      "add_ideal_current_source",
+      "add_startup_transistors_without_evidence",
+      "mark_circuit_as_startup_fail",
+      "treat_active_low_name_as_disabled",
+      "use_nodeset_as_final_fix"
+    ],
+    "held_fixed": [
+      "dut_topology",
+      "license_feature",
+      "load",
+      "pdk",
+      "simulator_binary",
+      "submitted_netlist",
+      "supply_ramp"
+    ],
+    "mechanism_tags": [
+      "license_failure_prevents_circuit_diagnosis",
+      "missing_evidence_blocks_startup_claim",
+      "regulation_loop_exists_but_zero_state_is_trapping",
+      "startup_requires_physical_escape_path"
+    ],
+    "recommended_actions": [
+      "add_self_timed_startup",
+      "rerun_full_qualification",
+      "rerun_unchanged_candidate",
+      "restore_authorized_simulation",
+      "verify_shutdown_restart"
+    ]
+  },
+  "family_id": "design_closure_cold_start",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "cold_start_from_all_zero": "timeout at VOUT=0",
+      "dc_op_with_forced_initial_condition": "VOUT regulates",
+      "enable": "valid high",
+      "license": "ok",
+      "startup_injector": "absent"
+    },
+    "rules": [
+      "no nodeset or forced IC in final DUT",
+      "no ideal bias sources in final DUT"
+    ]
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

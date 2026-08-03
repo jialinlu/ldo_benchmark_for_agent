@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jialinlu/ldo_benchmark_for_agent/schemas/score.schema.json",
+  "title": "EvoLDO-Bench deterministic task score",
+  "type": "object",
+  "required": ["schema_version", "task_id", "family_id", "suite", "level", "variant", "score", "raw_score", "max_score", "passed", "critical_failed", "checks"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "task_id": {"type": "string"},
+    "family_id": {"type": "string"},
+    "suite": {"type": "string"},
+    "level": {"type": "string"},
+    "variant": {"type": "string"},
+    "score": {"type": "number", "minimum": 0, "maximum": 100},
+    "raw_score": {"type": "number", "minimum": 0, "maximum": 100},
+    "max_score": {"type": "number", "const": 100},
+    "passed": {"type": "boolean"},
+    "critical_failed": {"type": "array", "items": {"type": "string"}},
+    "checks": {"type": "array"}
+  }
+}

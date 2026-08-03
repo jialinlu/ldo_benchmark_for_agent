@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: python -m pip install -e .
+      - name: Verify generated tasks are reproducible
+        run: |
+          cp benchmarks/ldo_original/registry.jsonl /tmp/registry.before
+          python tools/generate_dev_tasks.py
+          diff -u /tmp/registry.before benchmarks/ldo_original/registry.jsonl
+          git diff --exit-code
+      - name: Run unit and integration tests
+        run: python -m unittest discover -s tests -v
+      - name: Run benchmark self-check
+        run: python tools/run_self_check.py
+      - name: Run contamination audit
+        run: evoldo-bench audit
+      - name: Run public-release security gate
+        run: python tools/audit_public_release.py

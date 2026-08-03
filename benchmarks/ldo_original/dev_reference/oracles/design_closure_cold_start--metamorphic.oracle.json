@@ -1,0 +1,87 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "design_closure_cold_start--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "startup_path_missing",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "startup_transient",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "dut_topology",
+        "pdk",
+        "supply_ramp",
+        "load"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "forced_initial_condition_reaches_regulation",
+        "all_zero_cold_start_fails",
+        "enable_is_valid"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "regulation_loop_exists_but_zero_state_is_trapping",
+        "startup_requires_physical_escape_path"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "add_self_timed_startup",
+        "verify_shutdown_restart",
+        "rerun_full_qualification"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_active_low_name_as_disabled",
+        "add_ideal_current_source"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "design_closure_cold_start",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "design_closure_cold_start--metamorphic"
+}

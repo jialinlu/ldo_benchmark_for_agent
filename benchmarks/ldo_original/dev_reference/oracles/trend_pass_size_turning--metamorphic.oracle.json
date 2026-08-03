@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "trend_pass_size_turning--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "dropout_improves_stability_degrades",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "dc_small_signal_transient",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "driver_size",
+        "bias_current",
+        "compensation",
+        "load_step"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "dropout_decreases_with_pass_scale",
+        "phase_margin_decreases_with_pass_scale",
+        "overshoot_increases"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "pass_rds_on_decreases",
+        "pass_gate_capacitance_loads_driver"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "co_optimize_driver_and_compensation",
+        "stop_before_phase_margin_gate"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_unit_conversion_as_new_physics",
+        "ignore_gate_drive_pole"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "trend_pass_size_turning",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "trend_pass_size_turning--metamorphic"
+}

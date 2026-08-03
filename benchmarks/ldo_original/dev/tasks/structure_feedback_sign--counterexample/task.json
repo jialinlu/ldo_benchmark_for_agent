@@ -1,0 +1,33 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "structure",
+    "feedback_stability"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning"
+  ],
+  "family_id": "structure_feedback_sign",
+  "input_files": [
+    "inputs/case.json",
+    "inputs/circuit.sp"
+  ],
+  "language": "en",
+  "level": "L1",
+  "license": "CC-BY-4.0",
+  "lineage_id": "structure_feedback_sign",
+  "originality": "independently_authored_evoldo_bench",
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "structure",
+  "task_id": "structure_feedback_sign--counterexample",
+  "title": "Determine the LDO loop sign from device polarity and error-amplifier action",
+  "variant": "counterexample",
+  "variant_relationship": "only error-amplifier output polarity is reversed"
+}

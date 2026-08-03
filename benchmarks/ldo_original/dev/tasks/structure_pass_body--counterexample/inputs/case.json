@@ -1,0 +1,64 @@
+{
+  "case_id": "structure_pass_body--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "pmos_body_misconnected_risk",
+      "pmos_high_side_body_valid"
+    ],
+    "evidence_facts": [
+      "body_not_tied_to_highest_local_potential",
+      "body_source_voltage_nonzero",
+      "body_tied_to_highest_local_potential",
+      "source_is_input_supply"
+    ],
+    "forbidden_actions": [
+      "compensate_body_error_with_nodeset",
+      "ignore_body_connection",
+      "short_body_to_output",
+      "treat_renaming_as_topology_change"
+    ],
+    "held_fixed": [
+      "device_flavor",
+      "load_current",
+      "vin_range"
+    ],
+    "mechanism_tags": [
+      "body_diode_reverse_biased",
+      "body_effect_increases_threshold",
+      "body_effect_minimized",
+      "junction_risk_requires_pdk_check"
+    ],
+    "recommended_actions": [
+      "rerun_operating_region_audit",
+      "retie_body_to_valid_high_potential",
+      "verify_vds_vgs_vbs_across_corners"
+    ]
+  },
+  "family_id": "structure_pass_body",
+  "scenario": {
+    "changed_from_canonical": "only body moves from VIN to VOUT",
+    "pass_device": {
+      "b": "VOUT",
+      "d": "VOUT",
+      "g": "VG",
+      "s": "VIN",
+      "type": "PMOS"
+    },
+    "vin_range_v": [
+      0.9,
+      1.2
+    ],
+    "vout_target_v": 0.8
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

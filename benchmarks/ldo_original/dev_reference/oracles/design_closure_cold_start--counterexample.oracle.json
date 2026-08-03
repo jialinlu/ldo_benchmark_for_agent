@@ -1,0 +1,84 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "design_closure_cold_start--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "infra_license",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "execution_status",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "submitted_netlist",
+        "simulator_binary",
+        "license_feature"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "simulation_did_not_start",
+        "startup_evidence_is_absent"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "license_failure_prevents_circuit_diagnosis",
+        "missing_evidence_blocks_startup_claim"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "restore_authorized_simulation",
+        "rerun_unchanged_candidate"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "add_startup_transistors_without_evidence",
+        "mark_circuit_as_startup_fail"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "design_closure_cold_start",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "design_closure_cold_start--counterexample"
+}

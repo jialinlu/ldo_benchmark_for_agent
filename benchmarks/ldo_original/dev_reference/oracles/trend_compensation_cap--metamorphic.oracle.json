@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "trend_compensation_cap--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "stability_improves_bandwidth_falls",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "small_signal_and_transient",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "bias_current",
+        "load_current",
+        "pass_size",
+        "output_capacitance"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "phase_margin_rises_across_three_points",
+        "ugf_falls_across_three_points",
+        "settling_time_increases"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "dominant_pole_moves_lower",
+        "bandwidth_stability_tradeoff"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "select_smallest_cc_with_required_margin",
+        "verify_load_corners"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_unit_conversion_as_new_physics",
+        "claim_startup_is_proven_by_phase_margin"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "trend_compensation_cap",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "trend_compensation_cap--metamorphic"
+}

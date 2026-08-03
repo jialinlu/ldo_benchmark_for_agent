@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "diagnosis_wrong_probe--canonical",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "measurement_probe",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "stb",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "dut_topology",
+        "load",
+        "bias",
+        "compensation"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "probe_is_outside_return_loop",
+        "reported_loop_gain_is_below_unity_at_dc"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "stb_probe_does_not_measure_intended_loop",
+        "measurement_invalidates_margin_claim"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "move_probe_to_loop_break",
+        "validate_return_ratio_orientation"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "accept_phase_margin_number_without_loop_gain",
+        "retune_compensation_first"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "diagnosis_wrong_probe",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "diagnosis_wrong_probe--canonical"
+}

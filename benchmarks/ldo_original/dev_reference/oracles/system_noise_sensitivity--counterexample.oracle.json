@@ -1,0 +1,84 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "system_noise_sensitivity--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "system_error_scales_with_sensitivity",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "noise_propagation",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "integration_bandwidth",
+        "uncorrelated_other_noise",
+        "downstream_operating_point"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "ldo_noise_is_200uvrms",
+        "downstream_sensitivity_is_1p2"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "small_signal_noise_scales_by_absolute_sensitivity",
+        "sensitivity_above_one_amplifies_noise"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "report_240uvrms_output_error",
+        "consider_lower_noise_ldo_or_lower_sensitivity"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "reuse_80uvrms_result",
+        "ignore_sensitivity_change"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "system_noise_sensitivity",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "system_noise_sensitivity--counterexample"
+}

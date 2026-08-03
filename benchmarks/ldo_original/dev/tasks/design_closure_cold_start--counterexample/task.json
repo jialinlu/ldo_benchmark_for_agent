@@ -1,0 +1,36 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 3,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "startup_enable",
+    "diagnosis",
+    "evidence_integrity"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "full_design",
+    "simulation_assisted",
+    "weak_agent_airgap"
+  ],
+  "family_id": "design_closure_cold_start",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "design_closure_cold_start",
+  "originality": "independently_authored_evoldo_bench",
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "design_closure_cold_start--counterexample",
+  "title": "Choose the next action for a cold-start failure without ideal fixes",
+  "variant": "counterexample",
+  "variant_relationship": "simulation never starts because the license is unavailable"
+}

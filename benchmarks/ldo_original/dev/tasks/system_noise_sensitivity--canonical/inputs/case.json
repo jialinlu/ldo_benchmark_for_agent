@@ -1,0 +1,57 @@
+{
+  "case_id": "system_noise_sensitivity--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "noise_propagation",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "system_error_scales_with_sensitivity"
+    ],
+    "evidence_facts": [
+      "downstream_sensitivity_is_0p4",
+      "downstream_sensitivity_is_1p2",
+      "downstream_sensitivity_magnitude_is_0p4",
+      "ldo_noise_is_200uvrms"
+    ],
+    "forbidden_actions": [
+      "add_uncorrelated_noise_linearly",
+      "ignore_bandwidth_alignment",
+      "ignore_sensitivity_change",
+      "report_negative_rms_noise",
+      "reuse_80uvrms_result"
+    ],
+    "held_fixed": [
+      "downstream_operating_point",
+      "integration_bandwidth",
+      "uncorrelated_other_noise"
+    ],
+    "mechanism_tags": [
+      "rms_sign_is_not_negative",
+      "rms_units_are_preserved",
+      "sensitivity_above_one_amplifies_noise",
+      "small_signal_noise_scales_by_absolute_sensitivity"
+    ],
+    "recommended_actions": [
+      "consider_lower_noise_ldo_or_lower_sensitivity",
+      "report_240uvrms_output_error",
+      "report_80uvrms_output_error",
+      "verify_sensitivity_across_operating_range"
+    ]
+  },
+  "family_id": "system_noise_sensitivity",
+  "scenario": {
+    "bandwidth_and_units_already_matched": true,
+    "changed_from_canonical": "none",
+    "downstream_sensitivity_v_per_v": 0.4,
+    "ldo_output_noise_uvrms": 200
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

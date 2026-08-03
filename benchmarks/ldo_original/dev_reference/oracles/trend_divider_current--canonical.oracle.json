@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "trend_divider_current--canonical",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "accuracy_noise_improve_iq_cost",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "dc_and_noise",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "error_amplifier",
+        "reference",
+        "load",
+        "resistor_ratio"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "dc_error_decreases",
+        "divider_noise_decreases",
+        "iq_increases"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "divider_impedance_falls",
+        "thermal_noise_and_bias_loading_tradeoff"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "choose_current_from_noise_accuracy_budget",
+        "include_divider_in_iq"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "maximize_divider_current_unconditionally",
+        "exclude_divider_from_iq"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "trend_divider_current",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "trend_divider_current--canonical"
+}

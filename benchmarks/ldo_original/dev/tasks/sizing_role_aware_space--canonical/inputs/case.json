@@ -1,0 +1,84 @@
+{
+  "case_id": "sizing_role_aware_space--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "sizing_configuration",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "role_aware_search_space",
+      "search_space_misses_startup_controls"
+    ],
+    "evidence_facts": [
+      "driver_and_compensation_control_gate_pole",
+      "forced_initial_condition_proves_regulation_path",
+      "pass_role_controls_dropout",
+      "startup_controls_absent_from_search"
+    ],
+    "forbidden_actions": [
+      "optimize_pass_size_only",
+      "search_illegal_width",
+      "treat_names_as_roles",
+      "use_nodeset_as_final_fix",
+      "vary_one_input_device_only"
+    ],
+    "held_fixed": [
+      "device_flavors",
+      "load_profile",
+      "supply",
+      "topology"
+    ],
+    "mechanism_tags": [
+      "coupled_parameters_must_be_searched_together",
+      "failure_role_must_drive_parameter_selection",
+      "legal_geometry_only",
+      "pass_size_alone_does_not_create_startup_path"
+    ],
+    "recommended_actions": [
+      "include_pass_driver_compensation_parameters",
+      "include_startup_strength_and_timing",
+      "preserve_input_pair_symmetry",
+      "run_cold_start_shutdown_restart"
+    ]
+  },
+  "family_id": "sizing_role_aware_space",
+  "scenario": {
+    "baseline_failure": [
+      "dropout_high",
+      "pm_margin_small"
+    ],
+    "changed_from_canonical": "none",
+    "legal_parameters": {
+      "C_COMP": [
+        "cap_code"
+      ],
+      "M_DRV": [
+        "nf",
+        "m"
+      ],
+      "M_IN1,M_IN2": [
+        "nf",
+        "m"
+      ],
+      "M_PASS": [
+        "nf",
+        "m"
+      ]
+    },
+    "objective": "reduce dropout while preserving PM>=55deg and IQ<=30uA",
+    "roles": {
+      "C_COMP": "compensation",
+      "M_DRV": "pass_gate_driver",
+      "M_IN1,M_IN2": "input_pair",
+      "M_PASS": "pmos_pass"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

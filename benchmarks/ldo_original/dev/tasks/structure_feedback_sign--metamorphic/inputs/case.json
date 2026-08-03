@@ -1,0 +1,61 @@
+{
+  "case_id": "structure_feedback_sign--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "negative_feedback",
+      "no_change",
+      "positive_feedback"
+    ],
+    "evidence_facts": [
+      "pass_current_decreases_when_pmos_gate_rises",
+      "pass_current_increases_when_pmos_gate_falls",
+      "pmos_gate_falls_when_output_is_low",
+      "pmos_gate_rises_when_output_is_low"
+    ],
+    "forbidden_actions": [
+      "accept_positive_feedback",
+      "infer_stability_margin_without_stb",
+      "reverse_device_polarity",
+      "treat_renaming_as_topology_change",
+      "tune_compensation_before_fixing_sign"
+    ],
+    "held_fixed": [
+      "error_amplifier_gain_sign",
+      "pmos_polarity",
+      "supply_and_load"
+    ],
+    "mechanism_tags": [
+      "loop_amplifies_output_error",
+      "loop_restores_output",
+      "pmos_gate_to_current_inverting"
+    ],
+    "recommended_actions": [
+      "correct_error_amplifier_polarity_before_compensation",
+      "verify_loop_gain_with_correct_break_point"
+    ]
+  },
+  "family_id": "structure_feedback_sign",
+  "scenario": {
+    "changed_from_canonical": "names only",
+    "error_amplifier_action": "When N_REG falls below target, N_EA decreases.",
+    "metamorphic_transform": "VOUT->N_REG, VCTRL->N_EA, VIN->N_SUP; instance order shuffled",
+    "pass_device": {
+      "body": "N_SUP",
+      "drain": "N_REG",
+      "gate": "N_EA",
+      "source": "N_SUP",
+      "type": "PMOS"
+    },
+    "question": "Classify the small-signal loop sign after net and instance renaming."
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

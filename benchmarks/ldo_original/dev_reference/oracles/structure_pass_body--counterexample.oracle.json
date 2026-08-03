@@ -1,0 +1,84 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "structure_pass_body--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "pmos_body_misconnected_risk",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "dc_operating_point",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "device_flavor",
+        "vin_range",
+        "load_current"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "body_not_tied_to_highest_local_potential",
+        "body_source_voltage_nonzero"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "body_effect_increases_threshold",
+        "junction_risk_requires_pdk_check"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "retie_body_to_valid_high_potential",
+        "rerun_operating_region_audit"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "compensate_body_error_with_nodeset",
+        "ignore_body_connection"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "structure_pass_body",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--counterexample"
+}

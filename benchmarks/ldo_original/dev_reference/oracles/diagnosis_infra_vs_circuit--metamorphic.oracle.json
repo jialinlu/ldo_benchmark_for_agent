@@ -1,0 +1,84 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "diagnosis_infra_vs_circuit--metamorphic",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "infra_license",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "execution_status",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "submitted_netlist",
+        "simulator_binary",
+        "license_feature"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "simulator_stopped_before_elaboration",
+        "no_operating_point_evidence_exists"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "license_failure_is_not_circuit_failure",
+        "missing_evidence_blocks_design_claim"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "obtain_license_or_use_authorized_simulator",
+        "rerun_same_candidate_before_tuning"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "treat_log_rewording_as_new_failure",
+        "mark_candidate_as_circuit_fail"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "diagnosis_infra_vs_circuit",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "diagnosis_infra_vs_circuit--metamorphic"
+}

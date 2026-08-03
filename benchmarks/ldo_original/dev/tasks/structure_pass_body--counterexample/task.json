@@ -1,0 +1,33 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "structure",
+    "operating_point"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning"
+  ],
+  "family_id": "structure_pass_body",
+  "input_files": [
+    "inputs/case.json",
+    "inputs/circuit.sp"
+  ],
+  "language": "en",
+  "level": "L1",
+  "license": "CC-BY-4.0",
+  "lineage_id": "structure_pass_body",
+  "originality": "independently_authored_evoldo_bench",
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "structure",
+  "task_id": "structure_pass_body--counterexample",
+  "title": "Check high-side PMOS pass-device body connectivity",
+  "variant": "counterexample",
+  "variant_relationship": "only body moves from VIN to VOUT"
+}

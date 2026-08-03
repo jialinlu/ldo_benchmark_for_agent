@@ -1,0 +1,1 @@
+MX2 N2 N3 N1 N1 PMOS

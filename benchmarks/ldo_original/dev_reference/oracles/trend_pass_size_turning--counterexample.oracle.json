@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "trend_pass_size_turning--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "dropout_improves_without_major_stability_loss",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "dc_and_small_signal",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "driver_to_pass_ratio",
+        "bias_density",
+        "compensation",
+        "load_step"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "dropout_decreases_with_pass_scale",
+        "phase_margin_remains_nearly_constant"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "driver_tracks_gate_capacitance",
+        "pass_rds_on_decreases"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "verify_iq_area_and_transient_cost",
+        "check_all_load_corners"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "reuse_canonical_stability_conclusion",
+        "ignore_driver_iq_cost"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "trend_pass_size_turning",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "trend_pass_size_turning--counterexample"
+}

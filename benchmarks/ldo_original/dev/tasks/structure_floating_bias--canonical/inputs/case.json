@@ -1,0 +1,64 @@
+{
+  "case_id": "structure_floating_bias--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "bias_path_complete",
+      "floating_bias_node",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "bias_generator_is_supply_referenced",
+      "cascode_gate_has_dc_driver",
+      "cascode_gate_has_no_dc_driver",
+      "node_only_connects_to_mos_gates"
+    ],
+    "forbidden_actions": [
+      "add_nodeset_as_connectivity_fix",
+      "declare_node_floating_without_hierarchy_check",
+      "treat_hierarchy_as_disconnection",
+      "tune_device_widths_first",
+      "use_nodeset_as_permanent_fix"
+    ],
+    "held_fixed": [
+      "global_net_rules",
+      "hierarchy_flattening",
+      "pin_directions"
+    ],
+    "mechanism_tags": [
+      "cascode_operating_point_can_be_tested",
+      "gate_charge_has_no_defined_dc_path",
+      "gate_has_defined_dc_path",
+      "operating_point_is_not_physical"
+    ],
+    "recommended_actions": [
+      "rerun_connectivity_before_simulation",
+      "restore_a_dc_bias_path",
+      "verify_bias_voltage_and_device_saturation"
+    ]
+  },
+  "family_id": "structure_floating_bias",
+  "scenario": {
+    "cascode_gate": "VBC",
+    "changed_from_canonical": "none",
+    "drivers": [
+      {
+        "connection": "diode_connected_bias_generator",
+        "instance": "M_DIODE"
+      }
+    ],
+    "loads": [
+      "M_CASC_N",
+      "M_CASC_P"
+    ]
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

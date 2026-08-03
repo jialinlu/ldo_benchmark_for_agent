@@ -1,0 +1,83 @@
+{
+  "case_id": "trend_compensation_cap--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "small_signal_and_transient",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "no_change",
+      "stability_improves_bandwidth_falls",
+      "trend_not_identifiable"
+    ],
+    "evidence_facts": [
+      "cc_and_load_change_together",
+      "phase_margin_change_is_confounded",
+      "phase_margin_rises_across_three_points",
+      "settling_time_increases",
+      "ugf_falls_across_three_points"
+    ],
+    "forbidden_actions": [
+      "attribute_all_change_to_cc",
+      "claim_startup_is_proven_by_phase_margin",
+      "maximize_cc_without_transient_check",
+      "publish_confounded_trend",
+      "treat_unit_conversion_as_new_physics"
+    ],
+    "held_fixed": [
+      "bias_current",
+      "load_current",
+      "output_capacitance",
+      "pass_size"
+    ],
+    "mechanism_tags": [
+      "bandwidth_stability_tradeoff",
+      "causal_attribution_not_supported",
+      "dominant_pole_moves_lower",
+      "held_fixed_violation"
+    ],
+    "recommended_actions": [
+      "rerun_cc_sweep_at_fixed_load",
+      "select_smallest_cc_with_required_margin",
+      "separate_load_and_cc_interventions",
+      "verify_load_corners"
+    ]
+  },
+  "family_id": "trend_compensation_cap",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "held_fixed": [
+      "bias_current",
+      "load_current",
+      "pass_size",
+      "output_capacitance"
+    ],
+    "sweep": [
+      {
+        "cc_pf": 0.5,
+        "phase_margin_deg": 37,
+        "settling_us": 1.2,
+        "ugf_mhz": 15.1
+      },
+      {
+        "cc_pf": 1.0,
+        "phase_margin_deg": 56,
+        "settling_us": 1.7,
+        "ugf_mhz": 9.4
+      },
+      {
+        "cc_pf": 2.0,
+        "phase_margin_deg": 69,
+        "settling_us": 2.9,
+        "ugf_mhz": 5.2
+      }
+    ]
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

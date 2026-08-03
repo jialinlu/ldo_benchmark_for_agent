@@ -1,0 +1,34 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 3,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "diagnosis",
+    "feedback_stability",
+    "evidence_integrity"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "simulation_assisted"
+  ],
+  "family_id": "diagnosis_wrong_probe",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L2",
+  "license": "CC-BY-4.0",
+  "lineage_id": "diagnosis_wrong_probe",
+  "originality": "independently_authored_evoldo_bench",
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "diagnosis",
+  "task_id": "diagnosis_wrong_probe--canonical",
+  "title": "Detect an invalid loop-gain probe",
+  "variant": "canonical",
+  "variant_relationship": "none"
+}

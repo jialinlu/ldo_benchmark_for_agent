@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "migration_planar_to_finfet--counterexample",
+      "id": "task_identity",
+      "kind": "exact",
+      "path": "task_id",
+      "weight": 5
+    },
+    {
+      "critical": true,
+      "expected": "illegal_geometry_and_intent_loss",
+      "id": "conclusion",
+      "kind": "exact",
+      "path": "conclusion",
+      "weight": 30
+    },
+    {
+      "expected": "pdk_migration",
+      "id": "analysis_regime",
+      "kind": "exact",
+      "path": "analysis_regime",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "architecture",
+        "branch_current_target",
+        "headroom_budget",
+        "load_spec"
+      ],
+      "id": "held_fixed",
+      "kind": "set_contains",
+      "path": "held_fixed",
+      "weight": 10
+    },
+    {
+      "expected": [
+        "fractional_fin_is_illegal",
+        "copied_length_is_not_in_target_set"
+      ],
+      "id": "evidence_facts",
+      "kind": "set_contains",
+      "path": "evidence_facts",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "literal_geometry_copy_loses_operating_point_intent",
+        "pdk_legality_gate_fails"
+      ],
+      "id": "mechanism_tags",
+      "kind": "set_contains",
+      "path": "mechanism_tags",
+      "weight": 15
+    },
+    {
+      "expected": [
+        "reject_candidate_before_simulation",
+        "resurvey_legal_device_parameters"
+      ],
+      "id": "recommended_actions",
+      "kind": "set_contains",
+      "path": "recommended_actions",
+      "weight": 10
+    },
+    {
+      "critical": true,
+      "expected": [
+        "round_silently_without_requalification",
+        "accept_illegal_geometry"
+      ],
+      "id": "forbidden_actions",
+      "kind": "set_excludes",
+      "path": "recommended_actions",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "migration_planar_to_finfet",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "migration_planar_to_finfet--counterexample"
+}

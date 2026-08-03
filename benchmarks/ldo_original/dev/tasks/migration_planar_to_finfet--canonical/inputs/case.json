@@ -1,0 +1,76 @@
+{
+  "case_id": "migration_planar_to_finfet--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "pdk_migration",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "illegal_geometry_and_intent_loss",
+      "insufficient_evidence",
+      "migrate_intent_then_resize",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "copied_length_is_not_in_target_set",
+      "fractional_fin_is_illegal",
+      "source_has_role_and_operating_point_intent",
+      "target_uses_integer_fin_geometry"
+    ],
+    "forbidden_actions": [
+      "accept_illegal_geometry",
+      "copy_planar_width_literal",
+      "round_silently_without_requalification",
+      "skip_target_pdk_legality",
+      "treat_unit_conversion_as_new_design"
+    ],
+    "held_fixed": [
+      "architecture",
+      "branch_current_target",
+      "headroom_budget",
+      "load_spec"
+    ],
+    "mechanism_tags": [
+      "gm_id_and_headroom_are_migration_invariants",
+      "literal_geometry_copy_loses_operating_point_intent",
+      "pdk_legality_gate_fails",
+      "planar_width_is_not_portable"
+    ],
+    "recommended_actions": [
+      "map_device_flavor_by_role",
+      "reject_candidate_before_simulation",
+      "restore_operating_point_before_ac",
+      "resurvey_legal_device_parameters"
+    ]
+  },
+  "family_id": "migration_planar_to_finfet",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "source_device": {
+      "gm_over_id": 14,
+      "id_ua": 20,
+      "l_um": 0.18,
+      "role": "input_pair",
+      "vds_margin_mv": 110,
+      "w_um": 12.0
+    },
+    "target_constraints": {
+      "allowed_lengths_nm": [
+        16,
+        20,
+        24
+      ],
+      "fin_range": [
+        2,
+        64
+      ],
+      "geometry": "integer_fin"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}
