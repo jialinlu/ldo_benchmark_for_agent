@@ -1,0 +1,10 @@
+{
+  "package_sha256": "f0650139a613ff2cb79ee54aebac0a5b8eaed1d2fcce1359716a54c741b05cd4",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_reference_filter--counterexample"
+}

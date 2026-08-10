@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "corner_mapping_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "device_speed_and_temperature_semantics_match"
+  ],
+  "held_fixed": [
+    "supply",
+    "temperature",
+    "model_release"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "corner_intent_is_preserved_despite_labels"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "record_section_and_model_hashes"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_corner_mapping--metamorphic"
+}

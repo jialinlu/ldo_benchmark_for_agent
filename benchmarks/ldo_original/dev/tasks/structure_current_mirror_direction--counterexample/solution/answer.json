@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "mirror_reference_reversed",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "reference_cannot_establish_positive_vgs"
+  ],
+  "held_fixed": [
+    "mos_polarity",
+    "supply_orientation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "mirror_has_no_valid_bias_solution"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "reverse_reference_branch_direction",
+    "rerun_operating_point"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_current_mirror_direction--counterexample"
+}

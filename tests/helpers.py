@@ -15,7 +15,7 @@ def reference_answer(task_dir: Path, oracle_path: Path) -> Dict[str, Any]:
             continue
         if check["kind"] in {"exact", "boolean", "numeric_close"}:
             answer[path] = check["expected"]
-        elif check["kind"] == "set_contains":
+        elif check["kind"] in {"set_contains", "set_equals"}:
             answer[path] = list(check["expected"])
         elif check["kind"] == "nonempty" and not answer.get(path):
             answer[path] = "present"

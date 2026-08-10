@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "startup_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "restart_sequence_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "cold_start_shutdown_restart_all_pass"
+  ],
+  "held_fixed": [
+    "supply_ramp",
+    "enable_timing",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "state_machine_escapes_both_initial_and_disabled_states"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "include_sequence_in_pvt_qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_restart--metamorphic"
+}

@@ -36,14 +36,16 @@ fixture, not a silicon or product-performance claim.
 | Capability | Implemented now |
 |---|---|
 | Original task corpus | 40 families, each with canonical, metamorphic, and counterexample instances |
+| Task packaging | task_examples/Harbor-style environment, verifier, solution, and package digest for every task |
 | Coverage | structure, trend, diagnosis, sizing, migration, system impact, design closure, architecture choice |
 | Difficulty | L1–L4 development coverage |
 | Grading | deterministic checks, critical caps, family-macro and capability vectors |
-| Repeated experiments | fixed seeds, multiple rollouts, immutable context snapshots, command-model adapter |
+| Repeated experiments | fixed rollout schedule IDs, multiple rollouts, immutable context snapshots, command-model adapter |
 | Treatment control | comparator for model/task/seed/budget/answer-contract equality |
 | Tool policy | enforced `AnalogProbeContract`, regime/artifact/confounding checks, tool ledger and budget |
 | Simulator adapters | JSON process protocol, optional ngspice batch adapter, analytic protocol fixture |
 | Efficiency metrics | Pass@1 + 95% CI, spec score, tokens, cache share, steps, calls, time, cost |
+| Failure accounting | Every scheduled model failure scores zero; unavailable token/cost telemetry stays unknown |
 | Lift metrics | skill lift, simulation lift, simulation harm, ineffective-probe rate |
 | Result publishing | JSON, Markdown, CSV, and static score-versus-effort HTML |
 | Exam operations | freeze/verify manifests for tasks, oracles, skills, tools, policy, and code revision |
@@ -154,9 +156,10 @@ evoldo-bench experiment-report runs/simulation --output runs/simulation.json --m
 evoldo-bench paired-lift --direct runs/direct.json --skill runs/skill.json --simulation runs/simulation.json
 ```
 
-An adapter may write detailed token/cost telemetry to `EVOLDO_TELEMETRY_PATH`. Runner timing and identity
-are authoritative; provider token/cost fields are only as trustworthy as the frozen adapter that reports
-them. Tool calls must also appear in the ledger or the rollout is a policy failure.
+An adapter may write detailed token/cost telemetry to `EVOLDO_TELEMETRY_PATH`. Runner timing and requested
+identity are authoritative; actual model identity, provider token/cost fields, and sampling determinism are
+only as trustworthy as the frozen adapter and provider attestation. Tool calls must also appear in the
+ledger or the rollout is a policy failure.
 
 ## Tool-assisted reasoning
 
@@ -254,6 +257,8 @@ Never claim that:
 - nodeset, forced initial conditions, an ideal source, or an invented model deck is a final DUT fix.
 
 Read [`docs/CONTROLLED_PILOT_RUNBOOK.md`](docs/CONTROLLED_PILOT_RUNBOOK.md),
+[`docs/TASK_PACKAGE_FORMAT.md`](docs/TASK_PACKAGE_FORMAT.md),
+[`docs/MODEL_TEST_MATRIX.md`](docs/MODEL_TEST_MATRIX.md),
 [`docs/SECURITY_AND_CONTAMINATION.md`](docs/SECURITY_AND_CONTAMINATION.md), and
 [`docs/PUBLIC_RELEASE_SECURITY.md`](docs/PUBLIC_RELEASE_SECURITY.md) before publishing results.
 模拟设计专家可使用中文的

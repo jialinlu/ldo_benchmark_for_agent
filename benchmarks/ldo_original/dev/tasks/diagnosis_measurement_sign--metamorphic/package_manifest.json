@@ -1,0 +1,10 @@
+{
+  "package_sha256": "5b5ef18b1f7d2770050e96a79ef5bd73d329c4231c01e1ab1688df3b87fb8703",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_measurement_sign--metamorphic"
+}

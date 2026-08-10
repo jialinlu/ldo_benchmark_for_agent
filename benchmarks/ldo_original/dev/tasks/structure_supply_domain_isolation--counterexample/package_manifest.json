@@ -1,0 +1,10 @@
+{
+  "package_sha256": "041090361227412a3789b61f4bf6cf1b58def71189d152d576db7bb4cc9b8335",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_supply_domain_isolation--counterexample"
+}

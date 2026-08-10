@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "evidence_is_fresh",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "result_hash_matches_candidate"
+  ],
+  "held_fixed": [
+    "qualification_plan",
+    "tool_version"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "evidence_is_bound_to_current_design"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "permit_promotion_if_all_hard_gates_pass"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_stale_evidence--canonical"
+}

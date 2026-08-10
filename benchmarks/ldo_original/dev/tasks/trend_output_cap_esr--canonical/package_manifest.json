@@ -1,0 +1,10 @@
+{
+  "package_sha256": "98781e03b31f20815ac866d06fc124884f6c03ca59e3b97e7d7ed7eabb3118c0",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_output_cap_esr--canonical"
+}

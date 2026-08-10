@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "dut_disabled",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "enable_is_inactive",
+    "simulation_completed"
+  ],
+  "held_fixed": [
+    "dut",
+    "models",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "zero_output_is_expected_when_disabled"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "correct_enable_then_rerun_unchanged_dut"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_enable_vs_startup--metamorphic"
+}

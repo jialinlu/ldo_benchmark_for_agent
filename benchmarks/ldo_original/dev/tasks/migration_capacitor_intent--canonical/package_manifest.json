@@ -1,0 +1,10 @@
+{
+  "package_sha256": "94493b943dab12eaead7e80b5aaa6f63ddb617ffce5e1e00059adbef1614715f",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_capacitor_intent--canonical"
+}

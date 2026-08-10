@@ -1,0 +1,69 @@
+{
+  "case_id": "sizing_noise_iq--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_and_noise",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "middle_bias_is_feasible",
+      "no_change",
+      "no_swept_point_is_feasible"
+    ],
+    "evidence_facts": [
+      "high_fails_iq",
+      "middle_fails_noise",
+      "middle_point_meets_iq_limit",
+      "middle_point_meets_noise_limit"
+    ],
+    "forbidden_actions": [
+      "choose_lowest_noise_without_iq_gate",
+      "silently_violate_one_limit"
+    ],
+    "held_fixed": [
+      "bandwidth",
+      "device_role",
+      "load"
+    ],
+    "mechanism_tags": [
+      "higher_gm_lowers_input_noise_at_current_cost",
+      "objectives_conflict_in_current_search_slice"
+    ],
+    "recommended_actions": [
+      "change_device_efficiency_or_architecture",
+      "select_middle_point_then_verify_pvt"
+    ]
+  },
+  "family_id": "sizing_noise_iq",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "bias_ua": [
+        2,
+        6,
+        15
+      ],
+      "limits": {
+        "iq": 18,
+        "noise": 35
+      },
+      "noise_uvrms": [
+        55,
+        31,
+        20
+      ],
+      "total_iq_ua": [
+        10,
+        14,
+        23
+      ]
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

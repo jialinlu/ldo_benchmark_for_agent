@@ -1,0 +1,49 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 3,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "evidence_integrity",
+    "design_closure"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "simulation_assisted"
+  ],
+  "family_id": "diagnosis_stale_evidence",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "diagnosis_stale_evidence",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "loop_gain",
+      "startup_escape",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "startup",
+      "tran"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "diagnosis",
+  "task_id": "diagnosis_stale_evidence--metamorphic",
+  "title": "Reject qualification evidence from an earlier candidate",
+  "variant": "metamorphic",
+  "variant_relationship": "representation only"
+}

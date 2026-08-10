@@ -1,0 +1,10 @@
+{
+  "package_sha256": "407ee85bd815b6b69aef052c843f3a2ae87e90417d19ff051d280a69d1b3b6f5",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_resistor_intent--counterexample"
+}

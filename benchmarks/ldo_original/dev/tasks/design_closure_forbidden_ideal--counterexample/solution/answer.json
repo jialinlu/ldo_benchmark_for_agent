@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "forbidden_ideal_device_present",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "ideal_current_source_is_inside_dut"
+  ],
+  "held_fixed": [
+    "dut_hierarchy",
+    "allowed_device_list"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "performance_depends_on_a_forbidden_implementation"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "replace_with_physical_bias_circuit",
+    "rerun_all_qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_forbidden_ideal--counterexample"
+}

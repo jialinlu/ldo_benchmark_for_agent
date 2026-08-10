@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "70ae4574aa3b45c0e9f88e209322261cdb2bd521",
+  "source_repository": "https://github.com/jialinlu/opensource-analog-circuits.git",
+  "providers": {
+    "sky130": {
+      "authoritative_upstream": "https://github.com/google/skywater-pdk",
+      "entry_file": "sky130_pdk/libs.tech/ngspice/sky130.lib.spice",
+      "entry_sha256": "5efa041a988893c1a3580d0ecd57870ea3146b27741c7d42b56baaa336b9549e",
+      "license": "Apache-2.0",
+      "required_paths": ["sky130_pdk"],
+      "runtime": "ngspice",
+      "verification_status": "qualified_by_this_track"
+    },
+    "asap7": {
+      "authoritative_upstream": "https://github.com/The-OpenROAD-Project/asap7",
+      "entry_file": "asap7_pdk/models/ngspice/asap7_osdi_corners.lib",
+      "entry_sha256": "78132fc93e9902ab2f7e019661e5cc0c31c0bd213e46381896dfb099b11ecb7a",
+      "osdi_file": "asap7_pdk/models/ngspice/bsimcmg_va.osdi",
+      "osdi_sha256": "365b689dbe06739f4bf4699711e05083904f4eb197432655c86c96de0e0f366d",
+      "license": "BSD-3-Clause upstream; fetch-only pending mirror-subtree notice review",
+      "required_paths": ["asap7_pdk"],
+      "runtime": "ngspice with OSDI on Linux x86_64, or the supplied container build",
+      "verification_status": "environment-conditional_not_counted_as_a_qualified_task"
+    }
+  },
+  "redistribution_policy": "No PDK model file or compiled OSDI binary is committed to EvoLDO-Bench. The fetch tool checks out a pinned public source revision into an ignored runtime directory."
+}

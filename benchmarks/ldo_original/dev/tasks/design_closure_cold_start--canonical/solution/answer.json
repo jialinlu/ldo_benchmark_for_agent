@@ -1,0 +1,30 @@
+{
+  "analysis_regime": "startup_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "startup_path_missing",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "forced_initial_condition_reaches_regulation",
+    "all_zero_cold_start_fails",
+    "enable_is_valid"
+  ],
+  "held_fixed": [
+    "dut_topology",
+    "pdk",
+    "supply_ramp",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "regulation_loop_exists_but_zero_state_is_trapping",
+    "startup_requires_physical_escape_path"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "add_self_timed_startup",
+    "verify_shutdown_restart",
+    "rerun_full_qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_cold_start--canonical"
+}

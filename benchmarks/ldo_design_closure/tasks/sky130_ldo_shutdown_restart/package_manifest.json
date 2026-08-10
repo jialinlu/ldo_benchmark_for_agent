@@ -1,0 +1,10 @@
+{
+  "package_sha256": "aaffede7ee44243e9f2822ab3f64a624da06a2ec3774806a85085b6b3b063eec",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sky130_ldo_shutdown_restart"
+}

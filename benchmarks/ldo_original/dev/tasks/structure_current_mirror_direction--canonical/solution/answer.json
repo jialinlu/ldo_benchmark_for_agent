@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "mirror_direction_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "reference_establishes_positive_vgs",
+    "output_branch_sinks_current"
+  ],
+  "held_fixed": [
+    "mos_polarity",
+    "supply_orientation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "shared_vgs_copies_sink_current"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_compliance_and_ratio"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_current_mirror_direction--canonical"
+}

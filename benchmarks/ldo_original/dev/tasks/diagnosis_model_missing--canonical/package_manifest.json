@@ -1,0 +1,10 @@
+{
+  "package_sha256": "c9a05ca566fb269d629f881b543734103895b356279053f68563cd9b9d5c2c1b",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_model_missing--canonical"
+}

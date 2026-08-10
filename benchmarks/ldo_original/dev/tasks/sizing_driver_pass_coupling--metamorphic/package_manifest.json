@@ -1,0 +1,10 @@
+{
+  "package_sha256": "f59d5021f5ddc70c564f50c1b996b7af435b96b2ecb1358c1e74b5b1b7255e88",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_driver_pass_coupling--metamorphic"
+}

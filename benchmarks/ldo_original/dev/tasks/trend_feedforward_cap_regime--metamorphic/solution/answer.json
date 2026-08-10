@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "feedforward_cap_has_optimum_window",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "middle_value_has_best_margin",
+    "large_value_increases_peaking"
+  ],
+  "held_fixed": [
+    "load",
+    "divider",
+    "compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "zero_location_helps_then_high_frequency_coupling_hurts"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "search_around_middle_value_across_corners"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_feedforward_cap_regime--metamorphic"
+}

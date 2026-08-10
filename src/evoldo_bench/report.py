@@ -17,12 +17,26 @@ def render_markdown(report: Dict[str, Any]) -> str:
     if "pass_at_1" in report:
         interval = report.get("pass_at_1_ci95", [0.0, 0.0])
         effort = report.get("effort", {})
+        token_efficiency = report.get("token_efficiency", {})
+        avg_cost = effort.get("avg_total_cost_usd")
+        avg_output = effort.get("avg_output_tokens")
         lines.extend([
             "- Pass@1: **%.1f%%** (95%% CI %.1f%%–%.1f%%)" % (100.0 * report["pass_at_1"], 100.0 * interval[0], 100.0 * interval[1]),
             "- Spec score: **%.1f%%**" % (100.0 * report.get("spec_score", 0.0)),
-            "- Average effort: %.1f steps, %.1f tool calls, %.1f min, $%.2f" % (
+            "- Average effort: %.1f steps, %.1f tool calls, %.1f min, %s" % (
                 effort.get("avg_steps", 0.0), effort.get("avg_tool_calls", 0.0),
-                effort.get("avg_wall_seconds", 0.0) / 60.0, effort.get("avg_total_cost_usd", 0.0),
+                effort.get("avg_wall_seconds", 0.0) / 60.0,
+                "$%.2f" % avg_cost if avg_cost is not None else "cost unavailable",
+            ),
+            "- Token measurement: %d measured, %d partial, %d unavailable; average generated tokens: %s" % (
+                effort.get("token_measurement", {}).get("measured_rollouts", 0),
+                effort.get("token_measurement", {}).get("partial_rollouts", 0),
+                effort.get("token_measurement", {}).get("unavailable_rollouts", 0),
+                "%.1f" % avg_output if avg_output is not None else "unavailable",
+            ),
+            "- Tokens per score point: %s" % (
+                "%.2f" % token_efficiency["tokens_per_score_point"]
+                if token_efficiency.get("tokens_per_score_point") is not None else "unavailable"
             ),
         ])
     lines.extend([

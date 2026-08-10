@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "bias_effect_confounded_by_size",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "bias_and_device_size_change_together"
+  ],
+  "held_fixed": [
+    "compensation",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "gm_and_capacitance_both_change"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "repeat_bias_sweep_at_fixed_geometry"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_bias_gm_bandwidth--counterexample"
+}

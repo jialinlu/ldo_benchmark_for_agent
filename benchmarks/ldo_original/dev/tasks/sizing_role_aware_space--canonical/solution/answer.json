@@ -1,0 +1,28 @@
+{
+  "analysis_regime": "sizing_configuration",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "role_aware_search_space",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "pass_role_controls_dropout",
+    "driver_and_compensation_control_gate_pole"
+  ],
+  "held_fixed": [
+    "topology",
+    "device_flavors",
+    "supply",
+    "load_profile"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "coupled_parameters_must_be_searched_together",
+    "legal_geometry_only"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "include_pass_driver_compensation_parameters",
+    "preserve_input_pair_symmetry"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_role_aware_space--canonical"
+}

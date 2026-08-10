@@ -1,0 +1,10 @@
+{
+  "package_sha256": "ffefa52edbc7ad513b40a36e411ae5aa1edfb04ec3a6a8a49c0e99eadf13175f",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--metamorphic"
+}

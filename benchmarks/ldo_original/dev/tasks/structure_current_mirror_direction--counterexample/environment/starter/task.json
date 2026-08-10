@@ -1,0 +1,42 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "structure",
+    "operating_point"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning"
+  ],
+  "family_id": "structure_current_mirror_direction",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L1",
+  "license": "CC-BY-4.0",
+  "lineage_id": "structure_current_mirror_direction",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "structure",
+  "task_id": "structure_current_mirror_direction--counterexample",
+  "title": "Check current-mirror reference and output direction",
+  "variant": "counterexample",
+  "variant_relationship": "one decision-relevant condition"
+}

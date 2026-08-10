@@ -1,0 +1,10 @@
+{
+  "package_sha256": "fcc2562f6cbdebd8489b38b0e28cfe9c0eee41dc0cca41f6088083a0456a5509",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_stale_evidence--counterexample"
+}

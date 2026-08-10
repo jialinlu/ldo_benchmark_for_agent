@@ -1,0 +1,84 @@
+{
+  "case_id": "trend_pass_size_turning--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_and_small_signal",
+      "dc_operating_point",
+      "dc_small_signal_transient",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "dropout_improves_stability_degrades",
+      "dropout_improves_without_major_stability_loss",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "dropout_decreases_with_pass_scale",
+      "overshoot_increases",
+      "phase_margin_decreases_with_pass_scale",
+      "phase_margin_remains_nearly_constant"
+    ],
+    "forbidden_actions": [
+      "ignore_driver_iq_cost",
+      "ignore_gate_drive_pole",
+      "maximize_pass_size_only",
+      "reuse_canonical_stability_conclusion",
+      "treat_unit_conversion_as_new_physics"
+    ],
+    "held_fixed": [
+      "bias_current",
+      "bias_density",
+      "compensation",
+      "driver_size",
+      "driver_to_pass_ratio",
+      "load_step"
+    ],
+    "mechanism_tags": [
+      "driver_tracks_gate_capacitance",
+      "pass_gate_capacitance_loads_driver",
+      "pass_rds_on_decreases"
+    ],
+    "recommended_actions": [
+      "check_all_load_corners",
+      "co_optimize_driver_and_compensation",
+      "stop_before_phase_margin_gate",
+      "verify_iq_area_and_transient_cost"
+    ]
+  },
+  "family_id": "trend_pass_size_turning",
+  "scenario": {
+    "changed_from_canonical": "units and parameter label only",
+    "held_fixed": [
+      "driver_size",
+      "bias_current",
+      "compensation",
+      "load_step"
+    ],
+    "sweep": [
+      {
+        "nf_normalized": 1,
+        "peak_error_v": 0.013,
+        "pm_deg": 71,
+        "vin_minus_vout_v": 0.182
+      },
+      {
+        "nf_normalized": 2,
+        "peak_error_v": 0.029,
+        "pm_deg": 58,
+        "vin_minus_vout_v": 0.116
+      },
+      {
+        "nf_normalized": 4,
+        "peak_error_v": 0.078,
+        "pm_deg": 32,
+        "vin_minus_vout_v": 0.087
+      }
+    ]
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

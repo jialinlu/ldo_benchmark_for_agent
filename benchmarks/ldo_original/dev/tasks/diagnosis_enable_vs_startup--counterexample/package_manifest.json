@@ -1,0 +1,10 @@
+{
+  "package_sha256": "3ad66d0ee0f3953e8604a9a6aee5c0f379206b282054db59a4cf2219e7e56225",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_enable_vs_startup--counterexample"
+}

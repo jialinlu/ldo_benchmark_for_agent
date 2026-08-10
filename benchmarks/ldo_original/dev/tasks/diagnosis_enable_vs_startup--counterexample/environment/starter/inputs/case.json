@@ -1,0 +1,57 @@
+{
+  "case_id": "diagnosis_enable_vs_startup--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "dut_disabled",
+      "insufficient_evidence",
+      "no_change",
+      "startup_state_trap"
+    ],
+    "evidence_facts": [
+      "cold_start_sticks",
+      "enable_is_active",
+      "enable_is_inactive",
+      "seeded_state_regulates",
+      "simulation_completed"
+    ],
+    "forbidden_actions": [
+      "add_startup_branch",
+      "change_enable_stimulus"
+    ],
+    "held_fixed": [
+      "dut",
+      "load",
+      "models",
+      "supply_ramp"
+    ],
+    "mechanism_tags": [
+      "physical_escape_path_is_missing",
+      "zero_output_is_expected_when_disabled"
+    ],
+    "recommended_actions": [
+      "add_self_disabling_startup_path",
+      "correct_enable_then_rerun_unchanged_dut",
+      "test_restart"
+    ]
+  },
+  "family_id": "diagnosis_enable_vs_startup",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "active_level_v": 0.8,
+      "cold_start": "stuck",
+      "enable_v": 0.8,
+      "seeded_op": "regulates",
+      "sim_status": "completed"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

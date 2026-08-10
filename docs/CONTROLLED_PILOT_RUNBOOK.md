@@ -55,6 +55,11 @@ The adapter must write the same `answer.json` contract in all modes. Detailed pr
 written to `EVOLDO_TELEMETRY_PATH`. Any tool use must be recorded at `EVOLDO_TOOL_LEDGER_PATH`; undeclared
 calls, rejected probes, and over-budget calls are policy failures.
 
+Every scheduled rollout remains in the score denominator. A model timeout, refusal, declared inability,
+malformed answer, missing answer, or policy failure receives a deterministic zero. Provider or runner
+infrastructure failures follow the release's pre-frozen retry policy and remain visible in the operational
+report. Missing token or cost telemetry is `unavailable`, never silently converted to numeric zero.
+
 ## 3. Prove the comparison is paired
 
 ```bash

@@ -1,0 +1,34 @@
+schema_version = "1.3"
+artifacts = ["/app/answer.json"]
+
+[task]
+name = "evoldo-bench/trend_output_cap_esr--canonical"
+description = "Separate output-capacitance and ESR-zero effects"
+authors = [{ name = "EvoLDO-Bench contributors" }]
+keywords = ["analog", "ldo", "trend", "canonical"]
+
+[metadata]
+task_id = "trend_output_cap_esr--canonical"
+family_id = "trend_output_cap_esr"
+suite = "trend"
+variant = "canonical"
+level = "L2"
+revision = 2
+maturity = "public-development"
+
+[verifier]
+environment_mode = "separate"
+
+[verifier.environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024

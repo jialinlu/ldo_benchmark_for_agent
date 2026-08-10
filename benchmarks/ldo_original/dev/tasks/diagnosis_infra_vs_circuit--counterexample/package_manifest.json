@@ -1,0 +1,10 @@
+{
+  "package_sha256": "4da9ff617480eebd360b45ffc73c4c0f9eafe5897384c32412d024feeb442625",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_infra_vs_circuit--counterexample"
+}

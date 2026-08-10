@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "probed_at": "2026-08-10",
+  "formal_run_started": false,
+  "rollouts_per_task": 3,
+  "models": [
+    {
+      "agent": "codex",
+      "agent_version": "0.146.0",
+      "model": "gpt-5.6-sol",
+      "cohort": "core",
+      "access_status": "ready",
+      "identity_evidence": "explicit CLI model selection and successful JSONL turn; provider identity is requested-only",
+      "token_source": "codex JSONL turn.completed.usage"
+    },
+    {
+      "agent": "kimi-code",
+      "agent_version": "0.34.0",
+      "model": "kimi-code/k3",
+      "cohort": "core",
+      "access_status": "ready",
+      "identity_evidence": "Kimi wire llm.request modelAlias and usage.record; provider identity is requested-only",
+      "token_source": "Kimi wire usage.record"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "claude-fable-5",
+      "cohort": "core",
+      "access_status": "blocked_provider_channel",
+      "identity_evidence": "requested model returned gateway HTTP 503 before inference",
+      "token_source": "Claude JSON result usage"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "claude-opus-5",
+      "cohort": "core",
+      "access_status": "blocked_provider_channel",
+      "identity_evidence": "gateway catalog lists model but request returned HTTP 503 before inference",
+      "token_source": "Claude JSON result usage"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "deepseek-v4-pro",
+      "cohort": "core",
+      "access_status": "ready",
+      "identity_evidence": "successful modelUsage canonicalModel attestation through the DeepSeek Anthropic-compatible endpoint",
+      "token_source": "Claude JSON usage and per-model modelUsage"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "deepseek-v4-flash",
+      "cohort": "supplemental",
+      "access_status": "ready",
+      "identity_evidence": "successful modelUsage canonicalModel attestation",
+      "token_source": "Claude JSON usage and per-model modelUsage"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "deepseek-reasoner",
+      "cohort": "supplemental",
+      "access_status": "ready_with_auxiliary_model_observed",
+      "identity_evidence": "successful canonicalModel attestation; access probe also reported an auxiliary deepseek-v4-flash usage entry",
+      "token_source": "sum all Claude modelUsage entries; prompt suggestions must be disabled"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "claude-opus-4-6",
+      "cohort": "discovered_not_scheduled",
+      "access_status": "blocked_timeout",
+      "identity_evidence": "gateway catalog entry; no completed inference in the access probe",
+      "token_source": "Claude JSON result usage"
+    },
+    {
+      "agent": "claude-code",
+      "agent_version": "2.1.223",
+      "model": "claude-sonnet-4-6",
+      "cohort": "discovered_not_scheduled",
+      "access_status": "catalog_only_not_probed",
+      "identity_evidence": "gateway catalog entry only",
+      "token_source": "Claude JSON result usage"
+    }
+  ],
+  "formal_policy": {
+    "new_session_per_task_rollout": true,
+    "disable_resume_memory_plugins_and_prompt_suggestions": true,
+    "model_failures_score_zero": true,
+    "provider_failures_follow_frozen_retry_policy": true,
+    "unknown_tokens_are_never_imputed_as_zero": true,
+    "provider_raw_usage_is_preserved": true
+  }
+}

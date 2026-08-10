@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "noise_and_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "startup_bypass_decouples_tradeoff",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "noise_decreases",
+    "startup_time_stays_flat"
+  ],
+  "held_fixed": [
+    "reference_noise",
+    "loop",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "physical_bypass_accelerates_reference_during_startup"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_bypass_turns_off_and_restart_works"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_reference_filter--counterexample"
+}

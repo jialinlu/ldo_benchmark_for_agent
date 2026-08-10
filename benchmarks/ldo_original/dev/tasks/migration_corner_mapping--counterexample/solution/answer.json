@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "corner_mapping_invalid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "short_label_matches_but_semantics_differ"
+  ],
+  "held_fixed": [
+    "supply",
+    "temperature",
+    "model_release"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "reported_robustness_covers_wrong_condition"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "map_from_model_definitions_and_temperature"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_corner_mapping--counterexample"
+}

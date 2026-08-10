@@ -1,0 +1,55 @@
+{
+  "case_id": "diagnosis_convergence_vs_function--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "functional_regulation_failure",
+      "insufficient_evidence",
+      "no_change",
+      "numerical_convergence_failure"
+    ],
+    "evidence_facts": [
+      "analysis_has_no_valid_result",
+      "iteration_limit_reached",
+      "valid_result_exists",
+      "vout_misses_target"
+    ],
+    "forbidden_actions": [
+      "classify_as_solver_failure",
+      "declare_voltage_spec_fail"
+    ],
+    "held_fixed": [
+      "load",
+      "models",
+      "netlist",
+      "solver_settings"
+    ],
+    "mechanism_tags": [
+      "circuit_operating_point_fails_regulation",
+      "functional_performance_is_not_observed"
+    ],
+    "recommended_actions": [
+      "audit_headroom_bias_and_loop_state",
+      "diagnose_topology_and_solver_robustness",
+      "rerun_same_candidate"
+    ]
+  },
+  "family_id": "diagnosis_convergence_vs_function",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "analysis": "dc",
+      "iterations": "limit reached",
+      "status": "nonconverged",
+      "valid_results": false
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

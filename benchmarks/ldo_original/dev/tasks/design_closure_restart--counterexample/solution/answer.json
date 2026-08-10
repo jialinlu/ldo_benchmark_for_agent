@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "startup_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "restart_path_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "first_start_passes",
+    "restart_fails"
+  ],
+  "held_fixed": [
+    "supply_ramp",
+    "enable_timing",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "shutdown_leaves_a_trapped_internal_state"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "fix_physical_reset_or_discharge_path",
+    "rerun_sequence"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_restart--counterexample"
+}

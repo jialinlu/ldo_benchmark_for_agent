@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "positive_feedback",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "pmos_gate_rises_when_output_is_low",
+    "pass_current_decreases_when_pmos_gate_rises"
+  ],
+  "held_fixed": [
+    "pmos_polarity",
+    "error_amplifier_gain_sign",
+    "supply_and_load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "loop_amplifies_output_error",
+    "pmos_gate_to_current_inverting"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "correct_error_amplifier_polarity_before_compensation"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sign--counterexample"
+}

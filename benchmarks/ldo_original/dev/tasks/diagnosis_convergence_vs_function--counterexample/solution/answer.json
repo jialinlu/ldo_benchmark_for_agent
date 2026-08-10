@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "functional_regulation_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "valid_result_exists",
+    "vout_misses_target"
+  ],
+  "held_fixed": [
+    "netlist",
+    "models",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "circuit_operating_point_fails_regulation"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "audit_headroom_bias_and_loop_state"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_convergence_vs_function--counterexample"
+}

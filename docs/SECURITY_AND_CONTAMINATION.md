@@ -23,6 +23,11 @@ The benchmark must defend against accidental or deliberate access to:
 
 Runtime bundling hashes every copied file and records `oracle_included=false`.
 
+Public development task directories may also contain separate `tests/` and `solution/` source trees in
+the task_examples-compatible layout. Those trees are forbidden runtime paths and are never copied into
+the agent bundle. A sealed exam keeps equivalent verifier and solution material outside the checkout and
+agent mount rather than relying only on path filtering.
+
 Controlled experiments additionally freeze context snapshots, bind task and answer-contract hashes, and
 normalize the tool ledger. Calls without a ledger, rejected probe contracts, and budget overruns are policy
 failures. This detects declared-protocol violations; only an operating-system sandbox can prevent a hostile

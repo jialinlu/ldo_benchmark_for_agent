@@ -15,6 +15,11 @@
     "wall_seconds": {"type": "number", "minimum": 0},
     "token_breakdown": {"$ref": "#/$defs/breakdown"},
     "cost_breakdown_usd": {"$ref": "#/$defs/breakdown"},
+    "token_measurement_status": {"enum": ["measured", "partial", "unavailable"]},
+    "cost_measurement_status": {"enum": ["measured", "partial", "unavailable"]},
+    "provider_reported_model_id": {"type": ["string", "null"]},
+    "model_identity_status": {"enum": ["attested", "requested_only", "mismatch", "unavailable"]},
+    "provider_total_cost_usd": {"type": ["number", "null"], "minimum": 0},
     "infra_status": {"enum": ["ok", "infra_fail", "not_used"]},
     "source": {"type": "string"},
     "probe_calls": {"type": "integer", "minimum": 0},
@@ -26,11 +31,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "input": {"type": "number", "minimum": 0},
-        "cached_input": {"type": "number", "minimum": 0},
-        "output": {"type": "number", "minimum": 0},
-        "reasoning": {"type": "number", "minimum": 0},
-        "cache_write": {"type": "number", "minimum": 0}
+        "input": {"type": ["number", "null"], "minimum": 0},
+        "cached_input": {"type": ["number", "null"], "minimum": 0},
+        "output": {"type": ["number", "null"], "minimum": 0},
+        "reasoning": {"type": ["number", "null"], "minimum": 0},
+        "cache_write": {"type": ["number", "null"], "minimum": 0}
       }
     }
   }

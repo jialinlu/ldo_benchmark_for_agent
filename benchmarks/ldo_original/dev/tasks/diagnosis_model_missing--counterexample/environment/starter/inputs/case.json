@@ -1,0 +1,58 @@
+{
+  "case_id": "diagnosis_model_missing--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "circuit_bias_failure",
+      "insufficient_evidence",
+      "model_mapping_failure",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "analysis_completed",
+      "elaboration_failed",
+      "no_analysis_started",
+      "pass_device_is_off"
+    ],
+    "forbidden_actions": [
+      "classify_as_model_mapping_failure",
+      "tune_transistor_sizes"
+    ],
+    "held_fixed": [
+      "bench",
+      "load",
+      "model_include",
+      "models",
+      "section",
+      "submitted_netlist"
+    ],
+    "mechanism_tags": [
+      "missing_model_mapping_is_infrastructure_configuration",
+      "valid_model_evidence_points_to_bias_state"
+    ],
+    "recommended_actions": [
+      "rerun_unchanged_topology",
+      "survey_valid_model_and_section",
+      "trace_enable_and_gate_bias"
+    ]
+  },
+  "family_id": "diagnosis_model_missing",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "analysis": "op complete",
+      "device_regions": {
+        "pass": "off"
+      },
+      "elaboration": "passed"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

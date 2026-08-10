@@ -1,0 +1,42 @@
+{
+  "candidate_pin_order": [
+    "VDD",
+    "VSS",
+    "VREF",
+    "ENB",
+    "VOUT"
+  ],
+  "candidate_subckt": "evoldo_sky130_ldo",
+  "hard_rules": [
+    "no independent or controlled ideal source inside DUT",
+    "no .ic or .nodeset",
+    "all declared measurements must be present",
+    "fresh simulation evidence must match candidate digest"
+  ],
+  "injected_fault": "The self-bias resistor is intentionally near-open, so it cannot establish the intended loop current.",
+  "objective": "Achieve self-starting regulation after a supply/reference ramp without nodeset, IC, or an internal ideal bias source.",
+  "pdk": "sky130",
+  "scenarios": [
+    {
+      "bench_template": "../../benches/cold_start.sp.tpl",
+      "corner": "tt",
+      "limits": {
+        "startup_time": {
+          "max": 2e-05,
+          "min": 0.0
+        },
+        "vout_final": {
+          "max": 1.53,
+          "min": 1.44
+        }
+      },
+      "scenario_id": "tt_cold_start",
+      "temperature_c": 27
+    }
+  ],
+  "schema_version": "1.0",
+  "simulator": "ngspice",
+  "starter_candidate": "starter/ldo.sp",
+  "task_id": "sky130_ldo_cold_start",
+  "title": "Close true cold start from zero supply"
+}

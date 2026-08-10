@@ -17,6 +17,8 @@ All variants share `family_id` and `lineage_id` and must remain in one split.
 3. Identify the smallest structural or evidence change that should alter the conclusion.
 4. Define controlled vocabulary with plausible distractors.
 5. Write deterministic checks for conclusion, evidence, mechanism tags, actions, and forbidden actions.
+   Controlled selection fields use exact-set checks unless the rubric also defines an explicit false-positive
+   penalty; unpenalized `set_contains` checks are not allowed for scored multiple-choice vocabularies.
 6. Confirm weights sum to 100 and mark physically fatal checks as critical.
 7. Generate all assets with `tools/generate_dev_tasks.py`.
 8. Run unit tests, `tools/run_self_check.py`, and contamination audit.

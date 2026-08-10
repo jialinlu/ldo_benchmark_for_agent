@@ -1,0 +1,29 @@
+{
+  "analysis_regime": "dc_and_noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "accuracy_noise_improve_iq_cost",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "dc_error_decreases",
+    "divider_noise_decreases",
+    "iq_increases"
+  ],
+  "held_fixed": [
+    "error_amplifier",
+    "reference",
+    "load",
+    "resistor_ratio"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "divider_impedance_falls",
+    "thermal_noise_and_bias_loading_tradeoff"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "choose_current_from_noise_accuracy_budget",
+    "include_divider_in_iq"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_divider_current--metamorphic"
+}

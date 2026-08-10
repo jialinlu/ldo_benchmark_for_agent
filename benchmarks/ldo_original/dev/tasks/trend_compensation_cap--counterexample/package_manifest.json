@@ -1,0 +1,10 @@
+{
+  "package_sha256": "78566d59a7f4a2480c5e41ae5656160fd9993ab37d1dcd79108815182d3235c7",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_compensation_cap--counterexample"
+}

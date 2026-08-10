@@ -33,6 +33,15 @@ def _evaluate(check: Dict[str, Any], answer: Dict[str, Any]) -> Tuple[bool, str,
         expected_set = set(expected)
         missing = sorted(expected_set - actual_set)
         return not missing, "contains required values" if not missing else "missing %r" % missing, actual
+    if kind == "set_equals":
+        actual_set = _as_set(actual, check_id)
+        expected_set = set(expected)
+        missing = sorted(expected_set - actual_set)
+        unexpected = sorted(actual_set - expected_set)
+        passed = not missing and not unexpected
+        if passed:
+            return True, "exact set match", actual
+        return False, "missing %r; unexpected %r" % (missing, unexpected), actual
     if kind == "set_excludes":
         actual_set = _as_set(actual, check_id)
         forbidden = sorted(actual_set.intersection(set(expected)))
@@ -51,7 +60,7 @@ def _evaluate(check: Dict[str, Any], answer: Dict[str, Any]) -> Tuple[bool, str,
 
 
 def grade_answer(task: Task, answer: Dict[str, Any], oracle: Dict[str, Any]) -> Dict[str, Any]:
-    validate_answer(answer)
+    validate_answer(answer, task)
     validate_oracle(oracle)
     if answer["task_id"] != task.task_id:
         raise ContractError("answer task_id does not match task")

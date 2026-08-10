@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "noise_and_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "reference_filter_reduces_noise_slows_startup",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "noise_decreases",
+    "startup_time_increases"
+  ],
+  "held_fixed": [
+    "reference_noise",
+    "loop",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "filter_bandwidth_rejects_noise_and_delays_reference"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "choose_tau_from_noise_and_startup_limits"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_reference_filter--canonical"
+}

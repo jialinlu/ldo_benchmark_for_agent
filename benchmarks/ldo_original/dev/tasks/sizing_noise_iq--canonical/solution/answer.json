@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_and_noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "middle_bias_is_feasible",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "middle_point_meets_noise_limit",
+    "middle_point_meets_iq_limit"
+  ],
+  "held_fixed": [
+    "device_role",
+    "bandwidth",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "higher_gm_lowers_input_noise_at_current_cost"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "select_middle_point_then_verify_pvt"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_noise_iq--canonical"
+}

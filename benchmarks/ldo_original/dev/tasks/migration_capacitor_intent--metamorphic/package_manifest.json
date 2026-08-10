@@ -1,0 +1,10 @@
+{
+  "package_sha256": "aea48948a7fea596b3b3cae473c54f2e49a846c21393cd6297f3e44493d2eb2c",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_capacitor_intent--metamorphic"
+}

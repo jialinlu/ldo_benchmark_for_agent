@@ -1,0 +1,10 @@
+{
+  "package_sha256": "edcd0e52d62b8c98ce65b374eb5d1e72fa8daf6c1ef57ce46a4d770929d5123f",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "system_noise_sensitivity--counterexample"
+}

@@ -1,0 +1,84 @@
+{
+  "case_id": "trend_divider_current--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_and_noise",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "accuracy_noise_improve_iq_cost",
+      "insufficient_evidence",
+      "no_change",
+      "noise_improves_iq_cost_accuracy_flat"
+    ],
+    "evidence_facts": [
+      "dc_error_decreases",
+      "dc_error_remains_constant",
+      "divider_noise_decreases",
+      "iq_increases"
+    ],
+    "forbidden_actions": [
+      "claim_accuracy_improves_from_supplied_data",
+      "exclude_divider_from_iq",
+      "maximize_divider_current_unconditionally",
+      "treat_inverse_resistance_as_opposite_trend"
+    ],
+    "held_fixed": [
+      "buffer_offset",
+      "error_amplifier",
+      "load",
+      "reference",
+      "resistor_ratio"
+    ],
+    "mechanism_tags": [
+      "divider_impedance_falls",
+      "input_loading_removed",
+      "thermal_noise_and_bias_loading_tradeoff",
+      "thermal_noise_current_tradeoff_remains"
+    ],
+    "recommended_actions": [
+      "choose_current_from_noise_accuracy_budget",
+      "choose_current_from_noise_and_iq_budget",
+      "include_divider_in_iq",
+      "verify_real_buffer_noise"
+    ]
+  },
+  "family_id": "trend_divider_current",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "held_fixed": [
+      "error_amplifier",
+      "reference",
+      "load",
+      "resistor_ratio"
+    ],
+    "sweep": [
+      {
+        "error_mv": 7.0,
+        "noise_uvrms": 42,
+        "r_total_kohm": 800,
+        "supply_current_ua": 18
+      },
+      {
+        "error_mv": 2.0,
+        "noise_uvrms": 19,
+        "r_total_kohm": 160,
+        "supply_current_ua": 22
+      },
+      {
+        "error_mv": 0.8,
+        "noise_uvrms": 9,
+        "r_total_kohm": 40,
+        "supply_current_ua": 37
+      }
+    ],
+    "transform": "divider current represented by total resistance",
+    "vout_v": 0.8
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal_and_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "dual_timescale_loop_is_supported",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "local_and_global_loops_have_separated_bandwidths",
+    "transient_and_accuracy_pass"
+  ],
+  "held_fixed": [
+    "load_range",
+    "iq_budget",
+    "output_cap"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "fast_local_action_handles_load_while_global_loop_restores_accuracy"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_interaction_with_nested_loop_breaks"
+  ],
+  "schema_version": "1.0",
+  "task_id": "architecture_loop_style_choice--metamorphic"
+}

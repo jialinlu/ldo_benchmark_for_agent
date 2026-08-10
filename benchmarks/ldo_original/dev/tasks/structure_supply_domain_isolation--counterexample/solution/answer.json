@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "unsafe_domain_crossing",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "gate_cannot_reach_high_rail",
+    "device_stress_not_checked"
+  ],
+  "held_fixed": [
+    "supply_ranges",
+    "device_voltage_limits"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "pass_device_may_remain_on_or_overstress_driver"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "insert_qualified_level_shift_and_clamp",
+    "verify_power_sequencing"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_supply_domain_isolation--counterexample"
+}

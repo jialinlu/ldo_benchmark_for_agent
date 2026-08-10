@@ -1,0 +1,28 @@
+{
+  "analysis_regime": "pdk_migration",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "illegal_geometry_and_intent_loss",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "fractional_fin_is_illegal",
+    "copied_length_is_not_in_target_set"
+  ],
+  "held_fixed": [
+    "architecture",
+    "branch_current_target",
+    "headroom_budget",
+    "load_spec"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "literal_geometry_copy_loses_operating_point_intent",
+    "pdk_legality_gate_fails"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "reject_candidate_before_simulation",
+    "resurvey_legal_device_parameters"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_planar_to_finfet--counterexample"
+}

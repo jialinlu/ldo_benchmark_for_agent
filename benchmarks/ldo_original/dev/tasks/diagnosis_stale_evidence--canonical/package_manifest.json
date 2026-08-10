@@ -1,0 +1,10 @@
+{
+  "package_sha256": "c6005466f4e28e244e581e623aab0a7bf604bf9a243d5b6c7c2995346140d31b",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_stale_evidence--canonical"
+}

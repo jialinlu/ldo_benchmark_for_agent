@@ -11,7 +11,7 @@ from .bundle import build_runtime_bundle
 from .contracts import ALLOWED_MODES, Task
 from .errors import ContractError, PolicyError
 from .provenance import environment_fingerprint, repository_fingerprint, task_fingerprint
-from .utils import dump_json, sha256_file, utc_timestamp
+from .utils import dump_json, load_json, sha256_file, utc_timestamp
 
 
 def run_agent_command(
@@ -45,6 +45,8 @@ def run_agent_command(
             "EVOLDO_TASK_ID": task.task_id,
             "EVOLDO_TELEMETRY_PATH": str(bundle_dir / "telemetry.json"),
             "EVOLDO_TOOL_LEDGER_PATH": str(bundle_dir / "tool_ledger.json"),
+            "EVOLDO_OUTCOME_PATH": str(bundle_dir / "outcome.json"),
+            "EVOLDO_TIMEOUT_SECONDS": str(timeout),
         }
     )
     started = utc_timestamp()
@@ -75,6 +77,19 @@ def run_agent_command(
     status = "ok" if return_code == 0 and answer_path.is_file() else "failed"
     if timed_out:
         status = "timeout"
+    adapter_outcome = None
+    outcome_path = bundle_dir / "outcome.json"
+    if outcome_path.is_file():
+        try:
+            candidate = load_json(outcome_path)
+        except (OSError, ValueError):
+            candidate = None
+        if isinstance(candidate, dict) and candidate.get("status") in {
+            "ok", "model_incomplete", "format_fail", "provider_timeout", "provider_infra_fail"
+        }:
+            adapter_outcome = candidate
+            if candidate["status"] != "ok" or (return_code == 0 and answer_path.is_file()):
+                status = candidate["status"]
     record = {
         "schema_version": "1.0",
         "task_id": task.task_id,
@@ -90,6 +105,7 @@ def run_agent_command(
         "status": status,
         "answer_present": answer_path.is_file(),
         "answer_sha256": sha256_file(answer_path) if answer_path.is_file() else None,
+        "adapter_outcome": adapter_outcome,
         "stdout_file": "stdout.log",
         "stderr_file": "stderr.log",
         "task_fingerprint": task_fingerprint(task.root),

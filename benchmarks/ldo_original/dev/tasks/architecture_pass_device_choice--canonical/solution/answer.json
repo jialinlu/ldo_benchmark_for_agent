@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "pmos_pass_is_feasible_choice",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "pmos_gate_can_be_driven_below_source",
+    "no_boost_rail_is_required"
+  ],
+  "held_fixed": [
+    "load",
+    "device_options",
+    "iq_budget"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "pmos_supports_high_side_operation_within_available_rails"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "size_for_dropout_then_verify_stability"
+  ],
+  "schema_version": "1.0",
+  "task_id": "architecture_pass_device_choice--canonical"
+}

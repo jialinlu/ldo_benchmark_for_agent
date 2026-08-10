@@ -1,0 +1,51 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 5,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "architecture_choice",
+    "operating_point"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "full_design",
+    "simulation_assisted",
+    "weak_agent_airgap"
+  ],
+  "family_id": "architecture_pass_device_choice",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "architecture_pass_device_choice",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "loop_gain",
+      "startup_escape",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "tran",
+      "startup"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "architecture_choice",
+  "task_id": "architecture_pass_device_choice--counterexample",
+  "title": "Choose PMOS or NMOS pass topology from available rails and dropout",
+  "variant": "counterexample",
+  "variant_relationship": "one decision-relevant condition"
+}

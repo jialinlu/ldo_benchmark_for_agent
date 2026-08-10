@@ -1,0 +1,54 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 8,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "startup_enable",
+    "diagnosis",
+    "evidence_integrity"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "full_design",
+    "simulation_assisted",
+    "weak_agent_airgap"
+  ],
+  "family_id": "design_closure_cold_start",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "design_closure_cold_start",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "loop_gain",
+      "noise_transfer",
+      "startup_escape",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "noise",
+      "tran",
+      "startup"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "design_closure_cold_start--metamorphic",
+  "title": "Choose the next action for a cold-start failure without ideal fixes",
+  "variant": "metamorphic",
+  "variant_relationship": "signal names and active-low enable representation only"
+}

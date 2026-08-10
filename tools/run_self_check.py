@@ -28,7 +28,7 @@ def synthesize(task, oracle):
             continue
         if check["kind"] in {"exact", "boolean", "numeric_close"}:
             answer[path] = check["expected"]
-        elif check["kind"] == "set_contains":
+        elif check["kind"] in {"set_contains", "set_equals"}:
             answer[path] = list(check["expected"])
     answer["mechanism"] = "Self-check answer synthesized from the public development oracle."
     answer["claim_boundary"] = "Public development-set infrastructure check only."

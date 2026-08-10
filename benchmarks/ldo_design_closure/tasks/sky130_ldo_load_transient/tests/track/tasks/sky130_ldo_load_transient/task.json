@@ -1,0 +1,52 @@
+{
+  "candidate_pin_order": [
+    "VDD",
+    "VSS",
+    "VREF",
+    "ENB",
+    "VOUT"
+  ],
+  "candidate_subckt": "evoldo_sky130_ldo",
+  "hard_rules": [
+    "no independent or controlled ideal source inside DUT",
+    "no .ic or .nodeset",
+    "all declared measurements must be present",
+    "fresh simulation evidence must match candidate digest"
+  ],
+  "injected_fault": "The compensation capacitor is intentionally reduced into a poor dynamic regime.",
+  "objective": "Jointly tune loop drive and compensation for a 0.1 mA to 1 mA load step with only 10 pF external load capacitance.",
+  "pdk": "sky130",
+  "scenarios": [
+    {
+      "bench_template": "../../benches/load_transient.sp.tpl",
+      "corner": "tt",
+      "limits": {
+        "vout_dip": {
+          "min": 1.25
+        },
+        "vout_heavy": {
+          "max": 1.54,
+          "min": 1.44
+        },
+        "vout_peak": {
+          "max": 1.75
+        },
+        "vout_post": {
+          "max": 1.54,
+          "min": 1.44
+        },
+        "vout_pre": {
+          "max": 1.54,
+          "min": 1.44
+        }
+      },
+      "scenario_id": "tt_load_step",
+      "temperature_c": 27
+    }
+  ],
+  "schema_version": "1.0",
+  "simulator": "ngspice",
+  "starter_candidate": "starter/ldo.sp",
+  "task_id": "sky130_ldo_load_transient",
+  "title": "Close capless load-transient behavior"
+}

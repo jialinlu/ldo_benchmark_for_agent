@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "cascode_headroom_invalid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "required_stack_exceeds_headroom",
+    "device_leaves_saturation"
+  ],
+  "held_fixed": [
+    "supply",
+    "common_mode",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "extra_stack_loses_gain_and_swing"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "use_lower_headroom_gain_technique_or_remove_stack"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_cascode_headroom--counterexample"
+}

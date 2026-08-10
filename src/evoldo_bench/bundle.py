@@ -15,7 +15,13 @@ FORBIDDEN_RUNTIME_NAMES = {
     "judge_prompt.md",
     "reference_answer.json",
 }
-FORBIDDEN_RUNTIME_PARTS = {"oracle", "golden", "rubric", "judge_private", "reference_evidence"}
+FORBIDDEN_RUNTIME_PARTS = {"oracle", "golden", "rubric", "judge_private", "reference_evidence", "solution", "tests"}
+
+
+def _runtime_path_violation(path: Path, root: Path) -> bool:
+    lower_name = path.name.lower()
+    relative_parts = {part.lower() for part in path.relative_to(root).parts}
+    return lower_name in FORBIDDEN_RUNTIME_NAMES or bool(relative_parts.intersection(FORBIDDEN_RUNTIME_PARTS))
 
 
 def _copy_file(source: Path, destination: Path, allowed_root: Path) -> None:
@@ -31,10 +37,22 @@ def audit_runtime_bundle(bundle_dir: Path) -> Dict[str, object]:
     for path in sorted(bundle_dir.rglob("*")):
         if not path.is_file():
             continue
-        lower_name = path.name.lower()
-        relative_parts = {part.lower() for part in path.relative_to(bundle_dir).parts}
-        if lower_name in FORBIDDEN_RUNTIME_NAMES or relative_parts.intersection(FORBIDDEN_RUNTIME_PARTS):
+        if _runtime_path_violation(path, bundle_dir):
             violations.append(path.relative_to(bundle_dir).as_posix())
+    return {"passed": not violations, "violations": violations}
+
+
+def audit_public_task_source(task_dir: Path) -> Dict[str, object]:
+    """Audit agent-visible source while allowing separate verifier and solution trees."""
+    violations = []
+    for path in sorted(task_dir.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(task_dir)
+        if relative.parts and relative.parts[0].lower() in {"tests", "solution"}:
+            continue
+        if _runtime_path_violation(path, task_dir):
+            violations.append(relative.as_posix())
     return {"passed": not violations, "violations": violations}
 
 

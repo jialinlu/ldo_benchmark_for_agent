@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "trend_not_identifiable",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "cc_and_load_change_together",
+    "phase_margin_change_is_confounded"
+  ],
+  "held_fixed": [
+    "bias_current",
+    "pass_size",
+    "output_capacitance"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "held_fixed_violation",
+    "causal_attribution_not_supported"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "rerun_cc_sweep_at_fixed_load",
+    "separate_load_and_cc_interventions"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_compensation_cap--counterexample"
+}

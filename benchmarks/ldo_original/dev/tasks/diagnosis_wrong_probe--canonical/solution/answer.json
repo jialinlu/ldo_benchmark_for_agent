@@ -1,0 +1,28 @@
+{
+  "analysis_regime": "stb",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "measurement_probe",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "probe_is_outside_return_loop",
+    "reported_loop_gain_is_below_unity_at_dc"
+  ],
+  "held_fixed": [
+    "dut_topology",
+    "load",
+    "bias",
+    "compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "stb_probe_does_not_measure_intended_loop",
+    "measurement_invalidates_margin_claim"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "move_probe_to_loop_break",
+    "validate_return_ratio_orientation"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_wrong_probe--canonical"
+}

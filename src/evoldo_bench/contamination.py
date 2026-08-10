@@ -5,7 +5,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Set, Tuple
 
-from .bundle import audit_runtime_bundle
+from .bundle import audit_public_task_source
 from .contracts import Task
 from .discovery import discover_tasks
 from .utils import iter_files, load_json, sha256_file, sha256_text
@@ -35,7 +35,7 @@ def audit_task_collection(tasks_root: Path, oracle_root: Optional[Path] = None, 
         prompt = task.prompt_path.read_text(encoding="utf-8")
         input_text = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in task.input_paths)
         text_by_task[task.task_id] = _tokens(prompt + "\n" + input_text)
-        runtime_audit = audit_runtime_bundle(task.root)
+        runtime_audit = audit_public_task_source(task.root)
         if not runtime_audit["passed"]:
             violations.append({"type": "forbidden_public_task_file", "task_id": task.task_id, "files": runtime_audit["violations"]})
     for family_id, splits in sorted(family_splits.items()):

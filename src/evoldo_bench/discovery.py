@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
@@ -10,12 +11,23 @@ from .errors import ContractError, TaskNotFoundError
 from .utils import sha256_file
 
 
+def task_package_sha256(task_root: Path) -> str:
+    rows = []
+    for path in sorted(task_root.rglob("*")):
+        if path.is_file() and path.name != "package_manifest.json":
+            rows.append("%s:%s" % (path.relative_to(task_root).as_posix(), sha256_file(path)))
+    return hashlib.sha256("\n".join(rows).encode()).hexdigest()
+
+
 def discover_tasks(tasks_root: Path, split: Optional[str] = None) -> List[Task]:
     if not tasks_root.is_dir():
         raise ContractError("tasks root does not exist: %s" % tasks_root)
     tasks = []
     seen = {}
     for manifest in sorted(tasks_root.rglob("task.json")):
+        relative_parts = {part.lower() for part in manifest.relative_to(tasks_root).parts[:-1]}
+        if relative_parts.intersection({"environment", "tests", "solution"}):
+            continue
         task = load_task(manifest.parent)
         if task.task_id in seen:
             raise ContractError(
@@ -79,12 +91,15 @@ def validate_registry(tasks: Iterable[Task], registry_path: Path) -> Dict[str, o
     missing = sorted(set(task_by_id) - set(by_id))
     unexpected = sorted(set(by_id) - set(task_by_id))
     hash_mismatch = []
+    package_hash_mismatch = []
     identity_mismatch = []
     for task_id in sorted(set(task_by_id).intersection(by_id)):
         task = task_by_id[task_id]
         row = by_id[task_id]
         if row.get("manifest_sha256") != sha256_file(task.root / "task.json"):
             hash_mismatch.append(task_id)
+        if row.get("package_sha256") != task_package_sha256(task.root):
+            package_hash_mismatch.append(task_id)
         for field, actual in [
             ("family_id", task.family_id),
             ("suite", task.suite),
@@ -95,10 +110,11 @@ def validate_registry(tasks: Iterable[Task], registry_path: Path) -> Dict[str, o
             if row.get(field) != actual:
                 identity_mismatch.append({"task_id": task_id, "field": field})
     return {
-        "passed": not (missing or unexpected or hash_mismatch or identity_mismatch),
+        "passed": not (missing or unexpected or hash_mismatch or package_hash_mismatch or identity_mismatch),
         "row_count": len(rows),
         "missing": missing,
         "unexpected": unexpected,
         "hash_mismatch": hash_mismatch,
+        "package_hash_mismatch": package_hash_mismatch,
         "identity_mismatch": identity_mismatch,
     }

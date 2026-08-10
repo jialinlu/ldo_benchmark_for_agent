@@ -1,0 +1,50 @@
+{
+  "candidate_pin_order": [
+    "VDD",
+    "VSS",
+    "VREF",
+    "ENB",
+    "VOUT"
+  ],
+  "candidate_subckt": "evoldo_sky130_ldo",
+  "hard_rules": [
+    "no independent or controlled ideal source inside DUT",
+    "no .ic or .nodeset",
+    "all declared measurements must be present",
+    "fresh simulation evidence must match candidate digest"
+  ],
+  "injected_fault": "The pass array is intentionally too weak at the low-line heavy-load point.",
+  "objective": "Maintain the output window across 1.65\u20131.8 V input and 0.1\u20131 mA load after each physical transition settles.",
+  "pdk": "sky130",
+  "scenarios": [
+    {
+      "bench_template": "../../benches/line_load.sp.tpl",
+      "corner": "tt",
+      "limits": {
+        "vout_165_heavy": {
+          "max": 1.55,
+          "min": 1.4
+        },
+        "vout_165_light": {
+          "max": 1.55,
+          "min": 1.4
+        },
+        "vout_180_heavy": {
+          "max": 1.55,
+          "min": 1.4
+        },
+        "vout_180_light": {
+          "max": 1.55,
+          "min": 1.4
+        }
+      },
+      "scenario_id": "tt_line_load_matrix",
+      "temperature_c": 27
+    }
+  ],
+  "schema_version": "1.0",
+  "simulator": "ngspice",
+  "starter_candidate": "starter/ldo.sp",
+  "task_id": "sky130_ldo_line_load_regulation",
+  "title": "Close line and load regulation"
+}

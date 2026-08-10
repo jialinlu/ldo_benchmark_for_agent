@@ -1,0 +1,10 @@
+{
+  "package_sha256": "ae8660a1fd4633f5dac733a91def4fdf3c6773853bb9e8b2a059461841b4d891",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_compensation_joint--counterexample"
+}

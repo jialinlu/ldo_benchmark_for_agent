@@ -1,0 +1,49 @@
+{
+  "case_id": "diagnosis_stale_evidence--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "evidence_is_fresh",
+      "evidence_is_stale",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "result_hash_does_not_match_candidate",
+      "result_hash_matches_candidate"
+    ],
+    "forbidden_actions": [
+      "ignore_candidate_hash",
+      "promote_using_result_A"
+    ],
+    "held_fixed": [
+      "qualification_plan",
+      "tool_version"
+    ],
+    "mechanism_tags": [
+      "evidence_is_bound_to_current_design",
+      "old_results_cannot_qualify_new_design"
+    ],
+    "recommended_actions": [
+      "permit_promotion_if_all_hard_gates_pass",
+      "rerun_full_qualification_on_candidate_B"
+    ]
+  },
+  "family_id": "diagnosis_stale_evidence",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "candidate_hash": "B",
+      "result": "all gates pass",
+      "result_hash": "A"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

@@ -1,0 +1,34 @@
+schema_version = "1.3"
+artifacts = ["/app/answer.json"]
+
+[task]
+name = "evoldo-bench/trend_bias_gm_bandwidth--counterexample"
+description = "Explain error-amplifier bias current versus bandwidth and IQ"
+authors = [{ name = "EvoLDO-Bench contributors" }]
+keywords = ["analog", "ldo", "trend", "counterexample"]
+
+[metadata]
+task_id = "trend_bias_gm_bandwidth--counterexample"
+family_id = "trend_bias_gm_bandwidth"
+suite = "trend"
+variant = "counterexample"
+level = "L2"
+revision = 2
+maturity = "public-development"
+
+[verifier]
+environment_mode = "separate"
+
+[verifier.environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024

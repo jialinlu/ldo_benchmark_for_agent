@@ -1,0 +1,28 @@
+{
+  "analysis_regime": "stb",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "circuit_stability",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "probe_is_in_intended_loop",
+    "negative_phase_margin_at_unity_crossing"
+  ],
+  "held_fixed": [
+    "dut_topology",
+    "load",
+    "bias",
+    "compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "valid_stb_evidence_shows_instability",
+    "circuit_requires_loop_repair"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "inspect_poles_and_compensation",
+    "verify_after_stability_fix"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_wrong_probe--counterexample"
+}

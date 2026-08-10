@@ -13,6 +13,8 @@ import shutil
 from pathlib import Path
 from typing import Any, Dict, List
 
+from generate_task_packages import package_reasoning_task
+
 ROOT = Path(__file__).resolve().parents[1]
 TASKS_ROOT = ROOT / "benchmarks" / "ldo_original" / "dev" / "tasks"
 ORACLE_ROOT = ROOT / "benchmarks" / "ldo_original" / "dev_reference" / "oracles"
@@ -559,10 +561,10 @@ def make_oracle(task_id: str, family_id: str, exp: Dict[str, Any]) -> Dict[str, 
             {"id": "task_identity", "path": "task_id", "kind": "exact", "expected": task_id, "weight": 5, "critical": True},
             {"id": "conclusion", "path": "conclusion", "kind": "exact", "expected": exp["conclusion"], "weight": 30, "critical": True},
             {"id": "analysis_regime", "path": "analysis_regime", "kind": "exact", "expected": exp["analysis_regime"], "weight": 10},
-            {"id": "held_fixed", "path": "held_fixed", "kind": "set_contains", "expected": exp["held_fixed"], "weight": 10},
-            {"id": "evidence_facts", "path": "evidence_facts", "kind": "set_contains", "expected": exp["evidence_facts"], "weight": 15},
-            {"id": "mechanism_tags", "path": "mechanism_tags", "kind": "set_contains", "expected": exp["mechanism_tags"], "weight": 15},
-            {"id": "recommended_actions", "path": "recommended_actions", "kind": "set_contains", "expected": exp["recommended_actions"], "weight": 10},
+            {"id": "held_fixed", "path": "held_fixed", "kind": "set_equals", "expected": exp["held_fixed"], "weight": 10},
+            {"id": "evidence_facts", "path": "evidence_facts", "kind": "set_equals", "expected": exp["evidence_facts"], "weight": 15},
+            {"id": "mechanism_tags", "path": "mechanism_tags", "kind": "set_equals", "expected": exp["mechanism_tags"], "weight": 15},
+            {"id": "recommended_actions", "path": "recommended_actions", "kind": "set_equals", "expected": exp["recommended_actions"], "weight": 10},
             {"id": "forbidden_actions", "path": "recommended_actions", "kind": "set_excludes", "expected": exp["forbidden_actions"], "weight": 5, "critical": True},
         ],
     }
@@ -655,6 +657,7 @@ def main() -> int:
             oracle = make_oracle(task_id, family["family_id"], item["expected"])
             oracle_path = ORACLE_ROOT / (task_id + ".oracle.json")
             oracle_path.write_text(jd(oracle), encoding="utf-8")
+            package_digest = package_reasoning_task(task_dir, oracle_path)
             digest = hashlib.sha256((task_dir / "task.json").read_bytes()).hexdigest()
             registry_rows.append({
                 "task_id": task_id,
@@ -664,6 +667,7 @@ def main() -> int:
                 "variant": variant_name,
                 "split": "dev",
                 "manifest_sha256": digest,
+                "package_sha256": package_digest,
             })
     with REGISTRY.open("w", encoding="utf-8") as handle:
         for row in sorted(registry_rows, key=lambda value: value["task_id"]):

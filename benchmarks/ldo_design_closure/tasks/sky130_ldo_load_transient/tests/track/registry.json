@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "tasks": [
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_load_transient/task.json",
+      "task_id": "sky130_ldo_load_transient",
+      "title": "Close capless load-transient behavior"
+    }
+  ],
+  "track_id": "evoldo_sky130_closure"
+}

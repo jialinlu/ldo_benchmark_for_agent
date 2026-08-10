@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "numerical_convergence_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "analysis_has_no_valid_result",
+    "iteration_limit_reached"
+  ],
+  "held_fixed": [
+    "netlist",
+    "models",
+    "solver_settings"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "functional_performance_is_not_observed"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "diagnose_topology_and_solver_robustness",
+    "rerun_same_candidate"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_convergence_vs_function--metamorphic"
+}

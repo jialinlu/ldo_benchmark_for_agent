@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "evidence_is_stale",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "result_hash_does_not_match_candidate"
+  ],
+  "held_fixed": [
+    "qualification_plan",
+    "tool_version"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "old_results_cannot_qualify_new_design"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "rerun_full_qualification_on_candidate_B"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_stale_evidence--counterexample"
+}

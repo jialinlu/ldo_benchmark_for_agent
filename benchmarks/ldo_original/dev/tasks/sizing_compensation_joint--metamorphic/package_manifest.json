@@ -1,0 +1,10 @@
+{
+  "package_sha256": "e555cccc1057aa2fbecc4660120529a3aeeea573c60257a4391cf1013e69db0a",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_compensation_joint--metamorphic"
+}

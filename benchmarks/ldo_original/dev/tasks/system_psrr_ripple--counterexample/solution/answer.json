@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "ac",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "output_ripple_is_2mv",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "psrr_is_10x_voltage_attenuation",
+    "input_ripple_is_20mv"
+  ],
+  "held_fixed": [
+    "frequency",
+    "operating_point",
+    "linearity"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "weaker_psrr_passes_more_ripple"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "report_2mv_and_check_downstream_limit"
+  ],
+  "schema_version": "1.0",
+  "task_id": "system_psrr_ripple--counterexample"
+}

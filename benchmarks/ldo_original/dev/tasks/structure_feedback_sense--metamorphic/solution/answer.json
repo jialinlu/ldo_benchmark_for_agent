@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "feedback_sense_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "divider_is_connected_to_vout",
+    "sense_node_has_dc_path"
+  ],
+  "held_fixed": [
+    "divider_ratio",
+    "ea_input_polarity"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "loop_observes_regulated_output"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_target_ratio_and_loop_sign"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sense--metamorphic"
+}

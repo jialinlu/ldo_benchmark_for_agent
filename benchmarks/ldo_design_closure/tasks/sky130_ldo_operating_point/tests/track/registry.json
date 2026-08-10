@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "tasks": [
+    {
+      "level": "transistor_design_closure",
+      "pdk": "sky130",
+      "task_file": "tasks/sky130_ldo_operating_point/task.json",
+      "task_id": "sky130_ldo_operating_point",
+      "title": "Close nominal operating point and quiescent current"
+    }
+  ],
+  "track_id": "evoldo_sky130_closure"
+}

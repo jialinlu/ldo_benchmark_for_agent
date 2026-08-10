@@ -9,6 +9,10 @@ from typing import Any, Dict, Iterable, List, Mapping
 from .utils import dump_json, utc_timestamp
 
 
+def _optional_float(value: Any) -> Any:
+    return None if value is None else float(value)
+
+
 def _entry(report: Mapping[str, Any]) -> Dict[str, Any]:
     effort = report.get("effort", {})
     ci = report.get("pass_at_1_ci95", [0.0, 0.0])
@@ -20,19 +24,23 @@ def _entry(report: Mapping[str, Any]) -> Dict[str, Any]:
         "ci95_high": float(ci[1]),
         "spec_score": float(report.get("spec_score", float(report.get("family_macro_score", 0.0)) / 100.0)),
         "family_macro_score": float(report.get("family_macro_score", 0.0)),
-        "avg_output_tokens": float(effort.get("avg_output_tokens", 0.0)),
+        "avg_output_tokens": _optional_float(effort.get("avg_output_tokens")),
         "avg_steps": float(effort.get("avg_steps", 0.0)),
         "avg_tool_calls": float(effort.get("avg_tool_calls", 0.0)),
         "avg_wall_seconds": float(effort.get("avg_wall_seconds", 0.0)),
-        "avg_cost_usd": float(effort.get("avg_total_cost_usd", 0.0)),
+        "avg_cost_usd": _optional_float(effort.get("avg_total_cost_usd")),
         "rollouts": int(report.get("rollout_count", effort.get("rollouts", 0))),
     }
 
 
 def _pareto(entries: List[Dict[str, Any]], effort_key: str = "avg_cost_usd") -> None:
     for candidate in entries:
+        if candidate[effort_key] is None:
+            candidate["pareto"] = None
+            continue
         candidate["pareto"] = not any(
             other is not candidate
+            and other[effort_key] is not None
             and other["spec_score"] >= candidate["spec_score"]
             and other[effort_key] <= candidate[effort_key]
             and (other["spec_score"] > candidate["spec_score"] or other[effort_key] < candidate[effort_key])
@@ -43,15 +51,16 @@ def _pareto(entries: List[Dict[str, Any]], effort_key: str = "avg_cost_usd") -> 
 def build_leaderboard(reports: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
     entries = [_entry(report) for report in reports]
     _pareto(entries)
-    entries.sort(key=lambda row: (-row["pass_at_1"], -row["spec_score"], row["avg_cost_usd"], row["model_id"]))
+    entries.sort(key=lambda row: (-row["pass_at_1"], -row["spec_score"], row["avg_cost_usd"] is None, row["avg_cost_usd"] or 0.0, row["model_id"]))
     return {"schema_version": "1.0", "generated_at": utc_timestamp(), "entry_count": len(entries), "entries": entries}
 
 
 def _render_svg(entries: List[Dict[str, Any]]) -> str:
     width, height, pad = 760, 360, 55
-    max_effort = max([row["avg_cost_usd"] for row in entries] + [1.0])
+    measured = [row for row in entries if row["avg_cost_usd"] is not None]
+    max_effort = max([row["avg_cost_usd"] for row in measured] + [1.0])
     points = []
-    for row in entries:
+    for row in measured:
         x = pad + (width - 2 * pad) * row["avg_cost_usd"] / max_effort
         y = height - pad - (height - 2 * pad) * row["spec_score"]
         color = "#b91c1c" if row["pareto"] else "#64748b"
@@ -73,12 +82,14 @@ def render_html(board: Mapping[str, Any]) -> str:
     for index, row in enumerate(entries, 1):
         rows.append(
             "<tr><td>%d</td><td>%s</td><td>%s</td><td>%.1f%%</td><td>%.1f%%–%.1f%%</td>"
-            "<td>%.1f%%</td><td>%.2f</td><td>%.0f</td><td>%.1f</td><td>%.1f</td><td>%s</td></tr>"
+            "<td>%.1f%%</td><td>%s</td><td>%s</td><td>%.1f</td><td>%.1f</td><td>%s</td></tr>"
             % (
                 index, html.escape(row["model_id"]), html.escape(row["mode"]), 100*row["pass_at_1"],
-                100*row["ci95_low"], 100*row["ci95_high"], 100*row["spec_score"], row["avg_cost_usd"],
-                row["avg_output_tokens"], row["avg_steps"], row["avg_wall_seconds"]/60.0,
-                "yes" if row["pareto"] else "no",
+                100*row["ci95_low"], 100*row["ci95_high"], 100*row["spec_score"],
+                "%.2f" % row["avg_cost_usd"] if row["avg_cost_usd"] is not None else "n/a",
+                "%.0f" % row["avg_output_tokens"] if row["avg_output_tokens"] is not None else "n/a",
+                row["avg_steps"], row["avg_wall_seconds"]/60.0,
+                "yes" if row["pareto"] is True else "no" if row["pareto"] is False else "n/a",
             )
         )
     template = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EvoLDO-Bench results</title><style>

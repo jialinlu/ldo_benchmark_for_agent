@@ -1,0 +1,50 @@
+{
+  "case_id": "diagnosis_measurement_sign--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "measurement_sign_is_consistent",
+      "measurement_sign_report_is_wrong",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "negative_source_current_means_source_delivers_current",
+      "positive_source_current_means_source_absorbs_current"
+    ],
+    "forbidden_actions": [
+      "declare_negative_load",
+      "resize_pass_device"
+    ],
+    "held_fixed": [
+      "load",
+      "probe_orientation"
+    ],
+    "mechanism_tags": [
+      "reported_direction_contradicts_convention",
+      "reported_load_draw_is_magnitude"
+    ],
+    "recommended_actions": [
+      "correct_report_or_probe_orientation",
+      "document_sign_convention"
+    ]
+  },
+  "family_id": "diagnosis_measurement_sign",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "load_draw_a": 0.1,
+      "measured_a": -0.1,
+      "source_convention": "positive current enters positive terminal"
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

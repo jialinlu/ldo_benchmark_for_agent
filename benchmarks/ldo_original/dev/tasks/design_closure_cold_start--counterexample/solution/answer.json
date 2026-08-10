@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "infra_license",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "simulation_did_not_start",
+    "startup_evidence_is_absent"
+  ],
+  "held_fixed": [
+    "submitted_netlist",
+    "simulator_binary",
+    "license_feature"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "license_failure_prevents_circuit_diagnosis",
+    "missing_evidence_blocks_startup_claim"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "restore_authorized_simulation",
+    "rerun_unchanged_candidate"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_cold_start--counterexample"
+}

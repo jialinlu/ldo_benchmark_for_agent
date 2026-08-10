@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "bias_path_complete",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "cascode_gate_has_dc_driver",
+    "bias_generator_is_supply_referenced"
+  ],
+  "held_fixed": [
+    "hierarchy_flattening",
+    "global_net_rules",
+    "pin_directions"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "gate_has_defined_dc_path",
+    "cascode_operating_point_can_be_tested"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_bias_voltage_and_device_saturation"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_floating_bias--canonical"
+}

@@ -1,0 +1,10 @@
+{
+  "package_sha256": "30226e9a027211c6065270f47b84883c1caca5f5c00499f948f619eac053ad49",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_wrong_probe--counterexample"
+}

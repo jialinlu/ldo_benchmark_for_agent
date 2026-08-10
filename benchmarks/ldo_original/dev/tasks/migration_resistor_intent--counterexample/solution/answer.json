@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "resistor_noise_intent_not_met",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "ratio_passes",
+    "noise_fails"
+  ],
+  "held_fixed": [
+    "feedback_ratio",
+    "current_budget",
+    "temperature_range"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "matching_ratio_alone_does_not_preserve_noise"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "select_lower_noise_resistor_option_or_current"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_resistor_intent--counterexample"
+}

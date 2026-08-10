@@ -1,0 +1,53 @@
+{
+  "case_id": "migration_device_flavor--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "device_flavor_leakage_failure",
+      "device_flavor_valid",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "headroom_leakage_speed_pass",
+      "hot_leakage_fails",
+      "speed_passes"
+    ],
+    "forbidden_actions": [
+      "ignore_hot_leakage",
+      "pick_lowest_threshold_everywhere"
+    ],
+    "held_fixed": [
+      "bias",
+      "geometry",
+      "temperature"
+    ],
+    "mechanism_tags": [
+      "flavor_satisfies_the_role_constraints",
+      "threshold_choice_violates_standby_budget"
+    ],
+    "recommended_actions": [
+      "use_role_specific_threshold_mix",
+      "verify_model_corners_and_reliability"
+    ]
+  },
+  "family_id": "migration_device_flavor",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "flavor": "standard_threshold",
+      "headroom": "pass",
+      "leakage": "pass",
+      "speed": "pass"
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

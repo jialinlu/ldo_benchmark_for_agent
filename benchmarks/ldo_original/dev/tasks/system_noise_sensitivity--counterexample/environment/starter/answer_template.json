@@ -1,0 +1,14 @@
+{
+  "analysis_regime": "",
+  "claim_boundary": "",
+  "conclusion": "",
+  "confidence": 0.0,
+  "evidence_facts": [],
+  "held_fixed": [],
+  "mechanism": "",
+  "mechanism_tags": [],
+  "numeric_results": {},
+  "recommended_actions": [],
+  "schema_version": "1.0",
+  "task_id": "system_noise_sensitivity--counterexample"
+}

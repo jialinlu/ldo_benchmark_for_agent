@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "circuit_bias_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "analysis_completed",
+    "pass_device_is_off"
+  ],
+  "held_fixed": [
+    "models",
+    "bench",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "valid_model_evidence_points_to_bias_state"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "trace_enable_and_gate_bias"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_model_missing--counterexample"
+}

@@ -1,0 +1,62 @@
+{
+  "case_id": "trend_output_cap_esr--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "esr_effect_confounded_by_cout",
+      "esr_has_stability_window",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "esr_and_cout_change_together",
+      "middle_esr_has_best_margin"
+    ],
+    "forbidden_actions": [
+      "attribute_margin_to_esr_only",
+      "replace_cap_without_esr_model"
+    ],
+    "held_fixed": [
+      "cout",
+      "load",
+      "loop_compensation"
+    ],
+    "mechanism_tags": [
+      "esr_zero_can_add_phase_but_excess_esr_hurts",
+      "pole_and_zero_both_move"
+    ],
+    "recommended_actions": [
+      "qualify_esr_range_not_nominal_point",
+      "run_orthogonal_cout_and_esr_sweeps"
+    ]
+  },
+  "family_id": "trend_output_cap_esr",
+  "scenario": {
+    "changed_from_canonical": "one decision-relevant condition",
+    "evidence": {
+      "cout_nf": [
+        1,
+        10,
+        100
+      ],
+      "esr_ohm": [
+        0.01,
+        0.3,
+        2.0
+      ],
+      "pm_deg": [
+        39,
+        64,
+        47
+      ]
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

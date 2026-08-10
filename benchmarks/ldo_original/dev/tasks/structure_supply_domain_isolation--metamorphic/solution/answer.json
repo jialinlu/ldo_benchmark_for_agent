@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "domain_crossing_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "level_shifter_present",
+    "off_state_tracks_high_rail"
+  ],
+  "held_fixed": [
+    "supply_ranges",
+    "device_voltage_limits"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "gate_stress_and_false_turn_on_are_controlled"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_all_power_sequences"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_supply_domain_isolation--metamorphic"
+}

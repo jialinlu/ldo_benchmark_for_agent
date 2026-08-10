@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "cascode_headroom_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "available_headroom_exceeds_required_stack",
+    "devices_are_saturated"
+  ],
+  "held_fixed": [
+    "supply",
+    "common_mode",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "cascode_can_provide_gain_in_this_regime"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_worst_corner_margin"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_cascode_headroom--metamorphic"
+}

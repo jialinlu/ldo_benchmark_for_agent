@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "esr_effect_confounded_by_cout",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "esr_and_cout_change_together"
+  ],
+  "held_fixed": [
+    "load",
+    "loop_compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "pole_and_zero_both_move"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "run_orthogonal_cout_and_esr_sweeps"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_output_cap_esr--counterexample"
+}

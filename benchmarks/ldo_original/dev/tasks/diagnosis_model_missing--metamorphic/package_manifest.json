@@ -1,0 +1,10 @@
+{
+  "package_sha256": "78be9e2c7897baddfd4bf8cdb3f6405370c059f529f13f3d1c4e2c59f637ea4e",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_model_missing--metamorphic"
+}

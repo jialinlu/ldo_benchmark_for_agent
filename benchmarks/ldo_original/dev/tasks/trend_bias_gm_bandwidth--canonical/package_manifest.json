@@ -1,0 +1,10 @@
+{
+  "package_sha256": "0a79ae8f9703a4de074bea13234a7bcbfa6216dfad33d5183746e4d5129ebecd",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_bias_gm_bandwidth--canonical"
+}

@@ -1,0 +1,10 @@
+{
+  "package_sha256": "20f4dec52c7c1f5f15ead881fcb9676a5dcf6670bc52967147fdf16923829370",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_forbidden_ideal--counterexample"
+}

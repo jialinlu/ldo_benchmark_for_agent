@@ -18,6 +18,19 @@ from evoldo_bench.public_pdk import (
 
 
 class PublicPdkClosureTests(unittest.TestCase):
+    def test_closure_tasks_have_separate_task_examples_layout(self):
+        registry = load_closure_registry(DEFAULT_TRACK_ROOT)
+        for item in registry["tasks"]:
+            root = DEFAULT_TRACK_ROOT / "tasks" / item["task_id"]
+            for relative in (
+                "task.toml", "instruction.md", "environment/Dockerfile",
+                "environment/starter/circuit.spi", "tests/Dockerfile", "tests/test.sh",
+                "tests/verify.py", "solution/circuit.spi", "solution/solve.sh",
+                "package_manifest.json",
+            ):
+                self.assertTrue((root / relative).is_file(), "%s: %s" % (item["task_id"], relative))
+            self.assertIn('schema_version = "1.3"', (root / "task.toml").read_text())
+
     def test_registry_has_six_complete_real_tasks(self):
         registry = load_closure_registry()
         self.assertEqual(6, len(registry["tasks"]))

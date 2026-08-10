@@ -50,6 +50,14 @@ def _load_agent_telemetry(path: Path, fallback: Dict[str, Any]) -> Dict[str, Any
     supplied.setdefault("tool_calls", 0)
     supplied.setdefault("token_breakdown", {})
     supplied.setdefault("cost_breakdown_usd", {})
+    if "token_measurement_status" not in supplied:
+        token_values = supplied["token_breakdown"].values()
+        supplied["token_measurement_status"] = "partial" if any(value is not None for value in token_values) else "unavailable"
+    if "cost_measurement_status" not in supplied:
+        cost_values = supplied["cost_breakdown_usd"].values()
+        supplied["cost_measurement_status"] = "partial" if any(value is not None for value in cost_values) else "unavailable"
+    supplied.setdefault("provider_reported_model_id", None)
+    supplied.setdefault("model_identity_status", "unavailable")
     supplied["source"] = "agent_adapter"
     return validate_telemetry(supplied)
 
@@ -159,14 +167,25 @@ def run_experiment(
             dump_json(run_dir / "run_record.json", record)
             score = None
             if record["answer_present"]:
-                score = grade_one(tasks_root, oracle_root, run_dir / "app" / "answer.json")
-                dump_json(run_dir / "score.json", score)
+                try:
+                    score = grade_one(tasks_root, oracle_root, run_dir / "app" / "answer.json")
+                except (ContractError, ValueError, OSError) as exc:
+                    record["status"] = "format_fail"
+                    record["answer_error"] = str(exc)
+                else:
+                    score["rollout"] = rollout
+                    score["seed"] = seed
+                    score["run_status"] = record["status"]
+                    dump_json(run_dir / "score.json", score)
+            dump_json(run_dir / "run_record.json", record)
             dump_json(run_dir / "telemetry.normalized.json", telemetry)
             dump_json(run_dir / "tool_ledger.normalized.json", ledger)
             rows.append({
                 "task_id": task.task_id,
                 "family_id": task.family_id,
                 "suite": task.suite,
+                "level": task.data["level"],
+                "variant": task.variant,
                 "rollout": rollout,
                 "seed": seed,
                 "mode": mode,
@@ -174,6 +193,7 @@ def run_experiment(
                 "answer_contract_sha256": sha256_file(task.root / task.data["answer_template_file"]),
                 "budget": task.data["budget"],
                 "status": record["status"],
+                "answer_present": record["answer_present"],
                 "score": score["score"] if score else None,
                 "passed": score["passed"] if score else False,
                 "telemetry_file": str((run_dir / "telemetry.normalized.json").relative_to(output_root)),
@@ -186,6 +206,7 @@ def run_experiment(
         "mode": mode,
         "rollouts_per_task": rollouts,
         "base_seed": base_seed,
+        "seed_semantics": "rollout scheduling identifier; provider sampling determinism is adapter-dependent",
         "pairing_modes": sorted(required_modes),
         "task_count": len({row["task_id"] for row in rows}),
         "run_count": len(rows),

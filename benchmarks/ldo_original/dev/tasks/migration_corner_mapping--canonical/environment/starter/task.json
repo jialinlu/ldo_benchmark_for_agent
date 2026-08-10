@@ -1,0 +1,50 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 5,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "migration",
+    "evidence_integrity"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "full_design",
+    "simulation_assisted",
+    "weak_agent_airgap"
+  ],
+  "family_id": "migration_corner_mapping",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "license": "CC-BY-4.0",
+  "lineage_id": "migration_corner_mapping",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "operating_point",
+      "three_point_trend",
+      "loop_gain",
+      "noise_transfer"
+    ],
+    "allowed_regimes": [
+      "op",
+      "dc",
+      "stb",
+      "noise"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "migration",
+  "task_id": "migration_corner_mapping--canonical",
+  "title": "Validate semantic corner mapping instead of matching corner names",
+  "variant": "canonical",
+  "variant_relationship": "none"
+}

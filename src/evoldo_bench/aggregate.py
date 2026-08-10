@@ -7,6 +7,28 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 from .telemetry import summarize_effort, wilson_interval
 
 
+def failed_rollout_score(row: Mapping[str, Any]) -> Dict[str, Any]:
+    """Represent every scheduled non-successful rollout as a scored zero."""
+    return {
+        "schema_version": "1.0",
+        "task_id": str(row["task_id"]),
+        "family_id": str(row["family_id"]),
+        "suite": str(row["suite"]),
+        "level": str(row.get("level", "unknown")),
+        "variant": str(row.get("variant", "unknown")),
+        "score": 0.0,
+        "raw_score": 0.0,
+        "max_score": 100.0,
+        "passed": False,
+        "critical_failed": ["rollout_%s" % row.get("status", "failed")],
+        "checks": [],
+        "rollout": row.get("rollout"),
+        "seed": row.get("seed"),
+        "run_status": row.get("status", "failed"),
+        "synthetic_failure_score": True,
+    }
+
+
 def _summary(values: Sequence[float]) -> Dict[str, float]:
     if not values:
         return {"count": 0, "mean": 0.0, "stddev": 0.0, "min": 0.0, "max": 0.0}
@@ -81,12 +103,19 @@ def aggregate_rollouts(
     """Aggregate repeated rollouts without conflating partial spec score and Pass@1."""
     scores = list(scores)
     telemetry = list(telemetry)
+    if len(scores) != len(telemetry):
+        raise ValueError("every scheduled rollout requires exactly one score and one telemetry record")
     base = aggregate_scores(scores, mode=mode)
     passed = sum(1 for score in scores if bool(score.get("passed")))
     low, high = wilson_interval(passed, len(scores))
     per_task: Dict[str, List[float]] = defaultdict(list)
     for score in scores:
         per_task[str(score["task_id"])].append(float(score["score"]))
+    effort = summarize_effort(telemetry)
+    total_tokens = float(effort["total_observed_tokens"])
+    token_counts = effort["token_measurement"]
+    complete_tokens = token_counts["measured_rollouts"] == len(telemetry)
+    score_points = sum(float(score["score"]) for score in scores)
     base.update({
         "schema_version": "1.1",
         "model_id": model_id,
@@ -95,6 +124,16 @@ def aggregate_rollouts(
         "pass_at_1_ci95": [round(low, 6), round(high, 6)],
         "spec_score": round(mean(float(score["score"]) for score in scores) / 100.0, 6) if scores else 0.0,
         "task_results": {task_id: round(mean(values), 6) for task_id, values in sorted(per_task.items())},
-        "effort": summarize_effort(telemetry),
+        "scheduled_rollouts": len(telemetry),
+        "failed_rollouts": sum(float(score["score"]) == 0.0 and bool(score.get("synthetic_failure_score")) for score in scores),
+        "effort": effort,
+        "token_efficiency": {
+            "measurement_complete": complete_tokens,
+            "tokens_per_score_point": round(total_tokens / score_points, 6) if complete_tokens and score_points else None,
+            "tokens_per_pass": round(total_tokens / passed, 6) if complete_tokens and passed else None,
+            "score_points_per_million_tokens": round(score_points * 1_000_000.0 / total_tokens, 6) if complete_tokens and total_tokens else None,
+            "observed_tokens_per_score_point_lower_bound": round(total_tokens / score_points, 6) if total_tokens and score_points else None,
+            "observed_tokens_per_pass_lower_bound": round(total_tokens / passed, 6) if total_tokens and passed else None,
+        },
     })
     return base

@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "measurement_sign_is_consistent",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "negative_source_current_means_source_delivers_current"
+  ],
+  "held_fixed": [
+    "probe_orientation",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "reported_load_draw_is_magnitude"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "document_sign_convention"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_measurement_sign--canonical"
+}

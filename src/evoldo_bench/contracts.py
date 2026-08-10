@@ -29,6 +29,7 @@ ALLOWED_MODES = {
 }
 ALLOWED_CHECKS = {
     "exact",
+    "set_equals",
     "set_contains",
     "set_excludes",
     "numeric_close",
@@ -175,7 +176,7 @@ def load_task(task_dir: Path) -> Task:
     return Task(task_dir, data)
 
 
-def validate_answer(data: Dict[str, Any]) -> Dict[str, Any]:
+def validate_answer(data: Dict[str, Any], task: Optional[Task] = None) -> Dict[str, Any]:
     _required(
         data,
         [
@@ -210,6 +211,28 @@ def validate_answer(data: Dict[str, Any]) -> Dict[str, Any]:
         for key, value in values.items():
             if not isinstance(key, str) or not isinstance(value, (int, float)) or isinstance(value, bool):
                 raise ContractError("numeric_results must map strings to numbers")
+    if task is not None:
+        case_paths = [path for path in task.input_paths if path.name == "case.json"]
+        if not case_paths:
+            raise ContractError("task does not provide inputs/case.json for controlled answer validation")
+        case = load_json(case_paths[0])
+        vocabulary = case.get("controlled_vocabulary")
+        if not isinstance(vocabulary, dict):
+            raise ContractError("task case is missing controlled_vocabulary")
+        for field in ("conclusion", "analysis_regime"):
+            allowed = vocabulary.get(field)
+            if not isinstance(allowed, list) or data[field] not in allowed:
+                raise ContractError("answer.%s is outside the task controlled vocabulary" % field)
+        for field in ("held_fixed", "evidence_facts", "mechanism_tags", "recommended_actions"):
+            allowed = vocabulary.get(field)
+            if not isinstance(allowed, list):
+                raise ContractError("task controlled vocabulary is missing %s" % field)
+            invalid = sorted(set(data[field]).difference(allowed))
+            if invalid:
+                raise ContractError(
+                    "answer.%s contains values outside the task controlled vocabulary: %s"
+                    % (field, ", ".join(invalid))
+                )
     return data
 
 

@@ -1,0 +1,52 @@
+{
+  "case_id": "sizing_cascode_headroom--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "cascode_headroom_invalid",
+      "cascode_headroom_valid",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "available_headroom_exceeds_required_stack",
+      "device_leaves_saturation",
+      "devices_are_saturated",
+      "required_stack_exceeds_headroom"
+    ],
+    "forbidden_actions": [
+      "assume_nominal_headroom_everywhere",
+      "force_node_voltage_ideally"
+    ],
+    "held_fixed": [
+      "common_mode",
+      "load",
+      "supply"
+    ],
+    "mechanism_tags": [
+      "cascode_can_provide_gain_in_this_regime",
+      "extra_stack_loses_gain_and_swing"
+    ],
+    "recommended_actions": [
+      "use_lower_headroom_gain_technique_or_remove_stack",
+      "verify_worst_corner_margin"
+    ]
+  },
+  "family_id": "sizing_cascode_headroom",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "all_devices_saturated": true,
+      "available_headroom_mv": 360,
+      "required_stack_mv": 290
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

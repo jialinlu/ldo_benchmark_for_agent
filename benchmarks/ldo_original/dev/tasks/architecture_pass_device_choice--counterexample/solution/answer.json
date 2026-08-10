@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "nmos_gate_headroom_is_insufficient",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "gate_cannot_rise_above_input_rail",
+    "source_target_is_close_to_input"
+  ],
+  "held_fixed": [
+    "load",
+    "device_options",
+    "iq_budget"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "nmos_source_follower_lacks_required_overdrive"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "use_pmos_or_approved_boosted_driver"
+  ],
+  "schema_version": "1.0",
+  "task_id": "architecture_pass_device_choice--counterexample"
+}

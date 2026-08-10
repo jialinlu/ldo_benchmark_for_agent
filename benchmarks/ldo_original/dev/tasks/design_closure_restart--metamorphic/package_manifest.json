@@ -1,0 +1,10 @@
+{
+  "package_sha256": "8bd05f4e34b1d2dc014b1615dd3cb9dd13d7831226c4c29c9fa441ad7fd6386b",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_restart--metamorphic"
+}

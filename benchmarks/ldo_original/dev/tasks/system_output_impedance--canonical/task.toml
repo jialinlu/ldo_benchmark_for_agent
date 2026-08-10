@@ -1,0 +1,34 @@
+schema_version = "1.3"
+artifacts = ["/app/answer.json"]
+
+[task]
+name = "evoldo-bench/system_output_impedance--canonical"
+description = "Convert output impedance into a load-step voltage estimate"
+authors = [{ name = "EvoLDO-Bench contributors" }]
+keywords = ["analog", "ldo", "system_impact", "canonical"]
+
+[metadata]
+task_id = "system_output_impedance--canonical"
+family_id = "system_output_impedance"
+suite = "system_impact"
+variant = "canonical"
+level = "L2"
+revision = 2
+maturity = "public-development"
+
+[verifier]
+environment_mode = "separate"
+
+[verifier.environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 300.0
+cpus = 1
+memory_mb = 1024
+storage_mb = 1024

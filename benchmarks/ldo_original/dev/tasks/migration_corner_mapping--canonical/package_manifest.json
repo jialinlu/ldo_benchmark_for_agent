@@ -1,0 +1,10 @@
+{
+  "package_sha256": "eac72c17af5d18eb600bef021ab99ba873ab3830db53b52233bd3667dd71b9c8",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_corner_mapping--canonical"
+}

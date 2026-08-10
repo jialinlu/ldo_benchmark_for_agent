@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "load_moves_output_pole_up",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "output_pole_frequency_increases_with_load",
+    "phase_margin_improves_in_supplied_range"
+  ],
+  "held_fixed": [
+    "cout",
+    "esr",
+    "loop_compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "effective_output_resistance_falls_with_load"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_no_light_load_instability"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_load_pole_shift--canonical"
+}

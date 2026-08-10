@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_small_signal_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "driver_is_under_sized",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "dropout_passes",
+    "phase_margin_fails",
+    "gate_settling_is_slow"
+  ],
+  "held_fixed": [
+    "bias_density",
+    "compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "pass_gate_capacitance_exceeds_driver_capability"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "co_optimize_driver_and_compensation"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_driver_pass_coupling--counterexample"
+}

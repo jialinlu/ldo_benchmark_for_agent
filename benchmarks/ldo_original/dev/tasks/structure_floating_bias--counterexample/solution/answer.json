@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "floating_bias_node",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "cascode_gate_has_no_dc_driver",
+    "node_only_connects_to_mos_gates"
+  ],
+  "held_fixed": [
+    "hierarchy_flattening",
+    "global_net_rules",
+    "pin_directions"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "gate_charge_has_no_defined_dc_path",
+    "operating_point_is_not_physical"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "restore_a_dc_bias_path",
+    "rerun_connectivity_before_simulation"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_floating_bias--counterexample"
+}

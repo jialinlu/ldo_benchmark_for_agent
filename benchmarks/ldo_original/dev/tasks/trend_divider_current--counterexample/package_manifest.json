@@ -1,0 +1,10 @@
+{
+  "package_sha256": "78c8d0e3b6e61ad6aa3019e2e0f1594baced97c2a0aba18caceb53b82df973fb",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_divider_current--counterexample"
+}

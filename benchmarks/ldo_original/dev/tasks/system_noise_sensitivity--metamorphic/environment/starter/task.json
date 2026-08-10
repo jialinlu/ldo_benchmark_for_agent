@@ -1,0 +1,47 @@
+{
+  "answer_template_file": "answer_template.json",
+  "budget": {
+    "max_tool_calls": 2,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "system_impact",
+    "noise"
+  ],
+  "eligible_modes": [
+    "agentic_skill",
+    "direct_reasoning",
+    "simulation_assisted"
+  ],
+  "family_id": "system_noise_sensitivity",
+  "input_files": [
+    "inputs/case.json"
+  ],
+  "language": "en",
+  "level": "L2",
+  "license": "CC-BY-4.0",
+  "lineage_id": "system_noise_sensitivity",
+  "originality": "independently_authored_evoldo_bench",
+  "probe_policy": {
+    "allowed_probe_families": [
+      "port_impedance",
+      "noise_transfer",
+      "transient_envelope"
+    ],
+    "allowed_regimes": [
+      "dc",
+      "ac",
+      "noise",
+      "tran"
+    ],
+    "required_held_fixed": []
+  },
+  "prompt_file": "prompt.md",
+  "schema_version": "1.0",
+  "split": "dev",
+  "suite": "system_impact",
+  "task_id": "system_noise_sensitivity--metamorphic",
+  "title": "Map LDO output noise through a downstream sensitivity",
+  "variant": "metamorphic",
+  "variant_relationship": "SI units and negative sensitivity sign"
+}

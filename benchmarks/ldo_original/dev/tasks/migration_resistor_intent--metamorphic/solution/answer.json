@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_and_noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "resistor_migration_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "ratio_and_voltage_pass",
+    "noise_and_area_pass"
+  ],
+  "held_fixed": [
+    "feedback_ratio",
+    "current_budget",
+    "temperature_range"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "electrical_intent_is_preserved"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "run_extracted_ratio_and_temp_checks"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_resistor_intent--metamorphic"
+}

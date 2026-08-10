@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "noise_propagation",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "system_error_scales_with_sensitivity",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "ldo_noise_is_200uvrms",
+    "downstream_sensitivity_is_0p4"
+  ],
+  "held_fixed": [
+    "integration_bandwidth",
+    "uncorrelated_other_noise",
+    "downstream_operating_point"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "small_signal_noise_scales_by_absolute_sensitivity",
+    "rms_units_are_preserved"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "report_80uvrms_output_error",
+    "verify_sensitivity_across_operating_range"
+  ],
+  "schema_version": "1.0",
+  "task_id": "system_noise_sensitivity--canonical"
+}

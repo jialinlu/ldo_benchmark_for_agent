@@ -1,0 +1,29 @@
+{
+  "analysis_regime": "small_signal_and_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "stability_improves_bandwidth_falls",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "phase_margin_rises_across_three_points",
+    "ugf_falls_across_three_points",
+    "settling_time_increases"
+  ],
+  "held_fixed": [
+    "bias_current",
+    "load_current",
+    "pass_size",
+    "output_capacitance"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "dominant_pole_moves_lower",
+    "bandwidth_stability_tradeoff"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "select_smallest_cc_with_required_margin",
+    "verify_load_corners"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_compensation_cap--metamorphic"
+}

@@ -1,0 +1,10 @@
+{
+  "package_sha256": "22d5a821b9feeec169b001e6a72a439a9eebdb3dcf373e3d7766a1f30c340f5d",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--canonical"
+}

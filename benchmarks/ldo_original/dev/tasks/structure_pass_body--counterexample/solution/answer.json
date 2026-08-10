@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "pmos_body_misconnected_risk",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "body_not_tied_to_highest_local_potential",
+    "body_source_voltage_nonzero"
+  ],
+  "held_fixed": [
+    "device_flavor",
+    "vin_range",
+    "load_current"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "body_effect_increases_threshold",
+    "junction_risk_requires_pdk_check"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "retie_body_to_valid_high_potential",
+    "rerun_operating_region_audit"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--counterexample"
+}

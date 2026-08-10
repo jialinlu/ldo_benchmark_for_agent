@@ -1,0 +1,23 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "feedback_senses_wrong_rail",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "divider_is_connected_to_vin_not_vout"
+  ],
+  "held_fixed": [
+    "divider_ratio",
+    "ea_input_polarity"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "loop_does_not_observe_regulated_output"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "reconnect_divider_top_to_vout"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sense--counterexample"
+}

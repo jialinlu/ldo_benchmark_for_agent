@@ -1,0 +1,27 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "bench_stimulus",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "simulation_completed",
+    "enable_is_below_active_level"
+  ],
+  "held_fixed": [
+    "dut_netlist",
+    "pdk_models",
+    "load_condition"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "disabled_dut_explains_zero_output",
+    "bench_failure_precedes_sizing"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "correct_enable_stimulus",
+    "rerun_operating_point_before_tuning"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_infra_vs_circuit--counterexample"
+}

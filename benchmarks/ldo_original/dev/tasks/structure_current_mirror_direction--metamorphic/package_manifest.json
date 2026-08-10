@@ -1,0 +1,10 @@
+{
+  "package_sha256": "1e15d586cc08e37b2100d19351a908c9f1a9caebf2be6d925f77ecdb7fdecf61",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_current_mirror_direction--metamorphic"
+}

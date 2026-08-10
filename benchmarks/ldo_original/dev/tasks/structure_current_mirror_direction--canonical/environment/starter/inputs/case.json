@@ -1,0 +1,51 @@
+{
+  "case_id": "structure_current_mirror_direction--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "mirror_direction_valid",
+      "mirror_reference_reversed",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "output_branch_sinks_current",
+      "reference_cannot_establish_positive_vgs",
+      "reference_establishes_positive_vgs"
+    ],
+    "forbidden_actions": [
+      "force_gate_with_ideal_voltage",
+      "reverse_reference_current"
+    ],
+    "held_fixed": [
+      "mos_polarity",
+      "supply_orientation"
+    ],
+    "mechanism_tags": [
+      "mirror_has_no_valid_bias_solution",
+      "shared_vgs_copies_sink_current"
+    ],
+    "recommended_actions": [
+      "rerun_operating_point",
+      "reverse_reference_branch_direction",
+      "verify_compliance_and_ratio"
+    ]
+  },
+  "family_id": "structure_current_mirror_direction",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "mirror": "NMOS sink",
+      "output_branch": "sinks from EA node",
+      "reference_branch": "diode-connected to positive reference current"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

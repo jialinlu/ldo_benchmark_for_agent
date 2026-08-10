@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "bandwidth_improves_iq_cost",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "ugf_increases",
+    "iq_increases",
+    "phase_margin_stays_similar"
+  ],
+  "held_fixed": [
+    "device_sizes",
+    "compensation",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "transconductance_increases_with_bias"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "select_bias_from_speed_and_iq_budgets"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_bias_gm_bandwidth--metamorphic"
+}

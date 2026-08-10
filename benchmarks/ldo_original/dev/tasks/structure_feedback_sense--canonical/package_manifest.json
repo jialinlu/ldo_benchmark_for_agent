@@ -1,0 +1,10 @@
+{
+  "package_sha256": "7eb8f05dd76b48165ddbadc01bd284c86b2987837803f4b45c977a5943344aaf",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sense--canonical"
+}

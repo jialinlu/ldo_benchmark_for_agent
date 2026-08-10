@@ -1,0 +1,28 @@
+{
+  "analysis_regime": "pdk_migration",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "migrate_intent_then_resize",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "target_uses_integer_fin_geometry",
+    "source_has_role_and_operating_point_intent"
+  ],
+  "held_fixed": [
+    "architecture",
+    "branch_current_target",
+    "headroom_budget",
+    "load_spec"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "planar_width_is_not_portable",
+    "gm_id_and_headroom_are_migration_invariants"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "map_device_flavor_by_role",
+    "restore_operating_point_before_ac"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_planar_to_finfet--metamorphic"
+}

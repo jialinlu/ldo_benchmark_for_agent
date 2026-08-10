@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "enable_polarity_mismatch",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "active_low_does_not_turn_on_nmos_switch"
+  ],
+  "held_fixed": [
+    "device_polarity",
+    "supply_domains"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "bias_remains_disconnected_when_commanded_on"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "add_correct_polarity_stage",
+    "rerun_enable_truth_table"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_enable_polarity--counterexample"
+}

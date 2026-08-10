@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "feedforward_cap_improves_supplied_range",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "phase_margin_rises",
+    "peaking_falls"
+  ],
+  "held_fixed": [
+    "load",
+    "divider",
+    "compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "zero_location_is_helpful_in_supplied_range"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_beyond_range_and_pvt"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_feedforward_cap_regime--counterexample"
+}

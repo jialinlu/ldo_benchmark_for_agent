@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "device_flavor_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "headroom_leakage_speed_pass"
+  ],
+  "held_fixed": [
+    "geometry",
+    "bias",
+    "temperature"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "flavor_satisfies_the_role_constraints"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_model_corners_and_reliability"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_device_flavor--metamorphic"
+}

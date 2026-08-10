@@ -1,0 +1,53 @@
+{
+  "case_id": "structure_supply_domain_isolation--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "domain_crossing_valid",
+      "insufficient_evidence",
+      "no_change",
+      "unsafe_domain_crossing"
+    ],
+    "evidence_facts": [
+      "device_stress_not_checked",
+      "gate_cannot_reach_high_rail",
+      "level_shifter_present",
+      "off_state_tracks_high_rail"
+    ],
+    "forbidden_actions": [
+      "accept_nominal_only_operation",
+      "remove_level_shifter_for_speed"
+    ],
+    "held_fixed": [
+      "device_voltage_limits",
+      "supply_ranges"
+    ],
+    "mechanism_tags": [
+      "gate_stress_and_false_turn_on_are_controlled",
+      "pass_device_may_remain_on_or_overstress_driver"
+    ],
+    "recommended_actions": [
+      "insert_qualified_level_shift_and_clamp",
+      "verify_all_power_sequences",
+      "verify_power_sequencing"
+    ]
+  },
+  "family_id": "structure_supply_domain_isolation",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "driver_domain_v": 0.8,
+      "level_shifter": "present",
+      "off_state": "gate pulled to VIN",
+      "pass_gate_domain_v": 1.2
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

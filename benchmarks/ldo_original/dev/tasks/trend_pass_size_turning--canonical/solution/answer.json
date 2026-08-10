@@ -1,0 +1,29 @@
+{
+  "analysis_regime": "dc_small_signal_transient",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "dropout_improves_stability_degrades",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "dropout_decreases_with_pass_scale",
+    "phase_margin_decreases_with_pass_scale",
+    "overshoot_increases"
+  ],
+  "held_fixed": [
+    "driver_size",
+    "bias_current",
+    "compensation",
+    "load_step"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "pass_rds_on_decreases",
+    "pass_gate_capacitance_loads_driver"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "co_optimize_driver_and_compensation",
+    "stop_before_phase_margin_gate"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_pass_size_turning--canonical"
+}

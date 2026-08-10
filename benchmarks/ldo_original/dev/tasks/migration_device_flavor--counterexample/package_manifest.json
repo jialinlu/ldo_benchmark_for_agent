@@ -1,0 +1,10 @@
+{
+  "package_sha256": "8c0885e22d5ef194e451ac7b37f84c275e6aeaba79f3f640d944a1a24ddf31f7",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_device_flavor--counterexample"
+}

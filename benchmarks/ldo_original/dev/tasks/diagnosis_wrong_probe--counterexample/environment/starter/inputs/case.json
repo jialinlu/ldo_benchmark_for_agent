@@ -1,0 +1,61 @@
+{
+  "case_id": "diagnosis_wrong_probe--counterexample",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient",
+      "stb"
+    ],
+    "conclusion": [
+      "circuit_stability",
+      "insufficient_evidence",
+      "measurement_probe",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "negative_phase_margin_at_unity_crossing",
+      "probe_is_in_intended_loop",
+      "probe_is_outside_return_loop",
+      "reported_loop_gain_is_below_unity_at_dc"
+    ],
+    "forbidden_actions": [
+      "accept_negative_phase_margin",
+      "accept_phase_margin_number_without_loop_gain",
+      "blame_probe_after_it_is_valid",
+      "retune_compensation_first",
+      "treat_renaming_as_valid_probe"
+    ],
+    "held_fixed": [
+      "bias",
+      "compensation",
+      "dut_topology",
+      "load"
+    ],
+    "mechanism_tags": [
+      "circuit_requires_loop_repair",
+      "measurement_invalidates_margin_claim",
+      "stb_probe_does_not_measure_intended_loop",
+      "valid_stb_evidence_shows_instability"
+    ],
+    "recommended_actions": [
+      "inspect_poles_and_compensation",
+      "move_probe_to_loop_break",
+      "validate_return_ratio_orientation",
+      "verify_after_stability_fix"
+    ]
+  },
+  "family_id": "diagnosis_wrong_probe",
+  "scenario": {
+    "actual_probe": "at intended break with correct iprobe orientation",
+    "changed_from_canonical": "probe is corrected; evidence now shows a negative margin",
+    "intended_loop_break": "between EA output and PMOS pass gate",
+    "loop_gain_dc_db": 64,
+    "reported_phase_margin_deg": -12,
+    "unity_crossing_mhz": 8.2
+  },
+  "schema_version": "1.0",
+  "variant": "counterexample"
+}

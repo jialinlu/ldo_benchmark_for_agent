@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "capacitor_parasitic_breaks_stability",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "nominal_cap_passes",
+    "parasitic_was_ignored",
+    "phase_margin_fails"
+  ],
+  "held_fixed": [
+    "connection_polarity",
+    "load",
+    "loop"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "parasitic_shifts_the_compensation_network"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "include_parasitic_and_retune_network"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_capacitor_intent--counterexample"
+}

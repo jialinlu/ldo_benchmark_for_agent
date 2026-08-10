@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_and_noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "no_swept_point_is_feasible",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "middle_fails_noise",
+    "high_fails_iq"
+  ],
+  "held_fixed": [
+    "device_role",
+    "bandwidth",
+    "load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "objectives_conflict_in_current_search_slice"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "change_device_efficiency_or_architecture"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_noise_iq--counterexample"
+}

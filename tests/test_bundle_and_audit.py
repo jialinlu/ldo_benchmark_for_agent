@@ -21,6 +21,19 @@ class BundleAndAuditTests(unittest.TestCase):
             self.assertFalse(manifest["oracle_included"])
             self.assertTrue(audit_runtime_bundle(output)["passed"])
             self.assertFalse(any("oracle" in path.name.lower() for path in output.rglob("*")))
+            self.assertFalse((output / "tests").exists())
+            self.assertFalse((output / "solution").exists())
+
+    def test_every_reasoning_task_has_separate_task_examples_layout(self):
+        for task in discover_tasks(TASKS):
+            for relative in (
+                "task.toml", "instruction.md", "environment/Dockerfile",
+                "environment/starter/task.json", "environment/starter/answer_template.json",
+                "tests/Dockerfile", "tests/test.sh", "tests/verify.py", "tests/expected.json",
+                "solution/answer.json", "solution/solve.sh", "package_manifest.json",
+            ):
+                self.assertTrue((task.root / relative).is_file(), "%s: %s" % (task.task_id, relative))
+            self.assertIn('schema_version = "1.3"', (task.root / "task.toml").read_text())
 
     def test_collection_audit_passes(self):
         report = audit_task_collection(TASKS, ORACLES)

@@ -1,0 +1,10 @@
+{
+  "package_sha256": "1db98a944573e9d90aa3bea3e0b9052ba6ad6bcb99a695260fe7a6cb13eafdeb",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_cascode_headroom--canonical"
+}

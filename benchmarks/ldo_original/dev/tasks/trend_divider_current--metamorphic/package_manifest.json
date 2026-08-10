@@ -1,0 +1,10 @@
+{
+  "package_sha256": "447ec558bc7232a31accec6e2b058cefe075e4757b35f08e7927c5c45fb6d20a",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_divider_current--metamorphic"
+}

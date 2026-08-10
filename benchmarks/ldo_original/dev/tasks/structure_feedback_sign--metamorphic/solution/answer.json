@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "negative_feedback",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "pmos_gate_falls_when_output_is_low",
+    "pass_current_increases_when_pmos_gate_falls"
+  ],
+  "held_fixed": [
+    "pmos_polarity",
+    "error_amplifier_gain_sign",
+    "supply_and_load"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "loop_restores_output",
+    "pmos_gate_to_current_inverting"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_loop_gain_with_correct_break_point"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_feedback_sign--metamorphic"
+}

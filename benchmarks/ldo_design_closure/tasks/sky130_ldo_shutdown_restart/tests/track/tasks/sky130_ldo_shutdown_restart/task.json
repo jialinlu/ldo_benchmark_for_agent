@@ -1,0 +1,46 @@
+{
+  "candidate_pin_order": [
+    "VDD",
+    "VSS",
+    "VREF",
+    "ENB",
+    "VOUT"
+  ],
+  "candidate_subckt": "evoldo_sky130_ldo",
+  "hard_rules": [
+    "no independent or controlled ideal source inside DUT",
+    "no .ic or .nodeset",
+    "all declared measurements must be present",
+    "fresh simulation evidence must match candidate digest"
+  ],
+  "injected_fault": "The active-high bias shunt is intentionally disconnected.",
+  "objective": "Make ENB turn the DUT off and allow it to restart, using only physical transistor/resistor paths inside the DUT.",
+  "pdk": "sky130",
+  "scenarios": [
+    {
+      "bench_template": "../../benches/shutdown_restart.sp.tpl",
+      "corner": "tt",
+      "limits": {
+        "vout_before": {
+          "max": 1.54,
+          "min": 1.44
+        },
+        "vout_off": {
+          "max": 0.05,
+          "min": -0.01
+        },
+        "vout_restart": {
+          "max": 1.54,
+          "min": 1.44
+        }
+      },
+      "scenario_id": "tt_shutdown_restart",
+      "temperature_c": 27
+    }
+  ],
+  "schema_version": "1.0",
+  "simulator": "ngspice",
+  "starter_candidate": "starter/ldo.sp",
+  "task_id": "sky130_ldo_shutdown_restart",
+  "title": "Close physical shutdown and restart"
+}

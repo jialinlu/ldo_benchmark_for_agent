@@ -1,0 +1,10 @@
+{
+  "package_sha256": "9f10ee1450cd5e0316e2052b65783f3921e060e5ce51bed430045c05adf01ca1",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "system_psrr_ripple--counterexample"
+}

@@ -1,0 +1,54 @@
+{
+  "case_id": "architecture_pass_device_choice--metamorphic",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "insufficient_evidence",
+      "nmos_gate_headroom_is_insufficient",
+      "no_change",
+      "pmos_pass_is_feasible_choice"
+    ],
+    "evidence_facts": [
+      "gate_cannot_rise_above_input_rail",
+      "no_boost_rail_is_required",
+      "pmos_gate_can_be_driven_below_source",
+      "source_target_is_close_to_input"
+    ],
+    "forbidden_actions": [
+      "choose_nmos_without_gate_headroom",
+      "force_gate_above_supply_ideally"
+    ],
+    "held_fixed": [
+      "device_options",
+      "iq_budget",
+      "load"
+    ],
+    "mechanism_tags": [
+      "nmos_source_follower_lacks_required_overdrive",
+      "pmos_supports_high_side_operation_within_available_rails"
+    ],
+    "recommended_actions": [
+      "size_for_dropout_then_verify_stability",
+      "use_pmos_or_approved_boosted_driver"
+    ]
+  },
+  "family_id": "architecture_pass_device_choice",
+  "scenario": {
+    "changed_from_canonical": "representation only",
+    "evidence": {
+      "candidate": "PMOS_high_side",
+      "charge_pump_allowed": false,
+      "vin_v": 1.0,
+      "vout_v": 0.8
+    },
+    "representation_transform": "symbols, ordering, and engineering-unit notation changed without changing the circuit facts"
+  },
+  "schema_version": "1.0",
+  "variant": "metamorphic"
+}

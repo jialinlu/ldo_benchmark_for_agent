@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "pmos_high_side_body_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "body_tied_to_highest_local_potential",
+    "source_is_input_supply"
+  ],
+  "held_fixed": [
+    "device_flavor",
+    "vin_range",
+    "load_current"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "body_diode_reverse_biased",
+    "body_effect_minimized"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_vds_vgs_vbs_across_corners"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_pass_body--canonical"
+}

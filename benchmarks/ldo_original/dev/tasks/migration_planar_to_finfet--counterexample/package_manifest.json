@@ -1,0 +1,10 @@
+{
+  "package_sha256": "9981e25ef6bd3289177b7ca23da19ad2d10185291d3c00eb4269f7a0d4d2d7c6",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_planar_to_finfet--counterexample"
+}

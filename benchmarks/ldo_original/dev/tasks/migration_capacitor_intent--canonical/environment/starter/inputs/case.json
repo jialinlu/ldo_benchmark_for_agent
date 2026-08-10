@@ -1,0 +1,54 @@
+{
+  "case_id": "migration_capacitor_intent--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "capacitor_migration_valid",
+      "capacitor_parasitic_breaks_stability",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "capacitance_and_voltage_pass",
+      "nominal_cap_passes",
+      "parasitic_is_included",
+      "parasitic_was_ignored",
+      "phase_margin_fails"
+    ],
+    "forbidden_actions": [
+      "approve_nominal_value_only",
+      "copy_nominal_cap_only"
+    ],
+    "held_fixed": [
+      "connection_polarity",
+      "load",
+      "loop"
+    ],
+    "mechanism_tags": [
+      "migrated_pole_zero_locations_are_verified",
+      "parasitic_shifts_the_compensation_network"
+    ],
+    "recommended_actions": [
+      "include_parasitic_and_retune_network",
+      "run_pvt_and_extracted_stability"
+    ]
+  },
+  "family_id": "migration_capacitor_intent",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "bottom_plate_parasitic": "included",
+      "cap_error_pct": 3,
+      "pm": "pass",
+      "voltage_rating": "pass"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

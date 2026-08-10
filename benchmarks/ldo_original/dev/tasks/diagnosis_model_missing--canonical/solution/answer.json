@@ -1,0 +1,26 @@
+{
+  "analysis_regime": "execution_status",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "model_mapping_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "elaboration_failed",
+    "no_analysis_started"
+  ],
+  "held_fixed": [
+    "submitted_netlist",
+    "model_include",
+    "section"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "missing_model_mapping_is_infrastructure_configuration"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "survey_valid_model_and_section",
+    "rerun_unchanged_topology"
+  ],
+  "schema_version": "1.0",
+  "task_id": "diagnosis_model_missing--canonical"
+}

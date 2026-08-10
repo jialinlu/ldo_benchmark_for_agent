@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "connectivity",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "enable_path_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "active_low_matches_pmos_switch",
+    "bias_path_closes_when_enabled"
+  ],
+  "held_fixed": [
+    "device_polarity",
+    "supply_domains"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "enable_truth_table_consistent"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "verify_power_sequence_and_restart"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_enable_polarity--metamorphic"
+}

@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "estimated_droop_is_4mv",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "zout_is_80mohm",
+    "step_is_50ma"
+  ],
+  "held_fixed": [
+    "operating_point",
+    "frequency_regime",
+    "linearity"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "delta_v_equals_zout_times_delta_i"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "report_4mv_estimate_and_verify_transient"
+  ],
+  "schema_version": "1.0",
+  "task_id": "system_output_impedance--metamorphic"
+}

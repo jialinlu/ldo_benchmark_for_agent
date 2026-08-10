@@ -1,0 +1,51 @@
+{
+  "case_id": "structure_enable_polarity--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "enable_path_valid",
+      "enable_polarity_mismatch",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "active_low_does_not_turn_on_nmos_switch",
+      "active_low_matches_pmos_switch",
+      "bias_path_closes_when_enabled"
+    ],
+    "forbidden_actions": [
+      "invert_enable_without_truth_table",
+      "resize_bias_devices_first"
+    ],
+    "held_fixed": [
+      "device_polarity",
+      "supply_domains"
+    ],
+    "mechanism_tags": [
+      "bias_remains_disconnected_when_commanded_on",
+      "enable_truth_table_consistent"
+    ],
+    "recommended_actions": [
+      "add_correct_polarity_stage",
+      "rerun_enable_truth_table",
+      "verify_power_sequence_and_restart"
+    ]
+  },
+  "family_id": "structure_enable_polarity",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "active_level": 0,
+      "enable_pin": "ENB",
+      "shutdown_device": "PMOS opens bias path when gate is low"
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

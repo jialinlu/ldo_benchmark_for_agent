@@ -1,0 +1,24 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "esr_has_stability_window",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "middle_esr_has_best_margin"
+  ],
+  "held_fixed": [
+    "cout",
+    "load",
+    "loop_compensation"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "esr_zero_can_add_phase_but_excess_esr_hurts"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "qualify_esr_range_not_nominal_point"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_output_cap_esr--canonical"
+}

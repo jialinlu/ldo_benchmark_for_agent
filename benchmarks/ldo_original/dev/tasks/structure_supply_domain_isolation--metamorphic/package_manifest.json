@@ -1,0 +1,10 @@
+{
+  "package_sha256": "5a32777c59ea0bd87ab04846a80fddee8e003746ec932cefa8162eb6e6598014",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "structure_supply_domain_isolation--metamorphic"
+}

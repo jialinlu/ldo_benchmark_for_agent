@@ -1,0 +1,30 @@
+{
+  "analysis_regime": "dc_and_noise",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "noise_improves_iq_cost_accuracy_flat",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "dc_error_remains_constant",
+    "divider_noise_decreases",
+    "iq_increases"
+  ],
+  "held_fixed": [
+    "error_amplifier",
+    "reference",
+    "load",
+    "resistor_ratio",
+    "buffer_offset"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "input_loading_removed",
+    "thermal_noise_current_tradeoff_remains"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "choose_current_from_noise_and_iq_budget",
+    "verify_real_buffer_noise"
+  ],
+  "schema_version": "1.0",
+  "task_id": "trend_divider_current--counterexample"
+}

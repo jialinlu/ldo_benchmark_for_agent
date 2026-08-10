@@ -1,0 +1,10 @@
+{
+  "package_sha256": "2d65acf1f52c155f56581e8cc4b5e0eb713e2295ca361db534aa1eef13c3733f",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sizing_role_aware_space--counterexample"
+}

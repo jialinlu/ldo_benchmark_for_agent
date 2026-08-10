@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "capacitor_migration_valid",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "capacitance_and_voltage_pass",
+    "parasitic_is_included"
+  ],
+  "held_fixed": [
+    "connection_polarity",
+    "load",
+    "loop"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "migrated_pole_zero_locations_are_verified"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "run_pvt_and_extracted_stability"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_capacitor_intent--canonical"
+}

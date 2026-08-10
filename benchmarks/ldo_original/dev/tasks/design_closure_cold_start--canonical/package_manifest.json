@@ -1,0 +1,10 @@
+{
+  "package_sha256": "e143b51c5c2fd96f4f229099ca246f9d39a8bd013aa42c1eec9b7bd836647f79",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "design_closure_cold_start--canonical"
+}

@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from evoldo_bench.adapters import NgspiceBatchAdapter, ProcessSimulatorAdapter
-from evoldo_bench.aggregate import aggregate_rollouts
+from evoldo_bench.aggregate import aggregate_rollouts, failed_rollout_score
 from evoldo_bench.calibration import calibrate_judges, combine_judges
 from evoldo_bench.discovery import get_task
 from evoldo_bench.exam import create_private_canary, freeze_exam, redact_exam_manifest, verify_exam
@@ -87,6 +87,18 @@ class Phase2AndClosureTests(unittest.TestCase):
         low, high = wilson_interval(2, 3)
         self.assertLess(low, 2 / 3)
         self.assertGreater(high, 2 / 3)
+
+    def test_missing_token_telemetry_is_unknown_not_zero(self):
+        row = empty_telemetry("a", "model", "direct_reasoning", 0, 7, 2.0)
+        self.assertEqual("unavailable", row["token_measurement_status"])
+        self.assertIsNone(row["token_breakdown"]["input"])
+        score = failed_rollout_score({
+            "task_id": "a", "family_id": "fa", "suite": "trend", "level": "L2",
+            "variant": "canonical", "status": "failed",
+        })
+        report = aggregate_rollouts([score], [row], "model", "direct_reasoning")
+        self.assertFalse(report["token_efficiency"]["measurement_complete"])
+        self.assertIsNone(report["token_efficiency"]["tokens_per_score_point"])
 
     def test_exam_manifest_detects_tamper(self):
         with TemporaryDirectory() as temporary:

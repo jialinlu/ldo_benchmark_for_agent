@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "dc_operating_point",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "device_flavor_leakage_failure",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "speed_passes",
+    "hot_leakage_fails"
+  ],
+  "held_fixed": [
+    "geometry",
+    "bias",
+    "temperature"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "threshold_choice_violates_standby_budget"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "use_role_specific_threshold_mix"
+  ],
+  "schema_version": "1.0",
+  "task_id": "migration_device_flavor--counterexample"
+}

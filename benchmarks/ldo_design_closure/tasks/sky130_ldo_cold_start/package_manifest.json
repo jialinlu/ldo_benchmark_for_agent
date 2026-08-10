@@ -1,0 +1,10 @@
+{
+  "package_sha256": "8cc02326fd22c3f34a86d429d29b90c13e65cfc74f1deb25a3e4ab3441562d40",
+  "public_development_solution": true,
+  "runtime_excludes": [
+    "tests",
+    "solution"
+  ],
+  "schema_version": "1.0",
+  "task_id": "sky130_ldo_cold_start"
+}

@@ -1,0 +1,57 @@
+{
+  "case_id": "architecture_loop_style_choice--canonical",
+  "controlled_vocabulary": {
+    "analysis_regime": [
+      "connectivity",
+      "dc_operating_point",
+      "execution_status",
+      "small_signal",
+      "small_signal_and_transient",
+      "startup_transient"
+    ],
+    "conclusion": [
+      "architecture_evidence_is_incomplete",
+      "dual_timescale_loop_is_supported",
+      "insufficient_evidence",
+      "no_change"
+    ],
+    "evidence_facts": [
+      "interaction_is_unknown",
+      "local_and_global_loops_have_separated_bandwidths",
+      "local_loop_was_not_measured",
+      "transient_and_accuracy_pass"
+    ],
+    "forbidden_actions": [
+      "approve_from_global_margin_only",
+      "claim_stability_from_one_break_only"
+    ],
+    "held_fixed": [
+      "iq_budget",
+      "load_range",
+      "output_cap"
+    ],
+    "mechanism_tags": [
+      "fast_local_action_handles_load_while_global_loop_restores_accuracy",
+      "one_loop_measurement_cannot_qualify_nested_loops"
+    ],
+    "recommended_actions": [
+      "measure_each_return_ratio_and_closed_loop_transient",
+      "verify_interaction_with_nested_loop_breaks"
+    ]
+  },
+  "family_id": "architecture_loop_style_choice",
+  "scenario": {
+    "changed_from_canonical": "none",
+    "evidence": {
+      "candidate": "fast_local_loop_plus_slow_accuracy_loop",
+      "evidence": "separate loop bandwidths verified",
+      "requirements": {
+        "iq": "tight",
+        "load_range": "1000x",
+        "transient": "tight"
+      }
+    }
+  },
+  "schema_version": "1.0",
+  "variant": "canonical"
+}

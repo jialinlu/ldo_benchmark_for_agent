@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from .adapters import CommandAgentAdapter, NgspiceBatchAdapter, ProcessSimulatorAdapter
-from .aggregate import aggregate_rollouts, aggregate_scores, paired_lift
+from .aggregate import aggregate_rollouts, aggregate_scores, failed_rollout_score, paired_lift
 from .bundle import build_runtime_bundle
 from .calibration import calibrate_judges, combine_judges
 from .contamination import audit_task_collection
@@ -299,8 +299,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             scores = []
             telemetry = []
             for row in manifest["rows"]:
-                if row.get("score_file"):
+                if row.get("status") == "ok" and row.get("score_file"):
                     scores.append(load_json(args.experiment_root / row["score_file"]))
+                else:
+                    scores.append(failed_rollout_score(row))
                 telemetry.append(load_json(args.experiment_root / row["telemetry_file"]))
             report = aggregate_rollouts(scores, telemetry, manifest["model_id"], manifest["mode"])
             if args.output:

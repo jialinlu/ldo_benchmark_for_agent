@@ -1,0 +1,25 @@
+{
+  "analysis_regime": "small_signal",
+  "claim_boundary": "Limited to the supplied operating regime and held-fixed conditions.",
+  "conclusion": "architecture_evidence_is_incomplete",
+  "confidence": 0.95,
+  "evidence_facts": [
+    "local_loop_was_not_measured",
+    "interaction_is_unknown"
+  ],
+  "held_fixed": [
+    "load_range",
+    "iq_budget",
+    "output_cap"
+  ],
+  "mechanism": "Reference development explanation based only on supplied evidence.",
+  "mechanism_tags": [
+    "one_loop_measurement_cannot_qualify_nested_loops"
+  ],
+  "numeric_results": {},
+  "recommended_actions": [
+    "measure_each_return_ratio_and_closed_loop_transient"
+  ],
+  "schema_version": "1.0",
+  "task_id": "architecture_loop_style_choice--counterexample"
+}
