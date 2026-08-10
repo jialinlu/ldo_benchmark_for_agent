@@ -6,12 +6,18 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
+from evoldo_bench.errors import ContractError
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("model_agent_adapter", ROOT / "tools" / "model_agent_adapter.py")
 assert SPEC and SPEC.loader
 ADAPTER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(ADAPTER)
+MERGE_SPEC = importlib.util.spec_from_file_location("merge_experiment_shards", ROOT / "tools" / "merge_experiment_shards.py")
+assert MERGE_SPEC and MERGE_SPEC.loader
+MERGER = importlib.util.module_from_spec(MERGE_SPEC)
+MERGE_SPEC.loader.exec_module(MERGER)
 
 
 class ModelAgentAdapterTests(unittest.TestCase):
@@ -71,6 +77,35 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertIn("--cap-drop ALL", rendered)
         self.assertNotIn("dst=/workspace", rendered)
         self.assertNotIn("dst=/repo", rendered)
+
+    def test_shard_merge_rejects_duplicates_and_preserves_artifact_paths(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            shards = []
+            for index, task_id in enumerate(("task-a", "task-b")):
+                shard = root / ("shard-%02d" % index)
+                run = shard / "runs" / task_id / "rollout-000"
+                run.mkdir(parents=True)
+                (run / "telemetry.json").write_text("{}")
+                (run / "score.json").write_text("{}")
+                manifest = {
+                    "schema_version": "1.0", "model_id": "m", "mode": "direct_reasoning",
+                    "rollouts_per_task": 1, "base_seed": 7, "seed_semantics": "test",
+                    "pairing_modes": ["direct_reasoning"], "context_snapshot": {"included": False},
+                    "task_count": 1, "run_count": 1,
+                    "rows": [{
+                        "task_id": task_id, "rollout": 0, "seed": 7,
+                        "telemetry_file": "runs/%s/rollout-000/telemetry.json" % task_id,
+                        "score_file": "runs/%s/rollout-000/score.json" % task_id,
+                    }],
+                }
+                (shard / "experiment_manifest.json").write_text(json.dumps(manifest))
+                shards.append(shard)
+            merged = MERGER.merge_shards(root, shards)
+            self.assertEqual(2, merged["task_count"])
+            self.assertTrue(merged["rows"][0]["telemetry_file"].startswith("shard-00/"))
+            with self.assertRaises(ContractError):
+                MERGER.merge_shards(root, [shards[0], shards[0]])
 
 
 if __name__ == "__main__":
