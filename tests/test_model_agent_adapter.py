@@ -63,6 +63,15 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertEqual(0.3, telemetry["provider_total_cost_usd"])
         self.assertEqual("attested", telemetry["model_identity_status"])
 
+    def test_container_boundary_mounts_only_the_task_read_only(self):
+        command = ADAPTER._docker_base(Path("/isolated/task"))
+        rendered = " ".join(command)
+        self.assertIn("type=bind,src=/isolated/task,dst=/task,readonly", rendered)
+        self.assertIn("--read-only", command)
+        self.assertIn("--cap-drop ALL", rendered)
+        self.assertNotIn("dst=/workspace", rendered)
+        self.assertNotIn("dst=/repo", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,6 +3,12 @@
   "probed_at": "2026-08-10",
   "formal_run_started": false,
   "rollouts_per_task": 3,
+  "selected_models": [
+    "codex/gpt-5.6-sol",
+    "kimi-code/k3",
+    "claude-code/deepseek-v4-pro",
+    "claude-code/deepseek-v4-flash"
+  ],
   "models": [
     {
       "agent": "codex",
@@ -87,8 +93,15 @@
     }
   ],
   "formal_policy": {
+    "base_seed": 20260810,
+    "timeout_seconds": 300,
+    "automatic_infrastructure_retries": 0,
     "new_session_per_task_rollout": true,
     "disable_resume_memory_plugins_and_prompt_suggestions": true,
+    "execution_isolation": "fresh Docker container with only the runtime task bundle mounted",
+    "network_policy": "Docker bridge network required only for model provider access",
+    "node_image": "node@sha256:b21fe589dfbe5cc39365d0544b9be3f1f33f55f3c86c87a76ff65a02f8f5848e",
+    "claude_image": "debian@sha256:7b140f374b289a7c2befc338f42ebe6441b7ea838a042bbd5acbfca6ec875818",
     "model_failures_score_zero": true,
     "provider_failures_follow_frozen_retry_policy": true,
     "unknown_tokens_are_never_imputed_as_zero": true,

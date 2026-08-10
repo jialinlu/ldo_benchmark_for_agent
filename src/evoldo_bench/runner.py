@@ -111,7 +111,11 @@ def run_agent_command(
         "task_fingerprint": task_fingerprint(task.root),
         "repository": repository_fingerprint(Path(__file__).resolve().parents[2]),
         "environment": environment_fingerprint(),
-        "security_boundary": "bundle_only; host sandbox not provided by reference runner",
+        "security_boundary": (
+            adapter_outcome.get("execution_isolation")
+            if isinstance(adapter_outcome, dict) and adapter_outcome.get("execution_isolation")
+            else "bundle_only; host sandbox not provided by reference runner"
+        ),
     }
     dump_json(output_dir / "run_record.json", record)
     return record

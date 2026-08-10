@@ -2,6 +2,10 @@
 
 This is the pre-run inventory frozen on 2026-08-10. Access probes are infrastructure checks, not benchmark scores.
 
+The selected first run is GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. It uses base seed
+`20260810`, a 300-second timeout, three new sessions per task, and zero automatic infrastructure retries.
+Every scheduled failure therefore remains visible and scores zero rather than being selectively replaced.
+
 ## Core cohort
 
 | Agent | Model | Status | Formal runs |
@@ -26,3 +30,9 @@ The uniform direct-reasoning entry point is `tools/model_agent_adapter.py`. Form
 agent/model explicitly; Claude's DeepSeek profile is supplied at runtime and is never copied into this
 repository. The adapter disables persistence/custom skills where each CLI supports it, serializes only
 manifest-declared task files, and writes telemetry plus a structured outcome even when no answer is produced.
+
+Each direct-reasoning invocation runs inside a fresh, read-only Docker container with one runtime task bundle
+mounted at `/task`, a minimal ephemeral authentication state, no repository/oracle/solution mount, one CPU,
+2 GiB memory, a 256-process limit, all Linux capabilities dropped, and a pinned base-image digest. Docker
+bridge networking remains enabled solely because the four provider CLIs require network access; this is an
+explicit limitation of the public-development treatment.

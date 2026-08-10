@@ -12,6 +12,7 @@ import json
 import os
 import re
 import signal
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,6 +23,8 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 TOKEN_FIELDS = ("input", "cached_input", "output", "reasoning", "cache_write")
 COST_FIELDS = TOKEN_FIELDS
+NODE_IMAGE = "node@sha256:b21fe589dfbe5cc39365d0544b9be3f1f33f55f3c86c87a76ff65a02f8f5848e"
+CLAUDE_IMAGE = "debian@sha256:7b140f374b289a7c2befc338f42ebe6441b7ea838a042bbd5acbfca6ec875818"
 
 
 def _nullable(fields: Iterable[str]) -> Dict[str, None]:
@@ -102,10 +105,10 @@ def _codex(command_output: str) -> Tuple[str, Dict[str, Any], Optional[str]]:
     return final, usage, thread_id
 
 
-def _find_kimi_usage(session_id: Optional[str]) -> Tuple[Dict[str, Any], Optional[str]]:
+def _find_kimi_usage(session_id: Optional[str], home: Optional[Path] = None) -> Tuple[Dict[str, Any], Optional[str]]:
     if not session_id:
         return {}, None
-    roots = list((Path.home() / ".kimi-code" / "sessions").glob("**/%s" % session_id))
+    roots = list(((home or Path.home()) / ".kimi-code" / "sessions").glob("**/%s" % session_id))
     if len(roots) != 1:
         return {}, None
     wire = roots[0] / "agents" / "main" / "wire.jsonl"
@@ -126,7 +129,7 @@ def _find_kimi_usage(session_id: Optional[str]) -> Tuple[Dict[str, Any], Optiona
     return totals, reported_model
 
 
-def _kimi(command_output: str) -> Tuple[str, Dict[str, Any], Optional[str]]:
+def _kimi(command_output: str, home: Optional[Path] = None) -> Tuple[str, Dict[str, Any], Optional[str]]:
     final = ""
     session_id = None
     for line in command_output.splitlines():
@@ -138,7 +141,7 @@ def _kimi(command_output: str) -> Tuple[str, Dict[str, Any], Optional[str]]:
             final = event["content"]
         if event.get("type") == "session.resume_hint":
             session_id = event.get("session_id")
-    usage, reported_model = _find_kimi_usage(session_id)
+    usage, reported_model = _find_kimi_usage(session_id, home=home)
     return final, usage, reported_model
 
 
@@ -174,6 +177,113 @@ def _telemetry_base(model: str, wall: float) -> Dict[str, Any]:
         "provider_total_cost_usd": None,
         "infra_status": "not_used",
     }
+
+
+def _copy_required(source: Path, destination: Path) -> None:
+    if not source.is_file():
+        raise FileNotFoundError("required runtime credential is unavailable: %s" % source.name)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+
+
+def _docker_base(task_dir: Path) -> List[str]:
+    return [
+        "docker", "run", "--rm", "--read-only", "--network", "bridge",
+        "--cpus", "1", "--memory", "2g", "--pids-limit", "256",
+        "--user", "%d:%d" % (os.getuid(), os.getgid()),
+        "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
+        "--tmpfs", "/tmp:rw,noexec,nosuid,size=268435456",
+        "--mount", "type=bind,src=%s,dst=/task,readonly" % task_dir,
+        "--mount", "type=bind,src=/etc/ssl/certs,dst=/etc/ssl/certs,readonly",
+        "--workdir", "/task",
+    ]
+
+
+def _container_command(
+    agent: str,
+    model: str,
+    prompt: str,
+    task_dir: Path,
+    temporary: Path,
+    claude_settings: Optional[str],
+) -> Tuple[List[str], Optional[Path], str]:
+    base = _docker_base(task_dir)
+    if agent == "codex":
+        executable = shutil.which("codex")
+        if not executable:
+            raise FileNotFoundError("codex executable is unavailable")
+        script = Path(executable).resolve()
+        runtime = script.parents[3]
+        state = temporary / "codex-state"
+        _copy_required(Path.home() / ".codex" / "auth.json", state / "auth.json")
+        command = base + [
+            "--mount", "type=bind,src=%s,dst=/opt/node_modules,readonly" % runtime,
+            "--mount", "type=bind,src=%s,dst=/state" % state,
+            "--env", "CODEX_HOME=/state", NODE_IMAGE,
+            "node", "/opt/node_modules/@openai/codex/bin/codex.js", "exec", "--ephemeral",
+            "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules",
+            "-c", 'approval_policy="never"', "-s", "read-only", "-m", model, "--json", prompt,
+        ]
+        return command, None, NODE_IMAGE
+
+    if agent == "kimi":
+        executable = shutil.which("kimi")
+        if not executable:
+            raise FileNotFoundError("kimi executable is unavailable")
+        script = Path(executable).resolve()
+        runtime = script.parents[1]
+        home = temporary / "kimi-home"
+        source = Path.home() / ".kimi-code"
+        _copy_required(source / "config.toml", home / ".kimi-code" / "config.toml")
+        _copy_required(source / "credentials" / "kimi-code.json", home / ".kimi-code" / "credentials" / "kimi-code.json")
+        _copy_required(source / "device_id", home / ".kimi-code" / "device_id")
+        oauth = source / "oauth" / "kimi-code"
+        if oauth.is_file():
+            _copy_required(oauth, home / ".kimi-code" / "oauth" / "kimi-code")
+        skills = temporary / "empty-skills"
+        skills.mkdir()
+        agent_file = temporary / "benchmark-direct.md"
+        agent_file.write_text(
+            "---\n"
+            "name: benchmark-direct\n"
+            "description: Answer one isolated benchmark task without tools.\n"
+            "tools: []\n"
+            "---\n"
+            "Reason from the user-supplied task content only. Do not call tools. "
+            "Return exactly the requested final JSON object without commentary or Markdown fences.\n",
+            encoding="utf-8",
+        )
+        command = base + [
+            "--mount", "type=bind,src=%s,dst=/opt/kimi,readonly" % runtime,
+            "--mount", "type=bind,src=%s,dst=/state-home" % home,
+            "--mount", "type=bind,src=%s,dst=/empty-skills,readonly" % skills,
+            "--mount", "type=bind,src=%s,dst=/benchmark-direct.md,readonly" % agent_file,
+            "--env", "HOME=/state-home", NODE_IMAGE,
+            "node", "/opt/kimi/dist/main.mjs", "-m", model,
+            "--skills-dir", "/empty-skills", "--agent-file", "/benchmark-direct.md",
+            "-p", prompt, "--output-format", "stream-json",
+        ]
+        return command, home, NODE_IMAGE
+
+    settings_value = claude_settings or os.environ.get("EVOLDO_CLAUDE_SETTINGS")
+    if not settings_value:
+        raise ValueError("containerized Claude requires --claude-settings or EVOLDO_CLAUDE_SETTINGS")
+    executable = shutil.which("claude")
+    if not executable:
+        raise FileNotFoundError("claude executable is unavailable")
+    state = temporary / "claude-state"
+    _copy_required(Path(settings_value).expanduser().resolve(), state / "settings.json")
+    (state / "home").mkdir()
+    command = base + [
+        "--mount", "type=bind,src=%s,dst=/opt/claude,readonly" % Path(executable).resolve(),
+        "--mount", "type=bind,src=%s,dst=/state" % state,
+        "--env", "HOME=/state/home", CLAUDE_IMAGE,
+        "/opt/claude", "-p", "--model", model, "--effort", "medium", "--safe-mode",
+        "--bare", "--disable-slash-commands", "--tools", "", "--no-session-persistence",
+        "--prompt-suggestions", "false", "--output-format", "json",
+        "--settings", "/state/settings.json", prompt,
+    ]
+    return command, None, CLAUDE_IMAGE
 
 
 def _normalize_codex(model: str, raw: Dict[str, Any], telemetry: Dict[str, Any]) -> None:
@@ -247,14 +357,22 @@ def main() -> int:
     parser.add_argument("--agent", choices=("codex", "kimi", "claude"), required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--claude-settings")
+    parser.add_argument("--containerized", action="store_true")
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
 
     task_dir = Path(os.environ["EVOLDO_TASK_DIR"]).resolve()
     prompt = _prompt(task_dir)
     timeout = args.timeout or max(1, int(os.environ.get("EVOLDO_TIMEOUT_SECONDS", "300")) - 15)
-    with tempfile.TemporaryDirectory(prefix="evoldo-adapter-") as temporary:
-        if args.agent == "codex":
+    container_image = None
+    with tempfile.TemporaryDirectory(prefix="evoldo-adapter-") as temporary_value:
+        temporary = Path(temporary_value)
+        kimi_home = None
+        if args.containerized:
+            command, kimi_home, container_image = _container_command(
+                args.agent, args.model, prompt, task_dir, temporary, args.claude_settings
+            )
+        elif args.agent == "codex":
             command = [
                 "codex", "exec", "--ephemeral", "--skip-git-repo-check", "--ignore-user-config",
                 "--ignore-rules", "-c", 'approval_policy="never"', "-s", "read-only",
@@ -262,7 +380,7 @@ def main() -> int:
             ]
         elif args.agent == "kimi":
             command = [
-                "kimi", "-m", args.model, "--skills-dir", temporary,
+                "kimi", "-m", args.model, "--skills-dir", str(temporary),
                 "-p", prompt, "--output-format", "stream-json",
             ]
         else:
@@ -271,23 +389,26 @@ def main() -> int:
                 "--tools", "", "--no-session-persistence", "--prompt-suggestions", "false",
                 "--output-format", "json",
             ]
-            if args.claude_settings:
-                command.extend(("--settings", args.claude_settings))
+            settings_value = args.claude_settings or os.environ.get("EVOLDO_CLAUDE_SETTINGS")
+            if settings_value:
+                command.extend(("--settings", settings_value))
             command.append(prompt)
         return_code, stdout, stderr, timed_out, wall = _run(command, task_dir, timeout)
+        telemetry = _telemetry_base(args.model, wall)
+        if args.agent == "codex":
+            final, raw, _thread = _codex(stdout)
+            _normalize_codex(args.model, raw, telemetry)
+        elif args.agent == "kimi":
+            final, raw, reported = _kimi(stdout, home=kimi_home)
+            _normalize_kimi(args.model, raw, reported, telemetry)
+        else:
+            final, raw, reported = _claude(stdout)
+            _normalize_claude(args.model, raw, reported, telemetry)
 
     sys.stdout.write(stdout)
     sys.stderr.write(stderr)
-    telemetry = _telemetry_base(args.model, wall)
-    if args.agent == "codex":
-        final, raw, _thread = _codex(stdout)
-        _normalize_codex(args.model, raw, telemetry)
-    elif args.agent == "kimi":
-        final, raw, reported = _kimi(stdout)
-        _normalize_kimi(args.model, raw, reported, telemetry)
-    else:
-        final, raw, reported = _claude(stdout)
-        _normalize_claude(args.model, raw, reported, telemetry)
+    telemetry["execution_isolation"] = "docker_task_only" if args.containerized else "host_cli"
+    telemetry["container_image"] = container_image
 
     status = "ok"
     reason = None
@@ -313,6 +434,8 @@ def main() -> int:
     outcome_path.write_text(json.dumps({
         "schema_version": "1.0", "status": status, "reason": reason,
         "provider_return_code": return_code, "timed_out": timed_out,
+        "execution_isolation": telemetry["execution_isolation"],
+        "container_image": container_image,
     }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0 if status == "ok" else 2
 
