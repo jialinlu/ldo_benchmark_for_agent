@@ -13,16 +13,18 @@ from .calibration import calibrate_judges, combine_judges
 from .contamination import audit_task_collection
 from .contracts import load_task, validate_answer, validate_oracle
 from .discovery import discover_tasks, get_task, inventory, validate_registry
-from .errors import BenchmarkError
+from .errors import BenchmarkError, PolicyError
 from .exam import create_private_canary, freeze_exam, redact_exam_manifest, verify_exam
 from .experiment import compare_treatments, run_experiment
 from .grading import grade_directory, grade_one
 from .leaderboard import write_leaderboard
 from .report import write_markdown
+from .recovery import recover_experiment
 from .probes import evaluate_probe_contract
 from .public_pdk import DEFAULT_TRACK_ROOT, load_closure_registry, run_closure_suite
 from .qualification import build_candidate_manifest, qualify_candidate, summarize_qualification_attempts
 from .runner import run_agent_command
+from .telemetry import summarize_effort
 from .utils import dump_json, load_json
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -119,6 +121,23 @@ def build_parser() -> argparse.ArgumentParser:
     experiment_report.add_argument("experiment_root", type=_path)
     experiment_report.add_argument("--output", type=_path)
     experiment_report.add_argument("--markdown", type=_path)
+
+    recover = sub.add_parser(
+        "recover-experiment",
+        help="regrade an experiment and retry only provider/runner infrastructure failures",
+    )
+    recover.add_argument("--source", type=_path, required=True)
+    recover.add_argument("--output", type=_path, required=True)
+    recover.add_argument("--tasks-root", type=_path, default=DEFAULT_TASKS)
+    recover.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
+    recover.add_argument("--max-infrastructure-retries", type=int, default=5)
+    recover.add_argument("--retry-backoff-seconds", type=float, default=2.0)
+    recover.add_argument("--timeout", type=int)
+    recover.add_argument("--resume", action="store_true")
+    recover.add_argument(
+        "agent_command", nargs="+",
+        help="command template after --; supports {task_id}, {rollout}, and {seed}",
+    )
 
     probe = sub.add_parser("validate-probe", help="enforce AnalogProbeContract and task-specific tool policy")
     probe.add_argument("probe", type=_path)
@@ -294,8 +313,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             )
             _print_json({"output": str(args.output), "run_count": result["run_count"], "context_snapshot": result["context_snapshot"]["snapshot_id"]})
             return 0
+        if args.command_name == "recover-experiment":
+            command = list(args.agent_command)
+            if command and command[0] == "--":
+                command = command[1:]
+            result = recover_experiment(
+                args.source, args.output, args.tasks_root, args.oracle_root,
+                CommandAgentAdapter(command), args.max_infrastructure_retries,
+                args.timeout, args.retry_backoff_seconds, args.resume,
+            )
+            _print_json({
+                "output": str(args.output),
+                "capability_complete": result["capability_complete"],
+                "recovery": result["recovery"],
+            })
+            return 0 if result["capability_complete"] else 12
         if args.command_name == "experiment-report":
             manifest = load_json(args.experiment_root / "experiment_manifest.json")
+            if manifest.get("capability_complete") is False:
+                raise PolicyError(
+                    "capability report is blocked while infrastructure retries remain unresolved"
+                )
             scores = []
             telemetry = []
             for row in manifest["rows"]:
@@ -305,6 +343,41 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     scores.append(failed_rollout_score(row))
                 telemetry.append(load_json(args.experiment_root / row["telemetry_file"]))
             report = aggregate_rollouts(scores, telemetry, manifest["model_id"], manifest["mode"])
+            attempt_telemetry = []
+            infrastructure_attempts = 0
+            for row in manifest["rows"]:
+                for attempt in row.get("attempts", []):
+                    attempt_telemetry.append(
+                        load_json(args.experiment_root / attempt["telemetry_file"])
+                    )
+                    infrastructure_attempts += attempt.get("classification") == "infrastructure"
+            if attempt_telemetry:
+                operational = summarize_effort(attempt_telemetry)
+                score_points = sum(float(score["score"]) for score in scores)
+                passed = sum(bool(score.get("passed")) for score in scores)
+                total_tokens = float(operational["total_observed_tokens"])
+                token_counts = operational["token_measurement"]
+                measurement_complete = (
+                    token_counts["measured_rollouts"] == len(attempt_telemetry)
+                )
+                report["operational_effort_all_attempts"] = operational
+                report["operational_attempt_count"] = len(attempt_telemetry)
+                report["infrastructure_attempt_count"] = infrastructure_attempts
+                report["operational_token_efficiency"] = {
+                    "measurement_complete": measurement_complete,
+                    "tokens_per_score_point": (
+                        round(total_tokens / score_points, 6)
+                        if measurement_complete and score_points else None
+                    ),
+                    "tokens_per_pass": (
+                        round(total_tokens / passed, 6)
+                        if measurement_complete and passed else None
+                    ),
+                    "observed_tokens_per_score_point_lower_bound": (
+                        round(total_tokens / score_points, 6)
+                        if total_tokens and score_points else None
+                    ),
+                }
             if args.output:
                 dump_json(args.output, report)
             if args.markdown:

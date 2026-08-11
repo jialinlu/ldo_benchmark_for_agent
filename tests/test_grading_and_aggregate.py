@@ -2,6 +2,7 @@ from pathlib import Path
 import unittest
 
 from evoldo_bench.aggregate import aggregate_scores, failed_rollout_score, paired_lift
+from evoldo_bench.contracts import validate_answer
 from evoldo_bench.errors import ContractError
 from evoldo_bench.discovery import discover_tasks
 from evoldo_bench.graders import grade_answer
@@ -14,6 +15,17 @@ ORACLES = ROOT / "benchmarks" / "ldo_original" / "dev_reference" / "oracles"
 
 
 class GradingAndAggregateTests(unittest.TestCase):
+    def test_unscored_numeric_results_accept_nested_supporting_data(self):
+        task = discover_tasks(TASKS)[0]
+        answer = reference_answer(task.root, ORACLES / (task.task_id + ".oracle.json"))
+        answer["numeric_results"] = {
+            "phase_margin_deg": [42.0, 58.0],
+            "corner": "ss",
+            "converged": True,
+            "sweep": {"load_ma": [1, 10, 100]},
+        }
+        validate_answer(answer, task)
+
     def test_reference_answers_score_100(self):
         scores = []
         for task in discover_tasks(TASKS):

@@ -17,6 +17,10 @@
     "mechanism": {"type": "string", "minLength": 1},
     "claim_boundary": {"type": "string", "minLength": 1},
     "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-    "numeric_results": {"type": "object", "additionalProperties": {"type": "number"}}
+    "numeric_results": {
+      "type": "object",
+      "description": "Optional unscored supporting data; values may be nested JSON scalars, arrays, or objects.",
+      "additionalProperties": true
+    }
   }
 }

@@ -104,6 +104,13 @@
     "claude_image": "debian@sha256:7b140f374b289a7c2befc338f42ebe6441b7ea838a042bbd5acbfca6ec875818",
     "model_failures_score_zero": true,
     "provider_failures_follow_frozen_retry_policy": true,
+    "post_run_recovery_policy": {
+      "authorized_after_framework_and_gateway_failures_were_observed": true,
+      "same_task_rollout_and_seed": true,
+      "framework_validation_failures_are_regraded_after_a_versioned_fix": true,
+      "unresolved_infrastructure_failures_block_capability_reporting": true,
+      "all_retry_attempt_tokens_cost_and_wall_time_are_operationally_counted": true
+    },
     "unknown_tokens_are_never_imputed_as_zero": true,
     "provider_raw_usage_is_preserved": true
   }

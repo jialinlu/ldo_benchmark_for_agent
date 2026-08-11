@@ -2,9 +2,13 @@
 
 This is the pre-run inventory frozen on 2026-08-10. Access probes are infrastructure checks, not benchmark scores.
 
-The selected first run is GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. It uses base seed
-`20260810`, a 300-second timeout, three new sessions per task, and zero automatic infrastructure retries.
-Every scheduled failure therefore remains visible and scores zero rather than being selectively replaced.
+The selected first run is GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. Its pre-run policy
+used base seed `20260810`, a 300-second timeout, three new sessions per task, and zero automatic retries.
+After framework and gateway failures were diagnosed, the benchmark owner authorized the versioned recovery
+policy below. This provenance is retained rather than rewriting the original policy. A model-attributable
+failure remains in the score denominator as zero. A provider, gateway, runner, or model-identity failure is
+retried with the same task, rollout, and seed until a model-attributable outcome is obtained. Every attempt
+remains visible; successful retries do not erase the failed attempt's tokens, cost, or wall time.
 
 ## Core cohort
 
@@ -24,7 +28,23 @@ The machine-readable inventory is [`benchmarks/model_matrix.json`](../benchmarks
 
 Every scheduled attempt retains provider-reported input, cache-read, cache-write, output, reasoning, cost, and wall time when available. This includes valid answers, model-declared inability, refusal, malformed output, timeout, policy failure, and interrupted generation. Missing telemetry is `unavailable`, never numeric zero. Provider-specific raw usage is retained alongside normalized fields because tokenizers and hidden-reasoning accounting differ.
 
-Model failures score zero. A provider failure before inference is an infrastructure event and follows a retry policy frozen before formal execution; every failed infrastructure attempt still appears in the operational-efficiency report.
+Model failures score zero. A provider failure before inference, interrupted provider stream, outer runner
+timeout, or reported-model mismatch is an infrastructure event. Those attempts are excluded from the
+capability denominator only after a same-row retry replaces them, while all attempts appear in the
+operational-efficiency report. A capability report is blocked if any infrastructure row is unresolved.
+
+`numeric_results` is optional, unscored supporting JSON. It may contain nested values of any JSON type.
+This contract was corrected in v0.5.0 after the original runner incorrectly required every value to be a
+number. Existing answers rejected solely by that runner error are regraded verbatim; the model is not
+queried again and the original answer hash remains auditable.
+
+Recovery is explicit and resumable:
+
+```bash
+evoldo-bench recover-experiment --source runs/original/MODEL --output runs/recovered/MODEL \
+  --max-infrastructure-retries 5 --timeout 300 -- \
+  /absolute/path/to/model_adapter
+```
 
 The uniform direct-reasoning entry point is `tools/model_agent_adapter.py`. Formal invocations pass the
 agent/model explicitly; Claude's DeepSeek profile is supplied at runtime and is never copied into this

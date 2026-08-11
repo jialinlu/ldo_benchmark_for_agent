@@ -55,10 +55,17 @@ The adapter must write the same `answer.json` contract in all modes. Detailed pr
 written to `EVOLDO_TELEMETRY_PATH`. Any tool use must be recorded at `EVOLDO_TOOL_LEDGER_PATH`; undeclared
 calls, rejected probes, and over-budget calls are policy failures.
 
-Every scheduled rollout remains in the score denominator. A model timeout, refusal, declared inability,
+Every scheduled rollout remains in the score denominator. A refusal, declared inability,
 malformed answer, missing answer, or policy failure receives a deterministic zero. Provider or runner
-infrastructure failures follow the release's pre-frozen retry policy and remain visible in the operational
-report. Missing token or cost telemetry is `unavailable`, never silently converted to numeric zero.
+infrastructure failures are retried with the same task, rollout, and seed until a model-attributable outcome
+is obtained. Provider timeouts and interrupted streams are infrastructure failures; an answer that violates
+the current answer contract is a model failure. Every attempt remains visible in the operational report,
+and unresolved infrastructure rows block capability reporting. Missing token or cost telemetry is
+`unavailable`, never silently converted to numeric zero.
+
+If a versioned framework defect rejected a contract-valid answer, preserve the answer and its hash, repair
+the framework, and regrade it without another inference. Do not use a new model response to conceal a
+grader or schema defect.
 
 ## 3. Prove the comparison is paired
 

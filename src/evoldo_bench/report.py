@@ -39,6 +39,17 @@ def render_markdown(report: Dict[str, Any]) -> str:
                 if token_efficiency.get("tokens_per_score_point") is not None else "unavailable"
             ),
         ])
+        operational = report.get("operational_effort_all_attempts")
+        if operational:
+            lines.extend([
+                "- Operational attempts: %d (%d infrastructure attempts); total observed tokens: %.0f; total observed cost: %s" % (
+                    report.get("operational_attempt_count", 0),
+                    report.get("infrastructure_attempt_count", 0),
+                    operational.get("total_observed_tokens", 0.0),
+                    "$%.2f" % operational["total_observed_cost_usd"]
+                    if operational.get("total_observed_cost_usd") is not None else "unavailable",
+                ),
+            ])
     lines.extend([
         "",
         "## Capability suites",

@@ -208,9 +208,6 @@ def validate_answer(data: Dict[str, Any], task: Optional[Task] = None) -> Dict[s
         values = data["numeric_results"]
         if not isinstance(values, dict):
             raise ContractError("answer.numeric_results must be an object")
-        for key, value in values.items():
-            if not isinstance(key, str) or not isinstance(value, (int, float)) or isinstance(value, bool):
-                raise ContractError("numeric_results must map strings to numbers")
     if task is not None:
         case_paths = [path for path in task.input_paths if path.name == "case.json"]
         if not case_paths:
