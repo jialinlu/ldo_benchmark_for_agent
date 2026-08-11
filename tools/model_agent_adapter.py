@@ -32,8 +32,12 @@ def _nullable(fields: Iterable[str]) -> Dict[str, None]:
 
 
 def _prompt(task_dir: Path) -> str:
-    task = json.loads((task_dir / "task.json").read_text(encoding="utf-8"))
+    manifest = task_dir / "task.json"
+    if not manifest.is_file():
+        manifest = task_dir / "task_contract.json"
+    task = json.loads(manifest.read_text(encoding="utf-8"))
     paths = [task["prompt_file"], task["answer_template_file"], *task["input_files"]]
+    paths = list(dict.fromkeys(paths))
     sections = [
         "Solve the following EvoLDO public-development task.",
         "Use only the supplied file contents. Do not access other paths, prior runs, solutions, tests, or oracles.",
@@ -428,6 +432,22 @@ def main() -> int:
         else:
             Path(os.environ["EVOLDO_ANSWER_PATH"]).write_text(json.dumps(answer, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             telemetry["infra_status"] = "ok"
+
+    observed_tokens = [value for key, value in telemetry["token_breakdown"].items()
+                       if key != "cache_write" and isinstance(value, (int, float))]
+    terminal_tokens = sum(observed_tokens) if observed_tokens else None
+    terminal_status = {
+        "ok": "completed", "model_incomplete": "model_incomplete", "format_fail": "format_fail",
+        "provider_timeout": "infra_fail", "provider_infra_fail": "infra_fail",
+    }[status]
+    telemetry["milestones"] = {
+        "first_feasible_seconds": round(wall, 6) if status == "ok" else None,
+        "terminal_seconds": round(wall, 6),
+        "first_feasible_tokens": terminal_tokens if status == "ok" else None,
+        "terminal_tokens": terminal_tokens,
+        "terminal_tokens_status": telemetry["token_measurement_status"],
+        "terminal_status": terminal_status,
+    }
 
     Path(os.environ["EVOLDO_TELEMETRY_PATH"]).write_text(json.dumps(telemetry, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     outcome_path = Path(os.environ.get("EVOLDO_OUTCOME_PATH", task_dir / "outcome.json"))

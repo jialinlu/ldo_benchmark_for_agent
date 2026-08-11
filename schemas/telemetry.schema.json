@@ -33,7 +33,8 @@
         "terminal_seconds": {"type": ["number", "null"], "minimum": 0},
         "first_feasible_tokens": {"type": ["number", "null"], "minimum": 0},
         "terminal_tokens": {"type": ["number", "null"], "minimum": 0},
-        "terminal_status": {"enum": ["completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"]}
+        "terminal_status": {"enum": ["completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"]},
+        "terminal_tokens_status": {"enum": ["measured", "partial", "unavailable"]}
       }
     }
   },

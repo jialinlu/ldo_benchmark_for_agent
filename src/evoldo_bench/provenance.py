@@ -19,8 +19,11 @@ def environment_fingerprint() -> Dict[str, Any]:
 
 def task_fingerprint(task_root: Path) -> Dict[str, Any]:
     files = relative_hashes(task_root)
+    manifest = task_root / "task.json"
+    if not manifest.is_file():
+        manifest = task_root / "task.toml"
     return {
-        "manifest_sha256": sha256_file(task_root / "task.json"),
+        "manifest_sha256": sha256_file(manifest),
         "task_files": files,
     }
 

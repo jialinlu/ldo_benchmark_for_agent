@@ -78,6 +78,8 @@ def validate_telemetry(data: Dict[str, Any]) -> Dict[str, Any]:
         "completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"
     }:
         raise ContractError("unsupported telemetry.milestones.terminal_status")
+    if "terminal_tokens_status" in milestones and milestones["terminal_tokens_status"] not in MEASUREMENT_STATUSES:
+        raise ContractError("unsupported telemetry.milestones.terminal_tokens_status")
     data["milestones"] = milestones
     identity_status = data.get("model_identity_status", "unavailable")
     if identity_status not in {"attested", "requested_only", "mismatch", "unavailable"}:

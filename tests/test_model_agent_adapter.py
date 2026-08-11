@@ -21,6 +21,21 @@ MERGE_SPEC.loader.exec_module(MERGER)
 
 
 class ModelAgentAdapterTests(unittest.TestCase):
+    def test_prompt_accepts_v06_demo_bundle(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "task_contract.json").write_text(json.dumps({
+                "prompt_file": "instruction.md", "answer_template_file": "answer_template.json",
+                "input_files": ["case.json", "answer_template.json"]
+            }))
+            (root / "instruction.md").write_text("instruction")
+            (root / "answer_template.json").write_text("{}")
+            (root / "case.json").write_text("{\"case\": true}")
+            prompt = ADAPTER._prompt(root)
+            self.assertIn("instruction", prompt)
+            self.assertIn('"case": true', prompt)
+            self.assertEqual(prompt.count("===== answer_template.json ====="), 1)
+
     def test_extract_json_accepts_object_and_rejects_commentary(self):
         self.assertEqual({"x": 1}, ADAPTER._extract_json('{"x": 1}'))
         with self.assertRaises(ValueError):
