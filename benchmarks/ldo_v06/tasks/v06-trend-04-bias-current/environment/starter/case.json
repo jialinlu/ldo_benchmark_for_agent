@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -140,7 +140,7 @@
           "text": "About 0.73x because only Rout matters"
         }
       ],
-      "prompt": "What first-order DC-gain factor follows from the supplied gm and Rout changes?"
+      "prompt": "What first-order DC-gain factor follows from the supplied gm and Rout changes? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

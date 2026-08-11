@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "P2 has 8 mV, 4 deg, and 14 uA margin; P3 exceeds IQ by 12 uA"
+          "text": "P3 is preferred because it has the lowest dropout"
         },
         {
           "id": "B",
-          "text": "P2 passes all gates and P3 fails IQ"
+          "text": "P2 has 8 mV, 4 deg, and 14 uA margin; P3 exceeds IQ by 12 uA"
         },
         {
           "id": "C",
-          "text": "P2 has 18 mV dropout margin and P3 fails PM"
+          "text": "P2 passes all gates and P3 fails IQ"
         },
         {
           "id": "D",
-          "text": "P3 is preferred because it has the lowest dropout"
+          "text": "P2 has 18 mV dropout margin and P3 fails PM"
         }
       ],
-      "prompt": "What hard-constraint margins characterize P2, and what blocks P3?"
+      "prompt": "What hard-constraint margins characterize P2, and what blocks P3? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

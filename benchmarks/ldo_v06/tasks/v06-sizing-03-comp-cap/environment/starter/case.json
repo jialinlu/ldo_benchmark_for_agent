@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "+7 deg PM and +0.1 MHz UGF"
+          "text": "It misses the bandwidth limit"
         },
         {
           "id": "B",
-          "text": "+7 deg PM with no bandwidth margin"
-        },
-        {
-          "id": "C",
           "text": "+13 deg PM and +1.1 MHz UGF"
         },
         {
+          "id": "C",
+          "text": "+7 deg PM with no bandwidth margin"
+        },
+        {
           "id": "D",
-          "text": "It misses the bandwidth limit"
+          "text": "+7 deg PM and +0.1 MHz UGF"
         }
       ],
-      "prompt": "What margins does the 8 pF point have to the two stated limits?"
+      "prompt": "What margins does the 8 pF point have to the two stated limits? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

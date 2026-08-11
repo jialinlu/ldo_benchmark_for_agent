@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -140,7 +140,7 @@
           "text": "About 7.9 mV"
         }
       ],
-      "prompt": "What input ripple corresponds to a 4 mV contribution through 18 dB PSRR at 100 kHz?"
+      "prompt": "What input ripple corresponds to a 4 mV contribution through 18 dB PSRR at 100 kHz? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

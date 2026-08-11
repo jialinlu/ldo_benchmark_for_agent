@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "At 125 C the EA output retains ample swing and pass overdrive while dropout still worsens"
+          "text": "Mobility falls at 125 C"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "Mobility falls at 125 C"
+          "text": "Dropout is measured at the same load"
         },
         {
           "id": "D",
-          "text": "Dropout is measured at the same load"
+          "text": "At 125 C the EA output retains ample swing and pass overdrive while dropout still worsens"
         }
       ],
-      "prompt": "Which new observation would most weaken the claimed hot rail-limiting mechanism?"
+      "prompt": "Which new observation would most weaken the claimed hot rail-limiting mechanism? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

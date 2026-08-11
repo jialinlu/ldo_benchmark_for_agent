@@ -125,26 +125,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "The listed branches do not sum to the measured 170 uA"
-        },
-        {
-          "id": "B",
           "text": "Reducing EA current alone can recover the full 90 uA excess"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "The non-divider branches already total 80 uA, so reducing the divider alone leaves no target margin"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Reducing the divider from 90 to 10 uA exactly closes the target"
+        },
+        {
+          "id": "D",
+          "text": "The listed branches do not sum to the measured 170 uA"
         }
       ],
-      "prompt": "What does the branch-current sum imply about a divider-only repair?"
+      "prompt": "What does the branch-current sum imply about a divider-only repair? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

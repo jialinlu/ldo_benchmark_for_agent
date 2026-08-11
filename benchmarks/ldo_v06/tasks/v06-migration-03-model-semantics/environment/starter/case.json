@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -140,7 +140,7 @@
           "text": "Matching primitive model names only"
         }
       ],
-      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration?"
+      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

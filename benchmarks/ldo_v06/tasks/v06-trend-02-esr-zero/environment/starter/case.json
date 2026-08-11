@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "The zero is fixed because COUT is fixed"
-        },
-        {
-          "id": "B",
-          "text": "About 0.4 MHz to 8 MHz"
-        },
-        {
-          "id": "C",
           "text": "About 8 MHz to 0.4 MHz, without checking its relation to UGF"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The zero is fixed because COUT is fixed"
+        },
+        {
+          "id": "C",
           "text": "About 7.96 MHz to 0.398 MHz, crossing below the 0.9 MHz UGF"
+        },
+        {
+          "id": "D",
+          "text": "About 0.4 MHz to 8 MHz"
         }
       ],
-      "prompt": "What ESR-zero movement follows from the supplied endpoints?"
+      "prompt": "What ESR-zero movement follows from the supplied endpoints? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

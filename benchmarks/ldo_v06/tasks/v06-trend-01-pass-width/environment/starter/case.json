@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "It is unchanged because load current is fixed"
-        },
-        {
-          "id": "B",
           "text": "It moves lower, but no exact factor can be claimed if other capacitances matter"
         },
         {
+          "id": "B",
+          "text": "It moves to about one half its former frequency"
+        },
+        {
           "id": "C",
-          "text": "It doubles in frequency"
+          "text": "It is unchanged because load current is fixed"
         },
         {
           "id": "D",
-          "text": "It moves to about one half its former frequency"
+          "text": "It doubles in frequency"
         }
       ],
-      "prompt": "If pass-gate capacitance doubled and driver resistance stayed fixed, what first-order gate-pole change follows?"
+      "prompt": "If pass-gate capacitance doubled and driver resistance stayed fixed, what first-order gate-pole change follows? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

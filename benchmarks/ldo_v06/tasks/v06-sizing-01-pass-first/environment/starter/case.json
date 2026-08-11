@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "-0.3 mA and +1.0 mA"
-        },
-        {
-          "id": "B",
-          "text": "-0.3 mA and +0.8 mA"
-        },
-        {
-          "id": "C",
           "text": "+0.9 mA and +2.2 mA"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Both have positive margin"
+        },
+        {
+          "id": "C",
+          "text": "-0.3 mA and +0.8 mA"
+        },
+        {
+          "id": "D",
+          "text": "-0.3 mA and +1.0 mA"
         }
       ],
-      "prompt": "What characterized current margins do the 100 um and 120 um samples have relative to 7.2 mA?"
+      "prompt": "What characterized current margins do the 100 um and 120 um samples have relative to 7.2 mA? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "6 uA, proving final closure"
-        },
-        {
-          "id": "B",
           "text": "8 uA"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "14 uA"
+        },
+        {
+          "id": "C",
+          "text": "6 uA, proving final closure"
         },
         {
           "id": "D",
           "text": "6 uA, pending the complete regression"
         }
       ],
-      "prompt": "What IQ margin remains after the characterized local co-size?"
+      "prompt": "What IQ margin remains after the characterized local co-size? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

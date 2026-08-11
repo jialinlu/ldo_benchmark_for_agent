@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Named metric-specific stress corners plus a frozen justified cross-product regression"
-        },
-        {
-          "id": "B",
           "text": "TT plus SS-hot-heavy only"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "One worst corner per metric with no cross-checks"
+        },
+        {
+          "id": "C",
+          "text": "Named metric-specific stress corners plus a frozen justified cross-product regression"
         },
         {
           "id": "D",
           "text": "Average every metric across all corners"
         }
       ],
-      "prompt": "Which policy best avoids both missed mechanisms and an unjustified single global-worst corner?"
+      "prompt": "Which policy best avoids both missed mechanisms and an unjustified single global-worst corner? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

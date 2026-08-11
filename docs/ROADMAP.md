@@ -9,7 +9,7 @@ Delivered task, answer, oracle, score, probe, telemetry, exam, candidate, and qu
 Python 3.9 validators; lineage/split rules; public-task/private-oracle architecture; contamination and
 public-release security policy; dual licensing and clean-room statement.
 
-Current gate: all 69 v0.6.1 task contracts and public development oracles validate in CI; 48 pure core,
+Current gate: all 69 v0.6.2 task contracts and public development oracles validate in CI; 48 pure core,
 eight pure companions, six live sizing, six live EDA, and one EDA companion are frozen in the registry.
 
 ## Phase 1 — public benchmark core: implemented
@@ -37,12 +37,12 @@ Delivered:
 Remaining empirical gate: run direct/skill/simulation treatments with frozen real adapters and confirm that
 results replay exactly. A host sandbox remains deployment infrastructure, not part of the Python runner.
 
-## Phase 3 — v0.6.1 diagnostic pilot: corpus and release tooling implemented
+## Phase 3 — v0.6.2 diagnostic pilot: corpus and release tooling implemented
 
 Delivered:
 
 - 48 pure core cases, eight metamorphic companions, six sizing treatments, and seven EDA tasks;
-- six-dimension pure-case grading with scenario-local ordered-choice credit and evidence-set F1;
+- six-dimension pure-case grading with scenario-local ordered-choice credit, pairwise challenge ranking, and evidence-set F1;
 - architecture-choice and L4 development coverage;
 - cryptographic freeze/verify manifest for sealed stores and treatment snapshots;
 - two-judge calibration metrics and automatic human-review routing;

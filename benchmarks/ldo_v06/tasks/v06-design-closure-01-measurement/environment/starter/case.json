@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "270 mV, invalidating comparison with the original loop"
+          "text": "No DC error because the inserted source is zero volts"
         },
         {
           "id": "B",
-          "text": "270 mV, but the smooth Bode plot remains usable"
+          "text": "270 mV, invalidating comparison with the original loop"
         },
         {
           "id": "C",
-          "text": "No DC error because the inserted source is zero volts"
+          "text": "270 mV, but the smooth Bode plot remains usable"
         },
         {
           "id": "D",
           "text": "210 mV"
         }
       ],
-      "prompt": "How large is the fixture-induced VOUT operating-point error?"
+      "prompt": "How large is the fixture-induced VOUT operating-point error? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "It is much shorter than the loop timescale"
-        },
-        {
-          "id": "B",
-          "text": "It is about 8.3x shorter"
-        },
-        {
-          "id": "C",
           "text": "It is about 83x shorter, so the initial response is outside loop authority"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It is slower than the loop"
+        },
+        {
+          "id": "C",
+          "text": "It is much shorter than the loop timescale"
+        },
+        {
+          "id": "D",
+          "text": "It is about 8.3x shorter"
         }
       ],
-      "prompt": "How does a 20 ns edge compare with the reciprocal of 600 kHz UGF?"
+      "prompt": "How does a 20 ns edge compare with the reciprocal of 600 kHz UGF? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

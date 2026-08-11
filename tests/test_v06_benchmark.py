@@ -67,16 +67,17 @@ class V06BenchmarkTests(unittest.TestCase):
         for task in reasoning:
             case = load_json(task.root / "environment" / "starter" / "case.json")
             self.assertEqual(6, len(case["questions"]), task.task_id)
-            self.assertEqual("ordered_choice", case["questions"][4]["kind"])
+            self.assertEqual("ranked_choice", case["questions"][4]["kind"])
             self.assertEqual("multi_select", case["questions"][5]["kind"])
             self.assertEqual(2, case["questions"][5]["select_count"])
             oracle = load_json(ORACLES / (task.task_id + ".oracle.json"))
-            self.assertEqual("choice_credit", oracle["checks"][4]["kind"])
+            self.assertEqual("ranking_pairwise", oracle["checks"][4]["kind"])
             self.assertEqual("set_f1", oracle["checks"][5]["kind"])
 
     def test_reasoning_score_lattice_is_not_coarse_binary(self):
         oracle = load_json(ORACLES / "v06-diagnosis-01-ringing.oracle.json")
-        credit_spaces = [sorted(set(check["credits"].values())) for check in oracle["checks"][:5]]
+        credit_spaces = [sorted(set(check["credits"].values())) for check in oracle["checks"][:4]]
+        credit_spaces.append([index / 6.0 for index in range(7)])
         # With four evidence records and a two-record golden set, these are all
         # attainable set-F1 credits for a non-empty valid submission.
         credit_spaces.append([0.0, 0.4, 0.5, 2.0 / 3.0, 0.8, 1.0])
@@ -97,7 +98,11 @@ class V06BenchmarkTests(unittest.TestCase):
         answer = load_json(task.root / "solution" / "answer.json")
         # Exercise partial ordered-choice credit and partial evidence F1 in one
         # valid answer, including a critical question that is not zero-credit.
-        answer["answers"] = {"q1": "B", "q2": "C", "q3": "C", "q4": "C", "q5": "B", "q6": ["E3"]}
+        expected_rank = load_json(ORACLES / (task.task_id + ".oracle.json"))["checks"][4]["expected"]
+        partial_rank = expected_rank[:]
+        partial_rank[1], partial_rank[2] = partial_rank[2], partial_rank[1]
+        answer["answers"] = {"q1": "B", "q2": "C", "q3": "C", "q4": "C",
+                             "q5": partial_rank, "q6": ["E3"]}
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             answer_path = root / "answer.json"
@@ -133,9 +138,9 @@ class V06BenchmarkTests(unittest.TestCase):
             companion_oracle = load_json(ORACLES / (companion.task_id + ".oracle.json"))
             parent_q5 = {option["id"]: option["text"] for option in parent_case["questions"][4]["options"]}
             companion_q5 = {option["id"]: option["text"] for option in companion_case["questions"][4]["options"]}
-            parent_credits = {parent_q5[key]: value for key, value in parent_oracle["checks"][4]["credits"].items()}
-            companion_credits = {companion_q5[key]: value for key, value in companion_oracle["checks"][4]["credits"].items()}
-            self.assertEqual(parent_credits, companion_credits, companion.task_id)
+            parent_ranking = [parent_q5[key] for key in parent_oracle["checks"][4]["expected"]]
+            companion_ranking = [companion_q5[key] for key in companion_oracle["checks"][4]["expected"]]
+            self.assertEqual(parent_ranking, companion_ranking, companion.task_id)
             parent_evidence = {item["id"]: item["observation"] for item in parent_case["evidence"]}
             companion_evidence = {item["id"]: item["observation"] for item in companion_case["evidence"]}
             parent_gold = {parent_evidence[key] for key in parent_oracle["checks"][5]["expected"]}

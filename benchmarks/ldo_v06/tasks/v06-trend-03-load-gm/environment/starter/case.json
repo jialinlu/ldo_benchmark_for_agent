@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Every loop metric is unchanged"
+          "text": "The output pole rises about 20x and PM must improve"
         },
         {
           "id": "B",
-          "text": "The output pole rises about 20x; full loop-gain and PM trends still need the other impedances and poles"
+          "text": "Every loop metric is unchanged"
         },
         {
           "id": "C",
-          "text": "The output pole rises about 20x and PM must improve"
+          "text": "The output pole rises about 20x; full loop-gain and PM trends still need the other impedances and poles"
         },
         {
           "id": "D",
           "text": "Loop gain rises exactly 4.1x"
         }
       ],
-      "prompt": "Under an Rload-dominated output pole model, what can and cannot be inferred?"
+      "prompt": "Under an Rload-dominated output pole model, what can and cannot be inferred? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Increase COUT and change the ramp simultaneously"
+          "text": "Reduce the reference amplitude during the same early-EN ramp"
         },
         {
           "id": "B",
-          "text": "Repeat only fixed-supply nominal startup"
+          "text": "Increase COUT and change the ramp simultaneously"
         },
         {
           "id": "C",
-          "text": "Reduce the reference amplitude during the same early-EN ramp"
+          "text": "Repeat only fixed-supply nominal startup"
         },
         {
           "id": "D",
           "text": "Hold EN low until VIN-good while preserving the final reference and load conditions"
         }
       ],
-      "prompt": "Which controlled intervention most strongly isolates the sequencing mechanism?"
+      "prompt": "Which controlled intervention most strongly isolates the sequencing mechanism? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

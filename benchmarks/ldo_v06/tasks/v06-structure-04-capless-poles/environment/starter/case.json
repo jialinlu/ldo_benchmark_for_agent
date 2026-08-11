@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "EA 57 kHz, output 100 kHz, buffered gate 4.4 MHz"
+          "text": "EA 57 kHz, buffered gate 100 kHz, output 4.4 MHz"
         },
         {
           "id": "C",
-          "text": "EA 57 kHz, buffered gate 100 kHz, output 4.4 MHz"
+          "text": "EA 57 kHz, output 100 kHz, buffered gate 4.4 MHz"
         },
         {
           "id": "D",
           "text": "All three poles are load invariant"
         }
       ],
-      "prompt": "Using the supplied RC values, which approximate light-load pole ordering is supported?"
+      "prompt": "Using the supplied RC values, which approximate light-load pole ordering is supported? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

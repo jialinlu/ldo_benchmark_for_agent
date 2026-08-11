@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -140,7 +140,7 @@
           "text": "The DC operating point is unchanged and the low-frequency return-ratio sign is consistent"
         }
       ],
-      "prompt": "Which acceptance check is required before trusting the injected return ratio?"
+      "prompt": "Which acceptance check is required before trusting the injected return ratio? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

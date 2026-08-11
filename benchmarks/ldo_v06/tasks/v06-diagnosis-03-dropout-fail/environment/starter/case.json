@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -140,7 +140,7 @@
           "text": "About 920 mS"
         }
       ],
-      "prompt": "What pass-path conductance is required to support 10 mA at the observed 92 mV VSD, ignoring margin?"
+      "prompt": "What pass-path conductance is required to support 10 mA at the observed 92 mV VSD, ignoring margin? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

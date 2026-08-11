@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Scale the 18 uV reference term and combine sources by RSS"
+          "text": "Add 18 uV and 11 uV linearly to get 29 uV"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "Add 18 uV and 11 uV linearly to get 29 uV"
+          "text": "Scale the 18 uV reference term and combine sources by RSS"
         },
         {
           "id": "D",
           "text": "27 uV and 16.5 uV contributions combined by RSS give about 31.6 uV"
         }
       ],
-      "prompt": "Which intermediate calculation supports the stated combined output noise?"
+      "prompt": "Which intermediate calculation supports the stated combined output noise? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

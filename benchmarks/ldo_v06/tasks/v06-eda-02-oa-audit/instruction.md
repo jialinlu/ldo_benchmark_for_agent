@@ -7,5 +7,5 @@ This is a **eda_assisted** treatment. Use the task-local tool and preserve its l
 Hard requirements:
 
 - Preserve `task_id` exactly as `v06-eda-02-oa-audit`.
-- Select option IDs, not option prose; return a JSON list for `multi_select` questions.
+- Select option IDs, not option prose; return a JSON list for `multi_select` questions and a strongest-to-weakest JSON list for `ranked_choice` questions.
 - Finish when the required artifact exists or explicitly report inability through the runner; do not invent evidence.

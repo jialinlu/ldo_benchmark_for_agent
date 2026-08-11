@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "A nominal operating point because the local sweep already passed"
+          "text": "A fresh rerun of all 48 frozen gates with candidate C"
         },
         {
           "id": "C",
-          "text": "No evidence; 46 of 48 is sufficient"
+          "text": "A nominal operating point because the local sweep already passed"
         },
         {
           "id": "D",
-          "text": "A fresh rerun of all 48 frozen gates with candidate C"
+          "text": "No evidence; 46 of 48 is sufficient"
         }
       ],
-      "prompt": "What evidence is still missing before candidate C can be called closed?"
+      "prompt": "What evidence is still missing before candidate C can be called closed? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

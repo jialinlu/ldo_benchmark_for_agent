@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Only a dropout sweep because pass width has margin"
-        },
-        {
-          "id": "B",
           "text": "Separate startup/initial-condition coverage at SS-cold and loop/transient coverage at FF-light, followed by the full frozen regression"
         },
         {
+          "id": "B",
+          "text": "One combined nominal startup transient after both changes"
+        },
+        {
           "id": "C",
-          "text": "No regression because each mechanism was already identified"
+          "text": "Only a dropout sweep because pass width has margin"
         },
         {
           "id": "D",
-          "text": "One combined nominal startup transient after both changes"
+          "text": "No regression because each mechanism was already identified"
         }
       ],
-      "prompt": "What is the minimum regression structure needed after the two local fixes?"
+      "prompt": "What is the minimum regression structure needed after the two local fixes? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Nominal DC pass proves no migration work remains"
-        },
-        {
-          "id": "B",
           "text": "Correct divider ratio maps to changing the feedback ratio"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Lower EA ro maps to gain retargeting; 6x weaker startup injection maps to startup redesign"
+        },
+        {
+          "id": "C",
+          "text": "Nominal DC pass proves no migration work remains"
         },
         {
           "id": "D",
           "text": "Both failures map to increasing pass width"
         }
       ],
-      "prompt": "Which evidence-to-fix mapping is supported?"
+      "prompt": "Which evidence-to-fix mapping is supported? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

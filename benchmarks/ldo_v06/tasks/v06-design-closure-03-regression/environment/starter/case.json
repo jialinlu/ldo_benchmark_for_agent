@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "It improved dropout and reduced PM"
+          "text": "It gained 28 mV dropout but lost 19 deg light-load PM while gate capacitance rose 44 percent"
         },
         {
           "id": "C",
-          "text": "It gained 28 mV dropout but lost 19 deg light-load PM while gate capacitance rose 44 percent"
+          "text": "It improved dropout and reduced PM"
         },
         {
           "id": "D",
           "text": "It improved both hard metrics"
         }
       ],
-      "prompt": "What quantified trade did revision B make?"
+      "prompt": "What quantified trade did revision B make? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

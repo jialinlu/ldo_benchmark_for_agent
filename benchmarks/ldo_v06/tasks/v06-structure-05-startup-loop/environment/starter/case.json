@@ -121,15 +121,15 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Startup current falls below 20 nA and the regulation loop remains closed"
+          "text": "The nominal supply reaches its final value"
         },
         {
           "id": "B",
-          "text": "A forced pulse starts the circuit and VOUT regulates"
+          "text": "Startup current falls below 20 nA and the regulation loop remains closed"
         },
         {
           "id": "C",
@@ -137,10 +137,10 @@
         },
         {
           "id": "D",
-          "text": "The nominal supply reaches its final value"
+          "text": "A forced pulse starts the circuit and VOUT regulates"
         }
       ],
-      "prompt": "Which evidence pair best supports negligible steady-state startup-path influence?"
+      "prompt": "Which evidence pair best supports negligible steady-state startup-path influence? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

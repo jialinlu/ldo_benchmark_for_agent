@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "150 mV is available, so the stack is marginal"
-        },
-        {
-          "id": "B",
           "text": "The stack has 270 mV positive margin"
         },
         {
+          "id": "B",
+          "text": "150 mV is available, so the stack is marginal"
+        },
+        {
           "id": "C",
-          "text": "150 mV is available versus 420 mV required, a 270 mV deficit"
+          "text": "300 mV is available versus 420 mV required"
         },
         {
           "id": "D",
-          "text": "300 mV is available versus 420 mV required"
+          "text": "150 mV is available versus 420 mV required, a 270 mV deficit"
         }
       ],
-      "prompt": "Compare worst-case VIN-VOUT headroom with the retained two-stack requirement."
+      "prompt": "Compare worst-case VIN-VOUT headroom with the retained two-stack requirement. Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "1.1992 V and 1.60 uA"
+          "text": "1.2000 V and 1.60 uA"
         },
         {
           "id": "B",
-          "text": "0.800 V and 1.60 uA"
+          "text": "1.1992 V and 1.60 uA"
         },
         {
           "id": "C",
-          "text": "1.1992 V and 2.40 uA"
+          "text": "0.800 V and 1.60 uA"
         },
         {
           "id": "D",
-          "text": "1.2000 V and 1.60 uA"
+          "text": "1.1992 V and 2.40 uA"
         }
       ],
-      "prompt": "Approximately what VOUT and divider current result from 249 kohm over 499 kohm at VREF=0.8 V?"
+      "prompt": "Approximately what VOUT and divider current result from 249 kohm over 499 kohm at VREF=0.8 V? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

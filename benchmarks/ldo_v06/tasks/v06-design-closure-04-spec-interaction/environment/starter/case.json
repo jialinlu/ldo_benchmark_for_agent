@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "17 us and 6 us"
+          "text": "6 us and 3 us"
         },
         {
           "id": "B",
-          "text": "Neither exceeds its limit"
-        },
-        {
-          "id": "C",
           "text": "6 us and 11 us"
         },
         {
+          "id": "C",
+          "text": "Neither exceeds its limit"
+        },
+        {
           "id": "D",
-          "text": "6 us and 3 us"
+          "text": "17 us and 6 us"
         }
       ],
-      "prompt": "By how much do the modified startup and settling times exceed their limits?"
+      "prompt": "By how much do the modified startup and settling times exceed their limits? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -43,7 +43,7 @@ def _print_json(value: Any) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="evoldo-bench", description="EvoLDO v0.6.1 LDO reasoning, sizing, and EDA benchmark")
+    parser = argparse.ArgumentParser(prog="evoldo-bench", description="EvoLDO v0.6.2 LDO reasoning, sizing, and EDA benchmark")
     sub = parser.add_subparsers(dest="command_name", required=True)
 
     listing = sub.add_parser("list", help="list and inventory tasks")

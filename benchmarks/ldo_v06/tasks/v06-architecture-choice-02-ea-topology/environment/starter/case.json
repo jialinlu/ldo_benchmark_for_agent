@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Recheck telescopic output swing"
+          "text": "Close Miller and pass-gate pole interactions across load and PVT"
         },
         {
           "id": "B",
-          "text": "Assume compensation area guarantees stability"
+          "text": "Recheck telescopic output swing"
         },
         {
           "id": "C",
-          "text": "Confirm nominal DC gain only"
+          "text": "Assume compensation area guarantees stability"
         },
         {
           "id": "D",
-          "text": "Close Miller and pass-gate pole interactions across load and PVT"
+          "text": "Confirm nominal DC gain only"
         }
       ],
-      "prompt": "Which verification most directly addresses the selected two-stage OTA's new architecture-specific risk?"
+      "prompt": "Which verification most directly addresses the selected two-stage OTA's new architecture-specific risk? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

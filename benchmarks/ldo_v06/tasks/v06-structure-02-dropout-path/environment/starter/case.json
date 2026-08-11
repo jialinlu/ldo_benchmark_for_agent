@@ -125,26 +125,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "35 mV"
+          "text": "42 mV"
         },
         {
           "id": "B",
-          "text": "100 mV"
-        },
-        {
-          "id": "C",
           "text": "7 mV"
         },
         {
+          "id": "C",
+          "text": "35 mV"
+        },
+        {
           "id": "D",
-          "text": "42 mV"
+          "text": "100 mV"
         }
       ],
-      "prompt": "How much additional low-going EA output swing remains between VCTRL and its characterized limit?"
+      "prompt": "How much additional low-going EA output swing remains between VCTRL and its characterized limit? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

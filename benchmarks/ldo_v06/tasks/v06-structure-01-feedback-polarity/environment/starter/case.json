@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Preserve the operating point and measure signed return ratio across frequency"
+          "text": "Repeat only the +10 mV DC perturbation"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "Repeat only the +10 mV DC perturbation"
+          "text": "Run a closed-loop load step and inspect ringing"
         },
         {
           "id": "D",
-          "text": "Run a closed-loop load step and inspect ringing"
+          "text": "Preserve the operating point and measure signed return ratio across frequency"
         }
       ],
-      "prompt": "Which follow-up most strongly separates correct DC polarity from adequate closed-loop stability?"
+      "prompt": "Which follow-up most strongly separates correct DC polarity from adequate closed-loop stability? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

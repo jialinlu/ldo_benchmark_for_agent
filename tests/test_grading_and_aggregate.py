@@ -52,6 +52,23 @@ class GradingAndAggregateTests(unittest.TestCase):
         self.assertEqual(80.0, score["score"])
         self.assertEqual(0.8, score["checks"][0]["credit_fraction"])
 
+    def test_pairwise_ranking_rewards_each_correct_order_relation(self):
+        task = Task(Path("/tmp/task"), {
+            "task_id": "ranking-task", "family_id": "ranking-task", "lineage_id": "ranking-task",
+            "suite": "sizing", "level": "L4", "variant": "canonical", "split": "dev",
+            "evaluation_role": "coupled",
+        })
+        answer = {"schema_version": "2.0", "task_id": "ranking-task",
+                  "answers": {"q1": ["A", "C", "B", "D"]}, "claim_boundary": "bounded", "confidence": 0.5}
+        oracle = {"schema_version": "1.0", "task_id": "ranking-task", "family_id": "ranking-task",
+                  "checks": [{"id": "q1", "path": "answers.q1", "kind": "ranking_pairwise",
+                              "expected": ["A", "B", "C", "D"], "weight": 100}], "pass_threshold": 70}
+        from unittest.mock import patch
+        with patch("evoldo_bench.graders.deterministic.validate_answer", return_value=answer):
+            score = grade_answer(task, answer, oracle)
+        self.assertAlmostEqual(5.0 / 6.0, score["checks"][0]["credit_fraction"])
+        self.assertAlmostEqual(83.333333, score["score"])
+
     def test_unscored_numeric_results_accept_nested_supporting_data(self):
         task = discover_tasks(TASKS)[0]
         answer = reference_answer(task.root, ORACLES / (task.task_id + ".oracle.json"))

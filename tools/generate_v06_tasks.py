@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the public EvoLDO v0.6.1 task set in Analog Arena demo-task layout.
+"""Generate the public EvoLDO v0.6.2 task set in Analog Arena demo-task layout.
 
 The generated packages intentionally keep the agent-visible starter, verifier, and
 reference solution in separate directories.  Do not hand-edit generated packages;
@@ -20,9 +20,9 @@ TASKS = OUT / "tasks"
 ORACLES = OUT / "dev_reference" / "oracles"
 BASE_IMAGE = "python:3.12-slim"
 SKY130_IMAGE = "ghcr.io/arcadia-1/circuit-bench-sky130-ngspice@sha256:bd5c425675eb99fc1a2c3bca10b63a871c457613767e2c6984d6c207b3160500"
-BENCHMARK_VERSION = "0.6.1"
+BENCHMARK_VERSION = "0.6.2"
 
-TRACK_README = """# EvoLDO v0.6.1 task store
+TRACK_README = """# EvoLDO v0.6.2 task store
 
 This generated directory contains 69 public-development task packages: 48 pure-model core cases, eight
 metamorphic companions, six paired SKY130/ngspice sizing treatments, six IC618/SKILL primary tasks, and
@@ -32,7 +32,7 @@ one EDA companion. Every task uses the `task_examples` layout (`task.toml`, `ins
 `registry.jsonl` hashes the complete package and `dev_reference/oracles` is never copied into an agent
 runtime bundle. Tool-task answer grading is only semantic; an official tool score additionally requires
 `evoldo-bench verify-live`, whose infrastructure-invalid result must be retried rather than scored zero.
-Pure reasoning tasks use six dimensions with ordered-choice partial credit and evidence-set F1 scoring.
+Pure reasoning tasks use six dimensions with ordered-choice partial credit, pairwise ranking credit, and evidence-set F1 scoring.
 See `docs/BENCHMARK_V06.md` for the protocol and score definitions.
 """
 
@@ -399,6 +399,21 @@ def credited_choice_question(task_id: str, qid: str, prompt: str,
     return {"id": qid, "kind": "ordered_choice", "prompt": prompt, "options": options}, answer, credits
 
 
+def ranked_credit_question(task_id: str, qid: str, prompt: str,
+                           alternatives: list[tuple[str, float]]) -> tuple[dict, list[str]]:
+    """Ask for the complete evidence-strength order, not only the easiest top choice."""
+    if len(alternatives) != 4 or len({float(credit) for _, credit in alternatives}) != 4:
+        raise ValueError("ranked choices require four alternatives with unique credit levels")
+    values = list(alternatives)
+    rng = random.Random(int(hashlib.sha256((task_id + qid + "ranking").encode()).hexdigest()[:16], 16))
+    rng.shuffle(values)
+    options = [{"id": chr(65 + index), "text": text} for index, (text, _) in enumerate(values)]
+    by_text = {option["text"]: option["id"] for option in options}
+    expected = [by_text[text] for text, _ in sorted(alternatives, key=lambda item: item[1], reverse=True)]
+    ranked_prompt = prompt + " Rank all four responses from strongest to weakest support."
+    return {"id": qid, "kind": "ranked_choice", "prompt": ranked_prompt, "options": options}, expected
+
+
 def calibrated_reasoning_question(task_id: str, qid: str, prompt: str, correct: str) -> tuple[dict, str, dict[str, float]]:
     near_misses = {
         "q1": [
@@ -439,7 +454,7 @@ authors = [{{ name = "EvoLDO-Bench contributors" }}]
 [metadata]
 checker_allow_ideal = []
 task_id = "{task_id}"
-revision = 2
+revision = 3
 maturity = "L4"
 maturity_note = "Public development task; reference answer and deterministic verifier are checked in."
 maturity_updated_at = "2026-08-11T00:00:00+08:00"
@@ -485,6 +500,13 @@ try:
             if check["kind"] == "choice_credit":
                 credit = float(check["credits"].get(value, 0.0))
                 ok = credit == 1.0
+            elif check["kind"] == "ranking_pairwise":
+                target = list(check["expected"])
+                positions = {item: index for index, item in enumerate(value)} if isinstance(value, list) else {}
+                pairs = [(left, right) for index, left in enumerate(target) for right in target[index + 1:]]
+                credit = sum(left in positions and right in positions and positions[left] < positions[right]
+                             for left, right in pairs) / len(pairs) if pairs else 0.0
+                ok = value == target
             elif check["kind"] == "set_f1":
                 actual = set(value) if isinstance(value, list) else set()
                 target = set(check["expected"])
@@ -514,6 +536,7 @@ def make_package(task_id: str, title: str, suite: str, level: str, variant: str,
                  case: dict, answers: dict, mode: str = "direct_reasoning", paired_with: str | None = None,
                  extra_starter: dict[str, str] | None = None, extra_solution: dict[str, str] | None = None,
                  choice_credits: dict[str, dict[str, float]] | None = None,
+                 ranking_questions: set[str] | None = None,
                  set_f1_questions: set[str] | None = None) -> dict:
     root = TASKS / task_id
     starter = root / "environment" / "starter"
@@ -532,7 +555,7 @@ This is a **{mode}** treatment. {('Use the task-local tool and preserve its ledg
 Hard requirements:
 
 - Preserve `task_id` exactly as `{task_id}`.
-- Select option IDs, not option prose; return a JSON list for `multi_select` questions.
+- Select option IDs, not option prose; return a JSON list for `multi_select` questions and a strongest-to-weakest JSON list for `ranked_choice` questions.
 - Finish when the required artifact exists or explicitly report inability through the runner; do not invent evidence.
 """
     write(root / "instruction.md", instruction)
@@ -555,7 +578,7 @@ Hard requirements:
     dump(starter / "task_contract.json", contract)
     dump(starter / "case.json", case)
     template = {"schema_version": "2.0", "task_id": task_id,
-                "answers": {q["id"]: ([] if q["kind"] == "multi_select" else "OPTION_ID")
+                "answers": {q["id"]: ([] if q["kind"] in {"multi_select", "ranked_choice"} else "OPTION_ID")
                             for q in case["questions"]},
                 "claim_boundary": "One concise statement of what the evidence does and does not establish.",
                 "confidence": 0.0}
@@ -586,6 +609,8 @@ Hard requirements:
                 # physical conclusion.  Partially correct reasoning keeps its
                 # continuous score instead of collapsing into the 49-point bin.
                 check["critical_credit_threshold"] = 0.01
+        if ranking_questions and qid in ranking_questions:
+            check.update({"kind": "ranking_pairwise"})
         if set_f1_questions and qid in set_f1_questions:
             check.update({"kind": "set_f1"})
         checks.append(check)
@@ -624,10 +649,9 @@ def build_reasoning() -> list[dict]:
                 questions.append(question); answers[f"q{qidx}"] = answer
                 all_credits[f"q{qidx}"] = dimension_credits
             challenge_prompt, alternatives = CHALLENGES[(suite, slug)]
-            question, answer, credits = credited_choice_question(task_id, "q5", challenge_prompt, alternatives)
+            question, answer = ranked_credit_question(task_id, "q5", challenge_prompt, alternatives)
             question["dimension"] = "quantitative_or_counterfactual"
             questions.append(question); answers["q5"] = answer
-            all_credits["q5"] = credits
             pair = EVIDENCE_PAIRS[(suite, slug)]
             question = {"id": "q6", "kind": "multi_select", "dimension": "evidence_attribution",
                         "select_count": 2,
@@ -641,7 +665,8 @@ def build_reasoning() -> list[dict]:
                     "questions": questions, "provenance": {"kind": "expert-authored",
                     "pdk": "SKY130/ngspice" if suite == "sizing" else "not-required"}}
             contracts.append(make_package(task_id, title, suite, level, "canonical", role, case, answers,
-                                          choice_credits=all_credits, set_f1_questions={"q6"}))
+                                          choice_credits=all_credits, ranking_questions={"q5"},
+                                          set_f1_questions={"q6"}))
 
         # One metamorphic companion per suite: rename internal nodes, reverse evidence order,
         # and permute answer choices while keeping the physical conclusion invariant.
@@ -662,10 +687,9 @@ def build_reasoning() -> list[dict]:
             questions.append(question); answers[f"q{qidx}"] = answer
             all_credits[f"q{qidx}"] = dimension_credits
         challenge_prompt, alternatives = CHALLENGES[(suite, slug)]
-        question, answer, credits = credited_choice_question(task_id, "q5", challenge_prompt, alternatives)
+        question, answer = ranked_credit_question(task_id, "q5", challenge_prompt, alternatives)
         question["dimension"] = "quantitative_or_counterfactual"
         questions.append(question); answers["q5"] = answer
-        all_credits["q5"] = credits
         canonical_pair = EVIDENCE_PAIRS[(suite, slug)]
         reversed_evidence = list(reversed(evidence))
         remapped_pair = [len(evidence) - index + 1 for index in canonical_pair]
@@ -681,7 +705,8 @@ def build_reasoning() -> list[dict]:
                 "questions": questions, "provenance": {"kind": "metamorphic-companion"}}
         contracts.append(make_package(task_id, title + " — alias-invariance companion", suite, "L3",
                                       "metamorphic", "companion", case, answers, paired_with=base_id,
-                                      choice_credits=all_credits, set_f1_questions={"q6"}))
+                                      choice_credits=all_credits, ranking_questions={"q5"},
+                                      set_f1_questions={"q6"}))
     return contracts
 
 

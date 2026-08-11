@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "About 2x width is sufficient and remains below 50 nA"
+          "text": "About 6.7x width is needed, without evaluating hot leakage"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "About 6.7x width is needed, without evaluating hot leakage"
+          "text": "A 10x width satisfies both corners"
         },
         {
           "id": "D",
-          "text": "A 10x width satisfies both corners"
+          "text": "About 2x width is sufficient and remains below 50 nA"
         }
       ],
-      "prompt": "Under linear width scaling, what conflict appears when cold injection is raised from 0.3 nA to 2 nA?"
+      "prompt": "Under linear width scaling, what conflict appears when cold injection is raised from 0.3 nA to 2 nA? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

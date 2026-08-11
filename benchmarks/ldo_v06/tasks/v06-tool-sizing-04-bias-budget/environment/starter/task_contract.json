@@ -1,6 +1,6 @@
 {
   "answer_template_file": "answer_template.json",
-  "benchmark_version": "0.6.1",
+  "benchmark_version": "0.6.2",
   "budget": {
     "max_tool_calls": 30,
     "timeout_seconds": 900

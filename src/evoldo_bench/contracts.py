@@ -38,6 +38,7 @@ ALLOWED_CHECKS = {
     "set_excludes",
     "numeric_close",
     "nonempty",
+    "ranking_pairwise",
     "set_f1",
     "boolean",
 }
@@ -238,6 +239,11 @@ def validate_answer(data: Dict[str, Any], task: Optional[Task] = None) -> Dict[s
                 if kind in {"single_choice", "ordered_choice"}:
                     if not isinstance(actual, str) or actual not in option_ids:
                         raise ContractError("answer.answers.%s must be one declared option ID" % qid)
+                elif kind == "ranked_choice":
+                    ranked = _string_list(actual, "answer.answers.%s" % qid, allow_empty=False)
+                    invalid = sorted(set(ranked).difference(option_ids))
+                    if invalid:
+                        raise ContractError("answer.answers.%s contains undeclared options: %s" % (qid, invalid))
                 elif kind == "multi_select":
                     selected = _string_list(actual, "answer.answers.%s" % qid, allow_empty=False)
                     count = question.get("select_count")
@@ -393,8 +399,10 @@ def validate_oracle(data: Dict[str, Any]) -> Dict[str, Any]:
                 or not 0 <= float(threshold) <= 1
             ):
                 raise ContractError("critical_credit_threshold must be in [0, 1]")
-        if check["kind"] in {"set_contains", "set_excludes", "set_f1"}:
+        if check["kind"] in {"ranking_pairwise", "set_contains", "set_excludes", "set_f1"}:
             _string_list(check["expected"], "oracle check %s expected" % check["id"])
+        if check["kind"] == "ranking_pairwise" and len(check["expected"]) < 2:
+            raise ContractError("ranking_pairwise requires at least two expected items")
         if check["kind"] == "numeric_close":
             if "absolute_tolerance" not in check and "relative_tolerance" not in check:
                 raise ContractError("numeric_close requires a tolerance")

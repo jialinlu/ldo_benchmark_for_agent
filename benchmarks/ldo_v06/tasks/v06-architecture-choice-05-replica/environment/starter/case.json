@@ -121,15 +121,15 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "3 uA, so mismatch and light-load overhead remain tight gates"
+          "text": "27 uA"
         },
         {
           "id": "B",
-          "text": "27 uA"
+          "text": "3 uA, so mismatch and light-load overhead remain tight gates"
         },
         {
           "id": "C",
@@ -140,7 +140,7 @@
           "text": "3 uA"
         }
       ],
-      "prompt": "How much stated IQ margin remains after adding the 12 uA replica branch?"
+      "prompt": "How much stated IQ margin remains after adding the 12 uA replica branch? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

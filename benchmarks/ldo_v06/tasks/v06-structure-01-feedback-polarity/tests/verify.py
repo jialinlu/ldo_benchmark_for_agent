@@ -25,6 +25,13 @@ try:
             if check["kind"] == "choice_credit":
                 credit = float(check["credits"].get(value, 0.0))
                 ok = credit == 1.0
+            elif check["kind"] == "ranking_pairwise":
+                target = list(check["expected"])
+                positions = {item: index for index, item in enumerate(value)} if isinstance(value, list) else {}
+                pairs = [(left, right) for index, left in enumerate(target) for right in target[index + 1:]]
+                credit = sum(left in positions and right in positions and positions[left] < positions[right]
+                             for left, right in pairs) / len(pairs) if pairs else 0.0
+                ok = value == target
             elif check["kind"] == "set_f1":
                 actual = set(value) if isinstance(value, list) else set()
                 target = set(check["expected"])

@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "13 failures meet the 99 percent target"
+          "text": "13 failures correspond to 93.5 percent pass"
         },
         {
           "id": "D",
-          "text": "13 failures correspond to 93.5 percent pass"
+          "text": "13 failures meet the 99 percent target"
         }
       ],
-      "prompt": "For 200 samples and a 99 percent startup target, how far is the observed failure count from the largest passing count?"
+      "prompt": "For 200 samples and a 99 percent startup target, how far is the observed failure count from the largest passing count? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

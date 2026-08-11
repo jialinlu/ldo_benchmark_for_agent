@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "A bias-node seed fails to recover operation despite a healthy supply and reference"
+          "text": "Nominal startup remains successful"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "Nominal startup remains successful"
+          "text": "The zero-state operating point still converges"
         },
         {
           "id": "D",
-          "text": "The zero-state operating point still converges"
+          "text": "A bias-node seed fails to recover operation despite a healthy supply and reference"
         }
       ],
-      "prompt": "Which result would most directly weaken the zero-current-equilibrium diagnosis?"
+      "prompt": "Which result would most directly weaken the zero-current-equilibrium diagnosis? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

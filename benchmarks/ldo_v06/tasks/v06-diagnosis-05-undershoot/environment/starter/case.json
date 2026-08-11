@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "315 V"
+          "text": "0.035 V"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "0.035 V"
+          "text": "315 V"
         },
         {
           "id": "D",
           "text": "0.39 V"
         }
       ],
-      "prompt": "What approximate pass-gate excursion is implied by 0.35 V/us for 900 ns?"
+      "prompt": "What approximate pass-gate excursion is implied by 0.35 V/us for 900 ns? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

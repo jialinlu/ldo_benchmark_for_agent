@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "The same 1.8 MHz ringing persists with the feedback loop opened"
-        },
-        {
-          "id": "C",
           "text": "COUT tolerance is nonzero"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "The ringing frequency shifts slightly with load"
+        },
+        {
+          "id": "D",
+          "text": "The same 1.8 MHz ringing persists with the feedback loop opened"
         }
       ],
-      "prompt": "Which counter-observation would most directly weaken the low-phase-margin diagnosis?"
+      "prompt": "Which counter-observation would most directly weaken the low-phase-margin diagnosis? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

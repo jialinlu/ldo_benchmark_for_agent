@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "+3 dB and +0.01 V/us"
+          "text": "+3 dB and +0.31 V/us"
         },
         {
           "id": "B",
-          "text": "It has no positive margin on either metric"
-        },
-        {
-          "id": "C",
           "text": "+1 dB and +0.01 V/us"
         },
         {
+          "id": "C",
+          "text": "It has no positive margin on either metric"
+        },
+        {
           "id": "D",
-          "text": "+3 dB and +0.31 V/us"
+          "text": "+3 dB and +0.01 V/us"
         }
       ],
-      "prompt": "What margins does the 15/15 uA allocation have to gain and slew targets?"
+      "prompt": "What margins does the 15/15 uA allocation have to gain and slew targets? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "The points are equivalent at fixed current"
-        },
-        {
-          "id": "B",
-          "text": "9 V^-1 below target"
-        },
-        {
-          "id": "C",
           "text": "5 V^-1 without a normalized comparison"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The points are equivalent at fixed current"
+        },
+        {
+          "id": "C",
           "text": "5 V^-1, or about 35.7 percent below target"
+        },
+        {
+          "id": "D",
+          "text": "9 V^-1 below target"
         }
       ],
-      "prompt": "How far below the target inversion-efficiency point is copied W/L?"
+      "prompt": "How far below the target inversion-efficiency point is copied W/L? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "20,000 to 1"
+          "text": "Four decades, without quantifying the endpoint ratio"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "1,000 to 1"
+          "text": "20,000 to 1"
         },
         {
           "id": "D",
-          "text": "Four decades, without quantifying the endpoint ratio"
+          "text": "1,000 to 1"
         }
       ],
-      "prompt": "What load-range ratio drives the need for explicit moving-pole coverage?"
+      "prompt": "What load-range ratio drives the need for explicit moving-pole coverage? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

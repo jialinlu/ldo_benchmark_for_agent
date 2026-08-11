@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Reduce PMOS gate capacitance"
+          "text": "Allow a verified boosted gate rail or charge pump"
         },
         {
           "id": "B",
-          "text": "Increase the output target while keeping VIN fixed"
-        },
-        {
-          "id": "C",
           "text": "Require still lower dropout without a boosted rail"
         },
         {
+          "id": "C",
+          "text": "Reduce PMOS gate capacitance"
+        },
+        {
           "id": "D",
-          "text": "Allow a verified boosted gate rail or charge pump"
+          "text": "Increase the output target while keeping VIN fixed"
         }
       ],
-      "prompt": "Which single requirement change most directly reopens the NMOS-pass option?"
+      "prompt": "Which single requirement change most directly reopens the NMOS-pass option? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

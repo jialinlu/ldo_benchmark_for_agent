@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "Its added current fits the 12 uA budget and the same candidate closes both dropout and light-load PM"
+          "text": "It uses exactly all 12 uA without a fresh IQ measurement"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "It uses exactly all 12 uA without a fresh IQ measurement"
+          "text": "It may be accepted from the monotonic gate-pole argument alone"
         },
         {
           "id": "D",
-          "text": "It may be accepted from the monotonic gate-pole argument alone"
+          "text": "Its added current fits the 12 uA budget and the same candidate closes both dropout and light-load PM"
         }
       ],
-      "prompt": "When is the lower-driver-resistance proposal actually admissible?"
+      "prompt": "When is the lower-driver-resistance proposal actually admissible? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

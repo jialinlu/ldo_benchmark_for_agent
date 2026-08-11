@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "VOUT alone is unchanged after insertion"
-        },
-        {
-          "id": "C",
           "text": "The Bode plot is smooth"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "The DC operating point is unchanged and the low-frequency return-ratio sign is consistent"
+        },
+        {
+          "id": "D",
+          "text": "VOUT alone is unchanged after insertion"
         }
       ],
-      "prompt": "Which acceptance check is required before trusting the injected return ratio?"
+      "prompt": "Which acceptance check is required before trusting the injected return ratio? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

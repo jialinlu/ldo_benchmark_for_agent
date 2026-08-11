@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "About 12 MHz without relating it to the observed mode"
+          "text": "About 12 MHz, consistent with the observed new mode"
         },
         {
           "id": "C",
-          "text": "About 0.9 MHz"
+          "text": "About 12 MHz without relating it to the observed mode"
         },
         {
           "id": "D",
-          "text": "About 12 MHz, consistent with the observed new mode"
+          "text": "About 0.9 MHz"
         }
       ],
-      "prompt": "What resonance estimate follows from 2 nH and 88 nF?"
+      "prompt": "What resonance estimate follows from 2 nH and 88 nF? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

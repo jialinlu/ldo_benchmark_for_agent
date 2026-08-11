@@ -121,11 +121,11 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "About 2667 um2 and 1.3 V"
+          "text": "About 2000 um2 proves compensation is preserved"
         },
         {
           "id": "B",
@@ -133,14 +133,14 @@
         },
         {
           "id": "C",
-          "text": "About 2000 um2 proves compensation is preserved"
+          "text": "About 2000 um2 and adequate voltage margin"
         },
         {
           "id": "D",
-          "text": "About 2000 um2 and adequate voltage margin"
+          "text": "About 2667 um2 and 1.3 V"
         }
       ],
-      "prompt": "What first-pass target area and voltage margin follow from the supplied target MIM data?"
+      "prompt": "What first-pass target area and voltage margin follow from the supplied target MIM data? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

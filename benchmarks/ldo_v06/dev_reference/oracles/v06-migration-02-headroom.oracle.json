@@ -63,17 +63,16 @@
       "weight": 12
     },
     {
-      "credits": {
-        "A": 0.55,
-        "B": 0.0,
-        "C": 1.0,
-        "D": 0.2
-      },
       "critical": false,
       "dimension": "quantitative_or_counterfactual",
-      "expected": "C",
+      "expected": [
+        "D",
+        "B",
+        "C",
+        "A"
+      ],
       "id": "q5",
-      "kind": "choice_credit",
+      "kind": "ranking_pairwise",
       "path": "answers.q5",
       "weight": 24
     },

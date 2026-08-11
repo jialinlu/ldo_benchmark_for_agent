@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "4x"
+          "text": "8x, without identifying the direct path"
         },
         {
           "id": "B",
-          "text": "8x, supporting a path outside ordinary loop authority"
+          "text": "4x"
         },
         {
           "id": "C",
-          "text": "8x, without identifying the direct path"
+          "text": "8x, supporting a path outside ordinary loop authority"
         },
         {
           "id": "D",
           "text": "The peak is below UGF"
         }
       ],
-      "prompt": "How far above loop UGF is the 2 MHz ripple peak?"
+      "prompt": "How far above loop UGF is the 2 MHz ripple peak? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

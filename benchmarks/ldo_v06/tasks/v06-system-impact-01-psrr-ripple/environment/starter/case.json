@@ -121,7 +121,7 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
@@ -129,18 +129,18 @@
         },
         {
           "id": "B",
-          "text": "About 0.63 mV rms"
-        },
-        {
-          "id": "C",
           "text": "About 0.78 mV rms"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "About 0.37 mV rms by linear subtraction"
+        },
+        {
+          "id": "D",
+          "text": "About 0.63 mV rms"
         }
       ],
-      "prompt": "After the 0.63 mV ripple contribution, what independent RMS budget remains under a 1 mV total limit?"
+      "prompt": "After the 0.63 mV ripple contribution, what independent RMS budget remains under a 1 mV total limit? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

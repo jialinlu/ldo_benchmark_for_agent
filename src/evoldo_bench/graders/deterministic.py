@@ -29,6 +29,21 @@ def _evaluate(check: Dict[str, Any], answer: Dict[str, Any]) -> Tuple[bool, str,
         credit = float(check["credits"].get(actual, 0.0)) if isinstance(actual, str) else 0.0
         passed = credit == 1.0
         return passed, "full-credit choice" if passed else "choice credit %.3f" % credit, actual, credit
+    if kind == "ranking_pairwise":
+        if not isinstance(actual, list):
+            return False, "ranking must be a list", actual, 0.0
+        expected_rank = list(expected)
+        actual_rank = {value: index for index, value in enumerate(actual)}
+        correct_pairs = 0
+        total_pairs = 0
+        for left_index, left in enumerate(expected_rank):
+            for right in expected_rank[left_index + 1:]:
+                total_pairs += 1
+                if left in actual_rank and right in actual_rank and actual_rank[left] < actual_rank[right]:
+                    correct_pairs += 1
+        credit = correct_pairs / total_pairs if total_pairs else 0.0
+        passed = actual == expected_rank
+        return passed, "exact ranking" if passed else "pairwise ranking credit %.3f" % credit, actual, credit
     if kind == "boolean":
         passed = isinstance(actual, bool) and actual is bool(expected)
         return passed, "boolean match" if passed else "expected %r" % expected, actual, float(passed)

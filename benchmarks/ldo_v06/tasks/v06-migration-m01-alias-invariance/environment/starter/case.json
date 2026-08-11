@@ -121,26 +121,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "A converged full LDO operating point without pin audit"
-        },
-        {
-          "id": "B",
-          "text": "A converged one-device OP with the wrapper name"
-        },
-        {
-          "id": "C",
           "text": "Matching primitive model names only"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Verified D/G/S/B mapping, explicit body behavior, wrapper use, and expected one-device OP"
+        },
+        {
+          "id": "C",
+          "text": "A converged full LDO operating point without pin audit"
+        },
+        {
+          "id": "D",
+          "text": "A converged one-device OP with the wrapper name"
         }
       ],
-      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration?"
+      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

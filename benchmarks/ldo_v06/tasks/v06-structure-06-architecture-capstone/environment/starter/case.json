@@ -125,26 +125,26 @@
     {
       "dimension": "quantitative_or_counterfactual",
       "id": "q5",
-      "kind": "ordered_choice",
+      "kind": "ranked_choice",
       "options": [
         {
           "id": "A",
-          "text": "15 uA"
-        },
-        {
-          "id": "B",
-          "text": "85 uA"
-        },
-        {
-          "id": "C",
           "text": "100 uA"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "15 uA"
+        },
+        {
+          "id": "C",
           "text": "12.75 uA"
+        },
+        {
+          "id": "D",
+          "text": "85 uA"
         }
       ],
-      "prompt": "What is the largest stated current headroom available for a bounded driver-strength experiment?"
+      "prompt": "What is the largest stated current headroom available for a bounded driver-strength experiment? Rank all four responses from strongest to weakest support."
     },
     {
       "dimension": "evidence_attribution",

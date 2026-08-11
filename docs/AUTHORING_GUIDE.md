@@ -1,4 +1,4 @@
-# v0.6.1 task-family authoring guide
+# v0.6.2 task-family authoring guide
 
 ## Required family structure
 
@@ -15,8 +15,9 @@ pure-sizing task but retain a separate score dimension.
 4. Define scenario-local distractors. Do not borrow options with different units, candidate names, or analysis
    regimes from another case merely to fill an option list.
 5. Write deterministic checks for conclusion, mechanism, action, boundary, a quantitative/counterfactual
-   discriminator, and evidence attribution. Ordered choices require an explicit credit map; evidence selection
-   uses set F1 so omissions and false positives are both visible.
+   discriminator, and evidence attribution. Ordered choices require an explicit credit map; the hard discriminator
+   ranks every alternative and uses pairwise-order credit; evidence selection uses set F1 so omissions and false
+   positives are both visible.
 6. Confirm weights sum to 100 and mark physically fatal checks as critical.
 7. Generate all assets with `tools/generate_v06_tasks.py` in the demo-task layout.
 8. Run unit tests, `tools/run_self_check.py`, and contamination audit.
