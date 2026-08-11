@@ -25,6 +25,13 @@ class RecoveryTests(unittest.TestCase):
         )
         self.assertEqual(
             "infrastructure",
+            classify_attempt(
+                {"status": "controller_interrupted"},
+                {"model_identity_status": "unavailable"},
+            ),
+        )
+        self.assertEqual(
+            "infrastructure",
             classify_attempt({"status": "ok"}, {"model_identity_status": "mismatch"}),
         )
         self.assertEqual(

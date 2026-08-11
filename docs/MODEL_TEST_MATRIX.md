@@ -8,7 +8,9 @@ After framework and gateway failures were diagnosed, the benchmark owner authori
 policy below. This provenance is retained rather than rewriting the original policy. A model-attributable
 failure remains in the score denominator as zero. A provider, gateway, runner, or model-identity failure is
 retried with the same task, rollout, and seed until a model-attributable outcome is obtained. Every attempt
-remains visible; successful retries do not erase the failed attempt's tokens, cost, or wall time.
+remains visible; successful retries do not erase the failed attempt's tokens, cost, or wall time. Retries
+are scheduled round-robin, one attempt per unresolved row per pass, so one persistently unhealthy task
+cannot consume its full retry allowance before other rows are attempted.
 
 ## Core cohort
 

@@ -20,6 +20,7 @@ from .utils import dump_json, load_json, safe_relative_path, sha256_file, utc_ti
 
 
 INFRASTRUCTURE_STATUSES = frozenset({
+    "controller_interrupted",
     "failed",
     "provider_infra_fail",
     "provider_timeout",
@@ -254,6 +255,39 @@ def _checkpoint(output_root: Path, manifest: Dict[str, Any]) -> None:
     dump_json(output_root / "experiment_manifest.json", manifest)
 
 
+def _write_interrupted_attempt_record(
+    run_dir: Path,
+    task: Task,
+    mode: str,
+    timeout_seconds: Optional[int],
+) -> None:
+    """Make an interrupted, already-created attempt auditable and resumable."""
+    answer_path = run_dir / "app" / "answer.json"
+    duration = max(0.0, time.time() - run_dir.stat().st_mtime)
+    dump_json(run_dir / "run_record.json", {
+        "schema_version": "1.0",
+        "task_id": task.task_id,
+        "family_id": task.family_id,
+        "mode": mode,
+        "command": [],
+        "command_display": "unavailable: recovery controller interrupted",
+        "started_at": None,
+        "duration_seconds": round(duration, 6),
+        "duration_measurement": "estimated_from_attempt_directory_mtime",
+        "timeout_seconds": timeout_seconds or int(task.data["budget"]["timeout_seconds"]),
+        "timed_out": False,
+        "return_code": None,
+        "status": "controller_interrupted",
+        "answer_present": answer_path.is_file(),
+        "answer_sha256": sha256_file(answer_path) if answer_path.is_file() else None,
+        "adapter_outcome": None,
+        "interruption_reason": "recovery_controller_interrupted",
+        "stdout_file": None,
+        "stderr_file": None,
+        "security_boundary": "unknown_after_controller_interruption",
+    })
+
+
 def recover_experiment(
     source_root: Path,
     output_root: Path,
@@ -348,36 +382,49 @@ def recover_experiment(
             _checkpoint(output_root, manifest)
 
     manifest["recovery"]["maximum_infrastructure_retries_per_rollout"] = max_infrastructure_retries
+    scheduler_repository = repository_fingerprint(Path(__file__).resolve().parents[2])
+    scheduler_history = manifest["recovery"].setdefault("scheduler_repository_history", [])
+    if scheduler_repository not in scheduler_history:
+        scheduler_history.append(scheduler_repository)
+    manifest["recovery"]["retry_scheduling"] = "round_robin_one_attempt_per_unresolved_row"
     retry_context = None
     if manifest.get("context_snapshot", {}).get("included"):
         candidate = output_root / "frozen_context" / "context"
         if not candidate.is_dir():
             raise PolicyError("recovery is missing the frozen context snapshot")
         retry_context = candidate
-    for row in manifest["rows"]:
-        if row.get("resolution_status") not in {"pending_infrastructure_retry", "infra_exhausted"}:
-            continue
-        task = get_task(tasks_root, row["task_id"])
-        retry_count = len(row.get("attempts", [])) - 1
-        while retry_count < max_infrastructure_retries:
+    while True:
+        attempted_this_round = False
+        for row in manifest["rows"]:
+            if row.get("resolution_status") not in {"pending_infrastructure_retry", "infra_exhausted"}:
+                continue
+            retry_count = len(row.get("attempts", [])) - 1
+            if retry_count >= max_infrastructure_retries:
+                continue
+            attempted_this_round = True
+            task = get_task(tasks_root, row["task_id"])
             attempt_index = len(row["attempts"])
             run_dir = (
                 output_root / "runs" / task.task_id / ("rollout-%03d" % int(row["rollout"]))
                 / ("attempt-%03d" % attempt_index)
             )
-            if run_dir.exists():
-                raise PolicyError("unrecorded retry attempt directory exists: %s" % run_dir)
-            if retry_count and retry_backoff_seconds:
+            if retry_count and retry_backoff_seconds and not run_dir.exists():
                 time.sleep(retry_backoff_seconds)
-            previous = _set_rollout_environment(int(row["seed"]), int(row["rollout"]))
-            try:
-                record = run_agent_command(
-                    task, run_dir,
-                    adapter.command(task.task_id, int(row["rollout"]), int(row["seed"])),
-                    manifest["mode"], retry_context, timeout_seconds,
-                )
-            finally:
-                _restore_rollout_environment(previous)
+            if run_dir.exists():
+                if not (run_dir / "run_record.json").is_file():
+                    _write_interrupted_attempt_record(
+                        run_dir, task, manifest["mode"], timeout_seconds,
+                    )
+            else:
+                previous = _set_rollout_environment(int(row["seed"]), int(row["rollout"]))
+                try:
+                    run_agent_command(
+                        task, run_dir,
+                        adapter.command(task.task_id, int(row["rollout"]), int(row["seed"])),
+                        manifest["mode"], retry_context, timeout_seconds,
+                    )
+                finally:
+                    _restore_rollout_environment(previous)
             record, telemetry, score, regraded = _normalize_attempt(
                 run_dir, task, tasks_root, oracle_root, manifest["model_id"], manifest["mode"],
                 int(row["rollout"]), int(row["seed"]), False,
@@ -386,17 +433,23 @@ def recover_experiment(
                 output_root, run_dir, attempt_index, record, telemetry, score, regraded,
             )
             row["attempts"].append(attempt)
-            retry_count += 1
             row["telemetry_file"] = attempt["telemetry_file"]
             row["status"] = attempt["status"]
             if attempt["classification"] == "model":
                 _apply_accepted_attempt(row, attempt)
-                _checkpoint(output_root, manifest)
-                break
-            row["resolution_status"] = "pending_infrastructure_retry"
+            else:
+                row["resolution_status"] = "pending_infrastructure_retry"
             _checkpoint(output_root, manifest)
+        if not attempted_this_round:
+            break
+        if not any(
+            row.get("resolution_status") in {"pending_infrastructure_retry", "infra_exhausted"}
+            and len(row.get("attempts", [])) - 1 < max_infrastructure_retries
+            for row in manifest["rows"]
+        ):
+            break
+    for row in manifest["rows"]:
         if row.get("resolution_status") == "pending_infrastructure_retry":
             row["resolution_status"] = "infra_exhausted"
-            _checkpoint(output_root, manifest)
     _checkpoint(output_root, manifest)
     return manifest
