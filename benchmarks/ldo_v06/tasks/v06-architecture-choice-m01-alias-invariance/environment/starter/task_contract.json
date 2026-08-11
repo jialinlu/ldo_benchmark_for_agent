@@ -1,0 +1,32 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "architecture_choice",
+    "companion"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-architecture-choice-03-capless",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v06-architecture-choice-03-capless",
+  "paired_with": "v06-architecture-choice-03-capless",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "architecture_choice",
+  "task_id": "v06-architecture-choice-m01-alias-invariance",
+  "title": "Decide whether to use a capless architecture — alias-invariance companion",
+  "variant": "metamorphic"
+}

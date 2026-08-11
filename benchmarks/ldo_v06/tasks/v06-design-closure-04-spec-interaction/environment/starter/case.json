@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "PM 44 to 66 deg"
+    },
+    {
+      "id": "E2",
+      "observation": "startup 14 to 31 us, limit 25 us"
+    },
+    {
+      "id": "E3",
+      "observation": "settling 5 to 11 us, limit 8 us"
+    },
+    {
+      "id": "E4",
+      "observation": "IQ unchanged"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The compensation-only change is infeasible under the full spec set"
+        },
+        {
+          "id": "B",
+          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+        },
+        {
+          "id": "C",
+          "text": "Revision B is not closed because it traded one pass for a stability failure"
+        },
+        {
+          "id": "D",
+          "text": "Continue local sizing; an architecture change is not yet justified"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
+        },
+        {
+          "id": "B",
+          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
+        },
+        {
+          "id": "C",
+          "text": "The same lower bandwidth that improves phase margin slows both required transients"
+        },
+        {
+          "id": "D",
+          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Co-size the driver/compensation and rerun the frozen regression"
+        },
+        {
+          "id": "B",
+          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+        },
+        {
+          "id": "C",
+          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+        },
+        {
+          "id": "D",
+          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Stability closure cannot be declared while transient gates fail"
+        },
+        {
+          "id": "B",
+          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+        },
+        {
+          "id": "C",
+          "text": "A plausible Bode plot does not rescue a changed circuit"
+        },
+        {
+          "id": "D",
+          "text": "Only TT and one global worst corner cannot establish closure"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "Increasing Ccomp fixes PM but causes startup and load-step settling to exceed limits.",
+  "schema_version": "2.0",
+  "task_id": "v06-design-closure-04-spec-interaction"
+}

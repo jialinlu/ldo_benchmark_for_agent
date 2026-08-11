@@ -1,0 +1,35 @@
+{
+  "candidate_fields": [
+    "pass_width_um"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "W=80 um: 5.5 mA",
+    "W=100 um: 6.9 mA",
+    "W=120 um: 8.2 mA",
+    "required with margin=7.2 mA"
+  ],
+  "hard_bounds": {
+    "pass_width_um": [
+      80,
+      220
+    ]
+  },
+  "objective": "Minimize characterized pass width while retaining the explicit load-current margin.",
+  "paired_pure_task": "v06-sizing-01-pass-first",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final pass_width_um"
+    }
+  ],
+  "scenario": "Use the supplied SKY130 tt operating points to choose the smallest characterized pass width meeting 6 mA at 120 mV headroom with 20 percent current margin. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-01-pass-first"
+}

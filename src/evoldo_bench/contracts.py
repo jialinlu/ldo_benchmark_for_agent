@@ -16,6 +16,7 @@ ALLOWED_SUITES = {
     "system_impact",
     "design_closure",
     "architecture_choice",
+    "eda_tool",
 }
 ALLOWED_LEVELS = {"L1", "L2", "L3", "L4", "L5"}
 ALLOWED_VARIANTS = {"canonical", "metamorphic", "counterexample", "regime", "difficulty"}
@@ -26,6 +27,8 @@ ALLOWED_MODES = {
     "simulation_assisted",
     "full_design",
     "weak_agent_airgap",
+    "sizing_assisted",
+    "eda_assisted",
 }
 ALLOWED_CHECKS = {
     "exact",
@@ -92,11 +95,27 @@ class Task:
 
     @property
     def prompt_path(self) -> Path:
-        return self.root / safe_relative_path(self.data["prompt_file"])
+        return self.source_path(self.data["prompt_file"])
 
     @property
     def input_paths(self) -> List[Path]:
-        return [self.root / safe_relative_path(item) for item in self.data["input_files"]]
+        return [self.source_path(item) for item in self.data["input_files"]]
+
+    @property
+    def package_style(self) -> str:
+        return "demo_task" if not (self.root / "task.json").is_file() and (self.root / "task.toml").is_file() else "legacy"
+
+    @property
+    def manifest_path(self) -> Path:
+        return self.root / ("task.toml" if self.package_style == "demo_task" else "task.json")
+
+    def source_path(self, value: str) -> Path:
+        relative = safe_relative_path(value)
+        direct = self.root / relative
+        if direct.is_file():
+            return direct
+        starter = self.root / "environment" / "starter" / relative
+        return starter
 
 
 def validate_task(data: Dict[str, Any], root: Optional[Path] = None) -> Dict[str, Any]:
@@ -122,7 +141,7 @@ def validate_task(data: Dict[str, Any], root: Optional[Path] = None) -> Dict[str
         ],
         "task",
     )
-    if data["schema_version"] != "1.0":
+    if data["schema_version"] not in {"1.0", "2.0"}:
         raise ContractError("unsupported task schema_version: %s" % data["schema_version"])
     for field in ["task_id", "family_id", "lineage_id", "title", "language", "prompt_file", "answer_template_file"]:
         if not isinstance(data[field], str) or not data[field].strip():
@@ -161,7 +180,10 @@ def validate_task(data: Dict[str, Any], root: Optional[Path] = None) -> Dict[str
     if root is not None:
         referenced = [data["prompt_file"], data["answer_template_file"]] + list(data["input_files"])
         for value in referenced:
-            path = root / safe_relative_path(value)
+            relative = safe_relative_path(value)
+            path = root / relative
+            if not path.is_file():
+                path = root / "environment" / "starter" / relative
             if not path.is_file():
                 raise ContractError("referenced task file does not exist: %s" % path)
     return data
@@ -169,14 +191,41 @@ def validate_task(data: Dict[str, Any], root: Optional[Path] = None) -> Dict[str
 
 def load_task(task_dir: Path) -> Task:
     manifest = task_dir / "task.json"
-    if not manifest.is_file():
-        raise ContractError("task.json not found: %s" % task_dir)
-    data = load_json(manifest)
+    if manifest.is_file():
+        data = load_json(manifest)
+    else:
+        package_manifest = task_dir / "task.toml"
+        manifest = task_dir / "environment" / "starter" / "task_contract.json"
+        if not package_manifest.is_file() or not manifest.is_file():
+            raise ContractError("task.toml and environment/starter/task_contract.json not found: %s" % task_dir)
+        data = load_json(manifest)
     validate_task(data, task_dir)
     return Task(task_dir, data)
 
 
 def validate_answer(data: Dict[str, Any], task: Optional[Task] = None) -> Dict[str, Any]:
+    if data.get("schema_version") == "2.0":
+        _required(data, ["schema_version", "task_id", "answers", "claim_boundary", "confidence"], "answer")
+        if not isinstance(data["task_id"], str) or not data["task_id"].strip():
+            raise ContractError("answer.task_id must be a non-empty string")
+        if not isinstance(data["answers"], dict):
+            raise ContractError("answer.answers must be an object")
+        if not isinstance(data["claim_boundary"], str) or not data["claim_boundary"].strip():
+            raise ContractError("answer.claim_boundary must be a non-empty string")
+        confidence = data["confidence"]
+        if not isinstance(confidence, (int, float)) or isinstance(confidence, bool) or not 0 <= confidence <= 1:
+            raise ContractError("answer.confidence must be a number in [0, 1]")
+        if task is not None:
+            case_paths = [path for path in task.input_paths if path.name == "case.json"]
+            if not case_paths:
+                raise ContractError("task does not provide case.json")
+            case = load_json(case_paths[0])
+            question_ids = {item["id"] for item in case.get("questions", []) if isinstance(item, dict) and "id" in item}
+            missing = sorted(question_ids.difference(data["answers"]))
+            unexpected = sorted(set(data["answers"]).difference(question_ids))
+            if missing or unexpected:
+                raise ContractError("answer question mismatch; missing=%s unexpected=%s" % (missing, unexpected))
+        return data
     _required(
         data,
         [

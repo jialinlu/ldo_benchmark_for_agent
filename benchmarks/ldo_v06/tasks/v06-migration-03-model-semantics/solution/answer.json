@@ -1,0 +1,12 @@
+{
+  "answers": {
+    "q1": "C",
+    "q2": "C",
+    "q3": "D",
+    "q4": "C"
+  },
+  "claim_boundary": "Conclusion is limited to the supplied evidence and named operating conditions.",
+  "confidence": 0.95,
+  "schema_version": "2.0",
+  "task_id": "v06-migration-03-model-semantics"
+}

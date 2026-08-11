@@ -18,6 +18,7 @@ from .exam import create_private_canary, freeze_exam, redact_exam_manifest, veri
 from .experiment import compare_treatments, run_experiment
 from .grading import grade_directory, grade_one
 from .leaderboard import write_leaderboard
+from .live_verify import verify_live_task
 from .report import write_markdown
 from .recovery import recover_experiment
 from .probes import evaluate_probe_contract
@@ -28,8 +29,8 @@ from .telemetry import summarize_effort
 from .utils import dump_json, load_json
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_TASKS = ROOT / "benchmarks" / "ldo_original" / "dev" / "tasks"
-DEFAULT_ORACLES = ROOT / "benchmarks" / "ldo_original" / "dev_reference" / "oracles"
+DEFAULT_TASKS = ROOT / "benchmarks" / "ldo_v06" / "tasks"
+DEFAULT_ORACLES = ROOT / "benchmarks" / "ldo_v06" / "dev_reference" / "oracles"
 
 
 def _path(value: str) -> Path:
@@ -42,7 +43,7 @@ def _print_json(value: Any) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="evoldo-bench", description="Original LDO benchmark runner and grader")
+    parser = argparse.ArgumentParser(prog="evoldo-bench", description="EvoLDO v0.6 LDO reasoning, sizing, and EDA benchmark")
     sub = parser.add_subparsers(dest="command_name", required=True)
 
     listing = sub.add_parser("list", help="list and inventory tasks")
@@ -86,6 +87,16 @@ def build_parser() -> argparse.ArgumentParser:
     grade_all.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
     grade_all.add_argument("--scores-root", type=_path, required=True)
 
+    live = sub.add_parser("verify-live", help="run the authoritative SKY130 or IC618 gate for a tool task")
+    live.add_argument("answer", type=_path)
+    live.add_argument("--app-root", type=_path)
+    live.add_argument("--tasks-root", type=_path, default=DEFAULT_TASKS)
+    live.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
+    live.add_argument("--pdk-root", type=_path)
+    live.add_argument("--eda-ssh-target")
+    live.add_argument("--ngspice", default="ngspice")
+    live.add_argument("--output", type=_path)
+
     aggregate = sub.add_parser("aggregate", help="aggregate task scores by family, suite, level, and variant")
     aggregate.add_argument("scores_root", type=_path)
     aggregate.add_argument("--mode", default="unspecified")
@@ -108,7 +119,7 @@ def build_parser() -> argparse.ArgumentParser:
     experiment.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
     experiment.add_argument("--output", type=_path, required=True)
     experiment.add_argument("--model-id", required=True)
-    experiment.add_argument("--mode", choices=sorted({"direct_reasoning", "agentic_skill", "simulation_assisted", "full_design", "weak_agent_airgap"}), required=True)
+    experiment.add_argument("--mode", choices=sorted({"direct_reasoning", "agentic_skill", "simulation_assisted", "full_design", "weak_agent_airgap", "sizing_assisted", "eda_assisted"}), required=True)
     experiment.add_argument("--rollouts", type=int, default=3)
     experiment.add_argument("--base-seed", type=int, default=2026)
     experiment.add_argument("--context-dir", type=_path)
@@ -247,7 +258,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     missing.append(task.task_id)
                 else:
                     validate_oracle(load_json(oracle))
-            registry_path = args.registry or args.tasks_root.parent.parent / "registry.jsonl"
+            adjacent_registry = args.tasks_root.parent / "registry.jsonl"
+            registry_path = args.registry or (adjacent_registry if adjacent_registry.is_file()
+                                               else args.tasks_root.parent.parent / "registry.jsonl")
             registry = validate_registry(tasks, registry_path)
             result = {
                 "passed": not missing and registry["passed"],
@@ -276,6 +289,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             scores = grade_directory(args.tasks_root, args.oracle_root, args.answers_root, args.scores_root)
             _print_json({"graded": len(scores), "scores_root": str(args.scores_root)})
             return 0
+        if args.command_name == "verify-live":
+            answer = load_json(args.answer)
+            task = get_task(args.tasks_root, answer.get("task_id", ""))
+            result = verify_live_task(task, args.answer, args.tasks_root, args.oracle_root,
+                                      args.app_root, args.pdk_root, args.eda_ssh_target, args.ngspice)
+            if args.output:
+                dump_json(args.output, result)
+            _print_json(result)
+            if not result.get("score_valid", False):
+                return 12
+            return 0 if result.get("score", 0) > 0 else 13
         if args.command_name == "aggregate":
             scores = [load_json(path) for path in sorted(args.scores_root.rglob("*.score.json"))]
             report = aggregate_scores(scores, mode=args.mode)

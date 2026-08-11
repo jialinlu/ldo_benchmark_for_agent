@@ -1,0 +1,12 @@
+{
+  "answers": {
+    "q1": "OPTION_ID",
+    "q2": "OPTION_ID",
+    "q3": "OPTION_ID",
+    "q4": "OPTION_ID"
+  },
+  "claim_boundary": "One concise statement of what the evidence does and does not establish.",
+  "confidence": 0.0,
+  "schema_version": "2.0",
+  "task_id": "v06-diagnosis-05-undershoot"
+}

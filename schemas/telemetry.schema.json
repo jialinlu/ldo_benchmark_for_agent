@@ -24,7 +24,18 @@
     "source": {"type": "string"},
     "probe_calls": {"type": "integer", "minimum": 0},
     "ineffective_probe_calls": {"type": "integer", "minimum": 0},
-    "policy_rejected_probe_calls": {"type": "integer", "minimum": 0}
+    "policy_rejected_probe_calls": {"type": "integer", "minimum": 0},
+    "milestones": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "first_feasible_seconds": {"type": ["number", "null"], "minimum": 0},
+        "terminal_seconds": {"type": ["number", "null"], "minimum": 0},
+        "first_feasible_tokens": {"type": ["number", "null"], "minimum": 0},
+        "terminal_tokens": {"type": ["number", "null"], "minimum": 0},
+        "terminal_status": {"enum": ["completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"]}
+      }
+    }
   },
   "$defs": {
     "breakdown": {

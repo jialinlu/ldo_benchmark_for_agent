@@ -1,0 +1,47 @@
+{
+  "hard_gates": [
+    "no modification of pre-existing libraries",
+    "no fabricated observations",
+    "fresh provenance"
+  ],
+  "provenance": {
+    "backend": "operator-provided VM",
+    "tool": "Cadence Virtuoso IC618/SKILL"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "no_persistent_evidence"
+        },
+        {
+          "id": "B",
+          "text": "infrastructure_failure"
+        },
+        {
+          "id": "C",
+          "text": "unsupported_claim"
+        },
+        {
+          "id": "D",
+          "text": "change_accepted_after_fresh_gate"
+        }
+      ],
+      "prompt": "Which terminal result is supported by the required tool workflow?"
+    }
+  ],
+  "required_sequence": [
+    "fresh isolated scratch",
+    "operation",
+    "save/close/reopen where applicable",
+    "readback",
+    "terminal JSON"
+  ],
+  "result_field": "closure_result",
+  "scenario": "Audit, apply one allowed sizing change, netlist, simulate, and accept or revert based on the supplied gate.",
+  "schema_version": "2.0",
+  "task_id": "v06-eda-06-mini-closure"
+}

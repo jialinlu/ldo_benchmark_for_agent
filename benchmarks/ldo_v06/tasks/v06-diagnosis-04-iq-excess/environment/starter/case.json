@@ -1,0 +1,125 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "reference=12 uA"
+    },
+    {
+      "id": "E2",
+      "observation": "EA=38 uA"
+    },
+    {
+      "id": "E3",
+      "observation": "driver=25 uA"
+    },
+    {
+      "id": "E4",
+      "observation": "feedback divider=90 uA"
+    },
+    {
+      "id": "E5",
+      "observation": "startup leakage=5 uA"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Insufficient closed-loop phase margin is the primary cause"
+        },
+        {
+          "id": "B",
+          "text": "The pass path lacks available conductance/headroom"
+        },
+        {
+          "id": "C",
+          "text": "There are two independent root causes requiring separate local fixes"
+        },
+        {
+          "id": "D",
+          "text": "The feedback divider dominates the excess"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
+        },
+        {
+          "id": "B",
+          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
+        },
+        {
+          "id": "C",
+          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+        },
+        {
+          "id": "D",
+          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fix startup injection and compensation separately, then run a full regression"
+        },
+        {
+          "id": "B",
+          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+        },
+        {
+          "id": "C",
+          "text": "Localize the phase loss by probing pass-gate and output poles"
+        },
+        {
+          "id": "D",
+          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A larger pass device is unsupported and could worsen the stability failure"
+        },
+        {
+          "id": "B",
+          "text": "Blindly reducing EA bias cannot recover the full current excess"
+        },
+        {
+          "id": "C",
+          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+        },
+        {
+          "id": "D",
+          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "Measured no-load supply current is 170 uA versus an 80 uA target. Branch current accounting is available.",
+  "schema_version": "2.0",
+  "task_id": "v06-diagnosis-04-iq-excess"
+}

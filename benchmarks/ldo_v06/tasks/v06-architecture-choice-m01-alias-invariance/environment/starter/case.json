@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "area permits 30 pF internal compensation"
+    },
+    {
+      "id": "E2",
+      "observation": "fast load edges"
+    },
+    {
+      "id": "E3",
+      "observation": "IQ target=50 uA"
+    },
+    {
+      "id": "E4",
+      "observation": "output pole moves four decades"
+    }
+  ],
+  "metamorphic_parent": "v06-architecture-choice-03-capless",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retain the PMOS architecture and apply the local co-size"
+        },
+        {
+          "id": "B",
+          "text": "Choose the characterized two-stage OTA"
+        },
+        {
+          "id": "C",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "D",
+          "text": "Choose a PMOS pass device"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+        },
+        {
+          "id": "B",
+          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+        },
+        {
+          "id": "C",
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+        },
+        {
+          "id": "D",
+          "text": "It directly senses the varying pass operating point within the available IQ budget"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "B",
+          "text": "Use Miller compensation and verify the pass-gate interaction"
+        },
+        {
+          "id": "C",
+          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
+        },
+        {
+          "id": "D",
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+        },
+        {
+          "id": "B",
+          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+        },
+        {
+          "id": "C",
+          "text": "An NMOS could become viable if a charge pump were allowed"
+        },
+        {
+          "id": "D",
+          "text": "The benefit depends on replica correlation across mismatch"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. The product forbids an external capacitor, permits 100 pF on-chip load, and spans 1 uA to 20 mA load.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

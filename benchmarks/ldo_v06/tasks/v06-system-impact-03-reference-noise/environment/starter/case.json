@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "noise gain=1.5"
+    },
+    {
+      "id": "E2",
+      "observation": "sources uncorrelated"
+    },
+    {
+      "id": "E3",
+      "observation": "pass/output noise neglected"
+    },
+    {
+      "id": "E4",
+      "observation": "same integration band"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
+        },
+        {
+          "id": "B",
+          "text": "The combined output contribution is about 31.8 uV rms"
+        },
+        {
+          "id": "C",
+          "text": "The local capacitor/package network controls the initial droop"
+        },
+        {
+          "id": "D",
+          "text": "The package-output LC resonance is the leading cause"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The feedback loop is too slow to respond during the edge"
+        },
+        {
+          "id": "B",
+          "text": "The active reference commands regulation before adequate pass/headroom exists"
+        },
+        {
+          "id": "C",
+          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+        },
+        {
+          "id": "D",
+          "text": "Scale reference noise by 1.5 and combine it root-sum-square with amplified input noise"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reserve the remaining noise budget for reference and device noise"
+        },
+        {
+          "id": "B",
+          "text": "Add remaining device and resistor noise before comparing to system limit"
+        },
+        {
+          "id": "C",
+          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
+        },
+        {
+          "id": "D",
+          "text": "Gate enable with VIN-good or add anti-windup/soft-start"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Linear addition would overestimate uncorrelated noise"
+        },
+        {
+          "id": "B",
+          "text": "PSRR at 10 kHz does not bound ripple at other harmonics"
+        },
+        {
+          "id": "C",
+          "text": "A single higher-bandwidth loop is neither sufficient nor IQ-neutral"
+        },
+        {
+          "id": "D",
+          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "The LDO is configured for VOUT/VREF=1.5. Integrated reference noise is 18 uV rms and error-amplifier input noise is 11 uV rms over the same band.",
+  "schema_version": "2.0",
+  "task_id": "v06-system-impact-03-reference-noise"
+}

@@ -1,0 +1,32 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "design_closure",
+    "companion"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-design-closure-03-regression",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v06-design-closure-03-regression",
+  "paired_with": "v06-design-closure-03-regression",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "v06-design-closure-m01-alias-invariance",
+  "title": "Detect a sizing regression — alias-invariance companion",
+  "variant": "metamorphic"
+}

@@ -47,6 +47,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
     by_suite: Dict[str, List[float]] = defaultdict(list)
     by_level: Dict[str, List[float]] = defaultdict(list)
     by_variant: Dict[str, List[float]] = defaultdict(list)
+    by_role: Dict[str, List[float]] = defaultdict(list)
     critical_failures: Dict[str, int] = defaultdict(int)
     for score in scores:
         value = float(score["score"])
@@ -54,6 +55,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
         by_suite[str(score["suite"])].append(value)
         by_level[str(score["level"])].append(value)
         by_variant[str(score["variant"])].append(value)
+        by_role[str(score.get("evaluation_role", "legacy"))].append(value)
         for failure in score.get("critical_failed", []):
             critical_failures[str(failure)] += 1
     family_means = {family: mean(values) for family, values in by_family.items()}
@@ -70,6 +72,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
         "by_suite": {key: _summary(values) for key, values in sorted(by_suite.items())},
         "by_level": {key: _summary(values) for key, values in sorted(by_level.items())},
         "by_variant": {key: _summary(values) for key, values in sorted(by_variant.items())},
+        "by_evaluation_role": {key: _summary(values) for key, values in sorted(by_role.items())},
         "critical_failure_counts": dict(sorted(critical_failures.items())),
     }
 

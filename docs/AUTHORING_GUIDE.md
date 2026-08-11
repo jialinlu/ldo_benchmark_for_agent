@@ -1,14 +1,11 @@
-# Original task-family authoring guide
+# v0.6 task-family authoring guide
 
 ## Required family structure
 
-A scored unit is a `family_id`, not an isolated prompt. Each family must include at least:
-
-1. **canonical:** the ordinary circuit/evidence case;
-2. **metamorphic:** names, ordering, hierarchy, units, or representation change without physics change;
-3. **counterexample:** one material connection, sign, regime, held-fixed condition, or evidence state changes.
-
-All variants share `family_id` and `lineage_id` and must remain in one split.
+Each pure suite contains three atomic cases, two coupled cases, and one existing-architecture optimization
+capstone. One selected parent per suite also has a metamorphic companion. Parent and companion share
+`family_id`/`lineage_id` and remain in one split. Tool-sizing treatments share lineage with the matching
+pure-sizing task but retain a separate score dimension.
 
 ## Authoring workflow
 
@@ -20,13 +17,12 @@ All variants share `family_id` and `lineage_id` and must remain in one split.
    Controlled selection fields use exact-set checks unless the rubric also defines an explicit false-positive
    penalty; unpenalized `set_contains` checks are not allowed for scored multiple-choice vocabularies.
 6. Confirm weights sum to 100 and mark physically fatal checks as critical.
-7. Generate all assets with `tools/generate_dev_tasks.py`.
+7. Generate all assets with `tools/generate_v06_tasks.py` in the demo-task layout.
 8. Run unit tests, `tools/run_self_check.py`, and contamination audit.
 9. Obtain two analog-engineer reviews for any numeric or design-closure task.
 10. Record source provenance and originality review before moving a family into a sealed split.
 
-Use [`ANALOG_EXPERT_REVIEW_GUIDE_ZH.md`](ANALOG_EXPERT_REVIEW_GUIDE_ZH.md) for the independent blind
-review, issue severity, coverage matrix, adjudication, and sign-off record.
+Use [`BENCHMARK_V06.md`](BENCHMARK_V06.md) for the frozen coverage, scoring, independence, and live-tool gates.
 
 ## Rules for numeric tasks
 

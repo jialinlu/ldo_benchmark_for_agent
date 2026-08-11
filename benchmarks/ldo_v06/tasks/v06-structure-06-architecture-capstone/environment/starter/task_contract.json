@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "structure",
+    "existing_architecture_optimization"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "existing_architecture_optimization",
+  "family_id": "v06-structure-06-architecture-capstone",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v06-structure-06-architecture-capstone",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "structure",
+  "task_id": "v06-structure-06-architecture-capstone",
+  "title": "Optimize an existing two-stage LDO architecture",
+  "variant": "canonical"
+}

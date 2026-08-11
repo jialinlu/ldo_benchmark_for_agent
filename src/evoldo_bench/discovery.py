@@ -24,9 +24,12 @@ def discover_tasks(tasks_root: Path, split: Optional[str] = None) -> List[Task]:
         raise ContractError("tasks root does not exist: %s" % tasks_root)
     tasks = []
     seen = {}
-    for manifest in sorted(tasks_root.rglob("task.json")):
+    manifests = list(tasks_root.rglob("task.toml")) + list(tasks_root.rglob("task.json"))
+    for manifest in sorted(manifests):
         relative_parts = {part.lower() for part in manifest.relative_to(tasks_root).parts[:-1]}
         if relative_parts.intersection({"environment", "tests", "solution"}):
+            continue
+        if manifest.name == "task.json" and (manifest.parent / "task.toml").is_file():
             continue
         task = load_task(manifest.parent)
         if task.task_id in seen:
@@ -96,7 +99,7 @@ def validate_registry(tasks: Iterable[Task], registry_path: Path) -> Dict[str, o
     for task_id in sorted(set(task_by_id).intersection(by_id)):
         task = task_by_id[task_id]
         row = by_id[task_id]
-        if row.get("manifest_sha256") != sha256_file(task.root / "task.json"):
+        if row.get("manifest_sha256") != sha256_file(task.manifest_path):
             hash_mismatch.append(task_id)
         if row.get("package_sha256") != task_package_sha256(task.root):
             package_hash_mismatch.append(task_id)

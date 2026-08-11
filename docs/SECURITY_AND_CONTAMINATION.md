@@ -62,6 +62,6 @@ A sealed exam therefore requires:
 
 ## Public development oracle warning
 
-`benchmarks/ldo_original/dev_reference/oracles` is intentionally public so contributors can validate the
+`benchmarks/ldo_v06/dev_reference/oracles` is intentionally public so contributors can validate the
 runner and grader. An agent with access to the full checkout can read it. Such a run is not isolated and
 must not be called an exam. Build a runtime bundle and use an external private store for real evaluation.

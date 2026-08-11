@@ -1,0 +1,32 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "system_impact",
+    "companion"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-system-impact-03-reference-noise",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v06-system-impact-03-reference-noise",
+  "paired_with": "v06-system-impact-03-reference-noise",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "system_impact",
+  "task_id": "v06-system-impact-m01-alias-invariance",
+  "title": "Budget reference-noise gain — alias-invariance companion",
+  "variant": "metamorphic"
+}

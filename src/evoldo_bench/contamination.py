@@ -33,7 +33,9 @@ def audit_task_collection(tasks_root: Path, oracle_root: Optional[Path] = None, 
     for task in tasks:
         family_splits[task.family_id].add(task.split)
         prompt = task.prompt_path.read_text(encoding="utf-8")
-        input_text = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in task.input_paths)
+        # Compare task semantics, not shared execution helpers or answer templates.
+        semantic_inputs = [path for path in task.input_paths if path.name == "case.json"]
+        input_text = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in semantic_inputs)
         text_by_task[task.task_id] = _tokens(prompt + "\n" + input_text)
         runtime_audit = audit_public_task_source(task.root)
         if not runtime_audit["passed"]:

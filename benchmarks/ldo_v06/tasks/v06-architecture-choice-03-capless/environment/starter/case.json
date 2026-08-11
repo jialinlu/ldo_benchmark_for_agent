@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "output pole moves four decades"
+    },
+    {
+      "id": "E2",
+      "observation": "IQ target=50 uA"
+    },
+    {
+      "id": "E3",
+      "observation": "fast load edges"
+    },
+    {
+      "id": "E4",
+      "observation": "area permits 30 pF internal compensation"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A scaled replica bias is justified by the measured load-dependent error"
+        },
+        {
+          "id": "B",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "C",
+          "text": "Choose a PMOS pass device"
+        },
+        {
+          "id": "D",
+          "text": "Add a frequency-shaped feed-forward cancellation path"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+        },
+        {
+          "id": "B",
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+        },
+        {
+          "id": "C",
+          "text": "An NMOS follower lacks gate overdrive without a boosted rail"
+        },
+        {
+          "id": "D",
+          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+        },
+        {
+          "id": "B",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "C",
+          "text": "Use Miller compensation and verify the pass-gate interaction"
+        },
+        {
+          "id": "D",
+          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "An NMOS could become viable if a charge pump were allowed"
+        },
+        {
+          "id": "B",
+          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+        },
+        {
+          "id": "C",
+          "text": "Sampled PVT evidence is promising but not final closure"
+        },
+        {
+          "id": "D",
+          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "The product forbids an external capacitor, permits 100 pF on-chip load, and spans 1 uA to 20 mA load.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-03-capless"
+}

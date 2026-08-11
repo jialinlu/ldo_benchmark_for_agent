@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "divider Thevenin resistance=330 kohm"
+    },
+    {
+      "id": "E2",
+      "observation": "pass-gate DC bias must be preserved"
+    },
+    {
+      "id": "E3",
+      "observation": "reference has finite AC impedance"
+    },
+    {
+      "id": "E4",
+      "observation": "Middlebrook injection fixture is available"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+        },
+        {
+          "id": "B",
+          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+        },
+        {
+          "id": "C",
+          "text": "The closed loop is negative feedback"
+        },
+        {
+          "id": "D",
+          "text": "Pass-device headroom is the active limit"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "That location preserves the operating point while exposing the full forward and return paths"
+        },
+        {
+          "id": "B",
+          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+        },
+        {
+          "id": "C",
+          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+        },
+        {
+          "id": "D",
+          "text": "Two nearby non-dominant poles consume phase before crossover"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Check loop gain at both load extremes before resizing compensation"
+        },
+        {
+          "id": "B",
+          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
+        },
+        {
+          "id": "C",
+          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+        },
+        {
+          "id": "D",
+          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "This establishes small-signal polarity, not stability margin"
+        },
+        {
+          "id": "B",
+          "text": "Successful nominal transient does not prove escape from every initial condition"
+        },
+        {
+          "id": "C",
+          "text": "A wider pass device can change gate pole and transient behavior"
+        },
+        {
+          "id": "D",
+          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "The LDO uses a resistive divider into a MOS differential pair. Candidate breakpoints are the divider midpoint, the pass gate, and the reference source.",
+  "schema_version": "2.0",
+  "task_id": "v06-structure-03-loop-break"
+}

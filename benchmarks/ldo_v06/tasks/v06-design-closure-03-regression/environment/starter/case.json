@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "same simulator/model"
+    },
+    {
+      "id": "E2",
+      "observation": "same test fixtures"
+    },
+    {
+      "id": "E3",
+      "observation": "gate capacitance +44 percent"
+    },
+    {
+      "id": "E4",
+      "observation": "driver unchanged"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Continue local sizing; an architecture change is not yet justified"
+        },
+        {
+          "id": "B",
+          "text": "Revision B is not closed because it traded one pass for a stability failure"
+        },
+        {
+          "id": "C",
+          "text": "The compensation-only change is infeasible under the full spec set"
+        },
+        {
+          "id": "D",
+          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
+        },
+        {
+          "id": "B",
+          "text": "Aggregate DC yield cannot hide a separate hard-gate failure mode"
+        },
+        {
+          "id": "C",
+          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+        },
+        {
+          "id": "D",
+          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+        },
+        {
+          "id": "B",
+          "text": "Retarget startup margin and rerun enough samples with the same seed policy"
+        },
+        {
+          "id": "C",
+          "text": "Freeze named corner groups for dropout, stability, startup, and leakage"
+        },
+        {
+          "id": "D",
+          "text": "Co-size the driver/compensation and rerun the frozen regression"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A plausible Bode plot does not rescue a changed circuit"
+        },
+        {
+          "id": "B",
+          "text": "Reporting only the improved metric is invalid cherry-picking"
+        },
+        {
+          "id": "C",
+          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+        },
+        {
+          "id": "D",
+          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "Revision B improves dropout by 28 mV but reduces light-load PM from 58 to 39 degrees after pass width is increased.",
+  "schema_version": "2.0",
+  "task_id": "v06-design-closure-03-regression"
+}

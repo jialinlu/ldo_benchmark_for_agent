@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "target LVS uses wrapper names"
+    },
+    {
+      "id": "E2",
+      "observation": "body must not float"
+    },
+    {
+      "id": "E3",
+      "observation": "primitive statistical parameters differ"
+    },
+    {
+      "id": "E4",
+      "observation": "wrapper pins are D G S B"
+    }
+  ],
+  "metamorphic_parent": "v06-migration-03-model-semantics",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The copied bias/output stack violates the new voltage budget"
+        },
+        {
+          "id": "B",
+          "text": "Resize physical area from target density and re-extract parasitics"
+        },
+        {
+          "id": "C",
+          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+        },
+        {
+          "id": "D",
+          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+        },
+        {
+          "id": "B",
+          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
+        },
+        {
+          "id": "C",
+          "text": "Capacitance value and parasitic network are process-specific even when voltage reliability passes"
+        },
+        {
+          "id": "D",
+          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+        },
+        {
+          "id": "B",
+          "text": "Build and simulate a one-device pin/model smoke test before full migration"
+        },
+        {
+          "id": "C",
+          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+        },
+        {
+          "id": "D",
+          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Schematic nominal capacitance alone does not preserve compensation"
+        },
+        {
+          "id": "B",
+          "text": "Passing nominal DC after scaling does not validate the migration"
+        },
+        {
+          "id": "C",
+          "text": "The migrated dimensions remain model- and corner-dependent"
+        },
+        {
+          "id": "D",
+          "text": "A converged operating point is not evidence of correct model semantics"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. A source netlist uses four-terminal MOS symbols and explicit body ties; the target PDK offers wrapper subcircuits plus primitive model names.",
+  "schema_version": "2.0",
+  "task_id": "v06-migration-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "candidate_fields": [
+    "pass_width_um",
+    "driver_res_kohm",
+    "ccomp_pf"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "A Wpass=100 um, Rdrv=8k: dropout=128 mV, PM=46 deg",
+    "B Wpass=140 um, Rdrv=8k: dropout=94 mV, PM=35 deg",
+    "C Wpass=140 um, Rdrv=3k: dropout=95 mV, PM=63 deg",
+    "targets dropout<=100 mV, PM>=55 deg"
+  ],
+  "hard_bounds": {
+    "ccomp_pf": [
+      2,
+      12
+    ],
+    "driver_res_kohm": [
+      2,
+      10
+    ],
+    "pass_width_um": [
+      80,
+      220
+    ]
+  },
+  "objective": "Co-size pass, driver, and compensation to close dropout and stability together.",
+  "paired_pure_task": "v06-sizing-05-driver-ratio",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final pass_width_um"
+    },
+    {
+      "id": "q2",
+      "kind": "numeric",
+      "prompt": "Final driver_res_kohm"
+    },
+    {
+      "id": "q3",
+      "kind": "numeric",
+      "prompt": "Final ccomp_pf"
+    }
+  ],
+  "scenario": "Three SKY130/ngspice candidates are compared at identical load and COUT. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-05-driver-ratio"
+}

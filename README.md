@@ -1,297 +1,89 @@
-# EvoLDO-Bench
+# EvoLDO-Bench v0.6
 
-> An original, auditable benchmark for testing whether an AI model or agent can reason about LDOs,
-> use simulation evidence responsibly, and move a design toward real closure.
+EvoLDO-Bench 是面向 LDO 与模拟电路设计的可审计模型基准。v0.6 先测纯模型能力，再用严格配对的 SKY130/ngspice sizing 与 Cadence Virtuoso IC618/SKILL 任务测工具增益；框架错误、网关错误、许可证和 PDK 不可用均记为 `INFRA_INVALID`，不得算作模型失败。
 
-[![CI](https://github.com/jialinlu/ldo_benchmark_for_agent/actions/workflows/ci.yml/badge.svg)](https://github.com/jialinlu/ldo_benchmark_for_agent/actions/workflows/ci.yml)
+## v0.6 任务矩阵
 
-## Why this exists
+| 分组 | 数量 | 目的 |
+|---|---:|---|
+| Pure Model Core | 48 | 8 个能力域 × 6 题；每域 3 atomic、2 coupled、1 existing-architecture optimization |
+| Pure companions | 8 | 每能力域 1 个等价变换题，测表示鲁棒性 |
+| Tool Sizing | 6 | 与 6 个纯 sizing 题配对，调用 SKY130/ngspice 探针 |
+| EDA primary | 6 | failure triage、只读 OA audit、局部编辑、可见连线、Spectre 测量、mini closure |
+| EDA companion | 1 | OA 对象改名与枚举顺序变化后的不变性 |
 
-Fluent analog vocabulary is not analog design competence. An LDO agent can still reverse the loop sign,
-change two variables in a “controlled” sweep, confuse a tool failure with a circuit failure, copy geometry
-between incompatible processes, or qualify a new candidate using stale results.
+共 69 个 rollout 单元。每模型独立运行 3 次，共 207 次；三次使用独立会话、空白上下文和不同 rollout seed，不共享答案、scratch、缓存目录或工具 ledger。
 
-EvoLDO-Bench turns those failure modes into replayable tests. It asks whether an agent can:
+能力域包括 structure、trend、diagnosis、sizing、migration、system impact、design closure、architecture choice。已有架构优化和 sizing 均能单独出分，不会被总体平均数掩盖。
 
-- read the circuit and operating regime that are actually present;
-- separate structure, bias, stability, startup, measurement, tool, model, and bench failures;
-- state what is held fixed before claiming causality;
-- choose coupled sizing and architecture actions rather than one-knob guesses;
-- use a simulator only through an explicit probe contract;
-- produce measurable capability lift per token, tool call, dollar, and minute;
-- preserve the same evidence discipline on an offline agent or a private PDK.
+## 任务格式
 
-The project has two layers:
+每个任务严格采用 Windows Desktop `task_examples` demo 的顶层结构：
 
-- **EvoLDO-Bench** evolves public contracts, development tasks, runners, graders, and research tooling.
-- **EvoLDO-Exam** is the future frozen release: hidden families, fixed budgets, immutable skills/tools,
-  isolated execution, calibrated judges, and formal sign-off.
-
-## Current release
-
-This repository now contains a **40-family / 120-instance controlled reasoning pilot** plus **six real
-SKY130/ngspice LDO design-closure tasks**. It is not a sealed exam. The public-PDK circuit is a benchmark
-fixture, not a silicon or product-performance claim.
-
-| Capability | Implemented now |
-|---|---|
-| Original task corpus | 40 families, each with canonical, metamorphic, and counterexample instances |
-| Task packaging | task_examples/Harbor-style environment, verifier, solution, and package digest for every task |
-| Coverage | structure, trend, diagnosis, sizing, migration, system impact, design closure, architecture choice |
-| Difficulty | L1–L4 development coverage |
-| Grading | deterministic checks, critical caps, family-macro and capability vectors |
-| Repeated experiments | fixed rollout schedule IDs, multiple rollouts, immutable context snapshots, command-model adapter |
-| Treatment control | comparator for model/task/seed/budget/answer-contract equality |
-| Tool policy | enforced `AnalogProbeContract`, regime/artifact/confounding checks, tool ledger and budget |
-| Simulator adapters | JSON process protocol, optional ngspice batch adapter, analytic protocol fixture |
-| Efficiency metrics | Pass@1 + 95% CI, spec score, tokens, cache share, steps, calls, time, cost |
-| Failure accounting | Every scheduled model failure scores zero; unavailable token/cost telemetry stays unknown |
-| Lift metrics | skill lift, simulation lift, simulation harm, ineffective-probe rate |
-| Result publishing | JSON, Markdown, CSV, and static score-versus-effort HTML |
-| Exam operations | freeze/verify manifests for tasks, oracles, skills, tools, policy, and code revision |
-| Explanation judging | two-judge calibration and automatic human-review routing on disagreement |
-| Design closure | immutable candidate and fresh-evidence hard gates for OP through PVT/policy |
-| Real public-PDK track | six fault-injected SKY130 transistor tasks with pinned model provenance and CI replay |
-| Private PDK | out-of-tree `SiteAdapter` boundary; no private assets belong in this repository |
-
-A `dev` score measures public-task integration and public-task performance only. It must never be called
-an EvoLDO-Exam score.
-
-## Benchmark structure
-
-```mermaid
-flowchart LR
-    F["Original family"] --> C["Canonical"]
-    F --> M["Metamorphic equivalent"]
-    F --> X["Decision-changing counterexample"]
-    C --> B["Minimal runtime bundle"]
-    M --> B
-    X --> B
-    S["Frozen skill snapshot"] -. "treatment only" .-> B
-    B --> A["Model / agent"]
-    A --> P["Probe policy + approved tool"]
-    A --> R["answer.json + telemetry"]
-    P --> R
-    R --> G["External oracle and policy grader"]
-    G --> V["Capability, lift, robustness, effort"]
+```text
+task-id/
+├── task.toml
+├── instruction.md
+├── environment/
+│   ├── Dockerfile
+│   └── starter/
+├── tests/
+│   ├── Dockerfile
+│   ├── test.sh
+│   └── verify.py
+└── solution/
+    └── solve.sh
 ```
 
-The scored unit is a **family**, not an isolated prompt. Renaming nodes must not create free points, while
-changing one physical or evidential fact must change the answer when the physics changes. All related
-variants remain in one lineage and one split.
+`tests`、`solution` 和外部 oracle 不进入模型 runtime bundle。完整规范见 [v0.6 benchmark 说明](docs/BENCHMARK_V06.md) 与 [任务包格式](docs/TASK_PACKAGE_FORMAT.md)。
 
-All included LDO tasks, fixtures, controlled tokens, and development oracles were independently authored
-for this project. No external benchmark task, netlist, golden, rubric, judge prompt, or model output is
-included.
-
-## Quick start
+## 快速检查
 
 ```bash
-git clone https://github.com/jialinlu/ldo_benchmark_for_agent.git
-cd ldo_benchmark_for_agent
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
 
-evoldo-bench list
-evoldo-bench validate
-evoldo-bench audit
-python -m unittest discover -s tests -v
-python tools/run_self_check.py
+evoldo-bench list --json
+evoldo-bench validate --registry benchmarks/ldo_v06/registry.jsonl
+python3 -m unittest discover -s tests -v
+python3 tools/run_self_check.py
 ```
 
-The runtime is Python 3.9+ and standard-library-only. JSON Schemas are included for interoperability;
-the CLI also performs strict native validation.
-
-## Run and grade one task
+运行一个纯模型任务：
 
 ```bash
-evoldo-bench run structure_feedback_sign--canonical \
-  --output runs/example --mode direct_reasoning -- \
-  python /absolute/path/to/your_agent.py
+evoldo-bench run v06-diagnosis-01-ringing \
+  --mode direct_reasoning --output runs/example -- \
+  python3 /absolute/path/to/agent_adapter.py
 
 evoldo-bench grade runs/example/app/answer.json \
-  --oracle-root benchmarks/ldo_original/dev_reference/oracles \
   --output runs/example/score.json
 ```
 
-The agent receives `EVOLDO_TASK_DIR`, `EVOLDO_ANSWER_PATH`, `EVOLDO_TELEMETRY_PATH`,
-`EVOLDO_TOOL_LEDGER_PATH`, `EVOLDO_TASK_ID`, and `EVOLDO_MODE`. Public development oracles are outside
-the runtime bundle. A formal exam keeps its oracle store outside both the repository and agent sandbox.
-
-## Run controlled treatments
-
-Use the same `--model-id`, task set, rollout count, and seed policy for every treatment:
+验证 sizing 工具答卷：
 
 ```bash
-# Direct reasoning.
-evoldo-bench experiment --output runs/direct --model-id my-model \
-  --mode direct_reasoning --rollouts 3 --base-seed 2026 \
-  --paired-modes direct_reasoning,agentic_skill,simulation_assisted -- \
-  python /absolute/path/to/agent.py
-
-# Same model and seeds, now with a frozen skill/context snapshot.
-evoldo-bench experiment --output runs/skill --model-id my-model \
-  --mode agentic_skill --rollouts 3 --base-seed 2026 \
-  --paired-modes direct_reasoning,agentic_skill,simulation_assisted \
-  --context-dir /absolute/path/to/skill_snapshot -- \
-  python /absolute/path/to/agent.py
-
-# Same model, seeds, and skill, now with the approved simulator gateway available.
-evoldo-bench experiment --output runs/simulation --model-id my-model \
-  --mode simulation_assisted --rollouts 3 --base-seed 2026 \
-  --paired-modes direct_reasoning,agentic_skill,simulation_assisted \
-  --context-dir /absolute/path/to/skill_snapshot -- \
-  python /absolute/path/to/agent.py
-
-# Verify that the paired comparison is controlled.
-evoldo-bench compare-treatments \
-  runs/direct/experiment_manifest.json runs/skill/experiment_manifest.json \
-  runs/simulation/experiment_manifest.json
-
-# Build scorecards.
-evoldo-bench experiment-report runs/direct --output runs/direct.json --markdown runs/direct.md
-evoldo-bench experiment-report runs/skill  --output runs/skill.json  --markdown runs/skill.md
-evoldo-bench experiment-report runs/simulation --output runs/simulation.json --markdown runs/simulation.md
-evoldo-bench paired-lift --direct runs/direct.json --skill runs/skill.json --simulation runs/simulation.json
+evoldo-bench verify-live runs/sizing/app/answer.json \
+  --app-root runs/sizing/app \
+  --pdk-root "$SKY130_PDK_ROOT" \
+  --ngspice "$NGSPICE"
 ```
 
-An adapter may write detailed token/cost telemetry to `EVOLDO_TELEMETRY_PATH`. Runner timing and requested
-identity are authoritative; actual model identity, provider token/cost fields, and sampling determinism are
-only as trustworthy as the frozen adapter and provider attestation. Tool calls must also appear in the
-ledger or the rollout is a policy failure.
-
-## Tool-assisted reasoning
-
-Every approved simulator call begins with an `AnalogProbeContract`: question, regime, held-fixed variables,
-intervention, measurement, intended evidence use, stop condition, and claim boundary.
+验证 Virtuoso/SKILL 答卷：
 
 ```bash
-evoldo-bench validate-probe probe.json --task-id trend_compensation_cap--canonical
-
-evoldo-bench simulate-probe examples/simulators/rc_probe_request.json \
-  --workspace /tmp/evoldo-sim \
-  --simulator-command python /absolute/path/to/analytic_probe_simulator.py
+evoldo-bench verify-live runs/eda/app/answer.json \
+  --app-root runs/eda/app \
+  --eda-ssh-target "$EVOLDO_EDA_SSH_TARGET"
 ```
 
-The gate detects wrong regimes, unrelated probes, confounded sweeps, held-fixed violations, invented
-artifacts, and measurement/regime mismatches. Unavailable executables, timeouts, and malformed simulator
-responses are `INFRA_FAIL`, never circuit answers. The analytic example is only a protocol fixture. The
-separate public-PDK track below executes transistor-level SKY130 decks through ngspice.
+正式 EDA 验证只在新建的远端 `/tmp/evoldo-<nonce>` scratch 中执行，使用 `-nocdsinit`，不触碰已有 library；save/close/reopen/readback 和新鲜 Spectre provenance 是硬门槛。
 
-## Real public-PDK design closure
+## 计分与 token
 
-Six independently authored tasks exercise nominal operating point, true cold start, shutdown/restart,
-load transient, line/load regulation, and PVT/policy closure. Each starter has one controlled fault, so an
-agent must modify the netlist and produce fresh simulator evidence rather than only explain what it would
-do.
+每题 0–100 分，关键结论或机制错误触发 49 分上限。报告至少分开给出 Pure Model Core、existing-architecture optimization、pure sizing、tool sizing、EDA tool、metamorphic consistency，以及 tool lift/harm。
 
-```bash
-python tools/fetch_public_pdk.py --provider sky130
-evoldo-bench closure-list
-evoldo-bench closure-run \
-  --pdk-root .runtime/public_pdks/opensource-analog-circuits \
-  --task-id sky130_ldo_cold_start \
-  --output runs/sky130-cold-start
-```
+每次成功、拒答、不完整或超时都保存 input、cached input、output、reasoning、cache write token；字段不可获得时必须为 `null`，不能填 0。还记录完成/确认无法完成时的 terminal token、terminal time，以及工具调用、wall time 与费用。基础设施重试单独计入运营成本，但不进入模型能力分母。
 
-The fetch step pins and hash-checks the public model source without vendoring PDK files. See
-[`benchmarks/ldo_design_closure/README.md`](benchmarks/ldo_design_closure/README.md) for the fault model,
-qualification commands, claim limits, and the conditional ASAP7 assessment.
-
-## Scores and score-versus-effort results
-
-- **Pass@1** reports the fraction of successful rollouts with a 95% Wilson interval.
-- **Spec score** preserves partial engineering progress instead of reducing everything to pass/fail.
-- **Family macro score** prevents a large easy family from dominating the result.
-- **Capability vectors** expose where the model succeeds or fails.
-- **Effort** includes output/reasoning tokens, cache categories, steps, tool calls, time, and cost.
-- **Treatment metrics** include skill lift, simulation lift, simulation harm, and ineffective probes.
-
-```bash
-evoldo-bench leaderboard runs/direct.json runs/skill.json \
-  --output-dir runs/leaderboard
-# Open runs/leaderboard/index.html in any browser.
-```
-
-The static page shows Pass@1, confidence intervals, spec score, effort, and the cost/score Pareto frontier.
-A single rank never replaces the underlying suite and failure vectors.
-
-## Sealed exam and design closure
-
-Freeze and verify a release without placing hidden content in the runtime bundle:
-
-```bash
-evoldo-bench freeze-exam --tasks-root /sealed/tasks --oracle-root /sealed/oracles \
-  --policy exam_policy.json --skill-root /sealed/skill --tool-root /sealed/tool \
-  --release-id exam-v1 --output /sealed/exam_manifest.json
-
-evoldo-bench verify-exam /sealed/exam_manifest.json \
-  --tasks-root /sealed/tasks --oracle-root /sealed/oracles \
-  --skill-root /sealed/skill --tool-root /sealed/tool
-
-# Publish only the redacted commitment; keep the full manifest private.
-evoldo-bench redact-exam-manifest /sealed/exam_manifest.json \
-  --output exam_manifest.public.json
-```
-
-For design tasks, `candidate-manifest` hashes every candidate artifact. `qualify` promotes it only when
-fresh evidence bound to that exact hash passes operating point, startup, shutdown/restart, stability,
-PSRR, noise, load transient, PVT, and forbidden-device gates. `closure-metrics` reports candidate
-evaluations and wall time to first qualification. Private-site simulation is implemented out of tree via
-`SiteAdapter`; private model files, cell names, decks, and results are not public fixtures.
-
-## Security and claim boundaries
-
-The reference runner makes a file-minimal bundle but is **not a kernel sandbox**. A sealed exam still
-requires a container, VM, or controlled worker with no undeclared mounts/network/tools. Public release CI
-checks task leakage, lineage, reproducibility, common secrets, private paths, binary EDA artifacts, and
-reachable Git history.
-
-Never claim that:
-
-- a public-development score is a sealed-exam score;
-- an analytic fixture proves transistor-level performance;
-- a simulator/tool failure is a circuit failure;
-- stale evidence qualifies a changed candidate;
-- nodeset, forced initial conditions, an ideal source, or an invented model deck is a final DUT fix.
-
-Read [`docs/CONTROLLED_PILOT_RUNBOOK.md`](docs/CONTROLLED_PILOT_RUNBOOK.md),
-[`docs/TASK_PACKAGE_FORMAT.md`](docs/TASK_PACKAGE_FORMAT.md),
-[`docs/MODEL_TEST_MATRIX.md`](docs/MODEL_TEST_MATRIX.md),
-[`docs/SECURITY_AND_CONTAMINATION.md`](docs/SECURITY_AND_CONTAMINATION.md), and
-[`docs/PUBLIC_RELEASE_SECURITY.md`](docs/PUBLIC_RELEASE_SECURITY.md) before publishing results.
-模拟设计专家可使用中文的
-[`双专家独立审题指南`](docs/ANALOG_EXPERT_REVIEW_GUIDE_ZH.md)完成物理、测试维度、oracle、评分和
-晶体管级闭环任务审阅。
-
-## Repository layout
-
-```text
-benchmarks/ldo_original/  original public reasoning tasks and development oracles
-benchmarks/ldo_design_closure/ six SKY130 transistor-level closure tasks and development reference
-schemas/                  task, answer, probe, telemetry, exam, candidate, qualification contracts
-src/evoldo_bench/         runner, policy, adapters, grading, experiments, calibration, closure, reports
-tools/                    deterministic generator, self-check, and public-release security audit
-examples/                 agent and simulator protocol fixtures
-tests/                    unit and end-to-end tests
-docs/                     architecture, methods, runbooks, security, and roadmap
-```
-
-## What remains external work
-
-The code needed to run the controlled pilot, execute the six-task SKY130 development track, freeze an
-exam, calibrate supplied judge outputs, and enforce qualification evidence is present. The following are
-still empirical or site-owned deliverables, not facts that software can manufacture: two-engineer task
-review, real baseline-model campaigns, accepted judge thresholds, a portable qualified ASAP7 track,
-private-site adapter implementation, and final exam sign-off. Their gates are tracked in
-[`docs/ROADMAP.md`](docs/ROADMAP.md).
-
-## Licensing and clean-room boundary
-
-- Software: Apache-2.0 (`LICENSE`).
-- Original public benchmark materials: CC BY 4.0 (`BENCHMARK_LICENSE.md`).
-- External method references and clean-room statement: [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-
-Contributions must be original, family-grouped, physically reviewed, deterministic where practical, and
-free of private PDK/company assets. See [`docs/AUTHORING_GUIDE.md`](docs/AUTHORING_GUIDE.md).
+本仓库是 public development benchmark，不是 sealed exam。公开 oracle 用于框架开发；正式排名应冻结 hidden forms、模型版本、适配器、预算、工具版本、PDK hash 和三次 rollout 矩阵。

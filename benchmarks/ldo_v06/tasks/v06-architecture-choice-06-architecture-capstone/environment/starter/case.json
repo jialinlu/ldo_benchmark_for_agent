@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "IQ margin=14 uA"
+    },
+    {
+      "id": "E2",
+      "observation": "local candidate passes sampled PVT"
+    },
+    {
+      "id": "E3",
+      "observation": "charge-pump ripple unknown"
+    },
+    {
+      "id": "E4",
+      "observation": "schedule permits one regression cycle"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose the characterized two-stage OTA"
+        },
+        {
+          "id": "B",
+          "text": "Retain the PMOS architecture and apply the local co-size"
+        },
+        {
+          "id": "C",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "D",
+          "text": "Choose a PMOS pass device"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+        },
+        {
+          "id": "B",
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+        },
+        {
+          "id": "C",
+          "text": "An NMOS follower lacks gate overdrive without a boosted rail"
+        },
+        {
+          "id": "D",
+          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run the complete regression on the local candidate and keep architecture change as contingency"
+        },
+        {
+          "id": "B",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "C",
+          "text": "Use PMOS and budget its larger gate capacitance in compensation"
+        },
+        {
+          "id": "D",
+          "text": "Use Miller compensation and verify the pass-gate interaction"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sampled PVT evidence is promising but not final closure"
+        },
+        {
+          "id": "B",
+          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+        },
+        {
+          "id": "C",
+          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+        },
+        {
+          "id": "D",
+          "text": "An NMOS could become viable if a charge pump were allowed"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "An existing PMOS LDO misses dropout by 12 mV and PM by 6 degrees. Local co-sizing closes both with 8 uA IQ cost; a proposed NMOS architecture needs a charge pump and new verification.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-06-architecture-capstone"
+}

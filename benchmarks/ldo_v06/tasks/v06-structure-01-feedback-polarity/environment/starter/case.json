@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "VREF=0.8 V"
+    },
+    {
+      "id": "E2",
+      "observation": "VOUT perturbation: +10 mV"
+    },
+    {
+      "id": "E3",
+      "observation": "VCTRL response: +31 mV"
+    },
+    {
+      "id": "E4",
+      "observation": "PMOS current falls when VCTRL rises"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+        },
+        {
+          "id": "B",
+          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+        },
+        {
+          "id": "C",
+          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+        },
+        {
+          "id": "D",
+          "text": "The closed loop is negative feedback"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rload directly changes the output time constant and can cause pole crossing"
+        },
+        {
+          "id": "B",
+          "text": "That location preserves the operating point while exposing the full forward and return paths"
+        },
+        {
+          "id": "C",
+          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+        },
+        {
+          "id": "D",
+          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+        },
+        {
+          "id": "B",
+          "text": "Check loop gain at both load extremes before resizing compensation"
+        },
+        {
+          "id": "C",
+          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+        },
+        {
+          "id": "D",
+          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Nominal-load pole ordering is not sufficient for a capless stability claim"
+        },
+        {
+          "id": "B",
+          "text": "Do not replace the architecture before checking a local pole-separation fix"
+        },
+        {
+          "id": "C",
+          "text": "This establishes small-signal polarity, not stability margin"
+        },
+        {
+          "id": "D",
+          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "The error-amplifier output drives a PMOS pass gate. Raising VOUT through an ideal test source makes VFB rise and makes the amplifier output rise.",
+  "schema_version": "2.0",
+  "task_id": "v06-structure-01-feedback-polarity"
+}

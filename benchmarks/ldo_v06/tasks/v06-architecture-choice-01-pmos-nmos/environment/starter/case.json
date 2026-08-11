@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "available headroom=300 mV"
+    },
+    {
+      "id": "E2",
+      "observation": "NMOS source follower needs gate above VOUT"
+    },
+    {
+      "id": "E3",
+      "observation": "PMOS gate can be driven toward ground"
+    },
+    {
+      "id": "E4",
+      "observation": "load=5 mA"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "B",
+          "text": "A scaled replica bias is justified by the measured load-dependent error"
+        },
+        {
+          "id": "C",
+          "text": "Choose the characterized two-stage OTA"
+        },
+        {
+          "id": "D",
+          "text": "Choose a PMOS pass device"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+        },
+        {
+          "id": "B",
+          "text": "An NMOS follower lacks gate overdrive without a boosted rail"
+        },
+        {
+          "id": "C",
+          "text": "It directly senses the varying pass operating point within the available IQ budget"
+        },
+        {
+          "id": "D",
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run the complete regression on the local candidate and keep architecture change as contingency"
+        },
+        {
+          "id": "B",
+          "text": "Use PMOS and budget its larger gate capacitance in compensation"
+        },
+        {
+          "id": "C",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "D",
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "An NMOS could become viable if a charge pump were allowed"
+        },
+        {
+          "id": "B",
+          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+        },
+        {
+          "id": "C",
+          "text": "The benefit depends on replica correlation across mismatch"
+        },
+        {
+          "id": "D",
+          "text": "Sampled PVT evidence is promising but not final closure"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "A 1.8 V input LDO must produce 1.5 V without a charge pump and with low dropout.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-01-pmos-nmos"
+}

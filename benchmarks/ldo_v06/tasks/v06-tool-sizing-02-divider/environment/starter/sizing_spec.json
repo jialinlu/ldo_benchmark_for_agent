@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "task_id": "v06-tool-sizing-02-divider",
+  "tunable_fields": [
+    "rtop_kohm",
+    "rbot_kohm"
+  ],
+  "defaults": {
+    "pass_width_um": 120,
+    "input_width_um": 40,
+    "driver_res_kohm": 5,
+    "ccomp_pf": 5,
+    "bias_res_kohm": 120,
+    "rtop_kohm": 500,
+    "rbot_kohm": 1000
+  },
+  "bounds": {
+    "rtop_kohm": [
+      100,
+      600
+    ],
+    "rbot_kohm": [
+      200,
+      1200
+    ]
+  },
+  "objective": "Meet the 1.5 feedback ratio while minimizing divider current and ratio error.",
+  "hard_gates": [
+    "VOUT 1.44 to 1.53 V",
+    "absolute IQ <= 50 uA"
+  ],
+  "evaluation_budget": 30
+}

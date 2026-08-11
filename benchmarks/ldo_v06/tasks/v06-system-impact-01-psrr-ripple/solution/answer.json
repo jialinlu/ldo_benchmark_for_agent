@@ -1,0 +1,12 @@
+{
+  "answers": {
+    "q1": "A",
+    "q2": "A",
+    "q3": "C",
+    "q4": "C"
+  },
+  "claim_boundary": "Conclusion is limited to the supplied evidence and named operating conditions.",
+  "confidence": 0.95,
+  "schema_version": "2.0",
+  "task_id": "v06-system-impact-01-psrr-ripple"
+}

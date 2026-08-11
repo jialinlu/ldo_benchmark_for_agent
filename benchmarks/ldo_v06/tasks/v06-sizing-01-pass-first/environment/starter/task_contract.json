@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "sizing",
+    "atomic"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "atomic",
+  "family_id": "v06-sizing-01-pass-first",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L2",
+  "lineage_id": "v06-sizing-01-pass-first",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v06-sizing-01-pass-first",
+  "title": "First-pass PMOS width sizing",
+  "variant": "canonical"
+}

@@ -60,12 +60,20 @@ def build_runtime_bundle(task: Task, output_dir: Path, context_dir: Optional[Pat
     if output_dir.exists() and any(output_dir.iterdir()):
         raise PolicyError("output bundle directory is not empty: %s" % output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    manifest_rel = Path("task.json")
-    _copy_file(task.root / manifest_rel, output_dir / manifest_rel, task.root)
-    referenced = [task.data["prompt_file"], task.data["answer_template_file"]] + task.data["input_files"]
-    for value in referenced:
-        relative = safe_relative_path(value)
-        _copy_file(task.root / relative, output_dir / relative, task.root)
+    if task.package_style == "demo_task":
+        _copy_file(task.manifest_path, output_dir / "task.toml", task.root)
+        starter = task.root / "environment" / "starter"
+        for source in sorted(starter.rglob("*")):
+            if source.is_file():
+                _copy_file(source, output_dir / source.relative_to(starter), task.root)
+        _copy_file(task.prompt_path, output_dir / "instruction.md", task.root)
+    else:
+        manifest_rel = Path("task.json")
+        _copy_file(task.root / manifest_rel, output_dir / manifest_rel, task.root)
+        referenced = [task.data["prompt_file"], task.data["answer_template_file"]] + task.data["input_files"]
+        for value in referenced:
+            relative = safe_relative_path(value)
+            _copy_file(task.root / relative, output_dir / relative, task.root)
     if context_dir is not None:
         if not context_dir.is_dir():
             raise PolicyError("context directory does not exist: %s" % context_dir)

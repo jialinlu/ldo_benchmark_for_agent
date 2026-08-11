@@ -1,0 +1,47 @@
+{
+  "hard_gates": [
+    "no modification of pre-existing libraries",
+    "no fabricated observations",
+    "fresh provenance"
+  ],
+  "provenance": {
+    "backend": "operator-provided VM",
+    "tool": "Cadence Virtuoso IC618/SKILL"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "infrastructure_failure"
+        },
+        {
+          "id": "B",
+          "text": "net_and_wire_figures_persist"
+        },
+        {
+          "id": "C",
+          "text": "no_persistent_evidence"
+        },
+        {
+          "id": "D",
+          "text": "unsupported_claim"
+        }
+      ],
+      "prompt": "Which terminal result is supported by the required tool workflow?"
+    }
+  ],
+  "required_sequence": [
+    "fresh isolated scratch",
+    "operation",
+    "save/close/reopen where applicable",
+    "readback",
+    "terminal JSON"
+  ],
+  "result_field": "materialization_result",
+  "scenario": "Create a named net and visible wire figures between supplied terminals in a scratch cell; save/reopen and verify both connectivity and figures.",
+  "schema_version": "2.0",
+  "task_id": "v06-eda-04-materialize"
+}

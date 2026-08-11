@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "target PM>=60 deg, UGF>=1.0 MHz"
+    },
+    {
+      "id": "E2",
+      "observation": "Ccomp=8 pF: PM=67 deg, UGF=1.1 MHz"
+    },
+    {
+      "id": "E3",
+      "observation": "Ccomp=5 pF: PM=54 deg, UGF=1.9 MHz"
+    },
+    {
+      "id": "E4",
+      "observation": "Ccomp=2 pF: PM=31 deg, UGF=3.7 MHz"
+    }
+  ],
+  "metamorphic_parent": "v06-sizing-03-comp-cap",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose 8 pF"
+        },
+        {
+          "id": "B",
+          "text": "Choose P2"
+        },
+        {
+          "id": "C",
+          "text": "Choose 15 uA EA and 15 uA driver"
+        },
+        {
+          "id": "D",
+          "text": "Choose 249 kohm over 499 kohm"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+        },
+        {
+          "id": "B",
+          "text": "It is the only characterized allocation meeting both gain and slew"
+        },
+        {
+          "id": "C",
+          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+        },
+        {
+          "id": "D",
+          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
+        },
+        {
+          "id": "B",
+          "text": "Verify load transient and all PVT corners at 8 pF"
+        },
+        {
+          "id": "C",
+          "text": "Carry that split into PVT and no-load IQ verification"
+        },
+        {
+          "id": "D",
+          "text": "Verify bias/leakage error using the actual feedback input current"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sizing the pass device in isolation would select an unstable candidate"
+        },
+        {
+          "id": "B",
+          "text": "The allocation is conditional on the fixed-current assumptions"
+        },
+        {
+          "id": "C",
+          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
+        },
+        {
+          "id": "D",
+          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. SKY130/ngspice loop sweeps for an unchanged LDO report the following worst-load results.",
+  "schema_version": "2.0",
+  "task_id": "v06-sizing-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

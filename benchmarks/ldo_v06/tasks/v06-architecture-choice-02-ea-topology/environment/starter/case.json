@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "telescopic stack lacks swing"
+    },
+    {
+      "id": "E2",
+      "observation": "folded cascode meets gain but costs branch current"
+    },
+    {
+      "id": "E3",
+      "observation": "two-stage OTA meets swing/current in characterization"
+    },
+    {
+      "id": "E4",
+      "observation": "compensation area available"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose the characterized two-stage OTA"
+        },
+        {
+          "id": "B",
+          "text": "Retain the PMOS architecture and apply the local co-size"
+        },
+        {
+          "id": "C",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "D",
+          "text": "A scaled replica bias is justified by the measured load-dependent error"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+        },
+        {
+          "id": "B",
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+        },
+        {
+          "id": "C",
+          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+        },
+        {
+          "id": "D",
+          "text": "It directly senses the varying pass operating point within the available IQ budget"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use PMOS and budget its larger gate capacitance in compensation"
+        },
+        {
+          "id": "B",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "C",
+          "text": "Use Miller compensation and verify the pass-gate interaction"
+        },
+        {
+          "id": "D",
+          "text": "Run the complete regression on the local candidate and keep architecture change as contingency"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+        },
+        {
+          "id": "B",
+          "text": "The benefit depends on replica correlation across mismatch"
+        },
+        {
+          "id": "C",
+          "text": "Sampled PVT evidence is promising but not final closure"
+        },
+        {
+          "id": "D",
+          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "The design needs 60 dB DC gain at 1.2 V supply, 25 uA EA current, and near-rail output swing to drive a PMOS gate.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-02-ea-topology"
+}

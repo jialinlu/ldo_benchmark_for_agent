@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "design_closure",
+    "coupled"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "coupled",
+  "family_id": "v06-design-closure-05-yield",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v06-design-closure-05-yield",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "v06-design-closure-05-yield",
+  "title": "Interpret Monte Carlo yield",
+  "variant": "canonical"
+}

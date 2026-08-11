@@ -13,39 +13,23 @@ from evoldo_bench.aggregate import aggregate_scores
 from evoldo_bench.bundle import build_runtime_bundle
 from evoldo_bench.contamination import audit_task_collection
 from evoldo_bench.discovery import discover_tasks, inventory
-from evoldo_bench.graders import grade_answer
+from evoldo_bench.grading import grade_one
 from evoldo_bench.utils import load_json
 
-TASKS = ROOT / "benchmarks" / "ldo_original" / "dev" / "tasks"
-ORACLES = ROOT / "benchmarks" / "ldo_original" / "dev_reference" / "oracles"
-
-
-def synthesize(task, oracle):
-    answer = load_json(task.root / "answer_template.json")
-    for check in oracle["checks"]:
-        path = check["path"]
-        if "." in path:
-            continue
-        if check["kind"] in {"exact", "boolean", "numeric_close"}:
-            answer[path] = check["expected"]
-        elif check["kind"] in {"set_contains", "set_equals"}:
-            answer[path] = list(check["expected"])
-    answer["mechanism"] = "Self-check answer synthesized from the public development oracle."
-    answer["claim_boundary"] = "Public development-set infrastructure check only."
-    answer["confidence"] = 1.0
-    return answer
+TRACK = ROOT / "benchmarks" / "ldo_v06"
+TASKS = TRACK / "tasks"
+ORACLES = TRACK / "dev_reference" / "oracles"
 
 
 def main() -> int:
     tasks = discover_tasks(TASKS)
     inv = inventory(tasks)
-    assert inv["task_count"] == 120 and inv["family_count"] == 40, inv
+    assert inv["task_count"] == 69 and inv["family_count"] == 54, inv
     audit = audit_task_collection(TASKS, ORACLES)
     assert audit["passed"], audit
     scores = []
     for task in tasks:
-        oracle = load_json(ORACLES / (task.task_id + ".oracle.json"))
-        score = grade_answer(task, synthesize(task, oracle), oracle)
+        score = grade_one(TASKS, ORACLES, task.root / "solution" / "answer.json")
         assert score["score"] == 100.0, (task.task_id, score)
         scores.append(score)
     report = aggregate_scores(scores, mode="public_dev_self_check")

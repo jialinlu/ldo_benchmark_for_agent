@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "A Wpass=100 um, Rdrv=8k: dropout=128 mV, PM=46 deg"
+    },
+    {
+      "id": "E2",
+      "observation": "B Wpass=140 um, Rdrv=8k: dropout=94 mV, PM=35 deg"
+    },
+    {
+      "id": "E3",
+      "observation": "C Wpass=140 um, Rdrv=3k: dropout=95 mV, PM=63 deg"
+    },
+    {
+      "id": "E4",
+      "observation": "targets dropout<=100 mV, PM>=55 deg"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "SKY130/ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose candidate C"
+        },
+        {
+          "id": "B",
+          "text": "Choose 8 pF"
+        },
+        {
+          "id": "C",
+          "text": "Choose 15 uA EA and 15 uA driver"
+        },
+        {
+          "id": "D",
+          "text": "Choose 249 kohm over 499 kohm"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is the only characterized allocation meeting both gain and slew"
+        },
+        {
+          "id": "B",
+          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+        },
+        {
+          "id": "C",
+          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+        },
+        {
+          "id": "D",
+          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
+        },
+        {
+          "id": "B",
+          "text": "Verify bias/leakage error using the actual feedback input current"
+        },
+        {
+          "id": "C",
+          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+        },
+        {
+          "id": "D",
+          "text": "Carry that split into PVT and no-load IQ verification"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sizing the pass device in isolation would select an unstable candidate"
+        },
+        {
+          "id": "B",
+          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+        },
+        {
+          "id": "C",
+          "text": "The allocation is conditional on the fixed-current assumptions"
+        },
+        {
+          "id": "D",
+          "text": "This is a characterized local optimum, not proof of a global optimum"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "Three SKY130/ngspice candidates are compared at identical load and COUT.",
+  "schema_version": "2.0",
+  "task_id": "v06-sizing-05-driver-ratio"
+}

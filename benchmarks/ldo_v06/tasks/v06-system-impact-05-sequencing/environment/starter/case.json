@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "EA saturates during low VIN"
+    },
+    {
+      "id": "E2",
+      "observation": "pass gate held at maximum drive"
+    },
+    {
+      "id": "E3",
+      "observation": "reference already final"
+    },
+    {
+      "id": "E4",
+      "observation": "overshoot disappears when EN follows VIN-good"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The residual supply-ripple contribution is about 0.63 mV rms"
+        },
+        {
+          "id": "B",
+          "text": "The local capacitor/package network controls the initial droop"
+        },
+        {
+          "id": "C",
+          "text": "The combined output contribution is about 31.8 uV rms"
+        },
+        {
+          "id": "D",
+          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+        },
+        {
+          "id": "B",
+          "text": "The active reference commands regulation before adequate pass/headroom exists"
+        },
+        {
+          "id": "C",
+          "text": "The feedback loop is too slow to respond during the edge"
+        },
+        {
+          "id": "D",
+          "text": "Divide the input ripple by the linear PSRR ratio"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
+        },
+        {
+          "id": "B",
+          "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
+        },
+        {
+          "id": "C",
+          "text": "Gate enable with VIN-good or add anti-windup/soft-start"
+        },
+        {
+          "id": "D",
+          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retuning low-frequency compensation is not the first supported action"
+        },
+        {
+          "id": "B",
+          "text": "DC load regulation does not predict the edge droop"
+        },
+        {
+          "id": "C",
+          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+        },
+        {
+          "id": "D",
+          "text": "Linear addition would overestimate uncorrelated noise"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "VREF is present before VIN. EN is asserted while VIN ramps slowly; VOUT briefly overshoots above its final value.",
+  "schema_version": "2.0",
+  "task_id": "v06-system-impact-05-sequencing"
+}

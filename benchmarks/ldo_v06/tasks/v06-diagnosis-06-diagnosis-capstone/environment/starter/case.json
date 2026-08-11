@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "startup pulse rescues SS/cold"
+    },
+    {
+      "id": "E2",
+      "observation": "FF/light PM=22 deg"
+    },
+    {
+      "id": "E3",
+      "observation": "startup device off in regulation"
+    },
+    {
+      "id": "E4",
+      "observation": "pass size has 30 percent dropout margin"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The pass path lacks available conductance/headroom"
+        },
+        {
+          "id": "B",
+          "text": "There are two independent root causes requiring separate local fixes"
+        },
+        {
+          "id": "C",
+          "text": "Insufficient closed-loop phase margin is the primary cause"
+        },
+        {
+          "id": "D",
+          "text": "The feedback divider dominates the excess"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+        },
+        {
+          "id": "B",
+          "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
+        },
+        {
+          "id": "C",
+          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+        },
+        {
+          "id": "D",
+          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fix startup injection and compensation separately, then run a full regression"
+        },
+        {
+          "id": "B",
+          "text": "Localize the phase loss by probing pass-gate and output poles"
+        },
+        {
+          "id": "C",
+          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+        },
+        {
+          "id": "D",
+          "text": "Add or strengthen a corner-robust startup path and test initial-condition variants"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+        },
+        {
+          "id": "B",
+          "text": "The transient alone does not identify which internal pole caused the phase loss"
+        },
+        {
+          "id": "C",
+          "text": "Blindly reducing EA bias cannot recover the full current excess"
+        },
+        {
+          "id": "D",
+          "text": "A larger pass device is unsupported and could worsen the stability failure"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "An existing LDO fails startup at SS/cold and rings at FF/light load; dropout and IQ pass.",
+  "schema_version": "2.0",
+  "task_id": "v06-diagnosis-06-diagnosis-capstone"
+}

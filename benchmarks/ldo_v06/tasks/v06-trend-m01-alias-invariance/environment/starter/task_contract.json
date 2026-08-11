@@ -1,0 +1,32 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "trend",
+    "companion"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-trend-03-load-gm",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v06-trend-03-load-gm",
+  "paired_with": "v06-trend-03-load-gm",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "trend",
+  "task_id": "v06-trend-m01-alias-invariance",
+  "title": "Infer load-dependent loop movement — alias-invariance companion",
+  "variant": "metamorphic"
+}

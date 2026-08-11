@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "VOUT/VREF=1+Rtop/Rbot"
+    },
+    {
+      "id": "E2",
+      "observation": "ratio Rtop/Rbot=0.5"
+    },
+    {
+      "id": "E3",
+      "observation": "minimum total resistance=400 kohm"
+    },
+    {
+      "id": "E4",
+      "observation": "candidate pairs: 200k/402k, 249k/499k, 100k/200k"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "SKY130/ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose candidate C"
+        },
+        {
+          "id": "B",
+          "text": "Choose 120 um"
+        },
+        {
+          "id": "C",
+          "text": "Choose 8 pF"
+        },
+        {
+          "id": "D",
+          "text": "Choose 249 kohm over 499 kohm"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is the only characterized allocation meeting both gain and slew"
+        },
+        {
+          "id": "B",
+          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+        },
+        {
+          "id": "C",
+          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+        },
+        {
+          "id": "D",
+          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Carry that split into PVT and no-load IQ verification"
+        },
+        {
+          "id": "B",
+          "text": "Center a finer PVT sweep around P2 rather than changing architecture"
+        },
+        {
+          "id": "C",
+          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+        },
+        {
+          "id": "D",
+          "text": "Verify bias/leakage error using the actual feedback input current"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The allocation is conditional on the fixed-current assumptions"
+        },
+        {
+          "id": "B",
+          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
+        },
+        {
+          "id": "C",
+          "text": "Ratio accuracy alone is insufficient when divider current is constrained"
+        },
+        {
+          "id": "D",
+          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "Choose equal-order E96 values for VOUT=1.2 V from VREF=0.8 V while keeping divider current at or below 3 uA.",
+  "schema_version": "2.0",
+  "task_id": "v06-sizing-02-divider"
+}

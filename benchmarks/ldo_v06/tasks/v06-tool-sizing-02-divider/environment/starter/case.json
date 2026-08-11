@@ -1,0 +1,45 @@
+{
+  "candidate_fields": [
+    "rtop_kohm",
+    "rbot_kohm"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "VOUT/VREF=1+Rtop/Rbot",
+    "ratio Rtop/Rbot=0.5",
+    "minimum total resistance=400 kohm",
+    "candidate pairs: 200k/402k, 249k/499k, 100k/200k"
+  ],
+  "hard_bounds": {
+    "rbot_kohm": [
+      200,
+      1200
+    ],
+    "rtop_kohm": [
+      100,
+      600
+    ]
+  },
+  "objective": "Meet the 1.5 feedback ratio while minimizing divider current and ratio error.",
+  "paired_pure_task": "v06-sizing-02-divider",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final rtop_kohm"
+    },
+    {
+      "id": "q2",
+      "kind": "numeric",
+      "prompt": "Final rbot_kohm"
+    }
+  ],
+  "scenario": "Choose equal-order E96 values for VOUT=1.2 V from VREF=0.8 V while keeping divider current at or below 3 uA. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-02-divider"
+}

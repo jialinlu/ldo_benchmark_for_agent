@@ -1,0 +1,35 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 30,
+    "timeout_seconds": 900
+  },
+  "capabilities": [
+    "sizing",
+    "tool_sizing_treatment"
+  ],
+  "eligible_modes": [
+    "sizing_assisted"
+  ],
+  "evaluation_role": "tool_sizing_treatment",
+  "family_id": "v06-sizing-05-driver-ratio",
+  "input_files": [
+    "case.json",
+    "answer_template.json",
+    "sizer_tool.py",
+    "sizing_tb.sp",
+    "sizing_spec.json"
+  ],
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v06-sizing-05-driver-ratio",
+  "paired_with": "v06-sizing-05-driver-ratio",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v06-tool-sizing-05-driver-ratio",
+  "title": "Tool-assisted sizing: Co-size driver and pass device",
+  "variant": "canonical"
+}

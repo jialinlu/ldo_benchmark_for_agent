@@ -16,15 +16,11 @@ EvoLDO-Bench is designed around six constraints:
 
 ### Public task plane
 
-A task directory contains only:
-
-- `task.json`;
-- `prompt.md`;
-- `inputs/*`;
-- `answer_template.json`.
-
-`build_runtime_bundle` copies this minimal set and optionally a frozen context/skill directory. It rejects
-well-known oracle/golden/rubric names. The resulting manifest records SHA-256 hashes.
+The canonical v0.6 package has only `task.toml`, `instruction.md`, `environment/`, `tests/`, and
+`solution/` at its top level, matching the supplied `task_examples` demos. Detailed task contract,
+case, answer template, and approved tools live under `environment/starter`. `build_runtime_bundle` copies
+only the starter contents and instruction; it never copies tests, solutions, or external oracles. Legacy
+v0.5 `task.json` packages remain readable for result replay but are not the default benchmark.
 
 ### Oracle plane
 
@@ -68,6 +64,7 @@ an ignored runtime checkout and must match the pinned source commit and entry-fi
 | `exam.py` | frozen release manifests and verification |
 | `leaderboard.py` | static JSON/CSV/HTML score-versus-effort artifacts |
 | `report.py` | human-readable Markdown scorecard |
+| `live_verify.py` | trusted SKY130/ngspice and IC618/SKILL gates with infrastructure attribution |
 
 ## Trust boundaries
 

@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "target noise requires gm unchanged"
+    },
+    {
+      "id": "E2",
+      "observation": "current fixed"
+    },
+    {
+      "id": "E3",
+      "observation": "target inversion curve available"
+    },
+    {
+      "id": "E4",
+      "observation": "minimum L need not be used"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+        },
+        {
+          "id": "B",
+          "text": "Resize physical area from target density and re-extract parasitics"
+        },
+        {
+          "id": "C",
+          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
+        },
+        {
+          "id": "D",
+          "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+        },
+        {
+          "id": "B",
+          "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
+        },
+        {
+          "id": "C",
+          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+        },
+        {
+          "id": "D",
+          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Redesign the bias/output stage for low-voltage swing before transistor scaling"
+        },
+        {
+          "id": "B",
+          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+        },
+        {
+          "id": "C",
+          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+        },
+        {
+          "id": "D",
+          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The migrated dimensions remain model- and corner-dependent"
+        },
+        {
+          "id": "B",
+          "text": "Passing nominal DC after scaling does not validate the migration"
+        },
+        {
+          "id": "C",
+          "text": "Reliability limits and device flavor must also be re-qualified"
+        },
+        {
+          "id": "D",
+          "text": "A converged operating point is not evidence of correct model semantics"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "A 180 nm input pair is moved to SKY130 at the same current. The old design uses gm/ID=14 V^-1; copied W/L produces gm/ID=9 V^-1 in the target PDK.",
+  "schema_version": "2.0",
+  "task_id": "v06-migration-01-gm-id"
+}

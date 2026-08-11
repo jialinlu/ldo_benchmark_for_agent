@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "Middlebrook injection fixture is available"
+    },
+    {
+      "id": "E2",
+      "observation": "reference has finite AC impedance"
+    },
+    {
+      "id": "E3",
+      "observation": "pass-gate DC bias must be preserved"
+    },
+    {
+      "id": "E4",
+      "observation": "divider Thevenin resistance=330 kohm"
+    }
+  ],
+  "metamorphic_parent": "v06-structure-03-loop-break",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+        },
+        {
+          "id": "B",
+          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+        },
+        {
+          "id": "C",
+          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+        },
+        {
+          "id": "D",
+          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+        },
+        {
+          "id": "B",
+          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+        },
+        {
+          "id": "C",
+          "text": "That location preserves the operating point while exposing the full forward and return paths"
+        },
+        {
+          "id": "D",
+          "text": "Two nearby non-dominant poles consume phase before crossover"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Size it from worst-corner startup time and verify its residual leakage"
+        },
+        {
+          "id": "B",
+          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+        },
+        {
+          "id": "C",
+          "text": "Check loop gain at both load extremes before resizing compensation"
+        },
+        {
+          "id": "D",
+          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Do not replace the architecture before checking a local pole-separation fix"
+        },
+        {
+          "id": "B",
+          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+        },
+        {
+          "id": "C",
+          "text": "Nominal-load pole ordering is not sufficient for a capless stability claim"
+        },
+        {
+          "id": "D",
+          "text": "This establishes small-signal polarity, not stability margin"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. The LDO uses a resistive divider into a MOS differential pair. Candidate breakpoints are the divider midpoint, the pass gate, and the reference source.",
+  "schema_version": "2.0",
+  "task_id": "v06-structure-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "migration",
+    "coupled"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "coupled",
+  "family_id": "v06-migration-05-leakage-startup",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v06-migration-05-leakage-startup",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "migration",
+  "task_id": "v06-migration-05-leakage-startup",
+  "title": "Requalify startup under leakage scaling",
+  "variant": "canonical"
+}

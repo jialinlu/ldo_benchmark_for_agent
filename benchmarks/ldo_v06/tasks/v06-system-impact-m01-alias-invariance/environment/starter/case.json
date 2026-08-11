@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "same integration band"
+    },
+    {
+      "id": "E2",
+      "observation": "pass/output noise neglected"
+    },
+    {
+      "id": "E3",
+      "observation": "sources uncorrelated"
+    },
+    {
+      "id": "E4",
+      "observation": "noise gain=1.5"
+    }
+  ],
+  "metamorphic_parent": "v06-system-impact-03-reference-noise",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The combined output contribution is about 31.8 uV rms"
+        },
+        {
+          "id": "B",
+          "text": "The local capacitor/package network controls the initial droop"
+        },
+        {
+          "id": "C",
+          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
+        },
+        {
+          "id": "D",
+          "text": "Use separate PDN and feed-forward/ripple remedies rather than only raising bias"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+        },
+        {
+          "id": "B",
+          "text": "Divide the input ripple by the linear PSRR ratio"
+        },
+        {
+          "id": "C",
+          "text": "The feedback loop is too slow to respond during the edge"
+        },
+        {
+          "id": "D",
+          "text": "Scale reference noise by 1.5 and combine it root-sum-square with amplified input noise"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+        },
+        {
+          "id": "B",
+          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
+        },
+        {
+          "id": "C",
+          "text": "Add remaining device and resistor noise before comparing to system limit"
+        },
+        {
+          "id": "D",
+          "text": "Reserve the remaining noise budget for reference and device noise"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "DC load regulation does not predict the edge droop"
+        },
+        {
+          "id": "B",
+          "text": "A single higher-bandwidth loop is neither sufficient nor IQ-neutral"
+        },
+        {
+          "id": "C",
+          "text": "Linear addition would overestimate uncorrelated noise"
+        },
+        {
+          "id": "D",
+          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. The LDO is configured for VOUT/VREF=1.5. Integrated reference noise is 18 uV rms and error-amplifier input noise is 11 uV rms over the same band.",
+  "schema_version": "2.0",
+  "task_id": "v06-system-impact-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

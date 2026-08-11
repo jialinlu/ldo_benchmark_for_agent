@@ -27,7 +27,7 @@ def grade_one(tasks_root: Path, oracle_root: Path, answer_path: Path) -> Dict[st
     score["provenance"] = {
         "answer_sha256": sha256_file(answer_path),
         "oracle_sha256": sha256_file(oracle_file),
-        "task_manifest_sha256": sha256_file(task.root / "task.json"),
+        "task_manifest_sha256": sha256_file(task.manifest_path),
     }
     return score
 

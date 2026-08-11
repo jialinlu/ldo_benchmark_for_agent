@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "P1 120/40/5k/5p: dropout 108 mV, PM 52 deg, IQ 72 uA"
+    },
+    {
+      "id": "E2",
+      "observation": "P2 160/40/3k/8p: dropout 82 mV, PM 64 deg, IQ 86 uA"
+    },
+    {
+      "id": "E3",
+      "observation": "P3 200/80/3k/8p: dropout 70 mV, PM 61 deg, IQ 112 uA"
+    },
+    {
+      "id": "E4",
+      "observation": "limits dropout<=90 mV, PM>=60 deg, IQ<=100 uA"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "SKY130/ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose 120 um"
+        },
+        {
+          "id": "B",
+          "text": "Choose candidate C"
+        },
+        {
+          "id": "C",
+          "text": "Choose 8 pF"
+        },
+        {
+          "id": "D",
+          "text": "Choose P2"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+        },
+        {
+          "id": "B",
+          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+        },
+        {
+          "id": "C",
+          "text": "P2 satisfies every hard constraint and avoids P3's unnecessary IQ violation"
+        },
+        {
+          "id": "D",
+          "text": "It is the only characterized allocation meeting both gain and slew"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+        },
+        {
+          "id": "B",
+          "text": "Verify bias/leakage error using the actual feedback input current"
+        },
+        {
+          "id": "C",
+          "text": "Center a finer PVT sweep around P2 rather than changing architecture"
+        },
+        {
+          "id": "D",
+          "text": "Verify load transient and all PVT corners at 8 pF"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sizing the pass device in isolation would select an unstable candidate"
+        },
+        {
+          "id": "B",
+          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
+        },
+        {
+          "id": "C",
+          "text": "This is a characterized local optimum, not proof of a global optimum"
+        },
+        {
+          "id": "D",
+          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "A frozen PMOS-LDO architecture has a four-knob SKY130 sweep over pass width, input-pair width, driver resistance, and Ccomp.",
+  "schema_version": "2.0",
+  "task_id": "v06-sizing-06-sizing-capstone"
+}

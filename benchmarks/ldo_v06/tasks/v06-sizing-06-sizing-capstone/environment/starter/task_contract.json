@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "sizing",
+    "existing_architecture_optimization"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "existing_architecture_optimization",
+  "family_id": "v06-sizing-06-sizing-capstone",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v06-sizing-06-sizing-capstone",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v06-sizing-06-sizing-capstone",
+  "title": "Select the robust local sizing move",
+  "variant": "canonical"
+}

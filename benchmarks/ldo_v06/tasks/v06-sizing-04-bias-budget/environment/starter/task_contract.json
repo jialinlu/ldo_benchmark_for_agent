@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "sizing",
+    "coupled"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "coupled",
+  "family_id": "v06-sizing-04-bias-budget",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v06-sizing-04-bias-budget",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v06-sizing-04-bias-budget",
+  "title": "Allocate a quiescent-current budget",
+  "variant": "canonical"
+}

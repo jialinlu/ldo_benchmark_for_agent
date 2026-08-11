@@ -149,6 +149,16 @@ def run_experiment(
                     os.environ["EVOLDO_ROLLOUT"] = previous_rollout
             fallback = empty_telemetry(task.task_id, model_id, mode, rollout, seed, float(record["duration_seconds"]))
             telemetry = _load_agent_telemetry(run_dir / "app" / "telemetry.json", fallback)
+            telemetry.setdefault("milestones", {})
+            telemetry["milestones"].setdefault("terminal_seconds", float(record["duration_seconds"]))
+            terminal_status = {
+                "ok": "completed", "provider_timeout": "infra_fail", "provider_infra_fail": "infra_fail",
+                "timeout": "timeout", "format_fail": "format_fail", "model_incomplete": "model_incomplete",
+            }.get(str(record["status"]), "model_incomplete")
+            if telemetry.get("source") == "runner_fallback":
+                telemetry["milestones"]["terminal_status"] = terminal_status
+            else:
+                telemetry["milestones"].setdefault("terminal_status", terminal_status)
             ledger = _normalize_tool_ledger(run_dir / "app" / "tool_ledger.json", task)
             declared_calls = len(ledger["entries"])
             if telemetry["tool_calls"] and not declared_calls:
@@ -189,8 +199,8 @@ def run_experiment(
                 "rollout": rollout,
                 "seed": seed,
                 "mode": mode,
-                "task_manifest_sha256": sha256_file(task.root / "task.json"),
-                "answer_contract_sha256": sha256_file(task.root / task.data["answer_template_file"]),
+                "task_manifest_sha256": sha256_file(task.manifest_path),
+                "answer_contract_sha256": sha256_file(task.source_path(task.data["answer_template_file"])),
                 "budget": task.data["budget"],
                 "status": record["status"],
                 "answer_present": record["answer_present"],

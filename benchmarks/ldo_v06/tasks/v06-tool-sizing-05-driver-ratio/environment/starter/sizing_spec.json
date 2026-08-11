@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "task_id": "v06-tool-sizing-05-driver-ratio",
+  "tunable_fields": [
+    "pass_width_um",
+    "driver_res_kohm",
+    "ccomp_pf"
+  ],
+  "defaults": {
+    "pass_width_um": 120,
+    "input_width_um": 40,
+    "driver_res_kohm": 5,
+    "ccomp_pf": 5,
+    "bias_res_kohm": 120,
+    "rtop_kohm": 500,
+    "rbot_kohm": 1000
+  },
+  "bounds": {
+    "pass_width_um": [
+      80,
+      220
+    ],
+    "driver_res_kohm": [
+      2,
+      10
+    ],
+    "ccomp_pf": [
+      2,
+      12
+    ]
+  },
+  "objective": "Co-size pass, driver, and compensation to close dropout and stability together.",
+  "hard_gates": [
+    "VOUT 1.44 to 1.53 V",
+    "absolute IQ <= 50 uA"
+  ],
+  "evaluation_budget": 30
+}

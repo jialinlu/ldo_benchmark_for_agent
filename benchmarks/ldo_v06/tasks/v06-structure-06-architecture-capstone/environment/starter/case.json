@@ -1,0 +1,125 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "UGF=2.6 MHz"
+    },
+    {
+      "id": "E2",
+      "observation": "PM=29 deg"
+    },
+    {
+      "id": "E3",
+      "observation": "pass-gate pole=1.9 MHz"
+    },
+    {
+      "id": "E4",
+      "observation": "EA second pole=3.4 MHz"
+    },
+    {
+      "id": "E5",
+      "observation": "IQ=85 uA, limit=100 uA"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+        },
+        {
+          "id": "B",
+          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+        },
+        {
+          "id": "C",
+          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+        },
+        {
+          "id": "D",
+          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Two nearby non-dominant poles consume phase before crossover"
+        },
+        {
+          "id": "B",
+          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+        },
+        {
+          "id": "C",
+          "text": "Rload directly changes the output time constant and can cause pole crossing"
+        },
+        {
+          "id": "D",
+          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+        },
+        {
+          "id": "B",
+          "text": "Size it from worst-corner startup time and verify its residual leakage"
+        },
+        {
+          "id": "C",
+          "text": "Check loop gain at both load extremes before resizing compensation"
+        },
+        {
+          "id": "D",
+          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Successful nominal transient does not prove escape from every initial condition"
+        },
+        {
+          "id": "B",
+          "text": "A wider pass device can change gate pole and transient behavior"
+        },
+        {
+          "id": "C",
+          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+        },
+        {
+          "id": "D",
+          "text": "Do not replace the architecture before checking a local pole-separation fix"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "An existing PMOS LDO meets DC accuracy but has 29 degrees phase margin. The pass gate pole is close to the non-dominant amplifier pole; quiescent current has 15 percent margin.",
+  "schema_version": "2.0",
+  "task_id": "v06-structure-06-architecture-capstone"
+}

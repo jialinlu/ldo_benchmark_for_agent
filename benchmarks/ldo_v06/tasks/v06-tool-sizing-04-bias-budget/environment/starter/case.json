@@ -1,0 +1,45 @@
+{
+  "candidate_fields": [
+    "input_width_um",
+    "bias_res_kohm"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "EA/driver 20/10 uA: gain 58 dB, slew 0.18 V/us",
+    "15/15: gain 55 dB, slew 0.31 V/us",
+    "10/20: gain 49 dB, slew 0.43 V/us",
+    "targets gain>=52 dB, slew>=0.30 V/us"
+  ],
+  "hard_bounds": {
+    "bias_res_kohm": [
+      60,
+      240
+    ],
+    "input_width_um": [
+      20,
+      80
+    ]
+  },
+  "objective": "Allocate bias and input-pair size without violating gain, slew, or IQ gates.",
+  "paired_pure_task": "v06-sizing-04-bias-budget",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final input_width_um"
+    },
+    {
+      "id": "q2",
+      "kind": "numeric",
+      "prompt": "Final bias_res_kohm"
+    }
+  ],
+  "scenario": "An LDO has 30 uA available beyond fixed reference and divider current. Choose the characterized EA/driver allocation meeting gain and slew. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-04-bias-budget"
+}

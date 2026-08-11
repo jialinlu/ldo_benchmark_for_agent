@@ -22,9 +22,9 @@ jobs:
         run: python -m pip install -e .
       - name: Verify generated tasks are reproducible
         run: |
-          cp benchmarks/ldo_original/registry.jsonl /tmp/registry.before
-          python tools/generate_dev_tasks.py
-          diff -u /tmp/registry.before benchmarks/ldo_original/registry.jsonl
+          cp benchmarks/ldo_v06/registry.jsonl /tmp/registry.before
+          python tools/generate_v06_tasks.py
+          diff -u /tmp/registry.before benchmarks/ldo_v06/registry.jsonl
           git diff --exit-code
       - name: Run unit and integration tests
         run: python -m unittest discover -s tests -v

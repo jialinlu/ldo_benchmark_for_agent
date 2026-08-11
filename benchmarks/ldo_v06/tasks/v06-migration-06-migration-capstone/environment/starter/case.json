@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "divider ratio correct"
+    },
+    {
+      "id": "E2",
+      "observation": "pass headroom passes"
+    },
+    {
+      "id": "E3",
+      "observation": "EA ro is lower"
+    },
+    {
+      "id": "E4",
+      "observation": "startup injection is 6x weaker at SS/cold"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retain the architecture but separately retarget intrinsic gain and startup strength"
+        },
+        {
+          "id": "B",
+          "text": "The copied bias/output stack violates the new voltage budget"
+        },
+        {
+          "id": "C",
+          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+        },
+        {
+          "id": "D",
+          "text": "Resize physical area from target density and re-extract parasitics"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
+        },
+        {
+          "id": "B",
+          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+        },
+        {
+          "id": "C",
+          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+        },
+        {
+          "id": "D",
+          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+        },
+        {
+          "id": "B",
+          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+        },
+        {
+          "id": "C",
+          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+        },
+        {
+          "id": "D",
+          "text": "Redesign the bias/output stage for low-voltage swing before transistor scaling"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reliability limits and device flavor must also be re-qualified"
+        },
+        {
+          "id": "B",
+          "text": "A converged operating point is not evidence of correct model semantics"
+        },
+        {
+          "id": "C",
+          "text": "Nominal startup time cannot stand in for leakage-corner qualification"
+        },
+        {
+          "id": "D",
+          "text": "Passing nominal DC after scaling does not validate the migration"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "An existing architecture is ported to SKY130. DC regulation passes after geometric scaling, but gain falls 12 dB, startup fails SS/cold, and the pass gate violates no reliability rule.",
+  "schema_version": "2.0",
+  "task_id": "v06-migration-06-migration-capstone"
+}

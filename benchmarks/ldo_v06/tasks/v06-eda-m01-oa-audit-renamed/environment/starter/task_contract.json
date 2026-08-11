@@ -1,0 +1,33 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 30,
+    "timeout_seconds": 900
+  },
+  "capabilities": [
+    "eda_tool",
+    "companion"
+  ],
+  "eligible_modes": [
+    "eda_assisted"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-eda-02-oa-audit",
+  "input_files": [
+    "case.json",
+    "answer_template.json",
+    "ic618_tool.py"
+  ],
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v06-eda-02-oa-audit",
+  "paired_with": "v06-eda-02-oa-audit",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "eda_tool",
+  "task_id": "v06-eda-m01-oa-audit-renamed",
+  "title": "Read-only OA audit — alias companion",
+  "variant": "metamorphic"
+}

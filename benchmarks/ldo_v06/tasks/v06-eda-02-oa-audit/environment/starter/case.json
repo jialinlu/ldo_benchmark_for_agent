@@ -1,0 +1,47 @@
+{
+  "hard_gates": [
+    "no modification of pre-existing libraries",
+    "no fabricated observations",
+    "fresh provenance"
+  ],
+  "provenance": {
+    "backend": "operator-provided VM",
+    "tool": "Cadence Virtuoso IC618/SKILL"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "unsupported_claim"
+        },
+        {
+          "id": "B",
+          "text": "infrastructure_failure"
+        },
+        {
+          "id": "C",
+          "text": "no_persistent_evidence"
+        },
+        {
+          "id": "D",
+          "text": "dangling_terminals_reported"
+        }
+      ],
+      "prompt": "Which terminal result is supported by the required tool workflow?"
+    }
+  ],
+  "required_sequence": [
+    "fresh isolated scratch",
+    "operation",
+    "save/close/reopen where applicable",
+    "readback",
+    "terminal JSON"
+  ],
+  "result_field": "audit_result",
+  "scenario": "Inspect instances, terminals, nets, and connectivity without saving any design data; report dangling instance terminals.",
+  "schema_version": "2.0",
+  "task_id": "v06-eda-02-oa-audit"
+}

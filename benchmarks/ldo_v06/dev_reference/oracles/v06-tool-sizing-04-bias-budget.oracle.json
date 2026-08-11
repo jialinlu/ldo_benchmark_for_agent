@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": 40,
+      "id": "q1",
+      "kind": "exact",
+      "path": "answers.q1",
+      "weight": 50.0
+    },
+    {
+      "critical": true,
+      "expected": 120,
+      "id": "q2",
+      "kind": "exact",
+      "path": "answers.q2",
+      "weight": 50.0
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v06-sizing-04-bias-budget",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "v06-tool-sizing-04-bias-budget"
+}

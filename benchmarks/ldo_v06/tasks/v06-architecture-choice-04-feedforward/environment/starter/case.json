@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "loop UGF=250 kHz"
+    },
+    {
+      "id": "E2",
+      "observation": "peak persists with higher EA gain"
+    },
+    {
+      "id": "E3",
+      "observation": "gate feedthrough phase measured"
+    },
+    {
+      "id": "E4",
+      "observation": "extra 4 uA allowed"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Choose the characterized two-stage OTA"
+        },
+        {
+          "id": "B",
+          "text": "Add a frequency-shaped feed-forward cancellation path"
+        },
+        {
+          "id": "C",
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+        },
+        {
+          "id": "D",
+          "text": "Retain the PMOS architecture and apply the local co-size"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+        },
+        {
+          "id": "B",
+          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+        },
+        {
+          "id": "C",
+          "text": "It directly senses the varying pass operating point within the available IQ budget"
+        },
+        {
+          "id": "D",
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+        },
+        {
+          "id": "B",
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+        },
+        {
+          "id": "C",
+          "text": "Use PMOS and budget its larger gate capacitance in compensation"
+        },
+        {
+          "id": "D",
+          "text": "Run the complete regression on the local candidate and keep architecture change as contingency"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+        },
+        {
+          "id": "B",
+          "text": "Sampled PVT evidence is promising but not final closure"
+        },
+        {
+          "id": "C",
+          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+        },
+        {
+          "id": "D",
+          "text": "An NMOS could become viable if a charge pump were allowed"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "A PMOS LDO meets low-frequency PSRR but has a 2 MHz supply-ripple peak caused by pass-gate feedthrough.",
+  "schema_version": "2.0",
+  "task_id": "v06-architecture-choice-04-feedforward"
+}

@@ -1,0 +1,33 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 30,
+    "timeout_seconds": 900
+  },
+  "capabilities": [
+    "eda_tool",
+    "eda_live"
+  ],
+  "eligible_modes": [
+    "eda_assisted"
+  ],
+  "evaluation_role": "eda_live",
+  "family_id": "v06-eda-03-oa-edit",
+  "input_files": [
+    "case.json",
+    "answer_template.json",
+    "ic618_tool.py",
+    "SKILL_CONTRACT.md"
+  ],
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v06-eda-03-oa-edit",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "eda_tool",
+  "task_id": "v06-eda-03-oa-edit",
+  "title": "Surgical OA property edit",
+  "variant": "canonical"
+}

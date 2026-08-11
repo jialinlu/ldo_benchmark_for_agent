@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "light-load regulation correct"
+    },
+    {
+      "id": "E2",
+      "observation": "pass device in linear region"
+    },
+    {
+      "id": "E3",
+      "observation": "pass VSD=92 mV"
+    },
+    {
+      "id": "E4",
+      "observation": "EA output saturated low"
+    }
+  ],
+  "metamorphic_parent": "v06-diagnosis-03-dropout-fail",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Pass-gate slew/current limit dominates the first excursion"
+        },
+        {
+          "id": "B",
+          "text": "Insufficient closed-loop phase margin is the primary cause"
+        },
+        {
+          "id": "C",
+          "text": "The pass path lacks available conductance/headroom"
+        },
+        {
+          "id": "D",
+          "text": "There are two independent root causes requiring separate local fixes"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
+        },
+        {
+          "id": "B",
+          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+        },
+        {
+          "id": "C",
+          "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
+        },
+        {
+          "id": "D",
+          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Localize the phase loss by probing pass-gate and output poles"
+        },
+        {
+          "id": "B",
+          "text": "Quantify required pass conductance at the worst VIN and resize pass/driver"
+        },
+        {
+          "id": "C",
+          "text": "Fix startup injection and compensation separately, then run a full regression"
+        },
+        {
+          "id": "D",
+          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A larger pass device is unsupported and could worsen the stability failure"
+        },
+        {
+          "id": "B",
+          "text": "The transient alone does not identify which internal pole caused the phase loss"
+        },
+        {
+          "id": "C",
+          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+        },
+        {
+          "id": "D",
+          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. At 10 mA VOUT is 65 mV low, the divider ratio is correct, VREF is correct, and the PMOS gate is at its minimum reachable voltage.",
+  "schema_version": "2.0",
+  "task_id": "v06-diagnosis-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

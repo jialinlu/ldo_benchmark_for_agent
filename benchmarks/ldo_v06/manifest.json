@@ -1,0 +1,11 @@
+{
+  "benchmark_version": "0.6.0",
+  "eda_companions": 1,
+  "eda_primary": 6,
+  "pure_companions": 8,
+  "pure_core": 48,
+  "rollouts_per_model": 3,
+  "task_count": 69,
+  "task_ids_sha256": "d90d741ccc57ff8b337297867c0dbad3222206a753c474924b4781449d4d95e9",
+  "tool_sizing": 6
+}

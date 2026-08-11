@@ -1,6 +1,8 @@
 # Model test matrix
 
-This is the pre-run inventory frozen on 2026-08-10. Access probes are infrastructure checks, not benchmark scores.
+This is the retained v0.5 pre-run inventory frozen on 2026-08-10. Access probes are infrastructure checks,
+not benchmark scores. New v0.6 runs use the 69-task matrix in `BENCHMARK_V06.md`; this document preserves
+model-access provenance only.
 
 The selected first run is GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. Its pre-run policy
 used base seed `20260810`, a 300-second timeout, three new sessions per task, and zero automatic retries.
@@ -16,7 +18,7 @@ cannot consume its full retry allowance before other rows are attempted.
 
 | Agent | Model | Status | Formal runs |
 |---|---|---|---:|
-| Codex 0.146.0 | GPT-5.6-sol | Ready | 120 reasoning + 6 closure tasks, three independent rollouts each |
+| Codex 0.146.0 | GPT-5.6-sol | Ready | v0.6: 69 tasks × three independent rollouts |
 | Kimi Code 0.34.0 | K3 | Ready | Same matrix |
 | Claude Code 2.1.223 | Claude Fable 5 | Blocked: provider returned 503 before inference | Start only after a fresh access qualification |
 | Claude Code 2.1.223 | Claude Opus 5 | Blocked: provider returned 503 before inference | Start only after a fresh access qualification |

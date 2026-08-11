@@ -1,0 +1,65 @@
+{
+  "candidate_fields": [
+    "pass_width_um",
+    "input_width_um",
+    "driver_res_kohm",
+    "ccomp_pf"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "P1 120/40/5k/5p: dropout 108 mV, PM 52 deg, IQ 72 uA",
+    "P2 160/40/3k/8p: dropout 82 mV, PM 64 deg, IQ 86 uA",
+    "P3 200/80/3k/8p: dropout 70 mV, PM 61 deg, IQ 112 uA",
+    "limits dropout<=90 mV, PM>=60 deg, IQ<=100 uA"
+  ],
+  "hard_bounds": {
+    "ccomp_pf": [
+      2,
+      12
+    ],
+    "driver_res_kohm": [
+      2,
+      10
+    ],
+    "input_width_um": [
+      20,
+      80
+    ],
+    "pass_width_um": [
+      80,
+      220
+    ]
+  },
+  "objective": "Minimize normalized area plus IQ subject to every frozen hard constraint.",
+  "paired_pure_task": "v06-sizing-06-sizing-capstone",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final pass_width_um"
+    },
+    {
+      "id": "q2",
+      "kind": "numeric",
+      "prompt": "Final input_width_um"
+    },
+    {
+      "id": "q3",
+      "kind": "numeric",
+      "prompt": "Final driver_res_kohm"
+    },
+    {
+      "id": "q4",
+      "kind": "numeric",
+      "prompt": "Final ccomp_pf"
+    }
+  ],
+  "scenario": "A frozen PMOS-LDO architecture has a four-knob SKY130 sweep over pass width, input-pair width, driver resistance, and Ccomp. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-06-sizing-capstone"
+}

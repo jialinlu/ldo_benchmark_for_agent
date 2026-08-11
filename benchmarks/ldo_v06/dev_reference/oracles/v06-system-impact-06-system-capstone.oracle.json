@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "D",
+      "id": "q1",
+      "kind": "exact",
+      "path": "answers.q1",
+      "weight": 30
+    },
+    {
+      "critical": true,
+      "expected": "D",
+      "id": "q2",
+      "kind": "exact",
+      "path": "answers.q2",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "expected": "B",
+      "id": "q3",
+      "kind": "exact",
+      "path": "answers.q3",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "expected": "C",
+      "id": "q4",
+      "kind": "exact",
+      "path": "answers.q4",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v06-system-impact-06-system-capstone",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "v06-system-impact-06-system-capstone"
+}

@@ -1,0 +1,31 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "structure",
+    "coupled"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "coupled",
+  "family_id": "v06-structure-05-startup-loop",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v06-structure-05-startup-loop",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "structure",
+  "task_id": "v06-structure-05-startup-loop",
+  "title": "Separate startup path from regulation loop",
+  "variant": "canonical"
+}

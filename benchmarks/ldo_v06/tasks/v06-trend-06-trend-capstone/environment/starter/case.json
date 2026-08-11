@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "heavy dropout miss=18 mV"
+    },
+    {
+      "id": "E2",
+      "observation": "light-load PM miss=9 deg"
+    },
+    {
+      "id": "E3",
+      "observation": "pass gate pole below UGF at light load"
+    },
+    {
+      "id": "E4",
+      "observation": "IQ margin=12 uA"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lowering driver resistance is the best first coupled intervention"
+        },
+        {
+          "id": "B",
+          "text": "The output pole rises substantially and loop gain can also rise"
+        },
+        {
+          "id": "C",
+          "text": "Competing threshold and mobility trends change which mechanism dominates"
+        },
+        {
+          "id": "D",
+          "text": "Dropout tends to improve while the gate pole tends to move lower"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+        },
+        {
+          "id": "B",
+          "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
+        },
+        {
+          "id": "C",
+          "text": "More width lowers on-resistance but raises gate capacitance"
+        },
+        {
+          "id": "D",
+          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Check light-load and heavy-load crossover instead of extrapolating one corner"
+        },
+        {
+          "id": "B",
+          "text": "Overlay loop gain and output impedance for both ESR values"
+        },
+        {
+          "id": "C",
+          "text": "Plot pass overdrive and gm at all three temperatures"
+        },
+        {
+          "id": "D",
+          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Bias-current scaling is not a free gain improvement"
+        },
+        {
+          "id": "B",
+          "text": "A lower zero helps only if its placement is useful relative to crossover"
+        },
+        {
+          "id": "C",
+          "text": "No single-knob monotonic argument replaces the paired-corner verification"
+        },
+        {
+          "id": "D",
+          "text": "The direction of phase margin still depends on other pole locations"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "An existing LDO narrowly fails heavy-load dropout and light-load PM. Three proposed single-knob changes are wider pass FET, more Ccomp, or lower driver resistance.",
+  "schema_version": "2.0",
+  "task_id": "v06-trend-06-trend-capstone"
+}

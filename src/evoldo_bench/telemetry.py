@@ -68,6 +68,17 @@ def validate_telemetry(data: Dict[str, Any]) -> Dict[str, Any]:
             raise ContractError("telemetry.%s unavailable status requires null fields" % group_name)
     if "infra_status" in data and data["infra_status"] not in {"ok", "infra_fail", "not_used"}:
         raise ContractError("unsupported telemetry.infra_status")
+    milestones = data.get("milestones", {})
+    if not isinstance(milestones, dict):
+        raise ContractError("telemetry.milestones must be an object")
+    for field in ("first_feasible_seconds", "terminal_seconds", "first_feasible_tokens", "terminal_tokens"):
+        if field in milestones:
+            _optional_nonnegative_number(milestones[field], "telemetry.milestones.%s" % field)
+    if "terminal_status" in milestones and milestones["terminal_status"] not in {
+        "completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"
+    }:
+        raise ContractError("unsupported telemetry.milestones.terminal_status")
+    data["milestones"] = milestones
     identity_status = data.get("model_identity_status", "unavailable")
     if identity_status not in {"attested", "requested_only", "mismatch", "unavailable"}:
         raise ContractError("unsupported telemetry.model_identity_status")
@@ -99,6 +110,13 @@ def empty_telemetry(task_id: str, model_id: str, mode: str, rollout: int, seed: 
         "model_identity_status": "unavailable",
         "infra_status": "not_used",
         "source": "runner_fallback",
+        "milestones": {
+            "first_feasible_seconds": None,
+            "terminal_seconds": round(max(0.0, wall_seconds), 6),
+            "first_feasible_tokens": None,
+            "terminal_tokens": None,
+            "terminal_status": "model_incomplete",
+        },
     }
 
 
@@ -149,6 +167,12 @@ def summarize_effort(rows: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
     probe_calls = sum(int(row.get("probe_calls", 0)) for row in rows)
     ineffective = sum(int(row.get("ineffective_probe_calls", 0)) for row in rows)
     rejected = sum(int(row.get("policy_rejected_probe_calls", 0)) for row in rows)
+    first_feasible_seconds = [float(row["milestones"]["first_feasible_seconds"]) for row in rows
+                              if row.get("milestones", {}).get("first_feasible_seconds") is not None]
+    terminal_seconds = [float(row["milestones"]["terminal_seconds"]) for row in rows
+                        if row.get("milestones", {}).get("terminal_seconds") is not None]
+    terminal_tokens = [float(row["milestones"]["terminal_tokens"]) for row in rows
+                       if row.get("milestones", {}).get("terminal_tokens") is not None]
     return {
         "rollouts": len(rows),
         "avg_steps": _avg([float(row["steps"]) for row in rows]),
@@ -179,4 +203,10 @@ def summarize_effort(rows: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
         "cached_input_share": round(cached / input_like, 6) if input_like else None,
         "ineffective_probe_rate": round(ineffective / probe_calls, 6) if probe_calls else 0.0,
         "probe_policy_rejection_rate": round(rejected / probe_calls, 6) if probe_calls else 0.0,
+        "milestones": {
+            "avg_first_feasible_seconds": _avg(first_feasible_seconds),
+            "avg_terminal_seconds": _avg(terminal_seconds),
+            "avg_terminal_tokens": _avg(terminal_tokens),
+            "terminal_token_coverage": round(len(terminal_tokens) / len(rows), 6) if rows else 0.0,
+        },
     }

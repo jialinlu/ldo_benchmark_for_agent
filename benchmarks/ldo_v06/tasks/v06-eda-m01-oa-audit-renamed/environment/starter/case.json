@@ -1,0 +1,47 @@
+{
+  "hard_gates": [
+    "write_count must remain zero",
+    "report dangling terminals by connectivity, not names"
+  ],
+  "metamorphic_parent": "v06-eda-02-oa-audit",
+  "provenance": {
+    "tool": "Cadence Virtuoso IC618/SKILL"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "unsupported_claim"
+        },
+        {
+          "id": "B",
+          "text": "dangling_terminals_reported"
+        },
+        {
+          "id": "C",
+          "text": "write_required"
+        },
+        {
+          "id": "D",
+          "text": "no_audit"
+        }
+      ],
+      "prompt": "Which result remains valid after cell/instance aliases are changed?"
+    }
+  ],
+  "required_sequence": [
+    "fresh isolated scratch",
+    "read-only audit",
+    "terminal JSON"
+  ],
+  "scenario": "Repeat the read-only OA audit after bijective cell and instance renaming.",
+  "schema_version": "2.0",
+  "task_id": "v06-eda-m01-oa-audit-renamed",
+  "transformation": [
+    "cell and instance aliases changed",
+    "instance enumeration order reversed"
+  ]
+}

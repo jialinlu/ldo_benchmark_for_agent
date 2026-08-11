@@ -1,0 +1,35 @@
+{
+  "candidate_fields": [
+    "ccomp_pf"
+  ],
+  "evaluation_budget": 30,
+  "evidence": [
+    "Ccomp=2 pF: PM=31 deg, UGF=3.7 MHz",
+    "Ccomp=5 pF: PM=54 deg, UGF=1.9 MHz",
+    "Ccomp=8 pF: PM=67 deg, UGF=1.1 MHz",
+    "target PM>=60 deg, UGF>=1.0 MHz"
+  ],
+  "hard_bounds": {
+    "ccomp_pf": [
+      2,
+      12
+    ]
+  },
+  "objective": "Find the smallest characterized Ccomp that satisfies both phase-margin and bandwidth constraints.",
+  "paired_pure_task": "v06-sizing-03-comp-cap",
+  "provenance": {
+    "model_section": "tt",
+    "pdk": "SKY130",
+    "simulator": "ngspice"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "numeric",
+      "prompt": "Final ccomp_pf"
+    }
+  ],
+  "scenario": "SKY130/ngspice loop sweeps for an unchanged LDO report the following worst-load results. Use the task-local SKY130/ngspice probe to produce a final sizing candidate.",
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-03-comp-cap"
+}

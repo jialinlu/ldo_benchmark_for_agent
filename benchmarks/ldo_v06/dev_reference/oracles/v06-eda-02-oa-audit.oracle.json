@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": "D",
+      "id": "q1",
+      "kind": "exact",
+      "path": "answers.q1",
+      "weight": 100.0
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v06-eda-02-oa-audit",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "v06-eda-02-oa-audit"
+}

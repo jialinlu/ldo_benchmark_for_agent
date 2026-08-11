@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "expected": 120,
+      "id": "q1",
+      "kind": "exact",
+      "path": "answers.q1",
+      "weight": 100.0
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v06-sizing-01-pass-first",
+  "pass_threshold": 70,
+  "schema_version": "1.0",
+  "task_id": "v06-tool-sizing-01-pass-first"
+}

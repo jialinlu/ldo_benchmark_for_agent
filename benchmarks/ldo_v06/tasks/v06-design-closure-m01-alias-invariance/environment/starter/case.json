@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "driver unchanged"
+    },
+    {
+      "id": "E2",
+      "observation": "gate capacitance +44 percent"
+    },
+    {
+      "id": "E3",
+      "observation": "same test fixtures"
+    },
+    {
+      "id": "E4",
+      "observation": "same simulator/model"
+    }
+  ],
+  "metamorphic_parent": "v06-design-closure-03-regression",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Startup yield is the blocking metric"
+        },
+        {
+          "id": "B",
+          "text": "The compensation-only change is infeasible under the full spec set"
+        },
+        {
+          "id": "C",
+          "text": "Revision B is not closed because it traded one pass for a stability failure"
+        },
+        {
+          "id": "D",
+          "text": "Continue local sizing; an architecture change is not yet justified"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Return-ratio measurements require bias preservation"
+        },
+        {
+          "id": "B",
+          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
+        },
+        {
+          "id": "C",
+          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+        },
+        {
+          "id": "D",
+          "text": "The same lower bandwidth that improves phase margin slows both required transients"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+        },
+        {
+          "id": "B",
+          "text": "Co-size the driver/compensation and rerun the frozen regression"
+        },
+        {
+          "id": "C",
+          "text": "Retarget startup margin and rerun enough samples with the same seed policy"
+        },
+        {
+          "id": "D",
+          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Stability closure cannot be declared while transient gates fail"
+        },
+        {
+          "id": "B",
+          "text": "Only TT and one global worst corner cannot establish closure"
+        },
+        {
+          "id": "C",
+          "text": "Reporting only the improved metric is invalid cherry-picking"
+        },
+        {
+          "id": "D",
+          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. Revision B improves dropout by 28 mV but reduces light-load PM from 58 to 39 degrees after pass width is increased.",
+  "schema_version": "2.0",
+  "task_id": "v06-design-closure-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

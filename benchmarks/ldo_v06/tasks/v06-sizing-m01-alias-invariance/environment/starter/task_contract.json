@@ -1,0 +1,32 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.6.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 300
+  },
+  "capabilities": [
+    "sizing",
+    "companion"
+  ],
+  "eligible_modes": [
+    "direct_reasoning"
+  ],
+  "evaluation_role": "companion",
+  "family_id": "v06-sizing-03-comp-cap",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v06-sizing-03-comp-cap",
+  "paired_with": "v06-sizing-03-comp-cap",
+  "prompt_file": "instruction.md",
+  "schema_version": "2.0",
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v06-sizing-m01-alias-invariance",
+  "title": "Select compensation capacitance — alias-invariance companion",
+  "variant": "metamorphic"
+}

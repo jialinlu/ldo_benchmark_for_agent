@@ -1,0 +1,11 @@
+{
+  "answers": {
+    "q1": 140,
+    "q2": 3,
+    "q3": 8
+  },
+  "claim_boundary": "Conclusion is limited to the supplied evidence and named operating conditions.",
+  "confidence": 0.95,
+  "schema_version": "2.0",
+  "task_id": "v06-tool-sizing-05-driver-ratio"
+}

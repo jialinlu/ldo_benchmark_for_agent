@@ -1,0 +1,126 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "EA gain nearly fixed"
+    },
+    {
+      "id": "E2",
+      "observation": "pass gm rises approximately 4.1x"
+    },
+    {
+      "id": "E3",
+      "observation": "Rload falls by 20x"
+    },
+    {
+      "id": "E4",
+      "observation": "COUT fixed"
+    }
+  ],
+  "metamorphic_parent": "v06-trend-03-load-gm",
+  "provenance": {
+    "kind": "metamorphic-companion"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Competing threshold and mobility trends change which mechanism dominates"
+        },
+        {
+          "id": "B",
+          "text": "The output pole rises substantially and loop gain can also rise"
+        },
+        {
+          "id": "C",
+          "text": "The ESR zero moves to a lower frequency"
+        },
+        {
+          "id": "D",
+          "text": "Lowering driver resistance is the best first coupled intervention"
+        }
+      ],
+      "prompt": "Which conclusion is best supported after the representation change?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+        },
+        {
+          "id": "B",
+          "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
+        },
+        {
+          "id": "C",
+          "text": "The zero frequency is inversely proportional to ESR times capacitance"
+        },
+        {
+          "id": "D",
+          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+        }
+      ],
+      "prompt": "Which mechanism is invariant?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sweep width and remeasure both dropout and phase margin"
+        },
+        {
+          "id": "B",
+          "text": "Check light-load and heavy-load crossover instead of extrapolating one corner"
+        },
+        {
+          "id": "C",
+          "text": "Overlay loop gain and output impedance for both ESR values"
+        },
+        {
+          "id": "D",
+          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Bias-current scaling is not a free gain improvement"
+        },
+        {
+          "id": "B",
+          "text": "The direction of phase margin still depends on other pole locations"
+        },
+        {
+          "id": "C",
+          "text": "The two metrics need not improve together"
+        },
+        {
+          "id": "D",
+          "text": "A single linear temperature coefficient is not justified"
+        }
+      ],
+      "prompt": "Which claim boundary remains valid?"
+    }
+  ],
+  "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. Load current rises by 20 times in a PMOS LDO whose pass device remains saturated and whose bias currents are fixed.",
+  "schema_version": "2.0",
+  "task_id": "v06-trend-m01-alias-invariance",
+  "transformation": [
+    "bijective internal-node aliasing",
+    "evidence-row reversal",
+    "choice permutation"
+  ]
+}

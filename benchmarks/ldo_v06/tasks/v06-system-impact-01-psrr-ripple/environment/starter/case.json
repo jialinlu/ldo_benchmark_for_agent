@@ -1,0 +1,121 @@
+{
+  "evidence": [
+    {
+      "id": "E1",
+      "observation": "PSRR=32 dB at 10 kHz"
+    },
+    {
+      "id": "E2",
+      "observation": "linear attenuation=39.8"
+    },
+    {
+      "id": "E3",
+      "observation": "reference noise excluded"
+    },
+    {
+      "id": "E4",
+      "observation": "load fixed"
+    }
+  ],
+  "provenance": {
+    "kind": "expert-authored",
+    "pdk": "not-required"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The residual supply-ripple contribution is about 0.63 mV rms"
+        },
+        {
+          "id": "B",
+          "text": "The package-output LC resonance is the leading cause"
+        },
+        {
+          "id": "C",
+          "text": "Use separate PDN and feed-forward/ripple remedies rather than only raising bias"
+        },
+        {
+          "id": "D",
+          "text": "The local capacitor/package network controls the initial droop"
+        }
+      ],
+      "prompt": "Which conclusion is best supported?"
+    },
+    {
+      "id": "q2",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Divide the input ripple by the linear PSRR ratio"
+        },
+        {
+          "id": "B",
+          "text": "The two failures occupy different frequency ranges and have different measured paths"
+        },
+        {
+          "id": "C",
+          "text": "The feedback loop is too slow to respond during the edge"
+        },
+        {
+          "id": "D",
+          "text": "Scale reference noise by 1.5 and combine it root-sum-square with amplified input noise"
+        }
+      ],
+      "prompt": "Which mechanism best explains the evidence?"
+    },
+    {
+      "id": "q3",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Add remaining device and resistor noise before comparing to system limit"
+        },
+        {
+          "id": "B",
+          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+        },
+        {
+          "id": "C",
+          "text": "Reserve the remaining noise budget for reference and device noise"
+        },
+        {
+          "id": "D",
+          "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
+        }
+      ],
+      "prompt": "What is the best next engineering action?"
+    },
+    {
+      "id": "q4",
+      "kind": "single_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Linear addition would overestimate uncorrelated noise"
+        },
+        {
+          "id": "B",
+          "text": "DC load regulation does not predict the edge droop"
+        },
+        {
+          "id": "C",
+          "text": "PSRR at 10 kHz does not bound ripple at other harmonics"
+        },
+        {
+          "id": "D",
+          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+        }
+      ],
+      "prompt": "Which claim boundary is correct?"
+    }
+  ],
+  "scenario": "A downstream block tolerates 1 mV rms at 10 kHz. The upstream converter produces 25 mV rms and the LDO PSRR is measured at the same frequency.",
+  "schema_version": "2.0",
+  "task_id": "v06-system-impact-01-psrr-ripple"
+}

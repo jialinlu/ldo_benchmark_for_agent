@@ -98,6 +98,7 @@ def grade_answer(task: Task, answer: Dict[str, Any], oracle: Dict[str, Any]) -> 
         "suite": task.suite,
         "level": task.data["level"],
         "variant": task.variant,
+        "evaluation_role": task.data.get("evaluation_role", "legacy"),
         "split": task.split,
         "score": round(final_score, 6),
         "raw_score": round(raw_score, 6),
