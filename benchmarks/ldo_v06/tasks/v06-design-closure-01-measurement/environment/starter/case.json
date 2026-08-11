@@ -23,31 +23,33 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Startup yield is the blocking metric"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Continue local sizing; an architecture change is not yet justified"
-        },
-        {
-          "id": "C",
           "text": "The phase-margin result is invalid because the fixture changed the operating point"
         },
         {
+          "id": "C",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
           "id": "D",
-          "text": "Revision B is not closed because it traded one pass for a stability failure"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -55,30 +57,31 @@
         },
         {
           "id": "B",
-          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "Aggregate DC yield cannot hide a separate hard-gate failure mode"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Co-size the driver/compensation and rerun the frozen regression"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
@@ -86,33 +89,83 @@
         },
         {
           "id": "D",
-          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A plausible Bode plot does not rescue a changed circuit"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Stability closure cannot be declared while transient gates fail"
+          "text": "A plausible Bode plot does not rescue a changed circuit"
         },
         {
           "id": "D",
-          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "270 mV, invalidating comparison with the original loop"
+        },
+        {
+          "id": "B",
+          "text": "270 mV, but the smooth Bode plot remains usable"
+        },
+        {
+          "id": "C",
+          "text": "No DC error because the inserted source is zero volts"
+        },
+        {
+          "id": "D",
+          "text": "210 mV"
+        }
+      ],
+      "prompt": "How large is the fixture-induced VOUT operating-point error?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "original VOUT=1.20 V"
+        },
+        {
+          "id": "E2",
+          "text": "modified VOUT=0.93 V"
+        },
+        {
+          "id": "E3",
+          "text": "pass region changed"
+        },
+        {
+          "id": "E4",
+          "text": "AC plot otherwise smooth"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A reported 78 degree phase margin was obtained by inserting a zero-volt AC source in series with the pass gate, which changed the DC gate voltage by 210 mV.",

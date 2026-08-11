@@ -23,43 +23,45 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Pass-device headroom is the active limit"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
-          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+          "text": "The added device is an escape path, not part of the steady-state regulation loop"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
-          "text": "Rload directly changes the output time constant and can cause pole crossing"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
@@ -69,50 +71,101 @@
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Size it from worst-corner startup time and verify its residual leakage"
         },
         {
           "id": "C",
-          "text": "Check loop gain at both load extremes before resizing compensation"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Size it from worst-corner startup time and verify its residual leakage"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
-        },
-        {
-          "id": "B",
           "text": "Successful nominal transient does not prove escape from every initial condition"
         },
         {
+          "id": "B",
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
+        },
+        {
           "id": "C",
-          "text": "Do not replace the architecture before checking a local pole-separation fix"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "This establishes small-signal polarity, not stability margin"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Startup current falls below 20 nA and the regulation loop remains closed"
+        },
+        {
+          "id": "B",
+          "text": "A forced pulse starts the circuit and VOUT regulates"
+        },
+        {
+          "id": "C",
+          "text": "The zero-current operating point converges"
+        },
+        {
+          "id": "D",
+          "text": "The nominal supply reaches its final value"
+        }
+      ],
+      "prompt": "Which evidence pair best supports negligible steady-state startup-path influence?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "zero-current OP converges"
+        },
+        {
+          "id": "E2",
+          "text": "forced 5 nA pulse starts the circuit"
+        },
+        {
+          "id": "E3",
+          "text": "startup FET current falls below 20 nA after 8 us"
+        },
+        {
+          "id": "E4",
+          "text": "regulation loop remains closed"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The bias reference is self-biased and admits a zero-current equilibrium. A weak startup transistor senses the bias node and turns off after current builds.",

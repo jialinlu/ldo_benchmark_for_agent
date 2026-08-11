@@ -27,96 +27,153 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "Pass-device headroom is the active limit"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "The closed loop is negative feedback"
+          "text": "Pass-device headroom is the active limit"
         },
         {
           "id": "D",
-          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Two nearby non-dominant poles consume phase before crossover"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Size it from worst-corner startup time and verify its residual leakage"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
         },
         {
           "id": "D",
-          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Nominal-load pole ordering is not sufficient for a capless stability claim"
-        },
-        {
-          "id": "B",
           "text": "A wider pass device can change gate pole and transient behavior"
         },
         {
+          "id": "B",
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
+        },
+        {
           "id": "C",
-          "text": "Successful nominal transient does not prove escape from every initial condition"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "35 mV"
+        },
+        {
+          "id": "B",
+          "text": "100 mV"
+        },
+        {
+          "id": "C",
+          "text": "7 mV"
+        },
+        {
+          "id": "D",
+          "text": "42 mV"
+        }
+      ],
+      "prompt": "How much additional low-going EA output swing remains between VCTRL and its characterized limit?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "VIN=1.10 V"
+        },
+        {
+          "id": "E2",
+          "text": "target VOUT=1.00 V"
+        },
+        {
+          "id": "E3",
+          "text": "ILOAD=8 mA"
+        },
+        {
+          "id": "E4",
+          "text": "VCTRL=42 mV"
+        },
+        {
+          "id": "E5",
+          "text": "EA low output limit=35 mV"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "At maximum load the PMOS gate is already 42 mV above ground and the error amplifier cannot pull it lower. VOUT misses regulation only when VIN approaches VOUT.",

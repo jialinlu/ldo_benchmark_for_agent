@@ -23,58 +23,61 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "The copied bias/output stack violates the new voltage budget"
-        },
-        {
-          "id": "C",
           "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
         },
         {
+          "id": "C",
+          "text": "This result alone establishes complete PVT and transient closure"
+        },
+        {
           "id": "D",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "Capacitance value and parasitic network are process-specific even when voltage reliability passes"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
-          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
         },
         {
           "id": "D",
-          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Build and simulate a one-device pin/model smoke test before full migration"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
@@ -82,37 +85,87 @@
         },
         {
           "id": "C",
-          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Reliability limits and device flavor must also be re-qualified"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Nominal startup time cannot stand in for leakage-corner qualification"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "The migrated dimensions remain model- and corner-dependent"
+          "text": "Nominal startup time cannot stand in for leakage-corner qualification"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 2x width is sufficient and remains below 50 nA"
+        },
+        {
+          "id": "B",
+          "text": "About 6.7x width is needed and projected hot leakage is about 107 nA, above 50 nA"
+        },
+        {
+          "id": "C",
+          "text": "About 6.7x width is needed, without evaluating hot leakage"
+        },
+        {
+          "id": "D",
+          "text": "A 10x width satisfies both corners"
+        }
+      ],
+      "prompt": "Under linear width scaling, what conflict appears when cold injection is raised from 0.3 nA to 2 nA?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "cold injection current=0.3 nA"
+        },
+        {
+          "id": "E2",
+          "text": "needed escape current=2 nA"
+        },
+        {
+          "id": "E3",
+          "text": "hot leakage after 10x width=160 nA"
+        },
+        {
+          "id": "E4",
+          "text": "standby limit=50 nA"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A weak startup FET copied into a lower-leakage process no longer starts at cold, while simply widening it raises hot standby current above spec.",

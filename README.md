@@ -1,8 +1,8 @@
-# EvoLDO-Bench v0.6
+# EvoLDO-Bench v0.6.1
 
-EvoLDO-Bench 是面向 LDO 与模拟电路设计的可审计模型基准。v0.6 先测纯模型能力，再用严格配对的 SKY130/ngspice sizing 与 Cadence Virtuoso IC618/SKILL 任务测工具增益；框架错误、网关错误、许可证和 PDK 不可用均记为 `INFRA_INVALID`，不得算作模型失败。
+EvoLDO-Bench 是面向 LDO 与模拟电路设计的可审计模型基准。v0.6.1 先测纯模型能力，再用严格配对的 SKY130/ngspice sizing 与 Cadence Virtuoso IC618/SKILL 任务测工具增益；框架错误、网关错误、许可证和 PDK 不可用均记为 `INFRA_INVALID`，不得算作模型失败。
 
-## v0.6 任务矩阵
+## v0.6.1 任务矩阵
 
 | 分组 | 数量 | 目的 |
 |---|---:|---|
@@ -35,7 +35,9 @@ task-id/
     └── solve.sh
 ```
 
-`tests`、`solution` 和外部 oracle 不进入模型 runtime bundle。完整规范见 [v0.6 benchmark 说明](docs/BENCHMARK_V06.md) 与 [任务包格式](docs/TASK_PACKAGE_FORMAT.md)。
+每个纯模型题包含六个独立计分维度：结论、机制、下一步动作、claim boundary、定量/反事实挑战和证据归因。前五维采用场景内选项和有序部分分；证据归因采用集合 F1，因此合理但不完整的答案不再与完全错误答案同为 0 分。
+
+`tests`、`solution` 和外部 oracle 不进入模型 runtime bundle。完整规范见 [v0.6.1 benchmark 说明](docs/BENCHMARK_V06.md) 与 [任务包格式](docs/TASK_PACKAGE_FORMAT.md)。
 
 ## 快速检查
 
@@ -82,7 +84,7 @@ evoldo-bench verify-live runs/eda/app/answer.json \
 
 ## 计分与 token
 
-每题 0–100 分，关键结论或机制错误触发 49 分上限。报告至少分开给出 Pure Model Core、existing-architecture optimization、pure sizing、tool sizing、EDA tool、metamorphic consistency，以及 tool lift/harm。
+每题 0–100 分。纯模型题六维权重为 16/16/12/12/24/20；场景内 ordered choice 可获得有序部分分，证据集合按 F1 连续计分。关键结论或机制低于最低可接受信用时仍触发 49 分上限。报告至少分开给出 Pure Model Core、existing-architecture optimization、pure sizing、tool sizing、EDA tool、metamorphic consistency，以及 tool lift/harm。
 
 每次成功、拒答、不完整或超时都保存 input、cached input、output、reasoning、cache write token；字段不可获得时必须为 `null`，不能填 0。还记录完成/确认无法完成时的 terminal token、terminal time，以及工具调用、wall time 与费用。基础设施重试单独计入运营成本，但不进入模型能力分母。
 

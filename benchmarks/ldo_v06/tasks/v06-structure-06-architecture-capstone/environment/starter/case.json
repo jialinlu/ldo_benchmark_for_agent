@@ -27,54 +27,57 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "The first optimization target is separation of the pass-gate pole from UGF"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Two nearby non-dominant poles consume phase before crossover"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "Rload directly changes the output time constant and can cause pole crossing"
+          "text": "Two nearby non-dominant poles consume phase before crossover"
         },
         {
           "id": "D",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -82,34 +85,35 @@
         },
         {
           "id": "B",
-          "text": "Size it from worst-corner startup time and verify its residual leakage"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Check loop gain at both load extremes before resizing compensation"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Successful nominal transient does not prove escape from every initial condition"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "A wider pass device can change gate pole and transient behavior"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
@@ -117,6 +121,59 @@
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "15 uA"
+        },
+        {
+          "id": "B",
+          "text": "85 uA"
+        },
+        {
+          "id": "C",
+          "text": "100 uA"
+        },
+        {
+          "id": "D",
+          "text": "12.75 uA"
+        }
+      ],
+      "prompt": "What is the largest stated current headroom available for a bounded driver-strength experiment?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "UGF=2.6 MHz"
+        },
+        {
+          "id": "E2",
+          "text": "PM=29 deg"
+        },
+        {
+          "id": "E3",
+          "text": "pass-gate pole=1.9 MHz"
+        },
+        {
+          "id": "E4",
+          "text": "EA second pole=3.4 MHz"
+        },
+        {
+          "id": "E5",
+          "text": "IQ=85 uA, limit=100 uA"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An existing PMOS LDO meets DC accuracy but has 29 degrees phase margin. The pass gate pole is close to the non-dominant amplifier pole; quiescent current has 15 percent margin.",

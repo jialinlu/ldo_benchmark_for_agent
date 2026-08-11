@@ -23,39 +23,41 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use metric-specific worst corners plus a justified cross-product regression"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Startup yield is the blocking metric"
+          "text": "Use metric-specific worst corners plus a justified cross-product regression"
         },
         {
           "id": "D",
-          "text": "Continue local sizing; an architecture change is not yet justified"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The same lower bandwidth that improves phase margin slows both required transients"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "Return-ratio measurements require bias preservation"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
@@ -63,56 +65,107 @@
         },
         {
           "id": "D",
-          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Freeze named corner groups for dropout, stability, startup, and leakage"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Co-size the driver/compensation and rerun the frozen regression"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+          "text": "Freeze named corner groups for dropout, stability, startup, and leakage"
         },
         {
           "id": "D",
-          "text": "Retarget startup margin and rerun enough samples with the same seed policy"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Only TT and one global worst corner cannot establish closure"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "Reporting only the improved metric is invalid cherry-picking"
+          "text": "Only TT and one global worst corner cannot establish closure"
         },
         {
           "id": "D",
-          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Named metric-specific stress corners plus a frozen justified cross-product regression"
+        },
+        {
+          "id": "B",
+          "text": "TT plus SS-hot-heavy only"
+        },
+        {
+          "id": "C",
+          "text": "One worst corner per metric with no cross-checks"
+        },
+        {
+          "id": "D",
+          "text": "Average every metric across all corners"
+        }
+      ],
+      "prompt": "Which policy best avoids both missed mechanisms and an unjustified single global-worst corner?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "dropout worsens at SS/hot/low VIN/heavy load"
+        },
+        {
+          "id": "E2",
+          "text": "stability worsens at FF/cold/light load"
+        },
+        {
+          "id": "E3",
+          "text": "startup worsens at SS/cold"
+        },
+        {
+          "id": "E4",
+          "text": "leakage worsens at FF/hot"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An LDO must regulate from -40 C to 125 C, across process and VIN, at no load and 10 mA.",

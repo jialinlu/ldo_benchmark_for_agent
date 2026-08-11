@@ -23,39 +23,41 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Startup yield is the blocking metric"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+          "text": "Startup yield is the blocking metric"
         },
         {
           "id": "C",
-          "text": "Use metric-specific worst corners plus a justified cross-product regression"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
-          "text": "Revision B is not closed because it traded one pass for a stability failure"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Return-ratio measurements require bias preservation"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
@@ -63,14 +65,15 @@
         },
         {
           "id": "D",
-          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -78,41 +81,91 @@
         },
         {
           "id": "B",
-          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "A plausible Bode plot does not rescue a changed circuit"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "Stability closure cannot be declared while transient gates fail"
+          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "At most 2 failures pass; 13 failures are 11 too many"
+        },
+        {
+          "id": "B",
+          "text": "At most 1 failure passes; 13 are 12 too many"
+        },
+        {
+          "id": "C",
+          "text": "13 failures meet the 99 percent target"
+        },
+        {
+          "id": "D",
+          "text": "13 failures correspond to 93.5 percent pass"
+        }
+      ],
+      "prompt": "For 200 samples and a 99 percent startup target, how far is the observed failure count from the largest passing count?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "DC failures=2"
+        },
+        {
+          "id": "E2",
+          "text": "startup failures=13"
+        },
+        {
+          "id": "E3",
+          "text": "target each metric>=99 percent"
+        },
+        {
+          "id": "E4",
+          "text": "failure clustering reproducible"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A 200-run mismatch simulation gives 99.0 percent DC pass but only 93.5 percent startup pass, with failures clustered at low startup-device beta.",

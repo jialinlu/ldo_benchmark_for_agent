@@ -65,6 +65,11 @@ def render_markdown(report: Dict[str, Any]) -> str:
     lines.extend(["", "## Levels", "", "| Level | Count | Mean |", "|---|---:|---:|"])
     for level, values in sorted(report.get("by_level", {}).items()):
         lines.append("| %s | %d | %.2f |" % (level, values["count"], values["mean"]))
+    if report.get("by_scoring_dimension"):
+        lines.extend(["", "## Scoring dimensions", "", "| Dimension | Count | Mean credit | Stddev |", "|---|---:|---:|---:|"])
+        for dimension, values in sorted(report["by_scoring_dimension"].items()):
+            lines.append("| %s | %d | %.2f | %.2f |" % (
+                dimension, values["count"], values["mean"], values["stddev"]))
     lines.extend(["", "## Interpretation", "", "Scores are deterministic and family-macro averaged. Public dev tasks are not a sealed exam.", ""])
     return "\n".join(lines)
 

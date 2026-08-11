@@ -23,66 +23,69 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
-        },
-        {
-          "id": "B",
-          "text": "The copied bias/output stack violates the new voltage budget"
-        },
-        {
-          "id": "C",
           "text": "Use the foundry wrapper with verified pin order and explicit body connection"
         },
         {
+          "id": "B",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
+          "id": "C",
+          "text": "This result alone establishes complete PVT and transient closure"
+        },
+        {
           "id": "D",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
-        },
-        {
-          "id": "C",
           "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
         },
         {
+          "id": "C",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "D",
-          "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
@@ -92,27 +95,77 @@
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Reliability limits and device flavor must also be re-qualified"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Schematic nominal capacitance alone does not preserve compensation"
-        },
-        {
-          "id": "C",
           "text": "A converged operating point is not evidence of correct model semantics"
         },
         {
+          "id": "C",
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
+        },
+        {
           "id": "D",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A converged one-device OP with the wrapper name"
+        },
+        {
+          "id": "B",
+          "text": "Verified D/G/S/B mapping, explicit body behavior, wrapper use, and expected one-device OP"
+        },
+        {
+          "id": "C",
+          "text": "A converged full LDO operating point without pin audit"
+        },
+        {
+          "id": "D",
+          "text": "Matching primitive model names only"
+        }
+      ],
+      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "wrapper pins are D G S B"
+        },
+        {
+          "id": "E2",
+          "text": "primitive statistical parameters differ"
+        },
+        {
+          "id": "E3",
+          "text": "body must not float"
+        },
+        {
+          "id": "E4",
+          "text": "target LVS uses wrapper names"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A source netlist uses four-terminal MOS symbols and explicit body ties; the target PDK offers wrapper subcircuits plus primitive model names.",

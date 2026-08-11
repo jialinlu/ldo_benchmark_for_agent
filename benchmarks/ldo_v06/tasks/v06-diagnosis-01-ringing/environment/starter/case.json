@@ -23,66 +23,69 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The feedback divider dominates the excess"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "There are two independent root causes requiring separate local fixes"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Insufficient closed-loop phase margin is the primary cause"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "The bias network is trapped in an unwanted zero-current equilibrium"
+          "text": "Insufficient closed-loop phase margin is the primary cause"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
-        },
-        {
-          "id": "B",
           "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
         },
         {
+          "id": "B",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "C",
-          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Add or strengthen a corner-robust startup path and test initial-condition variants"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
@@ -92,8 +95,9 @@
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -101,18 +105,67 @@
         },
         {
           "id": "B",
-          "text": "A larger pass device is unsupported and could worsen the stability failure"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Increasing the regulation-loop bandwidth is not the direct remedy"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The closed-loop crossover remains near 1.7 MHz"
+        },
+        {
+          "id": "B",
+          "text": "The same 1.8 MHz ringing persists with the feedback loop opened"
+        },
+        {
+          "id": "C",
+          "text": "COUT tolerance is nonzero"
+        },
+        {
+          "id": "D",
+          "text": "The ringing frequency shifts slightly with load"
+        }
+      ],
+      "prompt": "Which counter-observation would most directly weaken the low-phase-margin diagnosis?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "ringing absent with loop opened"
+        },
+        {
+          "id": "E2",
+          "text": "COUT/ESR verified"
+        },
+        {
+          "id": "E3",
+          "text": "supply clean"
+        },
+        {
+          "id": "E4",
+          "text": "ring frequency near crossover"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A load release produces decaying 1.8 MHz ringing. Loop-gain analysis shows 24 degrees PM and crossover at 1.7 MHz.",

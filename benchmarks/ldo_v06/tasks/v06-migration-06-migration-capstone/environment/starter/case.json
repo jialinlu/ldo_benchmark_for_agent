@@ -23,8 +23,9 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -32,87 +33,139 @@
         },
         {
           "id": "B",
-          "text": "The copied bias/output stack violates the new voltage budget"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
         },
         {
           "id": "D",
-          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
         },
         {
           "id": "C",
-          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Redesign the bias/output stage for low-voltage swing before transistor scaling"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Reliability limits and device flavor must also be re-qualified"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "A converged operating point is not evidence of correct model semantics"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "Nominal startup time cannot stand in for leakage-corner qualification"
+          "text": "Passing nominal DC after scaling does not validate the migration"
         },
         {
           "id": "D",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Nominal DC pass proves no migration work remains"
+        },
+        {
+          "id": "B",
+          "text": "Correct divider ratio maps to changing the feedback ratio"
+        },
+        {
+          "id": "C",
+          "text": "Lower EA ro maps to gain retargeting; 6x weaker startup injection maps to startup redesign"
+        },
+        {
+          "id": "D",
+          "text": "Both failures map to increasing pass width"
+        }
+      ],
+      "prompt": "Which evidence-to-fix mapping is supported?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "divider ratio correct"
+        },
+        {
+          "id": "E2",
+          "text": "pass headroom passes"
+        },
+        {
+          "id": "E3",
+          "text": "EA ro is lower"
+        },
+        {
+          "id": "E4",
+          "text": "startup injection is 6x weaker at SS/cold"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An existing architecture is ported to SKY130. DC regulation passes after geometric scaling, but gain falls 12 dB, startup fails SS/cold, and the pass gate violates no reliability rule.",

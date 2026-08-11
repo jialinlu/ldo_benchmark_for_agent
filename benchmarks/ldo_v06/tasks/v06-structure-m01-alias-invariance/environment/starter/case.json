@@ -23,20 +23,21 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
@@ -46,58 +47,61 @@
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "That location preserves the operating point while exposing the full forward and return paths"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
-          "text": "Two nearby non-dominant poles consume phase before crossover"
+          "text": "That location preserves the operating point while exposing the full forward and return paths"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Size it from worst-corner startup time and verify its residual leakage"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Check loop gain at both load extremes before resizing compensation"
+          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
         },
         {
           "id": "D",
-          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Do not replace the architecture before checking a local pole-separation fix"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
@@ -105,14 +109,63 @@
         },
         {
           "id": "C",
-          "text": "Nominal-load pole ordering is not sufficient for a capless stability claim"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "This establishes small-signal polarity, not stability margin"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The reported phase margin is positive"
+        },
+        {
+          "id": "B",
+          "text": "VOUT alone is unchanged after insertion"
+        },
+        {
+          "id": "C",
+          "text": "The Bode plot is smooth"
+        },
+        {
+          "id": "D",
+          "text": "The DC operating point is unchanged and the low-frequency return-ratio sign is consistent"
+        }
+      ],
+      "prompt": "Which acceptance check is required before trusting the injected return ratio?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "Middlebrook injection fixture is available"
+        },
+        {
+          "id": "E2",
+          "text": "reference has finite AC impedance"
+        },
+        {
+          "id": "E3",
+          "text": "pass-gate DC bias must be preserved"
+        },
+        {
+          "id": "E4",
+          "text": "divider Thevenin resistance=330 kohm"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. The LDO uses a resistive divider into a MOS differential pair. Candidate breakpoints are the divider midpoint, the pass gate, and the reference source.",

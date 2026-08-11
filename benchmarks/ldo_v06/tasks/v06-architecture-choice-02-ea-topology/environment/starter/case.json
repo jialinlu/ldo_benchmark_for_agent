@@ -23,62 +23,65 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose the characterized two-stage OTA"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Retain the PMOS architecture and apply the local co-size"
+          "text": "Choose the characterized two-stage OTA"
         },
         {
           "id": "C",
-          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
-          "text": "A scaled replica bias is justified by the measured load-dependent error"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
         },
         {
           "id": "D",
-          "text": "It directly senses the varying pass operating point within the available IQ budget"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use PMOS and budget its larger gate capacitance in compensation"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
@@ -86,33 +89,83 @@
         },
         {
           "id": "D",
-          "text": "Run the complete regression on the local candidate and keep architecture change as contingency"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
         },
         {
           "id": "B",
-          "text": "The benefit depends on replica correlation across mismatch"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "Sampled PVT evidence is promising but not final closure"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Recheck telescopic output swing"
+        },
+        {
+          "id": "B",
+          "text": "Assume compensation area guarantees stability"
+        },
+        {
+          "id": "C",
+          "text": "Confirm nominal DC gain only"
+        },
+        {
+          "id": "D",
+          "text": "Close Miller and pass-gate pole interactions across load and PVT"
+        }
+      ],
+      "prompt": "Which verification most directly addresses the selected two-stage OTA's new architecture-specific risk?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "telescopic stack lacks swing"
+        },
+        {
+          "id": "E2",
+          "text": "folded cascode meets gain but costs branch current"
+        },
+        {
+          "id": "E3",
+          "text": "two-stage OTA meets swing/current in characterization"
+        },
+        {
+          "id": "E4",
+          "text": "compensation area available"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The design needs 60 dB DC gain at 1.2 V supply, 25 uA EA current, and near-rail output swing to drive a PMOS gate.",

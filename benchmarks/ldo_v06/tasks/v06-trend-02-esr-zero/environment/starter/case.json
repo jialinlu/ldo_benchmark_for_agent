@@ -23,43 +23,45 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The ESR zero moves to a lower frequency"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Competing threshold and mobility trends change which mechanism dominates"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "Unity-gain frequency tends to rise but DC gain need not rise"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "Lowering driver resistance is the best first coupled intervention"
+          "text": "The ESR zero moves to a lower frequency"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
@@ -69,50 +71,101 @@
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Sweep width and remeasure both dropout and phase margin"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
-        },
-        {
-          "id": "C",
           "text": "Overlay loop gain and output impedance for both ESR values"
         },
         {
+          "id": "C",
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
+        },
+        {
           "id": "D",
-          "text": "Plot pass overdrive and gm at all three temperatures"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The two metrics need not improve together"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Bias-current scaling is not a free gain improvement"
-        },
-        {
-          "id": "C",
           "text": "A lower zero helps only if its placement is useful relative to crossover"
         },
         {
+          "id": "C",
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
+        },
+        {
           "id": "D",
-          "text": "The direction of phase margin still depends on other pole locations"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The zero is fixed because COUT is fixed"
+        },
+        {
+          "id": "B",
+          "text": "About 0.4 MHz to 8 MHz"
+        },
+        {
+          "id": "C",
+          "text": "About 8 MHz to 0.4 MHz, without checking its relation to UGF"
+        },
+        {
+          "id": "D",
+          "text": "About 7.96 MHz to 0.398 MHz, crossing below the 0.9 MHz UGF"
+        }
+      ],
+      "prompt": "What ESR-zero movement follows from the supplied endpoints?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "COUT=1 uF"
+        },
+        {
+          "id": "E2",
+          "text": "ESR old=20 mohm"
+        },
+        {
+          "id": "E3",
+          "text": "ESR new=400 mohm"
+        },
+        {
+          "id": "E4",
+          "text": "UGF about 900 kHz"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "COUT is fixed and ESR changes from 20 milliohm to 400 milliohm.",

@@ -23,39 +23,41 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
+          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
         },
         {
           "id": "D",
-          "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
@@ -63,56 +65,107 @@
         },
         {
           "id": "D",
-          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Redesign the bias/output stage for low-voltage swing before transistor scaling"
-        },
-        {
-          "id": "B",
-          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
-        },
-        {
-          "id": "C",
           "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
         },
         {
+          "id": "B",
+          "text": "Skip fresh verification because the evidence already proves closure"
+        },
+        {
+          "id": "C",
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
+        },
+        {
           "id": "D",
-          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The migrated dimensions remain model- and corner-dependent"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "Reliability limits and device flavor must also be re-qualified"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
-          "text": "A converged operating point is not evidence of correct model semantics"
+          "text": "The migrated dimensions remain model- and corner-dependent"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The points are equivalent at fixed current"
+        },
+        {
+          "id": "B",
+          "text": "9 V^-1 below target"
+        },
+        {
+          "id": "C",
+          "text": "5 V^-1 without a normalized comparison"
+        },
+        {
+          "id": "D",
+          "text": "5 V^-1, or about 35.7 percent below target"
+        }
+      ],
+      "prompt": "How far below the target inversion-efficiency point is copied W/L?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "target noise requires gm unchanged"
+        },
+        {
+          "id": "E2",
+          "text": "current fixed"
+        },
+        {
+          "id": "E3",
+          "text": "target inversion curve available"
+        },
+        {
+          "id": "E4",
+          "text": "minimum L need not be used"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A 180 nm input pair is moved to SKY130 at the same current. The old design uses gm/ID=14 V^-1; copied W/L produces gm/ID=9 V^-1 in the target PDK.",

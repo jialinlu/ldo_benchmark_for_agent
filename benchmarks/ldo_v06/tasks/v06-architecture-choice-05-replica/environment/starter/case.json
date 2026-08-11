@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Add a frequency-shaped feed-forward cancellation path"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "A scaled replica bias is justified by the measured load-dependent error"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "Choose a PMOS pass device"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+          "text": "A scaled replica bias is justified by the measured load-dependent error"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "An NMOS follower lacks gate overdrive without a boosted rail"
-        },
-        {
-          "id": "C",
           "text": "It directly senses the varying pass operating point within the available IQ budget"
         },
         {
+          "id": "C",
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
+        },
+        {
           "id": "D",
-          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use Miller compensation and verify the pass-gate interaction"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
         },
         {
           "id": "D",
-          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "An NMOS could become viable if a charge pump were allowed"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+          "text": "The benefit depends on replica correlation across mismatch"
         },
         {
           "id": "D",
-          "text": "The benefit depends on replica correlation across mismatch"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "3 uA, so mismatch and light-load overhead remain tight gates"
+        },
+        {
+          "id": "B",
+          "text": "27 uA"
+        },
+        {
+          "id": "C",
+          "text": "12 uA"
+        },
+        {
+          "id": "D",
+          "text": "3 uA"
+        }
+      ],
+      "prompt": "How much stated IQ margin remains after adding the 12 uA replica branch?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "IQ limit leaves 15 uA"
+        },
+        {
+          "id": "E2",
+          "text": "gm variation causes 18 mV error"
+        },
+        {
+          "id": "E3",
+          "text": "replica predicts gm within 8 percent"
+        },
+        {
+          "id": "E4",
+          "text": "startup interaction manageable"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Load regulation is limited by pass-device gm variation over 1000x load. A replica branch could track pass current but adds 12 uA.",

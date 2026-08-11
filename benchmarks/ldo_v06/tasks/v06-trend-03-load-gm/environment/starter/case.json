@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The ESR zero moves to a lower frequency"
-        },
-        {
-          "id": "B",
-          "text": "Unity-gain frequency tends to rise but DC gain need not rise"
-        },
-        {
-          "id": "C",
           "text": "The output pole rises substantially and loop gain can also rise"
         },
         {
+          "id": "B",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
+          "id": "C",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
           "id": "D",
-          "text": "Lowering driver resistance is the best first coupled intervention"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "gm increases while intrinsic gain is limited by the simultaneous resistance reduction"
+          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
         },
         {
           "id": "C",
-          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Check light-load and heavy-load crossover instead of extrapolating one corner"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Plot pass overdrive and gm at all three temperatures"
+          "text": "Check light-load and heavy-load crossover instead of extrapolating one corner"
         },
         {
           "id": "D",
-          "text": "Measure gain, UGF, PM, slew, and IQ after the change"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A single linear temperature coefficient is not justified"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "A lower zero helps only if its placement is useful relative to crossover"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "No single-knob monotonic argument replaces the paired-corner verification"
+          "text": "The direction of phase margin still depends on other pole locations"
         },
         {
           "id": "D",
-          "text": "The direction of phase margin still depends on other pole locations"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every loop metric is unchanged"
+        },
+        {
+          "id": "B",
+          "text": "The output pole rises about 20x; full loop-gain and PM trends still need the other impedances and poles"
+        },
+        {
+          "id": "C",
+          "text": "The output pole rises about 20x and PM must improve"
+        },
+        {
+          "id": "D",
+          "text": "Loop gain rises exactly 4.1x"
+        }
+      ],
+      "prompt": "Under an Rload-dominated output pole model, what can and cannot be inferred?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "COUT fixed"
+        },
+        {
+          "id": "E2",
+          "text": "Rload falls by 20x"
+        },
+        {
+          "id": "E3",
+          "text": "pass gm rises approximately 4.1x"
+        },
+        {
+          "id": "E4",
+          "text": "EA gain nearly fixed"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Load current rises by 20 times in a PMOS LDO whose pass device remains saturated and whose bias currents are fixed.",

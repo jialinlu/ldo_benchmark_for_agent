@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Pass-gate slew/current limit dominates the first excursion"
-        },
-        {
-          "id": "B",
-          "text": "Insufficient closed-loop phase margin is the primary cause"
-        },
-        {
-          "id": "C",
           "text": "The pass path lacks available conductance/headroom"
         },
         {
+          "id": "B",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
+          "id": "C",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
           "id": "D",
-          "text": "There are two independent root causes requiring separate local fixes"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
+          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
         },
         {
           "id": "B",
-          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Localize the phase loss by probing pass-gate and output poles"
-        },
-        {
-          "id": "B",
           "text": "Quantify required pass conductance at the worst VIN and resize pass/driver"
         },
         {
+          "id": "B",
+          "text": "Skip fresh verification because the evidence already proves closure"
+        },
+        {
           "id": "C",
-          "text": "Fix startup injection and compensation separately, then run a full regression"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A larger pass device is unsupported and could worsen the stability failure"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "The transient alone does not identify which internal pole caused the phase loss"
+          "text": "Changing divider ratio would mask rather than solve the dropout limit"
         },
         {
           "id": "C",
-          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 10.9 mS"
+        },
+        {
+          "id": "B",
+          "text": "About 109 mS"
+        },
+        {
+          "id": "C",
+          "text": "About 920 mS"
+        },
+        {
+          "id": "D",
+          "text": "About 83 mS"
+        }
+      ],
+      "prompt": "What pass-path conductance is required to support 10 mA at the observed 92 mV VSD, ignoring margin?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "light-load regulation correct"
+        },
+        {
+          "id": "E2",
+          "text": "pass device in linear region"
+        },
+        {
+          "id": "E3",
+          "text": "pass VSD=92 mV"
+        },
+        {
+          "id": "E4",
+          "text": "EA output saturated low"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. At 10 mA VOUT is 65 mV low, the divider ratio is correct, VREF is correct, and the PMOS gate is at its minimum reachable voltage.",

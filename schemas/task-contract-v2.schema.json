@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "EvoLDO v0.6 starter task contract",
+  "title": "EvoLDO v0.6.1 starter task contract",
   "type": "object",
   "required": ["schema_version", "task_id", "family_id", "lineage_id", "split", "variant", "suite", "level", "capabilities", "title", "language", "prompt_file", "input_files", "answer_template_file", "eligible_modes", "budget", "benchmark_version", "evaluation_role"],
   "properties": {
@@ -27,7 +27,13 @@
         "max_tool_calls": {"type": "integer", "minimum": 0}
       }
     },
-    "benchmark_version": {"const": "0.6.0"},
-    "evaluation_role": {"type": "string", "minLength": 1}
+    "benchmark_version": {"const": "0.6.1"},
+    "evaluation_role": {"type": "string", "minLength": 1},
+    "scoring_dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    }
   }
 }

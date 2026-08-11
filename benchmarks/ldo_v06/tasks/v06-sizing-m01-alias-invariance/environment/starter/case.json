@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose 8 pF"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "Choose P2"
+          "text": "Choose 8 pF"
         },
         {
           "id": "C",
-          "text": "Choose 15 uA EA and 15 uA driver"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
-          "text": "Choose 249 kohm over 499 kohm"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "It is the only characterized allocation meeting both gain and slew"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Verify load transient and all PVT corners at 8 pF"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Carry that split into PVT and no-load IQ verification"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Verify bias/leakage error using the actual feedback input current"
+          "text": "Verify load transient and all PVT corners at 8 pF"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Sizing the pass device in isolation would select an unstable candidate"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "The allocation is conditional on the fixed-current assumptions"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It misses the bandwidth limit"
+        },
+        {
+          "id": "B",
+          "text": "+7 deg PM with no bandwidth margin"
+        },
+        {
+          "id": "C",
+          "text": "+7 deg PM and +0.1 MHz UGF"
+        },
+        {
+          "id": "D",
+          "text": "+13 deg PM and +1.1 MHz UGF"
+        }
+      ],
+      "prompt": "What margins does the 8 pF point have to the two stated limits?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "target PM>=60 deg, UGF>=1.0 MHz"
+        },
+        {
+          "id": "E2",
+          "text": "Ccomp=8 pF: PM=67 deg, UGF=1.1 MHz"
+        },
+        {
+          "id": "E3",
+          "text": "Ccomp=5 pF: PM=54 deg, UGF=1.9 MHz"
+        },
+        {
+          "id": "E4",
+          "text": "Ccomp=2 pF: PM=31 deg, UGF=3.7 MHz"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. SKY130/ngspice loop sweeps for an unchanged LDO report the following worst-load results.",

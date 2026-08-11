@@ -23,20 +23,21 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The output pole moves most strongly with load while the EA node is the nominal dominant pole"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Break at the pass-gate drive with a bias-preserving injection fixture"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
@@ -46,16 +47,17 @@
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Rload directly changes the output time constant and can cause pole crossing"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "That location preserves the operating point while exposing the full forward and return paths"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
@@ -63,56 +65,107 @@
         },
         {
           "id": "D",
-          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Check loop gain at both load extremes before resizing compensation"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
+          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Nominal-load pole ordering is not sufficient for a capless stability claim"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "Do not replace the architecture before checking a local pole-separation fix"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "This establishes small-signal polarity, not stability margin"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+          "text": "This establishes small-signal polarity, not stability margin"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Preserve the operating point and measure signed return ratio across frequency"
+        },
+        {
+          "id": "B",
+          "text": "Accept stability because the DC feedback sign is negative"
+        },
+        {
+          "id": "C",
+          "text": "Repeat only the +10 mV DC perturbation"
+        },
+        {
+          "id": "D",
+          "text": "Run a closed-loop load step and inspect ringing"
+        }
+      ],
+      "prompt": "Which follow-up most strongly separates correct DC polarity from adequate closed-loop stability?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "VREF=0.8 V"
+        },
+        {
+          "id": "E2",
+          "text": "VOUT perturbation: +10 mV"
+        },
+        {
+          "id": "E3",
+          "text": "VCTRL response: +31 mV"
+        },
+        {
+          "id": "E4",
+          "text": "PMOS current falls when VCTRL rises"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The error-amplifier output drives a PMOS pass gate. Raising VOUT through an ideal test source makes VFB rise and makes the amplifier output rise.",

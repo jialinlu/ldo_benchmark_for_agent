@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the public EvoLDO v0.6 task set in Analog Arena demo-task layout.
+"""Generate the public EvoLDO v0.6.1 task set in Analog Arena demo-task layout.
 
 The generated packages intentionally keep the agent-visible starter, verifier, and
 reference solution in separate directories.  Do not hand-edit generated packages;
@@ -20,8 +20,9 @@ TASKS = OUT / "tasks"
 ORACLES = OUT / "dev_reference" / "oracles"
 BASE_IMAGE = "python:3.12-slim"
 SKY130_IMAGE = "ghcr.io/arcadia-1/circuit-bench-sky130-ngspice@sha256:bd5c425675eb99fc1a2c3bca10b63a871c457613767e2c6984d6c207b3160500"
+BENCHMARK_VERSION = "0.6.1"
 
-TRACK_README = """# EvoLDO v0.6 task store
+TRACK_README = """# EvoLDO v0.6.1 task store
 
 This generated directory contains 69 public-development task packages: 48 pure-model core cases, eight
 metamorphic companions, six paired SKY130/ngspice sizing treatments, six IC618/SKILL primary tasks, and
@@ -31,6 +32,7 @@ one EDA companion. Every task uses the `task_examples` layout (`task.toml`, `ins
 `registry.jsonl` hashes the complete package and `dev_reference/oracles` is never copied into an agent
 runtime bundle. Tool-task answer grading is only semantic; an official tool score additionally requires
 `evoldo-bench verify-live`, whose infrastructure-invalid result must be retried rather than scored zero.
+Pure reasoning tasks use six dimensions with ordered-choice partial credit and evidence-set F1 scoring.
 See `docs/BENCHMARK_V06.md` for the protocol and score definitions.
 """
 
@@ -103,6 +105,263 @@ SUITES = {
 }
 
 
+# Each pure-model case receives one scenario-local discriminator. Unlike q1-q4,
+# these alternatives all use the same circuit quantities and differ by a missed
+# constraint, an incomplete calculation, or an unsafe overclaim. Credits encode
+# an expert-authored ordered response model: full, plausible-but-incomplete,
+# weak, and contradicted. The map is also reused by metamorphic companions.
+CHALLENGES = {
+    ("structure", "feedback-polarity"): ("Which follow-up most strongly separates correct DC polarity from adequate closed-loop stability?", [
+        ("Preserve the operating point and measure signed return ratio across frequency", 1.0),
+        ("Run a closed-loop load step and inspect ringing", 0.55),
+        ("Repeat only the +10 mV DC perturbation", 0.2),
+        ("Accept stability because the DC feedback sign is negative", 0.0)]),
+    ("structure", "dropout-path"): ("How much additional low-going EA output swing remains between VCTRL and its characterized limit?", [
+        ("7 mV", 1.0), ("35 mV", 0.55), ("42 mV", 0.2), ("100 mV", 0.0)]),
+    ("structure", "loop-break"): ("Which acceptance check is required before trusting the injected return ratio?", [
+        ("The DC operating point is unchanged and the low-frequency return-ratio sign is consistent", 1.0),
+        ("VOUT alone is unchanged after insertion", 0.55),
+        ("The Bode plot is smooth", 0.2),
+        ("The reported phase margin is positive", 0.0)]),
+    ("structure", "capless-poles"): ("Using the supplied RC values, which approximate light-load pole ordering is supported?", [
+        ("EA 57 kHz, output 100 kHz, buffered gate 4.4 MHz", 1.0),
+        ("Output 100 kHz, EA 57 kHz, buffered gate 4.4 MHz", 0.55),
+        ("EA 57 kHz, buffered gate 100 kHz, output 4.4 MHz", 0.2),
+        ("All three poles are load invariant", 0.0)]),
+    ("structure", "startup-loop"): ("Which evidence pair best supports negligible steady-state startup-path influence?", [
+        ("Startup current falls below 20 nA and the regulation loop remains closed", 1.0),
+        ("A forced pulse starts the circuit and VOUT regulates", 0.55),
+        ("The zero-current operating point converges", 0.2),
+        ("The nominal supply reaches its final value", 0.0)]),
+    ("structure", "architecture-capstone"): ("What is the largest stated current headroom available for a bounded driver-strength experiment?", [
+        ("15 uA", 1.0), ("12.75 uA", 0.55), ("85 uA", 0.2), ("100 uA", 0.0)]),
+
+    ("trend", "pass-width"): ("If pass-gate capacitance doubled and driver resistance stayed fixed, what first-order gate-pole change follows?", [
+        ("It moves to about one half its former frequency", 1.0),
+        ("It moves lower, but no exact factor can be claimed if other capacitances matter", 0.55),
+        ("It is unchanged because load current is fixed", 0.2),
+        ("It doubles in frequency", 0.0)]),
+    ("trend", "esr-zero"): ("What ESR-zero movement follows from the supplied endpoints?", [
+        ("About 7.96 MHz to 0.398 MHz, crossing below the 0.9 MHz UGF", 1.0),
+        ("About 8 MHz to 0.4 MHz, without checking its relation to UGF", 0.55),
+        ("About 0.4 MHz to 8 MHz", 0.2),
+        ("The zero is fixed because COUT is fixed", 0.0)]),
+    ("trend", "load-gm"): ("Under an Rload-dominated output pole model, what can and cannot be inferred?", [
+        ("The output pole rises about 20x; full loop-gain and PM trends still need the other impedances and poles", 1.0),
+        ("The output pole rises about 20x and PM must improve", 0.55),
+        ("Loop gain rises exactly 4.1x", 0.2),
+        ("Every loop metric is unchanged", 0.0)]),
+    ("trend", "bias-current"): ("What first-order DC-gain factor follows from the supplied gm and Rout changes?", [
+        ("About 1.04x, so nearly unchanged despite higher UGF tendency", 1.0),
+        ("About 1.42x because only gm matters", 0.55),
+        ("About 0.73x because only Rout matters", 0.2),
+        ("About 2.0x", 0.0)]),
+    ("trend", "temperature-dropout"): ("Which new observation would most weaken the claimed hot rail-limiting mechanism?", [
+        ("At 125 C the EA output retains ample swing and pass overdrive while dropout still worsens", 1.0),
+        ("Mobility falls at 125 C", 0.55),
+        ("Threshold magnitude falls from -40 C to 27 C", 0.2),
+        ("Dropout is measured at the same load", 0.0)]),
+    ("trend", "trend-capstone"): ("When is the lower-driver-resistance proposal actually admissible?", [
+        ("Its added current fits the 12 uA budget and the same candidate closes both dropout and light-load PM", 1.0),
+        ("It improves gate charging at the nominal corner", 0.55),
+        ("It uses exactly all 12 uA without a fresh IQ measurement", 0.2),
+        ("It may be accepted from the monotonic gate-pole argument alone", 0.0)]),
+
+    ("diagnosis", "ringing"): ("Which counter-observation would most directly weaken the low-phase-margin diagnosis?", [
+        ("The same 1.8 MHz ringing persists with the feedback loop opened", 1.0),
+        ("The ringing frequency shifts slightly with load", 0.55),
+        ("COUT tolerance is nonzero", 0.2),
+        ("The closed-loop crossover remains near 1.7 MHz", 0.0)]),
+    ("diagnosis", "cold-start"): ("Which result would most directly weaken the zero-current-equilibrium diagnosis?", [
+        ("A bias-node seed fails to recover operation despite a healthy supply and reference", 1.0),
+        ("The required seed grows at cold", 0.55),
+        ("Nominal startup remains successful", 0.2),
+        ("The zero-state operating point still converges", 0.0)]),
+    ("diagnosis", "dropout-fail"): ("What pass-path conductance is required to support 10 mA at the observed 92 mV VSD, ignoring margin?", [
+        ("About 109 mS", 1.0), ("About 83 mS", 0.55), ("About 10.9 mS", 0.2), ("About 920 mS", 0.0)]),
+    ("diagnosis", "iq-excess"): ("What does the branch-current sum imply about a divider-only repair?", [
+        ("The non-divider branches already total 80 uA, so reducing the divider alone leaves no target margin", 1.0),
+        ("Reducing the divider from 90 to 10 uA exactly closes the target", 0.55),
+        ("Reducing EA current alone can recover the full 90 uA excess", 0.2),
+        ("The listed branches do not sum to the measured 170 uA", 0.0)]),
+    ("diagnosis", "undershoot"): ("What approximate pass-gate excursion is implied by 0.35 V/us for 900 ns?", [
+        ("0.315 V", 1.0), ("0.39 V", 0.55), ("0.035 V", 0.2), ("315 V", 0.0)]),
+    ("diagnosis", "diagnosis-capstone"): ("What is the minimum regression structure needed after the two local fixes?", [
+        ("Separate startup/initial-condition coverage at SS-cold and loop/transient coverage at FF-light, followed by the full frozen regression", 1.0),
+        ("One combined nominal startup transient after both changes", 0.55),
+        ("Only a dropout sweep because pass width has margin", 0.2),
+        ("No regression because each mechanism was already identified", 0.0)]),
+
+    ("sizing", "pass-first"): ("What characterized current margins do the 100 um and 120 um samples have relative to 7.2 mA?", [
+        ("-0.3 mA and +1.0 mA", 1.0), ("-0.3 mA and +0.8 mA", 0.55), ("+0.9 mA and +2.2 mA", 0.2), ("Both have positive margin", 0.0)]),
+    ("sizing", "divider"): ("Approximately what VOUT and divider current result from 249 kohm over 499 kohm at VREF=0.8 V?", [
+        ("1.1992 V and 1.60 uA", 1.0), ("1.2000 V and 1.60 uA", 0.55), ("1.1992 V and 2.40 uA", 0.2), ("0.800 V and 1.60 uA", 0.0)]),
+    ("sizing", "comp-cap"): ("What margins does the 8 pF point have to the two stated limits?", [
+        ("+7 deg PM and +0.1 MHz UGF", 1.0), ("+7 deg PM with no bandwidth margin", 0.55), ("+13 deg PM and +1.1 MHz UGF", 0.2), ("It misses the bandwidth limit", 0.0)]),
+    ("sizing", "bias-budget"): ("What margins does the 15/15 uA allocation have to gain and slew targets?", [
+        ("+3 dB and +0.01 V/us", 1.0), ("+3 dB and +0.31 V/us", 0.55), ("+1 dB and +0.01 V/us", 0.2), ("It has no positive margin on either metric", 0.0)]),
+    ("sizing", "driver-ratio"): ("Which constraint margins distinguish candidates B and C?", [
+        ("B passes dropout but misses PM by 20 deg; C has 5 mV dropout and 8 deg PM margin", 1.0),
+        ("B and C both pass dropout, but only C passes PM", 0.55),
+        ("B misses dropout and C only passes dropout", 0.2),
+        ("Both candidates satisfy both hard constraints", 0.0)]),
+    ("sizing", "sizing-capstone"): ("What hard-constraint margins characterize P2, and what blocks P3?", [
+        ("P2 has 8 mV, 4 deg, and 14 uA margin; P3 exceeds IQ by 12 uA", 1.0),
+        ("P2 passes all gates and P3 fails IQ", 0.55),
+        ("P2 has 18 mV dropout margin and P3 fails PM", 0.2),
+        ("P3 is preferred because it has the lowest dropout", 0.0)]),
+
+    ("migration", "gm-id"): ("How far below the target inversion-efficiency point is copied W/L?", [
+        ("5 V^-1, or about 35.7 percent below target", 1.0), ("5 V^-1 without a normalized comparison", 0.55), ("9 V^-1 below target", 0.2), ("The points are equivalent at fixed current", 0.0)]),
+    ("migration", "headroom"): ("Compare worst-case VIN-VOUT headroom with the retained two-stack requirement.", [
+        ("150 mV is available versus 420 mV required, a 270 mV deficit", 1.0),
+        ("150 mV is available, so the stack is marginal", 0.55),
+        ("300 mV is available versus 420 mV required", 0.2),
+        ("The stack has 270 mV positive margin", 0.0)]),
+    ("migration", "model-semantics"): ("Which smoke-test result is sufficient to proceed to full-netlist migration?", [
+        ("Verified D/G/S/B mapping, explicit body behavior, wrapper use, and expected one-device OP", 1.0),
+        ("A converged one-device OP with the wrapper name", 0.55),
+        ("Matching primitive model names only", 0.2),
+        ("A converged full LDO operating point without pin audit", 0.0)]),
+    ("migration", "cap-density"): ("What first-pass target area and voltage margin follow from the supplied target MIM data?", [
+        ("About 2000 um2 and 1.3 V, before extracted-parasitic closure", 1.0),
+        ("About 2000 um2 and adequate voltage margin", 0.55),
+        ("About 2667 um2 and 1.3 V", 0.2),
+        ("About 2000 um2 proves compensation is preserved", 0.0)]),
+    ("migration", "leakage-startup"): ("Under linear width scaling, what conflict appears when cold injection is raised from 0.3 nA to 2 nA?", [
+        ("About 6.7x width is needed and projected hot leakage is about 107 nA, above 50 nA", 1.0),
+        ("About 6.7x width is needed, without evaluating hot leakage", 0.55),
+        ("About 2x width is sufficient and remains below 50 nA", 0.2),
+        ("A 10x width satisfies both corners", 0.0)]),
+    ("migration", "migration-capstone"): ("Which evidence-to-fix mapping is supported?", [
+        ("Lower EA ro maps to gain retargeting; 6x weaker startup injection maps to startup redesign", 1.0),
+        ("Both failures map to increasing pass width", 0.55),
+        ("Correct divider ratio maps to changing the feedback ratio", 0.2),
+        ("Nominal DC pass proves no migration work remains", 0.0)]),
+
+    ("system_impact", "psrr-ripple"): ("After the 0.63 mV ripple contribution, what independent RMS budget remains under a 1 mV total limit?", [
+        ("About 0.78 mV rms", 1.0), ("About 0.37 mV rms by linear subtraction", 0.55), ("About 0.63 mV rms", 0.2), ("No budget remains", 0.0)]),
+    ("system_impact", "load-spectrum"): ("How does a 20 ns edge compare with the reciprocal of 600 kHz UGF?", [
+        ("It is about 83x shorter, so the initial response is outside loop authority", 1.0),
+        ("It is much shorter than the loop timescale", 0.55),
+        ("It is about 8.3x shorter", 0.2),
+        ("It is slower than the loop", 0.0)]),
+    ("system_impact", "reference-noise"): ("Which intermediate calculation supports the stated combined output noise?", [
+        ("27 uV and 16.5 uV contributions combined by RSS give about 31.6 uV", 1.0),
+        ("Scale the 18 uV reference term and combine sources by RSS", 0.55),
+        ("Add 18 uV and 11 uV linearly to get 29 uV", 0.2),
+        ("Only the 18 uV reference term reaches the output", 0.0)]),
+    ("system_impact", "package-l"): ("What resonance estimate follows from 2 nH and 88 nF?", [
+        ("About 12 MHz, consistent with the observed new mode", 1.0), ("About 12 MHz without relating it to the observed mode", 0.55), ("About 0.9 MHz", 0.2), ("About 120 kHz", 0.0)]),
+    ("system_impact", "sequencing"): ("Which controlled intervention most strongly isolates the sequencing mechanism?", [
+        ("Hold EN low until VIN-good while preserving the final reference and load conditions", 1.0),
+        ("Reduce the reference amplitude during the same early-EN ramp", 0.55),
+        ("Increase COUT and change the ramp simultaneously", 0.2),
+        ("Repeat only fixed-supply nominal startup", 0.0)]),
+    ("system_impact", "system-capstone"): ("What input ripple corresponds to a 4 mV contribution through 18 dB PSRR at 100 kHz?", [
+        ("About 31.8 mV", 1.0), ("About 22 mV", 0.55), ("About 7.9 mV", 0.2), ("About 72 mV", 0.0)]),
+
+    ("design_closure", "measurement"): ("How large is the fixture-induced VOUT operating-point error?", [
+        ("270 mV, invalidating comparison with the original loop", 1.0), ("270 mV, but the smooth Bode plot remains usable", 0.55), ("210 mV", 0.2), ("No DC error because the inserted source is zero volts", 0.0)]),
+    ("design_closure", "corner-set"): ("Which policy best avoids both missed mechanisms and an unjustified single global-worst corner?", [
+        ("Named metric-specific stress corners plus a frozen justified cross-product regression", 1.0),
+        ("One worst corner per metric with no cross-checks", 0.55),
+        ("TT plus SS-hot-heavy only", 0.2),
+        ("Average every metric across all corners", 0.0)]),
+    ("design_closure", "regression"): ("What quantified trade did revision B make?", [
+        ("It gained 28 mV dropout but lost 19 deg light-load PM while gate capacitance rose 44 percent", 1.0),
+        ("It improved dropout and reduced PM", 0.55),
+        ("It lost 28 deg PM and gained 19 mV dropout", 0.2),
+        ("It improved both hard metrics", 0.0)]),
+    ("design_closure", "spec-interaction"): ("By how much do the modified startup and settling times exceed their limits?", [
+        ("6 us and 3 us", 1.0), ("6 us and 11 us", 0.55), ("17 us and 6 us", 0.2), ("Neither exceeds its limit", 0.0)]),
+    ("design_closure", "yield"): ("For 200 samples and a 99 percent startup target, how far is the observed failure count from the largest passing count?", [
+        ("At most 2 failures pass; 13 failures are 11 too many", 1.0),
+        ("13 failures correspond to 93.5 percent pass", 0.55),
+        ("At most 1 failure passes; 13 are 12 too many", 0.2),
+        ("13 failures meet the 99 percent target", 0.0)]),
+    ("design_closure", "closure-capstone"): ("What evidence is still missing before candidate C can be called closed?", [
+        ("A fresh rerun of all 48 frozen gates with candidate C", 1.0),
+        ("Only the two formerly failing gates", 0.55),
+        ("A nominal operating point because the local sweep already passed", 0.2),
+        ("No evidence; 46 of 48 is sufficient", 0.0)]),
+
+    ("architecture_choice", "pmos-nmos"): ("Which single requirement change most directly reopens the NMOS-pass option?", [
+        ("Allow a verified boosted gate rail or charge pump", 1.0),
+        ("Increase the output target while keeping VIN fixed", 0.55),
+        ("Reduce PMOS gate capacitance", 0.2),
+        ("Require still lower dropout without a boosted rail", 0.0)]),
+    ("architecture_choice", "ea-topology"): ("Which verification most directly addresses the selected two-stage OTA's new architecture-specific risk?", [
+        ("Close Miller and pass-gate pole interactions across load and PVT", 1.0),
+        ("Confirm nominal DC gain only", 0.55),
+        ("Recheck telescopic output swing", 0.2),
+        ("Assume compensation area guarantees stability", 0.0)]),
+    ("architecture_choice", "capless"): ("What load-range ratio drives the need for explicit moving-pole coverage?", [
+        ("20,000 to 1", 1.0), ("Four decades, without quantifying the endpoint ratio", 0.55), ("1,000 to 1", 0.2), ("20 to 1", 0.0)]),
+    ("architecture_choice", "feedforward"): ("How far above loop UGF is the 2 MHz ripple peak?", [
+        ("8x, supporting a path outside ordinary loop authority", 1.0), ("8x, without identifying the direct path", 0.55), ("4x", 0.2), ("The peak is below UGF", 0.0)]),
+    ("architecture_choice", "replica"): ("How much stated IQ margin remains after adding the 12 uA replica branch?", [
+        ("3 uA, so mismatch and light-load overhead remain tight gates", 1.0), ("3 uA", 0.55), ("12 uA", 0.2), ("27 uA", 0.0)]),
+    ("architecture_choice", "architecture-capstone"): ("What IQ margin remains after the characterized local co-size?", [
+        ("6 uA, pending the complete regression", 1.0), ("6 uA, proving final closure", 0.55), ("8 uA", 0.2), ("14 uA", 0.0)]),
+}
+
+
+# Two observations that form the shortest expert-accepted evidence chain for
+# the primary conclusion. Values are one-based positions in each canonical
+# row's evidence list; metamorphic companions remap them after reversal.
+EVIDENCE_PAIRS = {
+    ("structure", "feedback-polarity"): (3, 4),
+    ("structure", "dropout-path"): (4, 5),
+    ("structure", "loop-break"): (2, 4),
+    ("structure", "capless-poles"): (1, 4),
+    ("structure", "startup-loop"): (1, 2),
+    ("structure", "architecture-capstone"): (1, 3),
+    ("trend", "pass-width"): (2, 3),
+    ("trend", "esr-zero"): (2, 3),
+    ("trend", "load-gm"): (2, 3),
+    ("trend", "bias-current"): (1, 2),
+    ("trend", "temperature-dropout"): (2, 4),
+    ("trend", "trend-capstone"): (2, 3),
+    ("diagnosis", "ringing"): (1, 4),
+    ("diagnosis", "cold-start"): (1, 3),
+    ("diagnosis", "dropout-fail"): (1, 3),
+    ("diagnosis", "iq-excess"): (2, 4),
+    ("diagnosis", "undershoot"): (1, 4),
+    ("diagnosis", "diagnosis-capstone"): (1, 2),
+    ("sizing", "pass-first"): (3, 4),
+    ("sizing", "divider"): (1, 4),
+    ("sizing", "comp-cap"): (3, 4),
+    ("sizing", "bias-budget"): (2, 4),
+    ("sizing", "driver-ratio"): (3, 4),
+    ("sizing", "sizing-capstone"): (2, 4),
+    ("migration", "gm-id"): (1, 3),
+    ("migration", "headroom"): (2, 3),
+    ("migration", "model-semantics"): (1, 3),
+    ("migration", "cap-density"): (2, 4),
+    ("migration", "leakage-startup"): (1, 3),
+    ("migration", "migration-capstone"): (3, 4),
+    ("system_impact", "psrr-ripple"): (1, 2),
+    ("system_impact", "load-spectrum"): (1, 3),
+    ("system_impact", "reference-noise"): (1, 2),
+    ("system_impact", "package-l"): (2, 4),
+    ("system_impact", "sequencing"): (1, 4),
+    ("system_impact", "system-capstone"): (3, 4),
+    ("design_closure", "measurement"): (2, 3),
+    ("design_closure", "corner-set"): (1, 2),
+    ("design_closure", "regression"): (3, 4),
+    ("design_closure", "spec-interaction"): (2, 3),
+    ("design_closure", "yield"): (2, 3),
+    ("design_closure", "closure-capstone"): (1, 2),
+    ("architecture_choice", "pmos-nmos"): (2, 3),
+    ("architecture_choice", "ea-topology"): (1, 3),
+    ("architecture_choice", "capless"): (1, 3),
+    ("architecture_choice", "feedforward"): (1, 3),
+    ("architecture_choice", "replica"): (1, 3),
+    ("architecture_choice", "architecture-capstone"): (1, 2),
+}
+
+
 def dump(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
@@ -127,6 +386,45 @@ def choice_question(task_id: str, qid: str, prompt: str, correct: str, pool: lis
     return {"id": qid, "kind": "single_choice", "prompt": prompt, "options": options}, answer
 
 
+def credited_choice_question(task_id: str, qid: str, prompt: str,
+                             alternatives: list[tuple[str, float]]) -> tuple[dict, str, dict[str, float]]:
+    if len(alternatives) != 4 or sum(float(credit) == 1.0 for _, credit in alternatives) != 1:
+        raise ValueError("credited choices require four alternatives and exactly one full-credit answer")
+    values = list(alternatives)
+    rng = random.Random(int(hashlib.sha256((task_id + qid + "credits").encode()).hexdigest()[:16], 16))
+    rng.shuffle(values)
+    options = [{"id": chr(65 + index), "text": text} for index, (text, _) in enumerate(values)]
+    credits = {option["id"]: float(values[index][1]) for index, option in enumerate(options)}
+    answer = next(option_id for option_id, credit in credits.items() if credit == 1.0)
+    return {"id": qid, "kind": "ordered_choice", "prompt": prompt, "options": options}, answer, credits
+
+
+def calibrated_reasoning_question(task_id: str, qid: str, prompt: str, correct: str) -> tuple[dict, str, dict[str, float]]:
+    near_misses = {
+        "q1": [
+            ("The evidence points in this direction, but a different mechanism should be prioritized before acting", 0.4),
+            ("The opposite design decision is required after ignoring the stated limiting observation", 0.0),
+            ("This result alone establishes complete PVT and transient closure", 0.0),
+        ],
+        "q2": [
+            ("The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it", 0.55),
+            ("Only the numerical correlation is relevant; held conditions and operating region can be ignored", 0.2),
+            ("A nominally converged operating point proves the mechanism across all corners", 0.0),
+        ],
+        "q3": [
+            ("Run only the nearest nominal check, then accept the change without the remaining named gates", 0.55),
+            ("Change several knobs and the architecture simultaneously before isolating the mechanism", 0.2),
+            ("Skip fresh verification because the evidence already proves closure", 0.0),
+        ],
+        "q4": [
+            ("Restrict the claim to the exact sample but omit the stated mechanism-specific limitation", 0.55),
+            ("Generalize the conclusion to every PVT, load, and transient condition", 0.2),
+            ("No claim boundary is needed after the preferred option is selected", 0.0),
+        ],
+    }
+    return credited_choice_question(task_id, qid, prompt, [(correct, 1.0), *near_misses[qid]])
+
+
 def task_toml(task_id: str, title: str, artifacts: list[str], mode: str) -> str:
     artifact_text = ", ".join(json.dumps(item) for item in artifacts)
     network = "host-bridge-only" if mode == "eda_assisted" else "no-network"
@@ -141,11 +439,11 @@ authors = [{{ name = "EvoLDO-Bench contributors" }}]
 [metadata]
 checker_allow_ideal = []
 task_id = "{task_id}"
-revision = 1
+revision = 2
 maturity = "L4"
 maturity_note = "Public development task; reference answer and deterministic verifier are checked in."
 maturity_updated_at = "2026-08-11T00:00:00+08:00"
-benchmark_version = "0.6.0"
+benchmark_version = "{BENCHMARK_VERSION}"
 execution_mode = "{mode}"
 
 [verifier]
@@ -176,18 +474,36 @@ details = []
 try:
     answer = json.loads(answer_path.read_text())
     expected = json.loads(expected_path.read_text())
+    raw_reward = 0.0
+    critical_failed = []
     for check in expected["checks"]:
         total += 1
         value = answer
         try:
             for part in check["path"].split("."):
                 value = value[part]
-            ok = value == check["expected"]
+            if check["kind"] == "choice_credit":
+                credit = float(check["credits"].get(value, 0.0))
+                ok = credit == 1.0
+            elif check["kind"] == "set_f1":
+                actual = set(value) if isinstance(value, list) else set()
+                target = set(check["expected"])
+                overlap = len(actual & target)
+                credit = 2.0 * overlap / (len(actual) + len(target)) if actual else 0.0
+                ok = actual == target
+            else:
+                ok = value == check["expected"]
+                credit = float(ok)
         except Exception:
-            ok = False
+            ok, credit = False, 0.0
         passed += int(ok)
-        details.append({"id": check["id"], "passed": ok})
-    reward = sum(check["weight"] for check, detail in zip(expected["checks"], details) if detail["passed"]) / 100.0
+        earned = float(check["weight"]) * credit
+        raw_reward += earned
+        if check.get("critical", False) and credit < float(check.get("critical_credit_threshold", 1.0)):
+            critical_failed.append(check["id"])
+        details.append({"id": check["id"], "passed": ok, "credit_fraction": credit, "earned": earned})
+    score = min(raw_reward, float(expected.get("critical_failure_cap", 49.0))) if critical_failed else raw_reward
+    reward = score / 100.0
 except Exception as exc:
     reward, details = 0.0, [{"error": str(exc)}]
 reward_path.write_text(json.dumps({"reward": reward, "tests_total": total, "tests_passed": passed, "details": details}) + "\n")
@@ -196,7 +512,9 @@ reward_path.write_text(json.dumps({"reward": reward, "tests_total": total, "test
 
 def make_package(task_id: str, title: str, suite: str, level: str, variant: str, role: str,
                  case: dict, answers: dict, mode: str = "direct_reasoning", paired_with: str | None = None,
-                 extra_starter: dict[str, str] | None = None, extra_solution: dict[str, str] | None = None) -> dict:
+                 extra_starter: dict[str, str] | None = None, extra_solution: dict[str, str] | None = None,
+                 choice_credits: dict[str, dict[str, float]] | None = None,
+                 set_f1_questions: set[str] | None = None) -> dict:
     root = TASKS / task_id
     starter = root / "environment" / "starter"
     tests = root / "tests"
@@ -214,7 +532,7 @@ This is a **{mode}** treatment. {('Use the task-local tool and preserve its ledg
 Hard requirements:
 
 - Preserve `task_id` exactly as `{task_id}`.
-- Select option IDs, not option prose.
+- Select option IDs, not option prose; return a JSON list for `multi_select` questions.
 - Finish when the required artifact exists or explicitly report inability through the runner; do not invent evidence.
 """
     write(root / "instruction.md", instruction)
@@ -229,14 +547,16 @@ Hard requirements:
         "answer_template_file": "answer_template.json", "eligible_modes": [mode],
         "budget": {"timeout_seconds": 900 if mode != "direct_reasoning" else 300,
                    "max_tool_calls": 30 if mode != "direct_reasoning" else 0},
-        "benchmark_version": "0.6.0", "evaluation_role": role,
+        "benchmark_version": BENCHMARK_VERSION, "evaluation_role": role,
+        "scoring_dimensions": [question.get("dimension", question["id"]) for question in case["questions"]],
     }
     if paired_with:
         contract["paired_with"] = paired_with
     dump(starter / "task_contract.json", contract)
     dump(starter / "case.json", case)
     template = {"schema_version": "2.0", "task_id": task_id,
-                "answers": {q["id"]: "OPTION_ID" for q in case["questions"]},
+                "answers": {q["id"]: ([] if q["kind"] == "multi_select" else "OPTION_ID")
+                            for q in case["questions"]},
                 "claim_boundary": "One concise statement of what the evidence does and does not establish.",
                 "confidence": 0.0}
     dump(starter / "answer_template.json", template)
@@ -245,10 +565,30 @@ Hard requirements:
         contract["input_files"].append(name)
     dump(starter / "task_contract.json", contract)
     checks = []
-    weights = [30, 30, 25, 15] if len(answers) == 4 else [100 / len(answers)] * len(answers)
+    question_dimensions = {question["id"]: question.get("dimension", question["id"])
+                           for question in case["questions"]}
+    if len(answers) == 6 and "q6" in answers:
+        weights = [16, 16, 12, 12, 24, 20]
+    elif len(answers) == 5 and "q5" in answers:
+        weights = [20, 20, 15, 15, 30]
+    elif len(answers) == 4:
+        weights = [30, 30, 25, 15]
+    else:
+        weights = [100 / len(answers)] * len(answers)
     for index, (qid, answer) in enumerate(answers.items()):
-        checks.append({"id": qid, "path": f"answers.{qid}", "kind": "exact", "expected": answer,
-                       "weight": weights[index], "critical": index < 2})
+        check = {"id": qid, "path": f"answers.{qid}", "kind": "exact", "expected": answer,
+                 "weight": weights[index], "critical": index < 2,
+                 "dimension": question_dimensions[qid]}
+        if choice_credits and qid in choice_credits:
+            check.update({"kind": "choice_credit", "credits": choice_credits[qid]})
+            if index < 2:
+                # Preserve a hard safety gate only for a fully contradicted
+                # physical conclusion.  Partially correct reasoning keeps its
+                # continuous score instead of collapsing into the 49-point bin.
+                check["critical_credit_threshold"] = 0.01
+        if set_f1_questions and qid in set_f1_questions:
+            check.update({"kind": "set_f1"})
+        checks.append(check)
     oracle = {"schema_version": "1.0", "task_id": task_id, "family_id": contract["family_id"],
               "checks": checks, "critical_failure_cap": 49, "pass_threshold": 70}
     dump(ORACLES / f"{task_id}.oracle.json", oracle)
@@ -270,24 +610,38 @@ Hard requirements:
 def build_reasoning() -> list[dict]:
     contracts = []
     for suite, rows in SUITES.items():
-        columns = list(zip(*[row[4:8] for row in rows]))
-        pools = [list(column) for column in columns]
         for index, row in enumerate(rows):
             slug, title, scenario, evidence, primary, mechanism, action, boundary = row
             task_id = f"v06-{suite.replace('_', '-')}-{index + 1:02d}-{slug}"
             questions, answers = [], {}
             prompts = ["Which conclusion is best supported?", "Which mechanism best explains the evidence?",
                        "What is the best next engineering action?", "Which claim boundary is correct?"]
-            for qidx, (prompt, correct, pool) in enumerate(zip(prompts, row[4:8], pools), 1):
-                question, answer = choice_question(task_id, f"q{qidx}", prompt, correct, pool)
+            all_credits = {}
+            for qidx, (prompt, correct) in enumerate(zip(prompts, row[4:8]), 1):
+                question, answer, dimension_credits = calibrated_reasoning_question(
+                    task_id, f"q{qidx}", prompt, correct)
+                question["dimension"] = ("conclusion", "mechanism", "next_action", "claim_boundary")[qidx - 1]
                 questions.append(question); answers[f"q{qidx}"] = answer
+                all_credits[f"q{qidx}"] = dimension_credits
+            challenge_prompt, alternatives = CHALLENGES[(suite, slug)]
+            question, answer, credits = credited_choice_question(task_id, "q5", challenge_prompt, alternatives)
+            question["dimension"] = "quantitative_or_counterfactual"
+            questions.append(question); answers["q5"] = answer
+            all_credits["q5"] = credits
+            pair = EVIDENCE_PAIRS[(suite, slug)]
+            question = {"id": "q6", "kind": "multi_select", "dimension": "evidence_attribution",
+                        "select_count": 2,
+                        "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+                        "options": [{"id": f"E{i+1}", "text": item} for i, item in enumerate(evidence)]}
+            questions.append(question); answers["q6"] = [f"E{index}" for index in pair]
             role = "atomic" if index < 3 else ("coupled" if index < 5 else "existing_architecture_optimization")
             level = "L2" if index < 2 else ("L3" if index == 2 else ("L4" if index < 5 else "L5"))
             case = {"schema_version": "2.0", "task_id": task_id, "scenario": scenario,
                     "evidence": [{"id": f"E{i+1}", "observation": item} for i, item in enumerate(evidence)],
                     "questions": questions, "provenance": {"kind": "expert-authored",
                     "pdk": "SKY130/ngspice" if suite == "sizing" else "not-required"}}
-            contracts.append(make_package(task_id, title, suite, level, "canonical", role, case, answers))
+            contracts.append(make_package(task_id, title, suite, level, "canonical", role, case, answers,
+                                          choice_credits=all_credits, set_f1_questions={"q6"}))
 
         # One metamorphic companion per suite: rename internal nodes, reverse evidence order,
         # and permute answer choices while keeping the physical conclusion invariant.
@@ -300,16 +654,34 @@ def build_reasoning() -> list[dict]:
         questions, answers = [], {}
         prompts = ["Which conclusion is best supported after the representation change?", "Which mechanism is invariant?",
                    "What is the best next engineering action?", "Which claim boundary remains valid?"]
-        for qidx, (prompt, correct, pool) in enumerate(zip(prompts, row[4:8], pools), 1):
-            question, answer = choice_question(task_id, f"q{qidx}", prompt, correct, pool)
+        all_credits = {}
+        for qidx, (prompt, correct) in enumerate(zip(prompts, row[4:8]), 1):
+            question, answer, dimension_credits = calibrated_reasoning_question(
+                task_id, f"q{qidx}", prompt, correct)
+            question["dimension"] = ("conclusion", "mechanism", "next_action", "claim_boundary")[qidx - 1]
             questions.append(question); answers[f"q{qidx}"] = answer
+            all_credits[f"q{qidx}"] = dimension_credits
+        challenge_prompt, alternatives = CHALLENGES[(suite, slug)]
+        question, answer, credits = credited_choice_question(task_id, "q5", challenge_prompt, alternatives)
+        question["dimension"] = "quantitative_or_counterfactual"
+        questions.append(question); answers["q5"] = answer
+        all_credits["q5"] = credits
+        canonical_pair = EVIDENCE_PAIRS[(suite, slug)]
+        reversed_evidence = list(reversed(evidence))
+        remapped_pair = [len(evidence) - index + 1 for index in canonical_pair]
+        question = {"id": "q6", "kind": "multi_select", "dimension": "evidence_attribution",
+                    "select_count": 2,
+                    "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+                    "options": [{"id": f"E{i+1}", "text": item} for i, item in enumerate(reversed_evidence)]}
+        questions.append(question); answers["q6"] = [f"E{index}" for index in remapped_pair]
         case = {"schema_version": "2.0", "task_id": task_id, "metamorphic_parent": base_id,
                 "transformation": ["bijective internal-node aliasing", "evidence-row reversal", "choice permutation"],
                 "scenario": scenario,
-                "evidence": [{"id": f"E{i+1}", "observation": item} for i, item in enumerate(reversed(evidence))],
+                "evidence": [{"id": f"E{i+1}", "observation": item} for i, item in enumerate(reversed_evidence)],
                 "questions": questions, "provenance": {"kind": "metamorphic-companion"}}
         contracts.append(make_package(task_id, title + " — alias-invariance companion", suite, "L3",
-                                      "metamorphic", "companion", case, answers, paired_with=base_id))
+                                      "metamorphic", "companion", case, answers, paired_with=base_id,
+                                      choice_credits=all_credits, set_f1_questions={"q6"}))
     return contracts
 
 
@@ -619,7 +991,7 @@ def main() -> None:
             "package_sha256": package_hash(root), "evaluation_role": contract["evaluation_role"],
         })
     write(OUT / "registry.jsonl", "".join(json.dumps(row, sort_keys=True) + "\n" for row in rows))
-    summary = {"benchmark_version": "0.6.0", "task_count": len(rows),
+    summary = {"benchmark_version": BENCHMARK_VERSION, "task_count": len(rows),
                "pure_core": 48, "pure_companions": 8, "tool_sizing": 6, "eda_primary": 6, "eda_companions": 1,
                "rollouts_per_model": 3, "task_ids_sha256": hashlib.sha256("\n".join(r["task_id"] for r in rows).encode()).hexdigest()}
     dump(OUT / "manifest.json", summary)

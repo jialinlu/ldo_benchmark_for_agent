@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose candidate C"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Choose 8 pF"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Choose 15 uA EA and 15 uA driver"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
-          "text": "Choose 249 kohm over 499 kohm"
+          "text": "Choose candidate C"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It is the only characterized allocation meeting both gain and slew"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Verify bias/leakage error using the actual feedback input current"
+          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
         },
         {
           "id": "C",
-          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Carry that split into PVT and no-load IQ verification"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Sizing the pass device in isolation would select an unstable candidate"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+          "text": "Sizing the pass device in isolation would select an unstable candidate"
         },
         {
           "id": "C",
-          "text": "The allocation is conditional on the fixed-current assumptions"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "This is a characterized local optimum, not proof of a global optimum"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "B passes dropout but misses PM by 20 deg; C has 5 mV dropout and 8 deg PM margin"
+        },
+        {
+          "id": "B",
+          "text": "B misses dropout and C only passes dropout"
+        },
+        {
+          "id": "C",
+          "text": "Both candidates satisfy both hard constraints"
+        },
+        {
+          "id": "D",
+          "text": "B and C both pass dropout, but only C passes PM"
+        }
+      ],
+      "prompt": "Which constraint margins distinguish candidates B and C?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "A Wpass=100 um, Rdrv=8k: dropout=128 mV, PM=46 deg"
+        },
+        {
+          "id": "E2",
+          "text": "B Wpass=140 um, Rdrv=8k: dropout=94 mV, PM=35 deg"
+        },
+        {
+          "id": "E3",
+          "text": "C Wpass=140 um, Rdrv=3k: dropout=95 mV, PM=63 deg"
+        },
+        {
+          "id": "E4",
+          "text": "targets dropout<=100 mV, PM>=55 deg"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Three SKY130/ngspice candidates are compared at identical load and COUT.",

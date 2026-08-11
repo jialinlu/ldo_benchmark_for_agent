@@ -1,6 +1,6 @@
 {
   "answer_template_file": "answer_template.json",
-  "benchmark_version": "0.6.0",
+  "benchmark_version": "0.6.1",
   "budget": {
     "max_tool_calls": 0,
     "timeout_seconds": 300
@@ -24,6 +24,14 @@
   "paired_with": "v06-trend-03-load-gm",
   "prompt_file": "instruction.md",
   "schema_version": "2.0",
+  "scoring_dimensions": [
+    "conclusion",
+    "mechanism",
+    "next_action",
+    "claim_boundary",
+    "quantitative_or_counterfactual",
+    "evidence_attribution"
+  ],
   "split": "dev",
   "suite": "trend",
   "task_id": "v06-trend-m01-alias-invariance",

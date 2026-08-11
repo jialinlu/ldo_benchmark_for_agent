@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The local capacitor/package network controls the initial droop"
+          "text": "Use separate PDN and feed-forward/ripple remedies rather than only raising bias"
         },
         {
           "id": "B",
-          "text": "The package-output LC resonance is the leading cause"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "The combined output contribution is about 31.8 uV rms"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Use separate PDN and feed-forward/ripple remedies rather than only raising bias"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Divide the input ripple by the linear PSRR ratio"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
-          "text": "The active reference commands regulation before adequate pass/headroom exists"
+          "text": "The two failures occupy different frequency ranges and have different measured paths"
         },
         {
           "id": "D",
-          "text": "The two failures occupy different frequency ranges and have different measured paths"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Reserve the remaining noise budget for reference and device noise"
-        },
-        {
-          "id": "B",
           "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
         },
         {
+          "id": "B",
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
+        },
+        {
           "id": "C",
-          "text": "Add remaining device and resistor noise before comparing to system limit"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Retuning low-frequency compensation is not the first supported action"
-        },
-        {
-          "id": "C",
           "text": "A single higher-bandwidth loop is neither sufficient nor IQ-neutral"
         },
         {
+          "id": "C",
+          "text": "No claim boundary is needed after the preferred option is selected"
+        },
+        {
           "id": "D",
-          "text": "PSRR at 10 kHz does not bound ripple at other harmonics"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 31.8 mV"
+        },
+        {
+          "id": "B",
+          "text": "About 22 mV"
+        },
+        {
+          "id": "C",
+          "text": "About 72 mV"
+        },
+        {
+          "id": "D",
+          "text": "About 7.9 mV"
+        }
+      ],
+      "prompt": "What input ripple corresponds to a 4 mV contribution through 18 dB PSRR at 100 kHz?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "UGF=700 kHz"
+        },
+        {
+          "id": "E2",
+          "text": "PSRR@100k=18 dB"
+        },
+        {
+          "id": "E3",
+          "text": "edge droop dominated by package impedance"
+        },
+        {
+          "id": "E4",
+          "text": "converter ripple contribution=4 mV"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The LDO passes standalone specs, but the SoC fails due to 5 MHz load-edge droop and 100 kHz converter ripple. IQ margin is small.",

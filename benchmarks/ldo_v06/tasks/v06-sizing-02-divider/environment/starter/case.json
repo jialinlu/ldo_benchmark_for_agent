@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose candidate C"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "Choose 120 um"
+          "text": "Choose 249 kohm over 499 kohm"
         },
         {
           "id": "C",
-          "text": "Choose 8 pF"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Choose 249 kohm over 499 kohm"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It is the only characterized allocation meeting both gain and slew"
-        },
-        {
-          "id": "B",
           "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
         },
         {
+          "id": "B",
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
+        },
+        {
           "id": "C",
-          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Carry that split into PVT and no-load IQ verification"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Center a finer PVT sweep around P2 rather than changing architecture"
+          "text": "Verify bias/leakage error using the actual feedback input current"
         },
         {
           "id": "C",
-          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Verify bias/leakage error using the actual feedback input current"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The allocation is conditional on the fixed-current assumptions"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "Ratio accuracy alone is insufficient when divider current is constrained"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
-          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+          "text": "Ratio accuracy alone is insufficient when divider current is constrained"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "1.1992 V and 1.60 uA"
+        },
+        {
+          "id": "B",
+          "text": "0.800 V and 1.60 uA"
+        },
+        {
+          "id": "C",
+          "text": "1.1992 V and 2.40 uA"
+        },
+        {
+          "id": "D",
+          "text": "1.2000 V and 1.60 uA"
+        }
+      ],
+      "prompt": "Approximately what VOUT and divider current result from 249 kohm over 499 kohm at VREF=0.8 V?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "VOUT/VREF=1+Rtop/Rbot"
+        },
+        {
+          "id": "E2",
+          "text": "ratio Rtop/Rbot=0.5"
+        },
+        {
+          "id": "E3",
+          "text": "minimum total resistance=400 kohm"
+        },
+        {
+          "id": "E4",
+          "text": "candidate pairs: 200k/402k, 249k/499k, 100k/200k"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Choose equal-order E96 values for VOUT=1.2 V from VREF=0.8 V while keeping divider current at or below 3 uA.",

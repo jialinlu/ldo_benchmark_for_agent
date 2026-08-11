@@ -1,9 +1,14 @@
 {
   "answers": {
-    "q1": "C",
-    "q2": "B",
+    "q1": "D",
+    "q2": "A",
     "q3": "D",
-    "q4": "A"
+    "q4": "A",
+    "q5": "B",
+    "q6": [
+      "E1",
+      "E4"
+    ]
   },
   "claim_boundary": "Conclusion is limited to the supplied evidence and named operating conditions.",
   "confidence": 0.95,

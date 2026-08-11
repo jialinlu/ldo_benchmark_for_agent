@@ -23,66 +23,69 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "The package-output LC resonance is the leading cause"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "The combined output contribution is about 31.8 uV rms"
+          "text": "The package-output LC resonance is the leading cause"
         },
         {
           "id": "D",
-          "text": "The local capacitor/package network controls the initial droop"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The two failures occupy different frequency ranges and have different measured paths"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
-          "text": "The active reference commands regulation before adequate pass/headroom exists"
+          "text": "The new mode appears only with package inductance and lies far above loop crossover"
         },
         {
           "id": "D",
-          "text": "Divide the input ripple by the linear PSRR ratio"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Reserve the remaining noise budget for reference and device noise"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Gate enable with VIN-good or add anti-windup/soft-start"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
@@ -92,20 +95,21 @@
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "PSRR at 10 kHz does not bound ripple at other harmonics"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Linear addition would overestimate uncorrelated noise"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "A single higher-bandwidth loop is neither sufficient nor IQ-neutral"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
@@ -113,6 +117,55 @@
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 120 kHz"
+        },
+        {
+          "id": "B",
+          "text": "About 12 MHz without relating it to the observed mode"
+        },
+        {
+          "id": "C",
+          "text": "About 0.9 MHz"
+        },
+        {
+          "id": "D",
+          "text": "About 12 MHz, consistent with the observed new mode"
+        }
+      ],
+      "prompt": "What resonance estimate follows from 2 nH and 88 nF?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "loop UGF=0.9 MHz"
+        },
+        {
+          "id": "E2",
+          "text": "bond wire=2 nH"
+        },
+        {
+          "id": "E3",
+          "text": "COUT effective=88 nF"
+        },
+        {
+          "id": "E4",
+          "text": "ring frequency near LC estimate"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Post-layout board simulation adds bond-wire inductance and produces 12 MHz ringing absent in the on-chip extracted simulation.",

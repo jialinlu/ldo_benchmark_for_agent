@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A scaled replica bias is justified by the measured load-dependent error"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "C",
-          "text": "Choose a PMOS pass device"
+          "text": "Use a capless architecture only with explicit multi-loop/load-range compensation"
         },
         {
           "id": "D",
-          "text": "Add a frequency-shaped feed-forward cancellation path"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The bounded local change fits IQ and schedule while the replacement introduces unverified blocks"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "An NMOS follower lacks gate overdrive without a boosted rail"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
-          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+          "text": "The moving output pole and wide load range make a conventional fixed dominant-output-pole assumption invalid"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Use Miller compensation and verify the pass-gate interaction"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "An NMOS could become viable if a charge pump were allowed"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Sampled PVT evidence is promising but not final closure"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "Broadband cancellation is sensitive to PVT and must not be assumed"
+          "text": "Removing COUT is an architectural constraint, not merely a capacitor value change"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "1,000 to 1"
+        },
+        {
+          "id": "B",
+          "text": "20 to 1"
+        },
+        {
+          "id": "C",
+          "text": "Four decades, without quantifying the endpoint ratio"
+        },
+        {
+          "id": "D",
+          "text": "20,000 to 1"
+        }
+      ],
+      "prompt": "What load-range ratio drives the need for explicit moving-pole coverage?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "output pole moves four decades"
+        },
+        {
+          "id": "E2",
+          "text": "IQ target=50 uA"
+        },
+        {
+          "id": "E3",
+          "text": "fast load edges"
+        },
+        {
+          "id": "E4",
+          "text": "area permits 30 pF internal compensation"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The product forbids an external capacitor, permits 100 pF on-chip load, and spans 1 uA to 20 mA load.",

@@ -31,12 +31,14 @@ ALLOWED_MODES = {
     "eda_assisted",
 }
 ALLOWED_CHECKS = {
+    "choice_credit",
     "exact",
     "set_equals",
     "set_contains",
     "set_excludes",
     "numeric_close",
     "nonempty",
+    "set_f1",
     "boolean",
 }
 ALLOWED_PROBE_REGIMES = {"op", "dc", "ac", "stb", "noise", "tran", "startup"}
@@ -225,6 +227,28 @@ def validate_answer(data: Dict[str, Any], task: Optional[Task] = None) -> Dict[s
             unexpected = sorted(set(data["answers"]).difference(question_ids))
             if missing or unexpected:
                 raise ContractError("answer question mismatch; missing=%s unexpected=%s" % (missing, unexpected))
+            for question in case.get("questions", []):
+                qid = question["id"]
+                actual = data["answers"][qid]
+                kind = question.get("kind")
+                option_ids = {
+                    option["id"] for option in question.get("options", [])
+                    if isinstance(option, dict) and isinstance(option.get("id"), str)
+                }
+                if kind in {"single_choice", "ordered_choice"}:
+                    if not isinstance(actual, str) or actual not in option_ids:
+                        raise ContractError("answer.answers.%s must be one declared option ID" % qid)
+                elif kind == "multi_select":
+                    selected = _string_list(actual, "answer.answers.%s" % qid, allow_empty=False)
+                    count = question.get("select_count")
+                    if not isinstance(count, int) or count <= 0:
+                        raise ContractError("task question %s has invalid select_count" % qid)
+                    invalid = sorted(set(selected).difference(option_ids))
+                    if invalid:
+                        raise ContractError("answer.answers.%s contains undeclared options: %s" % (qid, invalid))
+                elif kind == "numeric":
+                    if not isinstance(actual, (int, float)) or isinstance(actual, bool):
+                        raise ContractError("answer.answers.%s must be numeric" % qid)
         return data
     _required(
         data,
@@ -339,13 +363,37 @@ def validate_oracle(data: Dict[str, Any]) -> Dict[str, Any]:
         if check["id"] in ids:
             raise ContractError("duplicate oracle check id: %s" % check["id"])
         ids.add(check["id"])
+        if "dimension" in check and (not isinstance(check["dimension"], str) or not check["dimension"].strip()):
+            raise ContractError("oracle check dimension must be a non-empty string")
         if check["kind"] not in ALLOWED_CHECKS:
             raise ContractError("unsupported check kind: %s" % check["kind"])
         if not isinstance(check["weight"], (int, float)) or check["weight"] <= 0:
             raise ContractError("check weight must be positive")
         if check["kind"] not in {"nonempty"} and "expected" not in check:
             raise ContractError("check %s requires expected" % check["id"])
-        if check["kind"] in {"set_contains", "set_excludes"}:
+        if check["kind"] == "choice_credit":
+            credits = check.get("credits")
+            if not isinstance(credits, dict) or not credits:
+                raise ContractError("choice_credit requires a non-empty credits object")
+            if any(not isinstance(option, str) or not option for option in credits):
+                raise ContractError("choice_credit option IDs must be non-empty strings")
+            if any(
+                not isinstance(credit, (int, float))
+                or isinstance(credit, bool)
+                or not 0 <= float(credit) <= 1
+                for credit in credits.values()
+            ):
+                raise ContractError("choice_credit values must be numeric fractions in [0, 1]")
+            if check["expected"] not in credits or float(credits[check["expected"]]) != 1.0:
+                raise ContractError("choice_credit expected option must receive full credit")
+            threshold = check.get("critical_credit_threshold", 1.0)
+            if (
+                not isinstance(threshold, (int, float))
+                or isinstance(threshold, bool)
+                or not 0 <= float(threshold) <= 1
+            ):
+                raise ContractError("critical_credit_threshold must be in [0, 1]")
+        if check["kind"] in {"set_contains", "set_excludes", "set_f1"}:
             _string_list(check["expected"], "oracle check %s expected" % check["id"])
         if check["kind"] == "numeric_close":
             if "absolute_tolerance" not in check and "relative_tolerance" not in check:

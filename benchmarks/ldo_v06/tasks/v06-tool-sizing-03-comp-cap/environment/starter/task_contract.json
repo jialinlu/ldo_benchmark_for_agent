@@ -1,6 +1,6 @@
 {
   "answer_template_file": "answer_template.json",
-  "benchmark_version": "0.6.0",
+  "benchmark_version": "0.6.1",
   "budget": {
     "max_tool_calls": 30,
     "timeout_seconds": 900
@@ -27,6 +27,9 @@
   "paired_with": "v06-sizing-03-comp-cap",
   "prompt_file": "instruction.md",
   "schema_version": "2.0",
+  "scoring_dimensions": [
+    "q1"
+  ],
   "split": "dev",
   "suite": "sizing",
   "task_id": "v06-tool-sizing-03-comp-cap",

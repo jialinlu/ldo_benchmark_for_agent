@@ -1,6 +1,6 @@
-# v0.6 task package format
+# v0.6.1 task package format
 
-v0.6 只接受与 Windows Desktop `task_examples` demo 一致的顶层布局：
+v0.6.1 只接受与 Windows Desktop `task_examples` demo 一致的顶层布局：
 
 ```text
 <task-id>/
@@ -32,7 +32,7 @@ v0.6 只接受与 Windows Desktop `task_examples` demo 一致的顶层布局：
 {
   "schema_version": "2.0",
   "task_id": "v06-...",
-  "answers": {"q1": "A", "q2": "C"},
+  "answers": {"q1": "A", "q2": "C", "q3": "B", "q4": "D", "q5": "A", "q6": ["E1", "E4"]},
   "claim_boundary": "limited to supplied evidence",
   "confidence": 0.8
 }

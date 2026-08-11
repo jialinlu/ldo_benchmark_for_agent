@@ -23,54 +23,57 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The pass path lacks available conductance/headroom"
-        },
-        {
-          "id": "B",
           "text": "There are two independent root causes requiring separate local fixes"
         },
         {
+          "id": "B",
+          "text": "This result alone establishes complete PVT and transient closure"
+        },
+        {
           "id": "C",
-          "text": "Insufficient closed-loop phase margin is the primary cause"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "The feedback divider dominates the excess"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
+          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
         },
         {
           "id": "C",
-          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -78,41 +81,91 @@
         },
         {
           "id": "B",
-          "text": "Localize the phase loss by probing pass-gate and output poles"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Add or strengthen a corner-robust startup path and test initial-condition variants"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "The transient alone does not identify which internal pole caused the phase loss"
+          "text": "A larger pass device is unsupported and could worsen the stability failure"
         },
         {
           "id": "C",
-          "text": "Blindly reducing EA bias cannot recover the full current excess"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
-          "text": "A larger pass device is unsupported and could worsen the stability failure"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only a dropout sweep because pass width has margin"
+        },
+        {
+          "id": "B",
+          "text": "Separate startup/initial-condition coverage at SS-cold and loop/transient coverage at FF-light, followed by the full frozen regression"
+        },
+        {
+          "id": "C",
+          "text": "No regression because each mechanism was already identified"
+        },
+        {
+          "id": "D",
+          "text": "One combined nominal startup transient after both changes"
+        }
+      ],
+      "prompt": "What is the minimum regression structure needed after the two local fixes?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "startup pulse rescues SS/cold"
+        },
+        {
+          "id": "E2",
+          "text": "FF/light PM=22 deg"
+        },
+        {
+          "id": "E3",
+          "text": "startup device off in regulation"
+        },
+        {
+          "id": "E4",
+          "text": "pass size has 30 percent dropout margin"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An existing LDO fails startup at SS/cold and rings at FF/light load; dropout and IQ pass.",

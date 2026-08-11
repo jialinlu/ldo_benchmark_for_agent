@@ -23,20 +23,21 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose 120 um"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Choose candidate C"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Choose 8 pF"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "D",
@@ -46,73 +47,125 @@
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
-        },
-        {
-          "id": "B",
-          "text": "The wider pass FET fixes dropout only when the stronger driver also restores the gate-pole margin"
-        },
-        {
-          "id": "C",
           "text": "P2 satisfies every hard constraint and avoids P3's unnecessary IQ violation"
         },
         {
+          "id": "B",
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
+        },
+        {
+          "id": "C",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "D",
-          "text": "It is the only characterized allocation meeting both gain and slew"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
-        },
-        {
-          "id": "B",
-          "text": "Verify bias/leakage error using the actual feedback input current"
-        },
-        {
-          "id": "C",
           "text": "Center a finer PVT sweep around P2 rather than changing architecture"
         },
         {
+          "id": "B",
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
+        },
+        {
+          "id": "C",
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
+        },
+        {
           "id": "D",
-          "text": "Verify load transient and all PVT corners at 8 pF"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Sizing the pass device in isolation would select an unstable candidate"
-        },
-        {
-          "id": "B",
-          "text": "A larger capacitor is not automatically better because bandwidth and slew remain constrained"
-        },
-        {
-          "id": "C",
           "text": "This is a characterized local optimum, not proof of a global optimum"
         },
         {
+          "id": "B",
+          "text": "No claim boundary is needed after the preferred option is selected"
+        },
+        {
+          "id": "C",
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
+        },
+        {
           "id": "D",
-          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "P2 has 8 mV, 4 deg, and 14 uA margin; P3 exceeds IQ by 12 uA"
+        },
+        {
+          "id": "B",
+          "text": "P2 passes all gates and P3 fails IQ"
+        },
+        {
+          "id": "C",
+          "text": "P2 has 18 mV dropout margin and P3 fails PM"
+        },
+        {
+          "id": "D",
+          "text": "P3 is preferred because it has the lowest dropout"
+        }
+      ],
+      "prompt": "What hard-constraint margins characterize P2, and what blocks P3?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "P1 120/40/5k/5p: dropout 108 mV, PM 52 deg, IQ 72 uA"
+        },
+        {
+          "id": "E2",
+          "text": "P2 160/40/3k/8p: dropout 82 mV, PM 64 deg, IQ 86 uA"
+        },
+        {
+          "id": "E3",
+          "text": "P3 200/80/3k/8p: dropout 70 mV, PM 61 deg, IQ 112 uA"
+        },
+        {
+          "id": "E4",
+          "text": "limits dropout<=90 mV, PM>=60 deg, IQ<=100 uA"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A frozen PMOS-LDO architecture has a four-knob SKY130 sweep over pass width, input-pair width, driver resistance, and Ccomp.",

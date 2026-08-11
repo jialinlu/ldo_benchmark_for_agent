@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The output pole rises substantially and loop gain can also rise"
-        },
-        {
-          "id": "B",
           "text": "Competing threshold and mobility trends change which mechanism dominates"
         },
         {
+          "id": "B",
+          "text": "This result alone establishes complete PVT and transient closure"
+        },
+        {
           "id": "C",
-          "text": "Lowering driver resistance is the best first coupled intervention"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Dropout tends to improve while the gate pole tends to move lower"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "More width lowers on-resistance but raises gate capacitance"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "The zero frequency is inversely proportional to ESR times capacitance"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Plot pass overdrive and gm at all three temperatures"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Overlay loop gain and output impedance for both ESR values"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Measure gain, UGF, PM, slew, and IQ after the change"
+          "text": "Plot pass overdrive and gm at all three temperatures"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Bias-current scaling is not a free gain improvement"
-        },
-        {
-          "id": "B",
           "text": "A single linear temperature coefficient is not justified"
         },
         {
+          "id": "B",
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
+        },
+        {
           "id": "C",
-          "text": "A lower zero helps only if its placement is useful relative to crossover"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "The direction of phase margin still depends on other pole locations"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "At 125 C the EA output retains ample swing and pass overdrive while dropout still worsens"
+        },
+        {
+          "id": "B",
+          "text": "Threshold magnitude falls from -40 C to 27 C"
+        },
+        {
+          "id": "C",
+          "text": "Mobility falls at 125 C"
+        },
+        {
+          "id": "D",
+          "text": "Dropout is measured at the same load"
+        }
+      ],
+      "prompt": "Which new observation would most weaken the claimed hot rail-limiting mechanism?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "mobility decreases with temperature"
+        },
+        {
+          "id": "E2",
+          "text": "threshold magnitude also decreases"
+        },
+        {
+          "id": "E3",
+          "text": "gate drive is not rail-limited at -40 C"
+        },
+        {
+          "id": "E4",
+          "text": "it becomes rail-limited at 125 C"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Dropout improves from -40 C to 27 C but worsens at 125 C under a fixed 5 mA load.",

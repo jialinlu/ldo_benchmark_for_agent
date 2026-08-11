@@ -21,9 +21,16 @@
         "properties": {
           "id": {"type": "string", "minLength": 1},
           "path": {"type": "string"},
-          "kind": {"enum": ["exact", "set_equals", "set_contains", "set_excludes", "numeric_close", "nonempty", "boolean"]},
+          "kind": {"enum": ["choice_credit", "exact", "set_equals", "set_contains", "set_excludes", "set_f1", "numeric_close", "nonempty", "boolean"]},
           "weight": {"type": "number", "exclusiveMinimum": 0},
           "critical": {"type": "boolean"},
+          "dimension": {"type": "string", "minLength": 1},
+          "credits": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "critical_credit_threshold": {"type": "number", "minimum": 0, "maximum": 1},
           "absolute_tolerance": {"type": "number", "minimum": 0},
           "relative_tolerance": {"type": "number", "minimum": 0}
         }

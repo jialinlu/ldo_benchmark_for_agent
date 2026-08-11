@@ -23,31 +23,33 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The local capacitor/package network controls the initial droop"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "Use separate PDN and feed-forward/ripple remedies rather than only raising bias"
+          "text": "The local capacitor/package network controls the initial droop"
         },
         {
           "id": "C",
-          "text": "The residual supply-ripple contribution is about 0.63 mV rms"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "The package-output LC resonance is the leading cause"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -55,64 +57,115 @@
         },
         {
           "id": "B",
-          "text": "Divide the input ripple by the linear PSRR ratio"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "The active reference commands regulation before adequate pass/headroom exists"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
-          "text": "The two failures occupy different frequency ranges and have different measured paths"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Gate enable with VIN-good or add anti-windup/soft-start"
+          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
         },
         {
           "id": "B",
-          "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "A single higher-bandwidth loop is neither sufficient nor IQ-neutral"
+          "text": "DC load regulation does not predict the edge droop"
         },
         {
           "id": "B",
-          "text": "Linear addition would overestimate uncorrelated noise"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "PSRR at 10 kHz does not bound ripple at other harmonics"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "DC load regulation does not predict the edge droop"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is much shorter than the loop timescale"
+        },
+        {
+          "id": "B",
+          "text": "It is about 8.3x shorter"
+        },
+        {
+          "id": "C",
+          "text": "It is about 83x shorter, so the initial response is outside loop authority"
+        },
+        {
+          "id": "D",
+          "text": "It is slower than the loop"
+        }
+      ],
+      "prompt": "How does a 20 ns edge compare with the reciprocal of 600 kHz UGF?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "edge spectral content far above UGF"
+        },
+        {
+          "id": "E2",
+          "text": "package inductance=1.2 nH"
+        },
+        {
+          "id": "E3",
+          "text": "local C effective at high frequency"
+        },
+        {
+          "id": "E4",
+          "text": "average load within DC limit"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A digital load draws 20 ns current edges at a 5 MHz repetition rate. The LDO UGF is 600 kHz and COUT is 1 uF.",

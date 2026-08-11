@@ -23,62 +23,65 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The residual supply-ripple contribution is about 0.63 mV rms"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "B",
-          "text": "The local capacitor/package network controls the initial droop"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "The combined output contribution is about 31.8 uV rms"
+          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
         },
         {
           "id": "D",
-          "text": "Prebias-induced integrator windup during supply ramp causes the overshoot"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The new mode appears only with package inductance and lies far above loop crossover"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "The active reference commands regulation before adequate pass/headroom exists"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "The feedback loop is too slow to respond during the edge"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
-          "text": "Divide the input ripple by the linear PSRR ratio"
+          "text": "The active reference commands regulation before adequate pass/headroom exists"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Analyze PDN impedance and high-frequency capacitor placement before raising loop bandwidth"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
-          "text": "Improve local decoupling/damping and target 100 kHz PSRR, then co-simulate"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
@@ -86,33 +89,83 @@
         },
         {
           "id": "D",
-          "text": "Damp the PDN resonance using capacitor ESR or a damping network"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Retuning low-frequency compensation is not the first supported action"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "DC load regulation does not predict the edge droop"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Nominal fixed-supply startup does not cover this sequencing case"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "Linear addition would overestimate uncorrelated noise"
+          "text": "Nominal fixed-supply startup does not cover this sequencing case"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Increase COUT and change the ramp simultaneously"
+        },
+        {
+          "id": "B",
+          "text": "Repeat only fixed-supply nominal startup"
+        },
+        {
+          "id": "C",
+          "text": "Reduce the reference amplitude during the same early-EN ramp"
+        },
+        {
+          "id": "D",
+          "text": "Hold EN low until VIN-good while preserving the final reference and load conditions"
+        }
+      ],
+      "prompt": "Which controlled intervention most strongly isolates the sequencing mechanism?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "EA saturates during low VIN"
+        },
+        {
+          "id": "E2",
+          "text": "pass gate held at maximum drive"
+        },
+        {
+          "id": "E3",
+          "text": "reference already final"
+        },
+        {
+          "id": "E4",
+          "text": "overshoot disappears when EN follows VIN-good"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "VREF is present before VIN. EN is asserted while VIN ramps slowly; VOUT briefly overshoots above its final value.",

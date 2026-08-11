@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "EvoLDO v0.6 structured answer",
+  "title": "EvoLDO v0.6.1 structured answer",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "task_id", "answers", "claim_boundary", "confidence"],

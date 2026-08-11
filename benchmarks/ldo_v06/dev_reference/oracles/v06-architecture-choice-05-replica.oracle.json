@@ -1,36 +1,93 @@
 {
   "checks": [
     {
+      "credits": {
+        "A": 0.0,
+        "B": 0.0,
+        "C": 0.4,
+        "D": 1.0
+      },
       "critical": true,
-      "expected": "B",
+      "critical_credit_threshold": 0.01,
+      "dimension": "conclusion",
+      "expected": "D",
       "id": "q1",
-      "kind": "exact",
+      "kind": "choice_credit",
       "path": "answers.q1",
-      "weight": 30
+      "weight": 16
     },
     {
+      "credits": {
+        "A": 0.0,
+        "B": 1.0,
+        "C": 0.55,
+        "D": 0.2
+      },
       "critical": true,
-      "expected": "C",
+      "critical_credit_threshold": 0.01,
+      "dimension": "mechanism",
+      "expected": "B",
       "id": "q2",
-      "kind": "exact",
+      "kind": "choice_credit",
       "path": "answers.q2",
-      "weight": 30
+      "weight": 16
     },
     {
+      "credits": {
+        "A": 0.2,
+        "B": 0.0,
+        "C": 1.0,
+        "D": 0.55
+      },
       "critical": false,
-      "expected": "D",
+      "dimension": "next_action",
+      "expected": "C",
       "id": "q3",
-      "kind": "exact",
+      "kind": "choice_credit",
       "path": "answers.q3",
-      "weight": 25
+      "weight": 12
+    },
+    {
+      "credits": {
+        "A": 0.2,
+        "B": 0.55,
+        "C": 1.0,
+        "D": 0.0
+      },
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": "C",
+      "id": "q4",
+      "kind": "choice_credit",
+      "path": "answers.q4",
+      "weight": 12
+    },
+    {
+      "credits": {
+        "A": 1.0,
+        "B": 0.0,
+        "C": 0.2,
+        "D": 0.55
+      },
+      "critical": false,
+      "dimension": "quantitative_or_counterfactual",
+      "expected": "A",
+      "id": "q5",
+      "kind": "choice_credit",
+      "path": "answers.q5",
+      "weight": 24
     },
     {
       "critical": false,
-      "expected": "D",
-      "id": "q4",
-      "kind": "exact",
-      "path": "answers.q4",
-      "weight": 15
+      "dimension": "evidence_attribution",
+      "expected": [
+        "E1",
+        "E3"
+      ],
+      "id": "q6",
+      "kind": "set_f1",
+      "path": "answers.q6",
+      "weight": 20
     }
   ],
   "critical_failure_cap": 49,

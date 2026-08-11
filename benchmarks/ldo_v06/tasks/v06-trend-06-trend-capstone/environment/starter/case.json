@@ -23,85 +23,89 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Lowering driver resistance is the best first coupled intervention"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "The output pole rises substantially and loop gain can also rise"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
-          "text": "Competing threshold and mobility trends change which mechanism dominates"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Dropout tends to improve while the gate pole tends to move lower"
+          "text": "Lowering driver resistance is the best first coupled intervention"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
-        },
-        {
-          "id": "B",
           "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
         },
         {
+          "id": "B",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "C",
-          "text": "More width lowers on-resistance but raises gate capacitance"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Check light-load and heavy-load crossover instead of extrapolating one corner"
+          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
         },
         {
           "id": "B",
-          "text": "Overlay loop gain and output impedance for both ESR values"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Plot pass overdrive and gm at all three temperatures"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Bias-current scaling is not a free gain improvement"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "A lower zero helps only if its placement is useful relative to crossover"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
@@ -109,10 +113,59 @@
         },
         {
           "id": "D",
-          "text": "The direction of phase margin still depends on other pole locations"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Its added current fits the 12 uA budget and the same candidate closes both dropout and light-load PM"
+        },
+        {
+          "id": "B",
+          "text": "It improves gate charging at the nominal corner"
+        },
+        {
+          "id": "C",
+          "text": "It uses exactly all 12 uA without a fresh IQ measurement"
+        },
+        {
+          "id": "D",
+          "text": "It may be accepted from the monotonic gate-pole argument alone"
+        }
+      ],
+      "prompt": "When is the lower-driver-resistance proposal actually admissible?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "heavy dropout miss=18 mV"
+        },
+        {
+          "id": "E2",
+          "text": "light-load PM miss=9 deg"
+        },
+        {
+          "id": "E3",
+          "text": "pass gate pole below UGF at light load"
+        },
+        {
+          "id": "E4",
+          "text": "IQ margin=12 uA"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An existing LDO narrowly fails heavy-load dropout and light-load PM. Three proposed single-knob changes are wider pass FET, more Ccomp, or lower driver resistance.",

@@ -23,58 +23,61 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Competing threshold and mobility trends change which mechanism dominates"
-        },
-        {
-          "id": "B",
           "text": "The output pole rises substantially and loop gain can also rise"
         },
         {
+          "id": "B",
+          "text": "This result alone establishes complete PVT and transient closure"
+        },
+        {
           "id": "C",
-          "text": "The ESR zero moves to a lower frequency"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Lowering driver resistance is the best first coupled intervention"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Threshold reduction initially helps overdrive, then mobility loss and gate-drive saturation dominate"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "It moves the gate pole upward and improves gate charging without directly increasing pass capacitance"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "The zero frequency is inversely proportional to ESR times capacitance"
+          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
         },
         {
           "id": "D",
-          "text": "Lower load resistance and higher pass gm both alter the output-node pole/loop gain"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Sweep width and remeasure both dropout and phase margin"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "B",
@@ -82,37 +85,87 @@
         },
         {
           "id": "C",
-          "text": "Overlay loop gain and output impedance for both ESR values"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Spend bounded bias current in the driver and remeasure both failing corners"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Bias-current scaling is not a free gain improvement"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "The direction of phase margin still depends on other pole locations"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "The two metrics need not improve together"
+          "text": "The direction of phase margin still depends on other pole locations"
         },
         {
           "id": "D",
-          "text": "A single linear temperature coefficient is not justified"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The output pole rises about 20x; full loop-gain and PM trends still need the other impedances and poles"
+        },
+        {
+          "id": "B",
+          "text": "The output pole rises about 20x and PM must improve"
+        },
+        {
+          "id": "C",
+          "text": "Every loop metric is unchanged"
+        },
+        {
+          "id": "D",
+          "text": "Loop gain rises exactly 4.1x"
+        }
+      ],
+      "prompt": "Under an Rload-dominated output pole model, what can and cannot be inferred?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "EA gain nearly fixed"
+        },
+        {
+          "id": "E2",
+          "text": "pass gm rises approximately 4.1x"
+        },
+        {
+          "id": "E3",
+          "text": "Rload falls by 20x"
+        },
+        {
+          "id": "E4",
+          "text": "COUT fixed"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. Load current rises by 20 times in a PMOS LDO whose pass device remains saturated and whose bias currents are fixed.",

@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The copied bias/output stack violates the new voltage budget"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "C",
-          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
         },
         {
           "id": "D",
-          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "The evidence isolates target-PDK gain and equilibrium changes rather than a pass-device or ratio failure"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "Capacitance value and parasitic network are process-specific even when voltage reliability passes"
+          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
         },
         {
           "id": "D",
-          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Retune EA length/cascoding within headroom and redesign startup, then regress"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Build and simulate a one-device pin/model smoke test before full migration"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+          "text": "Build and simulate a one-device pin/model smoke test before full migration"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Schematic nominal capacitance alone does not preserve compensation"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "A converged operating point is not evidence of correct model semantics"
         },
         {
           "id": "C",
-          "text": "The migrated dimensions remain model- and corner-dependent"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "A converged operating point is not evidence of correct model semantics"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A converged full LDO operating point without pin audit"
+        },
+        {
+          "id": "B",
+          "text": "A converged one-device OP with the wrapper name"
+        },
+        {
+          "id": "C",
+          "text": "Matching primitive model names only"
+        },
+        {
+          "id": "D",
+          "text": "Verified D/G/S/B mapping, explicit body behavior, wrapper use, and expected one-device OP"
+        }
+      ],
+      "prompt": "Which smoke-test result is sufficient to proceed to full-netlist migration?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "target LVS uses wrapper names"
+        },
+        {
+          "id": "E2",
+          "text": "body must not float"
+        },
+        {
+          "id": "E3",
+          "text": "primitive statistical parameters differ"
+        },
+        {
+          "id": "E4",
+          "text": "wrapper pins are D G S B"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. A source netlist uses four-terminal MOS symbols and explicit body ties; the target PDK offers wrapper subcircuits plus primitive model names.",

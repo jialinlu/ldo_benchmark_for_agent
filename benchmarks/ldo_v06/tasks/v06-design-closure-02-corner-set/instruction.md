@@ -7,5 +7,5 @@ This is a **direct_reasoning** treatment. External tools, retrieval, and cross-t
 Hard requirements:
 
 - Preserve `task_id` exactly as `v06-design-closure-02-corner-set`.
-- Select option IDs, not option prose.
+- Select option IDs, not option prose; return a JSON list for `multi_select` questions.
 - Finish when the required artifact exists or explicitly report inability through the runner; do not invent evidence.

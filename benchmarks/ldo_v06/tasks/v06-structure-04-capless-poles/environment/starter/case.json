@@ -23,12 +23,13 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
@@ -36,30 +37,31 @@
         },
         {
           "id": "C",
-          "text": "Pass-device headroom is the active limit"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "The first optimization target is separation of the pass-gate pole from UGF"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The two sign inversions are the error comparison and PMOS common-source action"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "C",
-          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
@@ -69,39 +71,41 @@
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
-        },
-        {
-          "id": "B",
-          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
-        },
-        {
-          "id": "C",
           "text": "Check loop gain at both load extremes before resizing compensation"
         },
         {
+          "id": "B",
+          "text": "Skip fresh verification because the evidence already proves closure"
+        },
+        {
+          "id": "C",
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
+        },
+        {
           "id": "D",
-          "text": "Keep the polarity and verify loop gain with the loop opened at a high-impedance point"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Successful nominal transient does not prove escape from every initial condition"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
@@ -109,10 +113,59 @@
         },
         {
           "id": "D",
-          "text": "A wider pass device can change gate pole and transient behavior"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Output 100 kHz, EA 57 kHz, buffered gate 4.4 MHz"
+        },
+        {
+          "id": "B",
+          "text": "EA 57 kHz, output 100 kHz, buffered gate 4.4 MHz"
+        },
+        {
+          "id": "C",
+          "text": "EA 57 kHz, buffered gate 100 kHz, output 4.4 MHz"
+        },
+        {
+          "id": "D",
+          "text": "All three poles are load invariant"
+        }
+      ],
+      "prompt": "Using the supplied RC values, which approximate light-load pole ordering is supported?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "EA node Rout=4 Mohm, C=0.7 pF"
+        },
+        {
+          "id": "E2",
+          "text": "pass gate C=18 pF behind 2 kohm buffer"
+        },
+        {
+          "id": "E3",
+          "text": "Cload=80 pF"
+        },
+        {
+          "id": "E4",
+          "text": "Rload spans 200 ohm to 20 kohm"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A capless LDO has a high-impedance error-amplifier node, a buffered pass gate, and a load-dependent output pole.",

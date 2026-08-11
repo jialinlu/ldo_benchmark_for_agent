@@ -23,77 +23,81 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The compensation-only change is infeasible under the full spec set"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "C",
-          "text": "Revision B is not closed because it traded one pass for a stability failure"
+          "text": "The compensation-only change is infeasible under the full spec set"
         },
         {
           "id": "D",
-          "text": "Continue local sizing; an architecture change is not yet justified"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
-        },
-        {
-          "id": "B",
-          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
-        },
-        {
-          "id": "C",
           "text": "The same lower bandwidth that improves phase margin slows both required transients"
         },
         {
+          "id": "B",
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
+        },
+        {
+          "id": "C",
+          "text": "A nominally converged operating point proves the mechanism across all corners"
+        },
+        {
           "id": "D",
-          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Co-size the driver/compensation and rerun the frozen regression"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
         },
         {
           "id": "C",
-          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -101,18 +105,67 @@
         },
         {
           "id": "B",
-          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "A plausible Bode plot does not rescue a changed circuit"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
-          "text": "Only TT and one global worst corner cannot establish closure"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "17 us and 6 us"
+        },
+        {
+          "id": "B",
+          "text": "Neither exceeds its limit"
+        },
+        {
+          "id": "C",
+          "text": "6 us and 11 us"
+        },
+        {
+          "id": "D",
+          "text": "6 us and 3 us"
+        }
+      ],
+      "prompt": "By how much do the modified startup and settling times exceed their limits?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "PM 44 to 66 deg"
+        },
+        {
+          "id": "E2",
+          "text": "startup 14 to 31 us, limit 25 us"
+        },
+        {
+          "id": "E3",
+          "text": "settling 5 to 11 us, limit 8 us"
+        },
+        {
+          "id": "E4",
+          "text": "IQ unchanged"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "Increasing Ccomp fixes PM but causes startup and load-step settling to exceed limits.",

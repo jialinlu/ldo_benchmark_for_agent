@@ -2,6 +2,7 @@
   "checks": [
     {
       "critical": true,
+      "dimension": "q1",
       "expected": 120,
       "id": "q1",
       "kind": "exact",

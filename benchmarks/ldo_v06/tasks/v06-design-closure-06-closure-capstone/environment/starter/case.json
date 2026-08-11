@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Continue local sizing; an architecture change is not yet justified"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "Startup yield is the blocking metric"
+          "text": "Continue local sizing; an architecture change is not yet justified"
         },
         {
           "id": "C",
-          "text": "Revision B is not closed because it traded one pass for a stability failure"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "The phase-margin result is invalid because the fixture changed the operating point"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "Different failure mechanisms peak at different process/load/temperature combinations"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "The same lower bandwidth that improves phase margin slows both required transients"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "D",
-          "text": "The larger pass gate moved an internal pole while the driver remained fixed"
+          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Retarget startup margin and rerun enough samples with the same seed policy"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "B",
-          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Co-size the driver/compensation and rerun the frozen regression"
+          "text": "Promote candidate C to full fresh-evidence regression before declaring closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Stability closure cannot be declared while transient gates fail"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "A plausible Bode plot does not rescue a changed circuit"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "The observed 93.5 percent is an estimate, not a guaranteed population yield"
+          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
         },
         {
           "id": "D",
-          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the two formerly failing gates"
+        },
+        {
+          "id": "B",
+          "text": "A nominal operating point because the local sweep already passed"
+        },
+        {
+          "id": "C",
+          "text": "No evidence; 46 of 48 is sufficient"
+        },
+        {
+          "id": "D",
+          "text": "A fresh rerun of all 48 frozen gates with candidate C"
+        }
+      ],
+      "prompt": "What evidence is still missing before candidate C can be called closed?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "candidate C fixes both misses"
+        },
+        {
+          "id": "E2",
+          "text": "IQ margin after C=6 uA"
+        },
+        {
+          "id": "E3",
+          "text": "startup unchanged"
+        },
+        {
+          "id": "E4",
+          "text": "no reliability violations"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A frozen existing architecture passes 46 of 48 gates. The remaining failures are SS/hot dropout by 9 mV and FF/light PM by 4 degrees; both respond to a driver/pass co-size without violating IQ in a local sweep.",

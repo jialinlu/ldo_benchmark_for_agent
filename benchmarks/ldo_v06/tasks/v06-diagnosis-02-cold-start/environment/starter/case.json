@@ -23,54 +23,57 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The pass path lacks available conductance/headroom"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "B",
-          "text": "The feedback divider dominates the excess"
-        },
-        {
-          "id": "C",
           "text": "The bias network is trapped in an unwanted zero-current equilibrium"
         },
         {
+          "id": "C",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
           "id": "D",
-          "text": "Insufficient closed-loop phase margin is the primary cause"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The rescue experiment identifies a startup equilibrium issue while loop gain independently identifies a fast-corner stability issue"
-        },
-        {
-          "id": "B",
           "text": "An external seed escapes the state while supply and reference are healthy"
         },
         {
+          "id": "B",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "C",
-          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
-          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -78,41 +81,91 @@
         },
         {
           "id": "B",
-          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "C",
-          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Localize the phase loss by probing pass-gate and output poles"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+          "text": "Increasing the regulation-loop bandwidth is not the direct remedy"
         },
         {
           "id": "B",
-          "text": "A larger pass device is unsupported and could worsen the stability failure"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Blindly reducing EA bias cannot recover the full current excess"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "Increasing the regulation-loop bandwidth is not the direct remedy"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "A bias-node seed fails to recover operation despite a healthy supply and reference"
+        },
+        {
+          "id": "B",
+          "text": "The required seed grows at cold"
+        },
+        {
+          "id": "C",
+          "text": "Nominal startup remains successful"
+        },
+        {
+          "id": "D",
+          "text": "The zero-state operating point still converges"
+        }
+      ],
+      "prompt": "Which result would most directly weaken the zero-current-equilibrium diagnosis?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "reference ramp is present"
+        },
+        {
+          "id": "E2",
+          "text": "supply reaches 1.8 V"
+        },
+        {
+          "id": "E3",
+          "text": "5 nA bias-node pulse recovers"
+        },
+        {
+          "id": "E4",
+          "text": "no overcurrent"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The nominal transient starts, but SS/-40 C with all nodes initialized to zero remains at zero bias indefinitely.",

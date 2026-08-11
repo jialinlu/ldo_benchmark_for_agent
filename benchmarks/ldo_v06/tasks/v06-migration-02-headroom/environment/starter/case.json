@@ -23,12 +23,13 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
@@ -36,41 +37,43 @@
         },
         {
           "id": "C",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "Use the foundry wrapper with verified pin order and explicit body connection"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "Model-name substitution without interface mapping can silently swap pins or bypass required parasitics"
-        },
-        {
-          "id": "C",
           "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
         },
         {
+          "id": "C",
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
+        },
+        {
           "id": "D",
-          "text": "Capacitance value and parasitic network are process-specific even when voltage reliability passes"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -78,41 +81,91 @@
         },
         {
           "id": "B",
-          "text": "Choose target L for gain, then W for gm/ID=14 at the fixed current"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Build and simulate a one-device pin/model smoke test before full migration"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Schematic nominal capacitance alone does not preserve compensation"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "B",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "Reliability limits and device flavor must also be re-qualified"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "The migrated dimensions remain model- and corner-dependent"
+          "text": "Reliability limits and device flavor must also be re-qualified"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "150 mV is available, so the stack is marginal"
+        },
+        {
+          "id": "B",
+          "text": "The stack has 270 mV positive margin"
+        },
+        {
+          "id": "C",
+          "text": "150 mV is available versus 420 mV required, a 270 mV deficit"
+        },
+        {
+          "id": "D",
+          "text": "300 mV is available versus 420 mV required"
+        }
+      ],
+      "prompt": "Compare worst-case VIN-VOUT headroom with the retained two-stack requirement."
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "target VOUT=1.5 V"
+        },
+        {
+          "id": "E2",
+          "text": "worst VIN=1.65 V"
+        },
+        {
+          "id": "E3",
+          "text": "two-stack branch needs 0.42 V"
+        },
+        {
+          "id": "E4",
+          "text": "EA output high swing needs 0.25 V from VDD"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An LDO moves from 3.3 V thick-oxide devices to 1.8 V core devices while retaining a two-stack bias branch and PMOS pass architecture.",

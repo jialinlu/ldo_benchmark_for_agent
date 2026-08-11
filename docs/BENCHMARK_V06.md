@@ -1,8 +1,8 @@
-# EvoLDO-Bench v0.6 说明
+# EvoLDO-Bench v0.6.1 说明
 
 ## 1. 目标与边界
 
-v0.6 面向两个近期落地场景：对既有 LDO 架构提出可执行优化建议，以及在固定架构上完成 sizing。纯模型题用于识别模型自身的模拟设计能力；工具题只测同一模型在受控工具处理下的增益，不把 agent 框架能力混入纯模型分数。
+v0.6.1 面向两个近期落地场景：对既有 LDO 架构提出可执行优化建议，以及在固定架构上完成 sizing。纯模型题用于识别模型自身的模拟设计能力；工具题只测同一模型在受控工具处理下的增益，不把 agent 框架能力混入纯模型分数。
 
 公开开发集使用 SKY130 与 ngspice。EDA 集使用 Cadence Virtuoso IC618、OpenAccess/SKILL 和 Spectre，但不包含任何私有 PDK、账号或密码。公开 fixture 的结果不构成硅后性能声明。
 
@@ -16,7 +16,7 @@ v0.6 面向两个近期落地场景：对既有 LDO 架构提出可执行优化�
 2. 两个 coupled case，要求处理相互冲突的指标或机制；
 3. 一个 existing-architecture optimization capstone，优先判断应局部调整、停止还是改变架构。
 
-八个 suite 为 structure、trend、diagnosis、sizing、migration、system impact、design closure、architecture choice。每题只给完成决策所需的证据，四个客观问题分别覆盖结论、机制、下一步动作和 claim boundary。选项顺序由 task-id 固定随机化，避免答案字母模式。
+八个 suite 为 structure、trend、diagnosis、sizing、migration、system impact、design closure、architecture choice。每题只给完成决策所需的证据，六个客观问题分别覆盖结论、机制、下一步动作、claim boundary、定量或反事实挑战、证据归因。前五题的全部选项均围绕同一 case，不再从同 suite 的其他题拼接不同单位或不同候选名。选项顺序由 task-id 固定随机化，避免答案字母模式。
 
 ### Metamorphic companions：8 题
 
@@ -41,7 +41,14 @@ v0.6 面向两个近期落地场景：对既有 LDO 架构提出可执行优化�
 
 ## 3. 分数
 
-每个任务满分 100。四问题 core case 的权重为 30/30/25/15；关键结论或机制失败时总分最高 49。建议报告以下互不替代的维度：
+每个任务满分 100。六问题 pure case 的权重为 16/16/12/12/24/20：
+
+- q1–q4 分别测结论、机制、下一步动作和 claim boundary；
+- q5 是场景内定量或反事实挑战，选项按完整推导、合理但漏约束、表面趋势、证据矛盾给 100%/55%/20%/0 等级分；
+- q6 要求选出最短决定性证据链，使用集合 F1 计分，选对一部分可得部分分，多选无关证据会降低 precision；
+- q1/q2 只有零信用（物理结论完全相反）时才视为关键失败，总分最高 49；部分正确答案保留连续得分，不再被统一压到 49 分。
+
+grader 在每个 check 中同时输出 `weight`、`credit_fraction` 和 `earned`，可直接汇总六个评分维度。建议报告以下互不替代的维度：
 
 | 指标 | 统计集合 |
 |---|---|
@@ -54,7 +61,9 @@ v0.6 面向两个近期落地场景：对既有 LDO 架构提出可执行优化�
 | Tool Lift | paired tool score − paired pure score |
 | Tool Harm | tool score低于 pure score的 pair 比例 |
 
-总体值使用 task mean；跨 suite 汇总同时给 suite macro，避免 sizing 数量较多而主导结果。必须同时给三次 rollout 的均值、标准差、Pass@1 与 95% Wilson 区间，不能只报最好一次。
+总体值使用 family macro，避免 companion 或 paired treatment 重复放大家族权重；只看 48 个 canonical core 时，同时报告 task mean 与 suite macro。必须同时给三次 rollout 的均值、标准差、Pass@1 与 95% Wilson 区间，不能只报最好一次。
+
+v0.6.1 不再使用四个二元检查形成的粗分档。一个标准 pure case 在合法答案空间中可形成 500 个以上的最终分值；这只是分辨率下限，不代表难度已经由理论格点证明，正式发布前仍需用独立模型试跑、逐题同分率和天花板率做经验校准。
 
 ## 4. 独立性和 token 口径
 
@@ -72,7 +81,7 @@ v0.6 面向两个近期落地场景：对既有 LDO 架构提出可执行优化�
 2. 可修复的 benchmark contract、deck、parser 或 bridge 错误：修框架、递增 task revision、重新跑受影响答卷；
 3. 模型输出格式、推理、候选、SKILL 执行或硬 gate 失败：模型失败。
 
-同一 rollout 的基础设施重试必须保持 task package hash、model id、prompt、seed policy 和预算不变。若 task revision 改变，则原分数全部失效，重新开始三次独立 rollout。
+同一 rollout 的基础设施重试必须保持 task package hash、model id、prompt、seed policy 和预算不变。若 task revision 改变，则原分数全部失效，重新开始三次独立 rollout。v0.6.1 的 task revision 为 2，v0.6.0 答卷不能与之混算。
 
 ## 6. 可复现性
 

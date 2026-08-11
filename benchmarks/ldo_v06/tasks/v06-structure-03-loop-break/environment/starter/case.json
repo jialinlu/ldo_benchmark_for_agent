@@ -23,12 +23,13 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The added device is an escape path, not part of the steady-state regulation loop"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
@@ -36,83 +37,135 @@
         },
         {
           "id": "C",
-          "text": "The closed loop is negative feedback"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "D",
-          "text": "Pass-device headroom is the active limit"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "That location preserves the operating point while exposing the full forward and return paths"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "The saturated error amplifier has exhausted gate overdrive before the divider or reference limits"
+          "text": "That location preserves the operating point while exposing the full forward and return paths"
         },
         {
           "id": "C",
-          "text": "It destabilizes the unwanted equilibrium and becomes negligible at the desired equilibrium"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "D",
-          "text": "Two nearby non-dominant poles consume phase before crossover"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Check loop gain at both load extremes before resizing compensation"
-        },
-        {
-          "id": "B",
           "text": "Insert the calibrated injection source and verify return-ratio sign at low frequency"
         },
         {
+          "id": "B",
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
+        },
+        {
           "id": "C",
-          "text": "Use part of the IQ margin to lower gate-drive resistance, then retune compensation"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Increase effective pass width or improve low-side gate drive, then recheck stability"
+          "text": "Skip fresh verification because the evidence already proves closure"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "This establishes small-signal polarity, not stability margin"
+          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
         },
         {
           "id": "B",
-          "text": "Successful nominal transient does not prove escape from every initial condition"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "C",
-          "text": "A wider pass device can change gate pole and transient behavior"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "A raw AC voltage source without bias restoration changes the circuit being measured"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "The Bode plot is smooth"
+        },
+        {
+          "id": "B",
+          "text": "VOUT alone is unchanged after insertion"
+        },
+        {
+          "id": "C",
+          "text": "The reported phase margin is positive"
+        },
+        {
+          "id": "D",
+          "text": "The DC operating point is unchanged and the low-frequency return-ratio sign is consistent"
+        }
+      ],
+      "prompt": "Which acceptance check is required before trusting the injected return ratio?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "divider Thevenin resistance=330 kohm"
+        },
+        {
+          "id": "E2",
+          "text": "pass-gate DC bias must be preserved"
+        },
+        {
+          "id": "E3",
+          "text": "reference has finite AC impedance"
+        },
+        {
+          "id": "E4",
+          "text": "Middlebrook injection fixture is available"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The LDO uses a resistive divider into a MOS differential pair. Candidate breakpoints are the divider midpoint, the pass gate, and the reference source.",

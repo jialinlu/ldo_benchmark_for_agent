@@ -23,43 +23,45 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The startup topology needs a better on/off discriminator, not uniform width scaling"
+          "text": "Resize physical area from target density and re-extract parasitics"
         },
         {
           "id": "B",
-          "text": "The copied bias/output stack violates the new voltage budget"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         },
         {
           "id": "C",
-          "text": "Resize from the target-PDK gm/ID curve rather than geometric scaling"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "D",
-          "text": "Resize physical area from target density and re-extract parasitics"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Equal geometric ratios do not preserve inversion level or intrinsic gain across PDKs"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "B",
-          "text": "One geometry knob cannot satisfy opposite cold-start and hot-leakage requirements"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
-          "text": "The available rail-to-rail headroom is smaller than the retained stacked-device requirements"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "D",
@@ -69,50 +71,101 @@
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use state-dependent startup sensing and verify both equilibria across corners"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Redesign the bias/output stage for low-voltage swing before transistor scaling"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "D",
-          "text": "Build and simulate a one-device pin/model smoke test before full migration"
+          "text": "Start near 2000 um2, then use extracted C and reclose the loop"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Schematic nominal capacitance alone does not preserve compensation"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "B",
-          "text": "A converged operating point is not evidence of correct model semantics"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "C",
-          "text": "The migrated dimensions remain model- and corner-dependent"
+          "text": "Schematic nominal capacitance alone does not preserve compensation"
         },
         {
           "id": "D",
-          "text": "Passing nominal DC after scaling does not validate the migration"
+          "text": "No claim boundary is needed after the preferred option is selected"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 2667 um2 and 1.3 V"
+        },
+        {
+          "id": "B",
+          "text": "About 2000 um2 and 1.3 V, before extracted-parasitic closure"
+        },
+        {
+          "id": "C",
+          "text": "About 2000 um2 proves compensation is preserved"
+        },
+        {
+          "id": "D",
+          "text": "About 2000 um2 and adequate voltage margin"
+        }
+      ],
+      "prompt": "What first-pass target area and voltage margin follow from the supplied target MIM data?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "source density=1.5 fF/um2"
+        },
+        {
+          "id": "E2",
+          "text": "target density=2.0 fF/um2"
+        },
+        {
+          "id": "E3",
+          "text": "target bias across cap=1.2 V"
+        },
+        {
+          "id": "E4",
+          "text": "fringe parasitic changes by 18 percent"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "The source uses a 4 pF MIM capacitor. The target MIM option has different density and a 2.5 V maximum terminal rating.",

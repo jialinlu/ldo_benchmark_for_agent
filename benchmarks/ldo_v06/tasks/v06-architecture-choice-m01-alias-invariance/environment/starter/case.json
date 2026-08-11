@@ -23,16 +23,17 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Retain the PMOS architecture and apply the local co-size"
+          "text": "This result alone establishes complete PVT and transient closure"
         },
         {
           "id": "B",
-          "text": "Choose the characterized two-stage OTA"
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
         },
         {
           "id": "C",
@@ -40,22 +41,23 @@
         },
         {
           "id": "D",
-          "text": "Choose a PMOS pass device"
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "It satisfies low-voltage swing and current constraints while providing a path to required gain"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "The ripple lies above loop authority and follows the direct pass-gate path"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
@@ -63,37 +65,39 @@
         },
         {
           "id": "D",
-          "text": "It directly senses the varying pass operating point within the available IQ budget"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Tune cancellation phase/amplitude around 2 MHz and verify noise/stability"
+          "text": "Prototype buffered gate/internal compensation and test both load extremes"
         },
         {
           "id": "B",
-          "text": "Use Miller compensation and verify the pass-gate interaction"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "C",
-          "text": "Add a scaled replica and verify matching, startup, and light-load IQ"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Prototype buffered gate/internal compensation and test both load extremes"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
@@ -101,18 +105,67 @@
         },
         {
           "id": "B",
-          "text": "The choice is conditional on the supplied characterization, not a universal ranking"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "C",
-          "text": "An NMOS could become viable if a charge pump were allowed"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         },
         {
           "id": "D",
-          "text": "The benefit depends on replica correlation across mismatch"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "20,000 to 1"
+        },
+        {
+          "id": "B",
+          "text": "20 to 1"
+        },
+        {
+          "id": "C",
+          "text": "1,000 to 1"
+        },
+        {
+          "id": "D",
+          "text": "Four decades, without quantifying the endpoint ratio"
+        }
+      ],
+      "prompt": "What load-range ratio drives the need for explicit moving-pole coverage?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "area permits 30 pF internal compensation"
+        },
+        {
+          "id": "E2",
+          "text": "fast load edges"
+        },
+        {
+          "id": "E3",
+          "text": "IQ target=50 uA"
+        },
+        {
+          "id": "E4",
+          "text": "output pole moves four decades"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. The product forbids an external capacitor, permits 100 pF on-chip load, and spans 1 uA to 20 mA load.",

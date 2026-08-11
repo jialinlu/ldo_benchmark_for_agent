@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Startup yield is the blocking metric"
-        },
-        {
-          "id": "B",
-          "text": "The compensation-only change is infeasible under the full spec set"
-        },
-        {
-          "id": "C",
           "text": "Revision B is not closed because it traded one pass for a stability failure"
         },
         {
+          "id": "B",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
+          "id": "C",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
           "id": "D",
-          "text": "Continue local sizing; an architecture change is not yet justified"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported after the representation change?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Return-ratio measurements require bias preservation"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "B",
-          "text": "The misses are small, mechanistically understood, and jointly corrected by a verified local move"
-        },
-        {
-          "id": "C",
           "text": "The larger pass gate moved an internal pole while the driver remained fixed"
         },
         {
+          "id": "C",
+          "text": "A nominally converged operating point proves the mechanism across all corners"
+        },
+        {
           "id": "D",
-          "text": "The same lower bandwidth that improves phase margin slows both required transients"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism is invariant?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Search a driver-plus-compensation tradeoff and score all hard constraints"
-        },
-        {
-          "id": "B",
           "text": "Co-size the driver/compensation and rerun the frozen regression"
         },
         {
+          "id": "B",
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
+        },
+        {
           "id": "C",
-          "text": "Retarget startup margin and rerun enough samples with the same seed policy"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "D",
-          "text": "Repeat with a bias-preserving loop injection and compare operating points"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Stability closure cannot be declared while transient gates fail"
-        },
-        {
-          "id": "B",
-          "text": "Only TT and one global worst corner cannot establish closure"
-        },
-        {
-          "id": "C",
           "text": "Reporting only the improved metric is invalid cherry-picking"
         },
         {
+          "id": "B",
+          "text": "No claim boundary is needed after the preferred option is selected"
+        },
+        {
+          "id": "C",
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
+        },
+        {
           "id": "D",
-          "text": "Local sweep success is not a substitute for the frozen 48-gate rerun"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary remains valid?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "It improved dropout and reduced PM"
+        },
+        {
+          "id": "B",
+          "text": "It improved both hard metrics"
+        },
+        {
+          "id": "C",
+          "text": "It lost 28 deg PM and gained 19 mV dropout"
+        },
+        {
+          "id": "D",
+          "text": "It gained 28 mV dropout but lost 19 deg light-load PM while gate capacitance rose 44 percent"
+        }
+      ],
+      "prompt": "What quantified trade did revision B make?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "driver unchanged"
+        },
+        {
+          "id": "E2",
+          "text": "gate capacitance +44 percent"
+        },
+        {
+          "id": "E3",
+          "text": "same test fixtures"
+        },
+        {
+          "id": "E4",
+          "text": "same simulator/model"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain after representation changes.",
+      "select_count": 2
     }
   ],
   "scenario": "Node aliases have been changed (VCTRL->N7, VFB->N3) and evidence rows reordered. Revision B improves dropout by 28 mV but reduces light-load PM from 58 to 39 degrees after pass width is increased.",

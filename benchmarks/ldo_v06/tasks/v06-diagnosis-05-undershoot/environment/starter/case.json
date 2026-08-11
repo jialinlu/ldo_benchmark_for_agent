@@ -23,96 +23,149 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "There are two independent root causes requiring separate local fixes"
-        },
-        {
-          "id": "B",
-          "text": "The bias network is trapped in an unwanted zero-current equilibrium"
-        },
-        {
-          "id": "C",
           "text": "Pass-gate slew/current limit dominates the first excursion"
         },
         {
+          "id": "B",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
+          "id": "C",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
           "id": "D",
-          "text": "Insufficient closed-loop phase margin is the primary cause"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "The loop commands maximum drive but the pass device cannot supply the demanded current"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         },
         {
           "id": "C",
-          "text": "The oscillatory mode aligns with crossover and disappears when feedback is opened"
+          "text": "Adequate PM and clipped driver current distinguish slew limitation from linear instability"
         },
         {
           "id": "D",
-          "text": "Its 90 uA branch is larger than all other avoidable contributions"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Fix startup injection and compensation separately, then run a full regression"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Increase divider resistance while checking noise, leakage error, and settling"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         },
         {
           "id": "C",
-          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
         },
         {
           "id": "D",
-          "text": "Quantify required pass conductance at the worst VIN and resize pass/driver"
+          "text": "Increase transient gate-drive capability and verify IQ/overshoot"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "B",
-          "text": "Increasing the regulation-loop bandwidth is not the direct remedy"
+          "text": "Small-signal loop gain alone cannot predict the large-signal first excursion"
         },
         {
           "id": "C",
-          "text": "Changing divider ratio would mask rather than solve the dropout limit"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         },
         {
           "id": "D",
-          "text": "The transient alone does not identify which internal pole caused the phase loss"
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "315 V"
+        },
+        {
+          "id": "B",
+          "text": "0.315 V"
+        },
+        {
+          "id": "C",
+          "text": "0.035 V"
+        },
+        {
+          "id": "D",
+          "text": "0.39 V"
+        }
+      ],
+      "prompt": "What approximate pass-gate excursion is implied by 0.35 V/us for 900 ns?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "PM=61 deg"
+        },
+        {
+          "id": "E2",
+          "text": "output capacitor nominal"
+        },
+        {
+          "id": "E3",
+          "text": "pass gate slew=0.35 V/us"
+        },
+        {
+          "id": "E4",
+          "text": "driver current clips"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "A 0.1-to-8 mA step causes 140 mV undershoot without sustained ringing. Gate voltage slews slowly for 900 ns before loop recovery.",

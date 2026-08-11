@@ -23,39 +23,41 @@
   },
   "questions": [
     {
+      "dimension": "conclusion",
       "id": "q1",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Choose 120 um"
-        },
-        {
-          "id": "B",
-          "text": "Choose candidate C"
-        },
-        {
-          "id": "C",
           "text": "Choose 15 uA EA and 15 uA driver"
         },
         {
+          "id": "B",
+          "text": "The evidence points in this direction, but a different mechanism should be prioritized before acting"
+        },
+        {
+          "id": "C",
+          "text": "The opposite design decision is required after ignoring the stated limiting observation"
+        },
+        {
           "id": "D",
-          "text": "Choose 8 pF"
+          "text": "This result alone establishes complete PVT and transient closure"
         }
       ],
       "prompt": "Which conclusion is best supported?"
     },
     {
+      "dimension": "mechanism",
       "id": "q2",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "P2 satisfies every hard constraint and avoids P3's unnecessary IQ violation"
+          "text": "A nominally converged operating point proves the mechanism across all corners"
         },
         {
           "id": "B",
-          "text": "It closely realizes the 0.5 ratio and its 748 kohm total keeps current below 3 uA"
+          "text": "Only the numerical correlation is relevant; held conditions and operating region can be ignored"
         },
         {
           "id": "C",
@@ -63,56 +65,107 @@
         },
         {
           "id": "D",
-          "text": "It is the smallest characterized capacitance satisfying both PM and bandwidth constraints"
+          "text": "The proposed mechanism is consistent with the observations but the supplied intervention does not fully isolate it"
         }
       ],
       "prompt": "Which mechanism best explains the evidence?"
     },
     {
+      "dimension": "next_action",
       "id": "q3",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Use 120 um as a seed and verify SS/hot plus gate-pole movement"
+          "text": "Skip fresh verification because the evidence already proves closure"
         },
         {
           "id": "B",
-          "text": "Use C as the next candidate and verify IQ plus load-step peaks"
-        },
-        {
-          "id": "C",
           "text": "Carry that split into PVT and no-load IQ verification"
         },
         {
+          "id": "C",
+          "text": "Run only the nearest nominal check, then accept the change without the remaining named gates"
+        },
+        {
           "id": "D",
-          "text": "Center a finer PVT sweep around P2 rather than changing architecture"
+          "text": "Change several knobs and the architecture simultaneously before isolating the mechanism"
         }
       ],
       "prompt": "What is the best next engineering action?"
     },
     {
+      "dimension": "claim_boundary",
       "id": "q4",
-      "kind": "single_choice",
+      "kind": "ordered_choice",
       "options": [
         {
           "id": "A",
-          "text": "Interpolation outside the characterized corner cannot replace PVT verification"
-        },
-        {
-          "id": "B",
           "text": "The allocation is conditional on the fixed-current assumptions"
         },
         {
+          "id": "B",
+          "text": "Restrict the claim to the exact sample but omit the stated mechanism-specific limitation"
+        },
+        {
           "id": "C",
-          "text": "Ratio accuracy alone is insufficient when divider current is constrained"
+          "text": "No claim boundary is needed after the preferred option is selected"
         },
         {
           "id": "D",
-          "text": "Sizing the pass device in isolation would select an unstable candidate"
+          "text": "Generalize the conclusion to every PVT, load, and transient condition"
         }
       ],
       "prompt": "Which claim boundary is correct?"
+    },
+    {
+      "dimension": "quantitative_or_counterfactual",
+      "id": "q5",
+      "kind": "ordered_choice",
+      "options": [
+        {
+          "id": "A",
+          "text": "+3 dB and +0.01 V/us"
+        },
+        {
+          "id": "B",
+          "text": "It has no positive margin on either metric"
+        },
+        {
+          "id": "C",
+          "text": "+1 dB and +0.01 V/us"
+        },
+        {
+          "id": "D",
+          "text": "+3 dB and +0.31 V/us"
+        }
+      ],
+      "prompt": "What margins does the 15/15 uA allocation have to gain and slew targets?"
+    },
+    {
+      "dimension": "evidence_attribution",
+      "id": "q6",
+      "kind": "multi_select",
+      "options": [
+        {
+          "id": "E1",
+          "text": "EA/driver 20/10 uA: gain 58 dB, slew 0.18 V/us"
+        },
+        {
+          "id": "E2",
+          "text": "15/15: gain 55 dB, slew 0.31 V/us"
+        },
+        {
+          "id": "E3",
+          "text": "10/20: gain 49 dB, slew 0.43 V/us"
+        },
+        {
+          "id": "E4",
+          "text": "targets gain>=52 dB, slew>=0.30 V/us"
+        }
+      ],
+      "prompt": "Select exactly two evidence records that form the shortest decisive support chain for the primary conclusion.",
+      "select_count": 2
     }
   ],
   "scenario": "An LDO has 30 uA available beyond fixed reference and divider current. Choose the characterized EA/driver allocation meeting gain and slew.",
