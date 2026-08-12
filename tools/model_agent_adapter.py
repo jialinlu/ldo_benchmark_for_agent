@@ -179,6 +179,7 @@ def _run_openai_compatible(
     base_url: str,
     credential_value: str,
     timeout: int,
+    max_output_tokens: int,
 ) -> Tuple[int, str, str, bool, float]:
     """Call an OpenAI-compatible endpoint without placing the credential in argv."""
     started = time.monotonic()
@@ -188,7 +189,7 @@ def _run_openai_compatible(
             {"role": "system", "content": "Return exactly one JSON object and no commentary."},
             {"role": "user", "content": prompt},
         ],
-        "max_tokens": 4096,
+        "max_tokens": max_output_tokens,
         "temperature": 0.0,
         "response_format": {"type": "json_object"},
     }
@@ -448,9 +449,17 @@ def main() -> int:
     parser.add_argument("--claude-settings")
     parser.add_argument("--base-url", default=os.environ.get("EVOLDO_OPENAI_BASE_URL", "https://api.siliconflow.cn/v1"))
     parser.add_argument("--api-key-env", default="EVOLDO_OPENAI_API_KEY")
+    parser.add_argument(
+        "--max-output-tokens",
+        type=int,
+        default=int(os.environ.get("EVOLDO_OPENAI_MAX_OUTPUT_TOKENS", "4096")),
+        help="OpenAI-compatible completion-token ceiling (default: 4096)",
+    )
     parser.add_argument("--containerized", action="store_true")
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
+    if args.max_output_tokens <= 0:
+        parser.error("--max-output-tokens must be positive")
 
     task_dir = Path(os.environ["EVOLDO_TASK_DIR"]).resolve()
     prompt = _prompt(task_dir)
@@ -466,7 +475,7 @@ def main() -> int:
             if not credential_value:
                 raise ValueError("OpenAI-compatible credential environment variable is unavailable")
             return_code, stdout, stderr, timed_out, wall = _run_openai_compatible(
-                prompt, args.model, args.base_url, credential_value, timeout
+                prompt, args.model, args.base_url, credential_value, timeout, args.max_output_tokens
             )
             command = []
         elif args.containerized:

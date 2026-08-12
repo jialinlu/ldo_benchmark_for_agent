@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest import mock
 
 from evoldo_bench.errors import ContractError
 
@@ -105,6 +106,18 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertEqual(30, telemetry["token_breakdown"]["reasoning"])
         self.assertEqual("attested", telemetry["model_identity_status"])
         self.assertEqual("partial", telemetry["token_measurement_status"])
+
+    def test_openai_compatible_uses_explicit_output_token_ceiling(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b'{}'
+        with mock.patch.object(ADAPTER.urllib.request, "urlopen", return_value=response) as urlopen:
+            result = ADAPTER._run_openai_compatible(
+                "prompt", "provider/model", "https://example.invalid/v1", "secret", 30, 8192
+            )
+        request = urlopen.call_args.args[0]
+        payload = json.loads(request.data)
+        self.assertEqual(8192, payload["max_tokens"])
+        self.assertEqual(0, result[0])
 
     def test_container_boundary_mounts_only_the_task_read_only(self):
         command = ADAPTER._docker_base(Path("/isolated/task"))
