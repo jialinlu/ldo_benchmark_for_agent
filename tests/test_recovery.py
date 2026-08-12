@@ -6,7 +6,7 @@ import unittest
 
 from evoldo_bench.adapters import CommandAgentAdapter
 from evoldo_bench.discovery import discover_tasks
-from evoldo_bench.errors import ContractError
+from evoldo_bench.errors import ContractError, PolicyError
 from evoldo_bench.experiment import run_experiment
 from evoldo_bench.recovery import (
     _enforce_retry_controls, _explicit_output_budget_exhaustion, _verify_row_bindings,
@@ -168,6 +168,43 @@ Path(os.environ["EVOLDO_ANSWER_PATH"]).write_text(json.dumps(%s))
             self.assertEqual("ok", attempt["status"])
             self.assertEqual(100, attempt["score"])
             self.assertEqual("ok", load_json(run_dir / "run_record.json")["status"])
+
+    def test_recovery_stops_when_retry_exhausts_output_budget(self):
+        task = discover_tasks(TASKS)[0]
+        answer = reference_answer(task.root, ORACLES / (task.task_id + ".oracle.json"))
+        agent_source = """
+import json
+from pathlib import Path
+import os
+Path(os.environ["EVOLDO_ANSWER_PATH"]).write_text(json.dumps(%s))
+print(json.dumps({"choices": [{"finish_reason": "length"}]}))
+""" % repr(answer)
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source_agent = root / "source_agent.py"
+            source_agent.write_text("raise SystemExit(2)\n", encoding="utf-8")
+            source = root / "source"
+            run_experiment(
+                TASKS, ORACLES, source,
+                CommandAgentAdapter([sys.executable, str(source_agent)]),
+                "test-model", "direct_reasoning", rollouts=1, base_seed=17,
+                task_ids=[task.task_id],
+            )
+            retry_agent = root / "retry_agent.py"
+            retry_agent.write_text(agent_source, encoding="utf-8")
+            recovered = root / "recovered"
+            with self.assertRaisesRegex(PolicyError, "occurred during recovery"):
+                recover_experiment(
+                    source, recovered, TASKS, ORACLES,
+                    CommandAgentAdapter([sys.executable, str(retry_agent)]),
+                    max_infrastructure_retries=5,
+                )
+            manifest = load_json(recovered / "experiment_manifest.json")
+            row = manifest["rows"][0]
+            self.assertEqual("output_budget_exhausted", row["status"])
+            self.assertEqual("output_budget_exhausted", row["resolution_status"])
+            self.assertEqual(2, len(row["attempts"]))
+            self.assertFalse(manifest["capability_complete"])
 
 
 if __name__ == "__main__":

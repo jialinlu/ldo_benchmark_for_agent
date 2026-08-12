@@ -343,7 +343,9 @@ def _refresh_recovery_summary(manifest: Dict[str, Any]) -> None:
     attempts = [attempt for row in manifest["rows"] for attempt in row.get("attempts", [])]
     unresolved = [
         row for row in manifest["rows"]
-        if row.get("resolution_status") in {"pending_infrastructure_retry", "infra_exhausted"}
+        if row.get("resolution_status") in {
+            "pending_infrastructure_retry", "infra_exhausted", "output_budget_exhausted",
+        }
     ]
     classifications = Counter(attempt["classification"] for attempt in attempts)
     statuses = Counter(attempt["status"] for attempt in attempts)
@@ -570,6 +572,15 @@ def recover_experiment(
             row["attempts"].append(attempt)
             row["telemetry_file"] = attempt["telemetry_file"]
             row["status"] = attempt["status"]
+            if attempt["status"] == "output_budget_exhausted":
+                row["resolution_status"] = "output_budget_exhausted"
+                _checkpoint(output_root, manifest)
+                raise PolicyError(
+                    "output budget exhaustion occurred during recovery for %s; "
+                    "stop same-configuration retries and start a new uniformly frozen "
+                    "budget treatment"
+                    % row["task_id"]
+                )
             if attempt["classification"] == "model":
                 _apply_accepted_attempt(row, attempt)
             else:
