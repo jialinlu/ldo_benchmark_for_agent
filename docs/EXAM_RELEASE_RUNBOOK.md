@@ -41,6 +41,8 @@ This runbook describes a future sealed release. The public development set is no
 - Route only explanation dimensions to calibrated judges.
 - Send critical disagreement and sampled passes/failures to human audit.
 - Aggregate at family level and publish capability vectors, variation, errors, cost, and lift.
+- Generate the mandatory four-panel report from one frozen treatment: (1) capability score plus T0–T4/suite/dimension profile and three-rollout uncertainty; (2) capability versus measured per-task cost on a log axis with price snapshot, Pareto frontier, and any reference-model kill zone explicitly labeled as two-dimensional dominance; (3) capability versus latency with end-to-end P50/P95, time to first feasible output, capability wall time, and operational wall time; and (4) capability versus reliability with infrastructure/model/format/policy failure rates, output-budget exhaustion, rollout variance, and unresolved-infrastructure count.
+- Do not mix output ceilings, reasoning modes, task sets, grader versions, or other treatments in one frontier. If provider billing is unavailable, label token-rate-derived cost as estimated and publish the rate snapshot and formula.
 
 ## 6. Release
 

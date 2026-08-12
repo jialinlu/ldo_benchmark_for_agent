@@ -41,6 +41,17 @@ v0.7 回答两个部署问题：
 
 除 family-macro 总分外，报告 suite、level、deployment tier、scoring dimension、Pass@1、三个 rollout 的均值/标准差及 Wilson 区间。正式评测中，一个 tier 的开发准入 gate 为该 tier 三次 rollout 合并后 `mean score >= 70` 且 `Pass@1 >= 2/3`；任一未解决基础设施失败会阻断判定。该 gate 用于筛选“最小候选模型”，仍须通过隐藏同构题和模拟设计专家复核，不能仅按排行榜名次部署。一次 rollout 的校准报告可以显示同一 gate，但必须标注为非正式诊断，不能声称达到可靠性门槛。
 
+### 4.1 正式报告四联视图（强制）
+
+正式报告必须同时给出以下四个互补视图，不能用单一总分榜替代：
+
+1. **能力视图**：总分、Pass@1、T0–T4、suite 与关键 scoring dimension；展示三个独立 rollout 的均值、标准差、置信区间和样本数。
+2. **能力—成本视图**：横轴为实测单题总成本（对数尺度，越左越好），纵轴为能力分；绘制 Pareto frontier，并允许选择已声明的参考模型显示二维“斩杀区”。价格快照、币种、input/output/reasoning/cache 计价、优惠和失败请求是否计入必须随图披露。供应商未返回账单时只可标为估算值，不能伪装成实测成本。
+3. **能力—时延视图**：展示单题端到端 P50/P95、首次有效输出时延和完成时延，并区分 capability wall time 与包含基础设施重试的 operational wall time；同时报告吞吐量及测量窗口。
+4. **能力—可靠性视图**：展示基础设施失败率、模型可归因失败率、格式/策略失败率、输出预算耗尽率、三次 rollout 方差，以及 unresolved infrastructure 数量。
+
+四个视图必须使用同一冻结处理：相同任务集、预算、reasoning/thinking 配置和计分版本。不同输出上限或复合处理只能单独成图，不能混入同一 Pareto 结论。“斩杀区”仅表示选定二维坐标上的 Pareto 支配，不代表模型在隐私、本地部署、特定子能力或其他未绘制维度上应被淘汰。开发校准图必须明显标注 `non-formal`；只有完成 27 题 × 3 次独立 rollout 后才能作为正式部署报告。
+
 ## 5. KG 配对协议
 
 KG-off 与 KG-on 必须固定：provider-reported model、任务和 answer-contract hash、rollout/seed、temperature/thinking configuration、timeout 和输出 token 上限。KG-on 的唯一差异是本地冻结检索快照。
