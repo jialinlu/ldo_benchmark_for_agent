@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "dimension": "constraint_accounting",
+      "expected": {
+        "a": "hard_pass",
+        "b": "pm_fail",
+        "c": "iq_fail",
+        "d": "startup_fail",
+        "e": "area_fail"
+      },
+      "id": "gates",
+      "kind": "mapping_credit",
+      "path": "artifact.candidate_gate_map",
+      "weight": 40
+    },
+    {
+      "critical": true,
+      "dimension": "candidate_selection",
+      "expected": "a",
+      "id": "selected",
+      "kind": "exact",
+      "path": "artifact.selected_candidate",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "next_action",
+      "expected": "formal_verify_a",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "verification_plan",
+      "expected": [
+        "fresh_op",
+        "startup_matrix",
+        "stb_load_corners",
+        "noise",
+        "full_pvt",
+        "materialization_readback"
+      ],
+      "id": "checks",
+      "kind": "set_f1",
+      "path": "artifact.formal_checks",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-04-candidate-pareto",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-hard-gates-before-score",
+    "kg-gated-qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-04-candidate-pareto"
+}

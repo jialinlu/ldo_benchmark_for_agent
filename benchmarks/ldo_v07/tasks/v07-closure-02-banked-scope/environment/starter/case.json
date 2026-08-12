@@ -1,0 +1,125 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "claimable_scopes": {
+        "allowed": [
+          "steady_state_performance",
+          "materialization",
+          "enable_restart",
+          "startup",
+          "complete_design",
+          "full_corner"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "decision": {
+        "allowed": [
+          "bank_partial_continue",
+          "retry_infrastructure",
+          "reject_all_progress",
+          "register_complete"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "publish_champion",
+          "change_reference",
+          "rerun_steady_state_only",
+          "repair_startup_and_enable"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "scope_status": {
+        "allowed_keys": [
+          "startup",
+          "complete_design",
+          "enable_restart",
+          "materialization",
+          "full_corner",
+          "steady_state_performance"
+        ],
+        "required_keys": [
+          "materialization",
+          "complete_design",
+          "startup",
+          "steady_state_performance",
+          "enable_restart",
+          "full_corner"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "not_applicable",
+          "open_fail",
+          "open_missing",
+          "banked"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "publish_champion",
+      "change_reference",
+      "rerun_steady_state_only",
+      "repair_startup_and_enable"
+    ],
+    "decisions": [
+      "register_complete",
+      "bank_partial_continue",
+      "retry_infrastructure",
+      "reject_all_progress"
+    ],
+    "scopes": [
+      "enable_restart",
+      "complete_design",
+      "full_corner",
+      "materialization",
+      "startup",
+      "steady_state_performance"
+    ],
+    "statuses": [
+      "not_applicable",
+      "open_fail",
+      "open_missing",
+      "banked"
+    ]
+  },
+  "materials": {
+    "baseline": {
+      "dropout_mv": 96,
+      "enable_pass": true,
+      "iq_ua": 111,
+      "pm_deg": 52,
+      "startup_pass": true
+    },
+    "candidate": {
+      "candidate_hash": "cand-new",
+      "dropout_mv": 82,
+      "enable_shutdown_restart": false,
+      "iq_ua": 104,
+      "pm_deg": 59,
+      "psrr_100khz_db": 31,
+      "startup_fast": true,
+      "startup_nominal": false,
+      "startup_slow": null
+    },
+    "evidence": {
+      "full_corner_complete": false,
+      "materialization_readback": false,
+      "startup_hash_bound": true,
+      "steady_state_hash_bound": true
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A candidate improves all steady-state metrics, yet startup and enable sequencing are incomplete. State exactly what can be banked and what cannot be claimed.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-02-banked-scope"
+}

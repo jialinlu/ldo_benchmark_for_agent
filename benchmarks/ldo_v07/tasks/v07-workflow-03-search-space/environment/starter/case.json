@@ -1,0 +1,212 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "held_parameters": {
+        "allowed": [
+          "p4",
+          "p6",
+          "p3",
+          "p5",
+          "p2",
+          "p1"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "metric_priority": {
+        "allowed": [
+          "dropout",
+          "startup",
+          "iq",
+          "phase_margin"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "next_action": {
+        "allowed": [
+          "expand_all_domains",
+          "formal_callback_aware_run",
+          "invent_p6_alias",
+          "optimization_only_final"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "invent_matching_coupling",
+          "treat_search_as_final",
+          "include_unmapped_p6",
+          "hold_unresolved_fixed",
+          "rewrite_integer_domain"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "selected_parameters": {
+        "allowed": [
+          "p6",
+          "p2",
+          "p5",
+          "p4",
+          "p1",
+          "p3"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "state": {
+        "allowed": [
+          "prepare_parameter_space",
+          "sizing_blocked_baseline",
+          "sizing_config_ready",
+          "needs_role_aliases"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "optimization_only_final",
+      "invent_p6_alias",
+      "expand_all_domains",
+      "formal_callback_aware_run"
+    ],
+    "parameter_ids": [
+      "p2",
+      "p5",
+      "p6",
+      "p3",
+      "p4",
+      "p1"
+    ],
+    "priorities": [
+      "iq",
+      "startup",
+      "dropout",
+      "phase_margin"
+    ],
+    "prohibited": [
+      "invent_matching_coupling",
+      "rewrite_integer_domain",
+      "treat_search_as_final",
+      "include_unmapped_p6",
+      "hold_unresolved_fixed"
+    ],
+    "states": [
+      "sizing_config_ready",
+      "needs_role_aliases",
+      "prepare_parameter_space",
+      "sizing_blocked_baseline"
+    ]
+  },
+  "materials": {
+    "baseline": {
+      "dropout_limit_mv": 90,
+      "dropout_mv": 112,
+      "hash_bound": true,
+      "iq_limit_ua": 120,
+      "iq_ua": 91,
+      "phase_margin_deg": 47,
+      "phase_margin_limit_deg": 50,
+      "sim_ok": true,
+      "startup_success": true
+    },
+    "reduction_policy": {
+      "held_roles": [
+        "startup",
+        "unresolved"
+      ],
+      "launch_rule": "A complete inventory with sufficient role coverage launches a callback-aware run; unresolved paths remain held fixed.",
+      "metric_priority": "Order currently failed hard metrics by normalized violation (value-limit)/limit descending; append passing IQ only as a guard; do not include passing startup in the objective list.",
+      "selected_roles": [
+        "pass",
+        "driver",
+        "compensation",
+        "input_pair"
+      ],
+      "state_rules_in_priority_order": [
+        "baseline unhealthy -> sizing_blocked_baseline",
+        "unresolved parameter role or role_alias_coverage below 0.80 -> needs_role_aliases",
+        "otherwise -> sizing_config_ready"
+      ]
+    },
+    "resolved_parameters": [
+      {
+        "domain": [
+          700,
+          1400
+        ],
+        "id": "p1",
+        "kind": "continuous",
+        "path": "top/mpass/w",
+        "role": "pass"
+      },
+      {
+        "domain": [
+          8,
+          24
+        ],
+        "id": "p2",
+        "kind": "continuous",
+        "path": "top/driver/w",
+        "role": "driver"
+      },
+      {
+        "domain": [
+          2,
+          12
+        ],
+        "id": "p3",
+        "kind": "continuous",
+        "path": "top/ccomp/c",
+        "role": "compensation"
+      },
+      {
+        "domain": [
+          2,
+          4,
+          6,
+          8
+        ],
+        "id": "p4",
+        "kind": "integer",
+        "path": "top/input/nf",
+        "role": "input_pair"
+      },
+      {
+        "domain": [
+          1,
+          5
+        ],
+        "id": "p5",
+        "kind": "continuous",
+        "path": "top/startup/w",
+        "role": "startup"
+      },
+      {
+        "domain": [
+          1,
+          2,
+          3
+        ],
+        "id": "p6",
+        "kind": "integer",
+        "path": "top/mystery/nf",
+        "role": null
+      }
+    ],
+    "role_alias_coverage": 0.83
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Prepare a bounded sizing campaign from a healthy baseline and an inventory-resolved parameter space. Follow the supplied reduction policy exactly; avoid invented couplings and unsupported CDF assumptions.",
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-03-search-space"
+}

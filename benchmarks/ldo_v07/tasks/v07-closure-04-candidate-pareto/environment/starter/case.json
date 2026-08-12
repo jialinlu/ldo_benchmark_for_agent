@@ -1,0 +1,170 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "candidate_gate_map": {
+        "allowed_keys": [
+          "e",
+          "c",
+          "b",
+          "a",
+          "d"
+        ],
+        "required_keys": [
+          "c",
+          "a",
+          "d",
+          "e",
+          "b"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "multiple_fail",
+          "hard_pass",
+          "area_fail",
+          "pm_fail",
+          "startup_fail",
+          "iq_fail"
+        ]
+      },
+      "formal_checks": {
+        "allowed": [
+          "full_pvt",
+          "noise",
+          "stb_load_corners",
+          "reuse_search_metrics_only",
+          "fresh_op",
+          "startup_matrix",
+          "materialization_readback"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "next_action": {
+        "allowed": [
+          "formal_verify_d",
+          "formal_verify_a",
+          "rescore_only",
+          "formal_verify_b"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "selected_candidate": {
+        "allowed": [
+          "c",
+          "e",
+          "d",
+          "b",
+          "a",
+          "none"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "formal_verify_d",
+      "rescore_only",
+      "formal_verify_b",
+      "formal_verify_a"
+    ],
+    "candidate_ids": [
+      "e",
+      "b",
+      "c",
+      "d",
+      "none",
+      "a"
+    ],
+    "checks": [
+      "fresh_op",
+      "materialization_readback",
+      "startup_matrix",
+      "full_pvt",
+      "stb_load_corners",
+      "reuse_search_metrics_only",
+      "noise"
+    ],
+    "gate_classes": [
+      "multiple_fail",
+      "hard_pass",
+      "area_fail",
+      "startup_fail",
+      "iq_fail",
+      "pm_fail"
+    ]
+  },
+  "materials": {
+    "candidates": [
+      {
+        "area": 1.22,
+        "dropout_mv": 84,
+        "id": "a",
+        "iq_ua": 112,
+        "noise_uv": 8.9,
+        "pm_deg": 54,
+        "raw_score": 86,
+        "startup": true
+      },
+      {
+        "area": 1.3,
+        "dropout_mv": 78,
+        "id": "b",
+        "iq_ua": 110,
+        "noise_uv": 8.2,
+        "pm_deg": 48,
+        "raw_score": 91,
+        "startup": true
+      },
+      {
+        "area": 1.18,
+        "dropout_mv": 86,
+        "id": "c",
+        "iq_ua": 124,
+        "noise_uv": 7.8,
+        "pm_deg": 57,
+        "raw_score": 89,
+        "startup": true
+      },
+      {
+        "area": 1.37,
+        "dropout_mv": 80,
+        "id": "d",
+        "iq_ua": 115,
+        "noise_uv": 9.7,
+        "pm_deg": 55,
+        "raw_score": 93,
+        "startup": false
+      },
+      {
+        "area": 1.45,
+        "dropout_mv": 88,
+        "id": "e",
+        "iq_ua": 118,
+        "noise_uv": 9.5,
+        "pm_deg": 52,
+        "raw_score": 84,
+        "startup": true
+      }
+    ],
+    "formal_budget": "one candidate",
+    "limits": {
+      "dropout_max_mv": 90,
+      "iq_max_ua": 120,
+      "max_area_index": 1.4,
+      "noise_max_uv": 10,
+      "pm_min_deg": 50,
+      "startup_required": true
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Choose a candidate for formal verification. Scores are secondary to hard gates; a dominated but robust candidate may be preferable to a higher raw score.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-04-candidate-pareto"
+}

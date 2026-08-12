@@ -1,0 +1,83 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "campaign_state",
+      "expected": "sizing_config_ready",
+      "id": "state",
+      "kind": "exact",
+      "path": "artifact.state",
+      "weight": 15
+    },
+    {
+      "dimension": "constraint_priority",
+      "expected": [
+        "dropout",
+        "phase_margin",
+        "iq"
+      ],
+      "id": "priority",
+      "kind": "sequence_alignment",
+      "path": "artifact.metric_priority",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "role_aware_space",
+      "expected": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "id": "selected",
+      "kind": "set_f1",
+      "path": "artifact.selected_parameters",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "held_fixed",
+      "expected": [
+        "p5",
+        "p6"
+      ],
+      "id": "held",
+      "kind": "set_f1",
+      "path": "artifact.held_parameters",
+      "weight": 10
+    },
+    {
+      "critical": false,
+      "dimension": "workflow_stage",
+      "expected": "formal_callback_aware_run",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "safety",
+      "expected": [
+        "invent_matching_coupling",
+        "rewrite_integer_domain",
+        "include_unmapped_p6",
+        "treat_search_as_final"
+      ],
+      "id": "prohibited",
+      "kind": "set_f1",
+      "path": "artifact.prohibited_actions",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-workflow-03-search-space",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-sizing-two-pass",
+    "kg-search-is-not-final"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-workflow-03-search-space"
+}

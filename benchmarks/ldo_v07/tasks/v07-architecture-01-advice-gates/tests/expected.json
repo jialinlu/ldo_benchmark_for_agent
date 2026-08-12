@@ -1,0 +1,92 @@
+{
+  "checks": [
+    {
+      "dimension": "evidence_hierarchy",
+      "expected": {
+        "m1": "measured_current",
+        "m2": "measured_current",
+        "m3": "unbound_old",
+        "m4": "analytical_prior",
+        "m5": "measured_current"
+      },
+      "id": "evidence",
+      "kind": "mapping_credit",
+      "path": "artifact.evidence_labels",
+      "weight": 20
+    },
+    {
+      "dimension": "proposal_admission",
+      "expected": {
+        "p1": "unsupported_before_op",
+        "p2": "admissible_op_recovery",
+        "p3": "blocked_missing_current_knob",
+        "p4": "contingent_after_op",
+        "p5": "deferred_topology",
+        "p6": "blocked_qualification_gate"
+      },
+      "id": "proposals",
+      "kind": "mapping_credit",
+      "path": "artifact.proposal_status",
+      "weight": 30
+    },
+    {
+      "critical": true,
+      "dimension": "operating_point_gate",
+      "expected": "recover_operating_point",
+      "id": "gate",
+      "kind": "exact",
+      "path": "artifact.primary_gate",
+      "weight": 15
+    },
+    {
+      "dimension": "workflow_order",
+      "expected": [
+        "small_cascode_bias_pair",
+        "verify_op_headroom",
+        "remeasure_gain_pm_iq_startup"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.authorized_action_sequence",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "conditional_plan",
+      "expected": "input_length_controlled_pair",
+      "id": "contingent",
+      "kind": "exact",
+      "path": "artifact.contingent_next_action",
+      "weight": 10
+    },
+    {
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": "op_recovery_experiment",
+      "id": "stage",
+      "kind": "exact",
+      "path": "artifact.max_authorized_stage",
+      "weight": 5
+    },
+    {
+      "critical": false,
+      "dimension": "stop_rule",
+      "expected": "stop_if_op_headroom_or_pm_or_iq_worsens",
+      "id": "stop",
+      "kind": "exact",
+      "path": "artifact.stop_rule",
+      "weight": 5
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-architecture-01-advice-gates",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-op-first",
+    "kg-evidence-admission",
+    "kg-architecture-advice-order",
+    "kg-controlled-experiment"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-architecture-01-advice-gates"
+}

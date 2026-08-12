@@ -12,6 +12,7 @@ import json
 import random
 import shutil
 from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,7 +34,7 @@ one EDA companion. Every task uses the `task_examples` layout (`task.toml`, `ins
 runtime bundle. Tool-task answer grading is only semantic; an official tool score additionally requires
 `evoldo-bench verify-live`, whose infrastructure-invalid result must be retried rather than scored zero.
 Pure reasoning tasks use six dimensions with ordered-choice partial credit, pairwise ranking credit, and evidence-set F1 scoring.
-See `docs/BENCHMARK_V06.md` for the protocol and score definitions.
+This track is retained for historical result replay; the current protocol is `docs/BENCHMARK_V07.md`.
 """
 
 
@@ -374,7 +375,7 @@ def write(path: Path, value: str) -> None:
         path.chmod(0o755)
 
 
-def choice_question(task_id: str, qid: str, prompt: str, correct: str, pool: list[str]) -> tuple[dict, str]:
+def choice_question(task_id: str, qid: str, prompt: str, correct: str, pool: List[str]) -> Tuple[dict, str]:
     distractors = [item for item in pool if item != correct][:]
     rng = random.Random(int(hashlib.sha256((task_id + qid).encode()).hexdigest()[:16], 16))
     rng.shuffle(distractors)
@@ -387,7 +388,7 @@ def choice_question(task_id: str, qid: str, prompt: str, correct: str, pool: lis
 
 
 def credited_choice_question(task_id: str, qid: str, prompt: str,
-                             alternatives: list[tuple[str, float]]) -> tuple[dict, str, dict[str, float]]:
+                             alternatives: List[Tuple[str, float]]) -> Tuple[dict, str, Dict[str, float]]:
     if len(alternatives) != 4 or sum(float(credit) == 1.0 for _, credit in alternatives) != 1:
         raise ValueError("credited choices require four alternatives and exactly one full-credit answer")
     values = list(alternatives)
@@ -400,7 +401,7 @@ def credited_choice_question(task_id: str, qid: str, prompt: str,
 
 
 def ranked_credit_question(task_id: str, qid: str, prompt: str,
-                           alternatives: list[tuple[str, float]]) -> tuple[dict, list[str]]:
+                           alternatives: List[Tuple[str, float]]) -> Tuple[dict, List[str]]:
     """Ask for the complete evidence-strength order, not only the easiest top choice."""
     if len(alternatives) != 4 or len({float(credit) for _, credit in alternatives}) != 4:
         raise ValueError("ranked choices require four alternatives with unique credit levels")
@@ -414,7 +415,7 @@ def ranked_credit_question(task_id: str, qid: str, prompt: str,
     return {"id": qid, "kind": "ranked_choice", "prompt": ranked_prompt, "options": options}, expected
 
 
-def calibrated_reasoning_question(task_id: str, qid: str, prompt: str, correct: str) -> tuple[dict, str, dict[str, float]]:
+def calibrated_reasoning_question(task_id: str, qid: str, prompt: str, correct: str) -> Tuple[dict, str, Dict[str, float]]:
     near_misses = {
         "q1": [
             ("The evidence points in this direction, but a different mechanism should be prioritized before acting", 0.4),
@@ -440,7 +441,7 @@ def calibrated_reasoning_question(task_id: str, qid: str, prompt: str, correct: 
     return credited_choice_question(task_id, qid, prompt, [(correct, 1.0), *near_misses[qid]])
 
 
-def task_toml(task_id: str, title: str, artifacts: list[str], mode: str) -> str:
+def task_toml(task_id: str, title: str, artifacts: List[str], mode: str) -> str:
     artifact_text = ", ".join(json.dumps(item) for item in artifacts)
     network = "host-bridge-only" if mode == "eda_assisted" else "no-network"
     return f'''schema_version = "1.3"
@@ -533,11 +534,11 @@ reward_path.write_text(json.dumps({"reward": reward, "tests_total": total, "test
 
 
 def make_package(task_id: str, title: str, suite: str, level: str, variant: str, role: str,
-                 case: dict, answers: dict, mode: str = "direct_reasoning", paired_with: str | None = None,
-                 extra_starter: dict[str, str] | None = None, extra_solution: dict[str, str] | None = None,
-                 choice_credits: dict[str, dict[str, float]] | None = None,
-                 ranking_questions: set[str] | None = None,
-                 set_f1_questions: set[str] | None = None) -> dict:
+                 case: dict, answers: dict, mode: str = "direct_reasoning", paired_with: Optional[str] = None,
+                 extra_starter: Optional[Dict[str, str]] = None, extra_solution: Optional[Dict[str, str]] = None,
+                 choice_credits: Optional[Dict[str, Dict[str, float]]] = None,
+                 ranking_questions: Optional[Set[str]] = None,
+                 set_f1_questions: Optional[Set[str]] = None) -> dict:
     root = TASKS / task_id
     starter = root / "environment" / "starter"
     tests = root / "tests"
@@ -632,7 +633,7 @@ Hard requirements:
     return contract
 
 
-def build_reasoning() -> list[dict]:
+def build_reasoning() -> List[dict]:
     contracts = []
     for suite, rows in SUITES.items():
         for index, row in enumerate(rows):
@@ -774,7 +775,7 @@ CLOAD vout 0 10p
 '''
 
 
-def build_sizing_tools() -> list[dict]:
+def build_sizing_tools() -> List[dict]:
     contracts = []
     source_rows = SUITES["sizing"]
     defaults = {"pass_width_um": 120, "input_width_um": 40, "driver_res_kohm": 5, "ccomp_pf": 5,
@@ -960,7 +961,7 @@ def skill_program(slug: str) -> str:
     return SKILL_PRELUDE + "\n" + bodies[slug] + "\nevoldoMain()\nexit()\n"
 
 
-def build_eda() -> list[dict]:
+def build_eda() -> List[dict]:
     contracts = []
     for index, (slug, title, scenario, field, expected) in enumerate(EDA_TOPICS, 1):
         task_id = f"v06-eda-{index:02d}-{slug}"

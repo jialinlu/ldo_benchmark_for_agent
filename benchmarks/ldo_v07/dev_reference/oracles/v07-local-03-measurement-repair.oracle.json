@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "failure_classification",
+      "expected": "measurement_contract_changed",
+      "id": "class",
+      "kind": "exact",
+      "path": "artifact.failure_class",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "measurement_audit",
+      "expected": [
+        "ac_amplitude",
+        "load",
+        "probe_node"
+      ],
+      "id": "mismatch",
+      "kind": "set_f1",
+      "path": "artifact.contract_mismatches",
+      "weight": 30
+    },
+    {
+      "dimension": "repair_plan",
+      "expected": [
+        "restore_same_ac_normalization",
+        "restore_same_load",
+        "probe_vout",
+        "fresh_run",
+        "compare_same_hash"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.action_sequence",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": "no_circuit_claim",
+      "id": "scope",
+      "kind": "exact",
+      "path": "artifact.claim_scope",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-local-03-measurement-repair",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-evidence-admission"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-local-03-measurement-repair"
+}

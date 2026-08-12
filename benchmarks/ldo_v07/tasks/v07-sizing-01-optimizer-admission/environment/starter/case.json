@@ -1,0 +1,317 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "admitted_evaluations": {
+        "allowed": [
+          "e5",
+          "e1",
+          "e2",
+          "e3",
+          "e9",
+          "e6",
+          "e7",
+          "e8",
+          "e4"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "best_hard_pass_candidate": {
+        "allowed": [
+          "none",
+          "e8",
+          "e7",
+          "e1",
+          "e5",
+          "e6",
+          "e4"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "design_budget_consumed": {
+        "type": "number"
+      },
+      "evaluation_tags": {
+        "allowed_keys": [
+          "e8",
+          "e5",
+          "e1",
+          "e7",
+          "e6",
+          "e4",
+          "e3",
+          "e9",
+          "e2"
+        ],
+        "required_keys": [
+          "e7",
+          "e3",
+          "e9",
+          "e8",
+          "e2",
+          "e1",
+          "e6",
+          "e5",
+          "e4"
+        ],
+        "type": "string_list_map",
+        "value_allowed": [
+          "exclude",
+          "feasibility_observation",
+          "design_budget",
+          "evidence_integrity",
+          "objective_observation",
+          "invalid_candidate",
+          "measured",
+          "retry",
+          "infrastructure",
+          "measurement"
+        ]
+      },
+      "next_ccomp_pf": {
+        "type": "number"
+      },
+      "next_driver_w_um": {
+        "type": "number"
+      },
+      "next_experiment_basis": {
+        "allowed": [
+          "isolate_driver_from_e6",
+          "expand_legal_grid",
+          "continue_from_highest_raw_score",
+          "repeat_infrastructure_as_design"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "stop_rule": {
+        "allowed": [
+          "never_stop",
+          "stop_if_iq_fails_or_no_score_gain",
+          "stop_after_one_simulation"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "candidate_ids": [
+      "e4",
+      "e7",
+      "e8",
+      "e6",
+      "none",
+      "e1",
+      "e5"
+    ],
+    "evaluation_ids": [
+      "e1",
+      "e2",
+      "e4",
+      "e8",
+      "e3",
+      "e7",
+      "e9",
+      "e5",
+      "e6"
+    ],
+    "experiment_bases": [
+      "continue_from_highest_raw_score",
+      "isolate_driver_from_e6",
+      "repeat_infrastructure_as_design",
+      "expand_legal_grid"
+    ],
+    "stop_rules": [
+      "never_stop",
+      "stop_after_one_simulation",
+      "stop_if_iq_fails_or_no_score_gain"
+    ],
+    "tags": [
+      "feasibility_observation",
+      "evidence_integrity",
+      "exclude",
+      "measured",
+      "measurement",
+      "invalid_candidate",
+      "objective_observation",
+      "infrastructure",
+      "retry",
+      "design_budget"
+    ]
+  },
+  "materials": {
+    "admission_policy": {
+      "infra_or_measurement": "INFRA_ERROR and MEAS_ERROR are retried, excluded from both surrogates, and consume no design budget.",
+      "invalid_candidate": "A deterministic legal-space rejection is a feasibility observation and consumes design budget, but never receives invented metric values.",
+      "measured": "A current-profile MEASURED row with all required numeric/boolean metrics is an objective observation and consumes design budget.",
+      "next_probe": "Because e7 changes both driver width and Ccomp relative to e6, isolate driver_w=20 at e6's Ccomp and input_nf before inferring a driver sensitivity.",
+      "selection": "Select the highest-score candidate among rows passing every hard limit.",
+      "stale_identity": "A row from another profile is evidence-integrity excluded and rerun on the current profile before use."
+    },
+    "current_profile_hash": "p9",
+    "evaluations": [
+      {
+        "candidate_hash": "c1",
+        "id": "e1",
+        "metrics": {
+          "dropout_mv": 96,
+          "iq_ua": 101,
+          "pm_deg": 47,
+          "score": 72,
+          "startup": true
+        },
+        "params": {
+          "ccomp_pf": 5,
+          "driver_w_um": 14,
+          "input_nf": 4
+        },
+        "profile_hash": "p9",
+        "status": "MEASURED"
+      },
+      {
+        "failure": "license_checkout",
+        "id": "e2",
+        "metrics": {},
+        "profile_hash": "p9",
+        "status": "INFRA_ERROR"
+      },
+      {
+        "failure": "pm_vector_missing",
+        "id": "e3",
+        "metrics": {
+          "dropout_mv": 91,
+          "iq_ua": 104
+        },
+        "profile_hash": "p9",
+        "status": "MEAS_ERROR"
+      },
+      {
+        "failure": "input_nf_not_on_legal_grid",
+        "id": "e4",
+        "metrics": {},
+        "params": {
+          "ccomp_pf": 6,
+          "driver_w_um": 16,
+          "input_nf": 5
+        },
+        "profile_hash": "p9",
+        "status": "INVALID_CANDIDATE"
+      },
+      {
+        "candidate_hash": "c5",
+        "id": "e5",
+        "metrics": {
+          "dropout_mv": 93,
+          "iq_ua": 107,
+          "pm_deg": 52,
+          "score": 81,
+          "startup": true
+        },
+        "params": {
+          "ccomp_pf": 6,
+          "driver_w_um": 16,
+          "input_nf": 4
+        },
+        "profile_hash": "p9",
+        "status": "MEASURED"
+      },
+      {
+        "candidate_hash": "c6",
+        "id": "e6",
+        "metrics": {
+          "dropout_mv": 88,
+          "iq_ua": 119,
+          "pm_deg": 54,
+          "score": 88,
+          "startup": true
+        },
+        "params": {
+          "ccomp_pf": 6,
+          "driver_w_um": 18,
+          "input_nf": 4
+        },
+        "profile_hash": "p9",
+        "status": "MEASURED"
+      },
+      {
+        "candidate_hash": "c7",
+        "id": "e7",
+        "metrics": {
+          "dropout_mv": 85,
+          "iq_ua": 126,
+          "pm_deg": 57,
+          "score": 91,
+          "startup": true
+        },
+        "params": {
+          "ccomp_pf": 7,
+          "driver_w_um": 20,
+          "input_nf": 4
+        },
+        "profile_hash": "p9",
+        "status": "MEASURED"
+      },
+      {
+        "candidate_hash": "c8",
+        "id": "e8",
+        "metrics": {
+          "dropout_mv": 84,
+          "iq_ua": 112,
+          "pm_deg": 56,
+          "score": 94,
+          "startup": true
+        },
+        "params": {
+          "ccomp_pf": 6,
+          "driver_w_um": 18,
+          "input_nf": 4
+        },
+        "profile_hash": "p-old",
+        "status": "MEASURED"
+      },
+      {
+        "failure": "provider_http_503",
+        "id": "e9",
+        "metrics": {},
+        "profile_hash": "p9",
+        "status": "INFRA_ERROR"
+      }
+    ],
+    "hard_limits": {
+      "dropout_max_mv": 90,
+      "iq_max_ua": 120,
+      "pm_min_deg": 50,
+      "startup_required": true
+    },
+    "legal_space": {
+      "ccomp_pf": [
+        5,
+        6,
+        7
+      ],
+      "driver_w_um": [
+        12,
+        14,
+        16,
+        18,
+        20
+      ],
+      "input_nf": [
+        2,
+        4,
+        6,
+        8
+      ]
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Audit a mixed sizing ledger, keep infrastructure and measurement failures out of the optimizer, select the best hard-pass candidate, and construct the next legal one-variable experiment.",
+  "schema_version": "3.0",
+  "task_id": "v07-sizing-01-optimizer-admission"
+}

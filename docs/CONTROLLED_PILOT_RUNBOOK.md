@@ -30,10 +30,33 @@ Prepare:
 Never route tools per task from a hidden answer table. The same tool interface must be available to every
 eligible task in that treatment.
 
-## 2. Run direct, skill, and simulation treatments
+## 2. Run the v0.7 direct/KG pair
+
+Pure-model v0.7 first freezes the answer model with no registered tools and runs the direct/KG pair. The
+only treatment difference is the runner-generated local retrieval snapshot:
 
 ```bash
 evoldo-bench experiment --output runs/direct --model-id MODEL \
+  --mode direct_reasoning --rollouts 3 --base-seed 20260812 \
+  --paired-modes direct_reasoning,knowledge_assisted -- \
+  /absolute/path/to/no-web-model-adapter
+
+evoldo-bench experiment --output runs/kg --model-id MODEL \
+  --mode knowledge_assisted --rollouts 3 --base-seed 20260812 \
+  --paired-modes direct_reasoning,knowledge_assisted \
+  --knowledge-corpus benchmarks/ldo_v07/knowledge/ldo_kg_v1.json \
+  --knowledge-top-k 4 -- \
+  /absolute/path/to/no-web-model-adapter
+```
+
+Then run `compare-treatments` on the two manifests. The comparison must pass all model-parameter,
+task/prompt/input/answer/oracle hash, seed, budget, no-Web policy, and rollout-matrix controls. Report score
+lift, harm, recall/precision, terminal-token overhead, and wall-time overhead.
+
+## 3. Run later skill and simulation treatments
+
+```bash
+evoldo-bench experiment --output runs/tool-direct --model-id MODEL \
   --mode direct_reasoning --rollouts 3 --base-seed 2026 \
   --paired-modes direct_reasoning,agentic_skill,simulation_assisted -- \
   /absolute/path/to/model_adapter
@@ -55,23 +78,31 @@ The adapter must write the same `answer.json` contract in all modes. Detailed pr
 written to `EVOLDO_TELEMETRY_PATH`. Any tool use must be recorded at `EVOLDO_TOOL_LEDGER_PATH`; undeclared
 calls, rejected probes, and over-budget calls are policy failures.
 
-Every scheduled rollout remains in the score denominator. A refusal, declared inability,
-malformed answer, missing answer, or policy failure receives a deterministic zero. Provider or runner
+Every scheduled rollout remains in the score denominator. A refusal, declared inability, missing answer,
+unassignable answer envelope (invalid JSON, missing required outer fields, or wrong task ID), or policy
+failure receives a deterministic zero. In schema 3.0, a malformed field inside an otherwise assignable
+answer loses credit only inside atomic checks that reference it; other independently verifiable checks retain
+credit, while the strict contract validator still rejects the answer. Provider or runner
 infrastructure failures are retried with the same task, rollout, and seed until a model-attributable outcome
-is obtained. Provider timeouts and interrupted streams are infrastructure failures; an answer that violates
-the current answer contract is a model failure. Every attempt remains visible in the operational report,
+is obtained. Provider timeouts and interrupted streams are infrastructure failures; every answer-contract
+violation remains model-attributable even when only its local scoring dimension is zero. Every attempt remains visible in the operational report,
 and unresolved infrastructure rows block capability reporting. Missing token or cost telemetry is
 `unavailable`, never silently converted to numeric zero.
+
+If the provider explicitly reports `finish_reason=length`, label it `output_budget_exhausted`. Do not
+automatically retry that row under the known-insufficient ceiling and do not splice a higher-budget answer
+into the old treatment. Freeze a sufficient ceiling, rerun the complete treatment, and publish it as a
+separate configuration; retain the truncated attempt as operational evidence.
 
 If a versioned framework defect rejected a contract-valid answer, preserve the answer and its hash, repair
 the framework, and regrade it without another inference. Do not use a new model response to conceal a
 grader or schema defect.
 
-## 3. Prove the comparison is paired
+## 4. Prove the later comparison is paired
 
 ```bash
 evoldo-bench compare-treatments \
-  runs/direct/experiment_manifest.json \
+  runs/tool-direct/experiment_manifest.json \
   runs/skill/experiment_manifest.json \
   runs/simulation/experiment_manifest.json
 ```
@@ -79,7 +110,7 @@ evoldo-bench compare-treatments \
 Required result: `passed=true`. A model, task, rollout, seed, budget, task hash, or answer-contract mismatch
 invalidates causal lift. Different frozen context/tool snapshots are the intended treatment changes.
 
-## 4. Enforce every simulator probe
+## 5. Enforce every simulator probe
 
 Before a simulator call, write and validate an `AnalogProbeContract`:
 
@@ -95,24 +126,24 @@ executables, timeout, invalid output, or setup failure. It must not invent a cir
 A normalized ledger entry contains the probe, tool status, evidence hash, and whether the final answer used
 that evidence. The report computes ineffective-probe and policy-rejection rates.
 
-## 5. Grade and publish score-versus-effort reports
+## 6. Grade and publish score-versus-effort reports
 
 ```bash
-evoldo-bench experiment-report runs/direct --output reports/direct.json --markdown reports/direct.md
+evoldo-bench experiment-report runs/tool-direct --output reports/tool-direct.json --markdown reports/tool-direct.md
 evoldo-bench experiment-report runs/skill --output reports/skill.json --markdown reports/skill.md
 evoldo-bench experiment-report runs/simulation --output reports/simulation.json --markdown reports/simulation.md
 
-evoldo-bench paired-lift --direct reports/direct.json --skill reports/skill.json \
+evoldo-bench paired-lift --direct reports/tool-direct.json --skill reports/skill.json \
   --simulation reports/simulation.json
 
-evoldo-bench leaderboard reports/direct.json reports/skill.json reports/simulation.json \
+evoldo-bench leaderboard reports/tool-direct.json reports/skill.json reports/simulation.json \
   --output-dir reports/leaderboard
 ```
 
 Publish Pass@1 with its interval, spec score, family macro, suite/level vectors, critical errors, tokens,
 cache, steps, calls, time, cost, lift, simulation harm, and ineffective probes. Do not publish only one rank.
 
-## 6. Calibrate explanation judges before enabling them
+## 7. Calibrate explanation judges before enabling them
 
 Two analog engineers independently label an external calibration set and adjudicate disagreements. Run two
 heterogeneous frozen judge snapshots, then:
@@ -132,7 +163,7 @@ evoldo-bench combine-judges two_records.json --score-tolerance 10
 `HUMAN_REVIEW` is mandatory on label, critical-error, or large score disagreement. Deterministic facts and
 hard qualification gates never move to an LLM judge merely because prose scoring is convenient.
 
-## 7. Freeze a sealed exam
+## 8. Freeze a sealed exam
 
 Hidden families and oracles must be genuinely external and lineage-disjoint from public tasks.
 
@@ -156,7 +187,7 @@ unless network access is an explicit separately reported treatment.
 The full manifest contains hidden relative paths and policy contents and stays private. Publish only the
 redacted commitment, which retains aggregate digests and file counts.
 
-## 8. Run design closure
+## 9. Run design closure
 
 For every candidate:
 
@@ -189,7 +220,7 @@ evoldo-bench closure-metrics qualification_attempts.json
 Run cold and assisted sizing with the same initial candidate, parameter bounds, qualification plan,
 evaluation budget, and tool policy.
 
-## 9. Sign-off checklist
+## 10. Sign-off checklist
 
 A formal result needs all of the following:
 

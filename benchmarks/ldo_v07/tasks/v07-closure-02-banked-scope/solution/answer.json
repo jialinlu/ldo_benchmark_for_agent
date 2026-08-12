@@ -1,0 +1,21 @@
+{
+  "artifact": {
+    "claimable_scopes": [
+      "steady_state_performance"
+    ],
+    "decision": "bank_partial_continue",
+    "next_action": "repair_startup_and_enable",
+    "scope_status": {
+      "complete_design": "open_fail",
+      "enable_restart": "open_fail",
+      "full_corner": "open_missing",
+      "materialization": "open_missing",
+      "startup": "open_fail",
+      "steady_state_performance": "banked"
+    }
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-02-banked-scope"
+}

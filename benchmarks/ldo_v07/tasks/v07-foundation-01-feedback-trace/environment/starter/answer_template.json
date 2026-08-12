@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "claim_scope": "CONTROLLED_VALUE",
+    "evidence_used": [],
+    "loop_conclusion": "CONTROLLED_VALUE",
+    "next_probe": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-01-feedback-trace"
+}

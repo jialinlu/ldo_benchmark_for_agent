@@ -1,0 +1,54 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "feedback_stability",
+    "design_closure",
+    "stop_rule",
+    "failure_classification"
+  ],
+  "deployment_tier": "T3_multi_constraint_closure",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-closure-01-stb-stop-rule",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v07-closure-01-stb-stop-rule",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "diagnostic_action",
+    "safety",
+    "stb_interpretation",
+    "stop_rule"
+  ],
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "v07-closure-01-stb-stop-rule",
+  "title": "Stop a corner campaign when STB evidence is undefined",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

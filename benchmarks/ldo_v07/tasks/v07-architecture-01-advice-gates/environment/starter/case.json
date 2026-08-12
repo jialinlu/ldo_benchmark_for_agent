@@ -1,0 +1,319 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "authorized_action_sequence": {
+        "allowed": [
+          "add_gain_boost_stage",
+          "input_length_controlled_pair",
+          "small_cascode_bias_pair",
+          "run_full_pvt",
+          "remeasure_gain_pm_iq_startup",
+          "increase_pass_width_20pct",
+          "verify_op_headroom"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "contingent_next_action": {
+        "allowed": [
+          "input_length_controlled_pair",
+          "add_gain_boost_stage",
+          "increase_pass_width_20pct",
+          "small_cascode_bias_pair",
+          "run_full_pvt"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "evidence_labels": {
+        "allowed_keys": [
+          "m2",
+          "m5",
+          "m4",
+          "m1",
+          "m3"
+        ],
+        "required_keys": [
+          "m1",
+          "m5",
+          "m4",
+          "m2",
+          "m3"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "unbound_old",
+          "measured_current",
+          "analytical_prior"
+        ]
+      },
+      "max_authorized_stage": {
+        "allowed": [
+          "same_architecture_sizing",
+          "op_recovery_experiment",
+          "quick_regression",
+          "full_qualification"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "primary_gate": {
+        "allowed": [
+          "full_qualification",
+          "change_topology",
+          "recover_operating_point",
+          "measure_gain_only"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "proposal_status": {
+        "allowed_keys": [
+          "p1",
+          "p5",
+          "p4",
+          "p2",
+          "p6",
+          "p3"
+        ],
+        "required_keys": [
+          "p2",
+          "p6",
+          "p3",
+          "p1",
+          "p4",
+          "p5"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "blocked_missing_current_knob",
+          "blocked_qualification_gate",
+          "contingent_after_op",
+          "admissible_op_recovery",
+          "unsupported_before_op",
+          "deferred_topology"
+        ]
+      },
+      "stop_rule": {
+        "allowed": [
+          "stop_after_nominal_gain",
+          "never_stop",
+          "stop_if_op_headroom_or_pm_or_iq_worsens"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "input_length_controlled_pair",
+      "run_full_pvt",
+      "add_gain_boost_stage",
+      "small_cascode_bias_pair",
+      "remeasure_gain_pm_iq_startup",
+      "increase_pass_width_20pct",
+      "verify_op_headroom"
+    ],
+    "evidence_ids": [
+      "m1",
+      "m2",
+      "m3",
+      "m5",
+      "m4"
+    ],
+    "evidence_labels": [
+      "analytical_prior",
+      "measured_current",
+      "unbound_old"
+    ],
+    "gates": [
+      "measure_gain_only",
+      "recover_operating_point",
+      "full_qualification",
+      "change_topology"
+    ],
+    "proposal_ids": [
+      "p6",
+      "p4",
+      "p3",
+      "p5",
+      "p1",
+      "p2"
+    ],
+    "proposal_statuses": [
+      "admissible_op_recovery",
+      "deferred_topology",
+      "blocked_qualification_gate",
+      "blocked_missing_current_knob",
+      "unsupported_before_op",
+      "contingent_after_op"
+    ],
+    "stages": [
+      "same_architecture_sizing",
+      "quick_regression",
+      "op_recovery_experiment",
+      "full_qualification"
+    ],
+    "stop_rules": [
+      "stop_if_op_headroom_or_pm_or_iq_worsens",
+      "never_stop",
+      "stop_after_nominal_gain"
+    ]
+  },
+  "materials": {
+    "current_identity": {
+      "bench_hash": "b7",
+      "candidate_hash": "h31",
+      "corner": "tt_nom_room"
+    },
+    "current_knobs": {
+      "cascode_bias_v": 0.51,
+      "input_l_um": 0.5,
+      "pass_w_um": 820,
+      "recycle_ratio": null
+    },
+    "evidence": [
+      {
+        "bench_hash": "b7",
+        "candidate_hash": "h31",
+        "facts": {
+          "cascode": "triode",
+          "cascode_headroom_mv": 18,
+          "input_pair": "saturation",
+          "required_headroom_mv": 35
+        },
+        "id": "m1",
+        "kind": "op"
+      },
+      {
+        "bench_hash": "b7",
+        "candidate_hash": "h31",
+        "facts": {
+          "dc_gain_db": 43,
+          "phase_margin_deg": 52,
+          "target_gain_db": 58
+        },
+        "id": "m2",
+        "kind": "ac"
+      },
+      {
+        "bench_hash": "b7",
+        "candidate_hash": "h24",
+        "facts": {
+          "gain_delta_db": 9,
+          "input_l_change": "+40%",
+          "phase_margin_delta_deg": -3
+        },
+        "id": "m3",
+        "kind": "controlled_pair"
+      },
+      {
+        "bench_hash": null,
+        "candidate_hash": null,
+        "facts": {
+          "claim": "gain boosting can increase loop gain but adds poles and current"
+        },
+        "id": "m4",
+        "kind": "analytical_prior"
+      },
+      {
+        "bench_hash": "b7",
+        "candidate_hash": "h31",
+        "facts": {
+          "iq_limit_ua": 120,
+          "iq_ua": 106,
+          "zero_state_startup": "pass"
+        },
+        "id": "m5",
+        "kind": "startup"
+      }
+    ],
+    "proposals": [
+      {
+        "action": "increase_pass_width_20pct",
+        "changed_knobs": [
+          "pass_w"
+        ],
+        "evidence_ids": [],
+        "id": "p1"
+      },
+      {
+        "action": "small_cascode_bias_pair",
+        "changed_knobs": [
+          "cascode_bias"
+        ],
+        "evidence_ids": [
+          "m1"
+        ],
+        "id": "p2"
+      },
+      {
+        "action": "increase_recycle_ratio",
+        "changed_knobs": [
+          "recycle_ratio"
+        ],
+        "evidence_ids": [],
+        "id": "p3"
+      },
+      {
+        "action": "input_length_controlled_pair",
+        "changed_knobs": [
+          "input_l"
+        ],
+        "evidence_ids": [
+          "m3"
+        ],
+        "id": "p4"
+      },
+      {
+        "action": "add_gain_boost_stage",
+        "changed_knobs": [
+          "topology",
+          "bias"
+        ],
+        "evidence_ids": [
+          "m4"
+        ],
+        "id": "p5"
+      },
+      {
+        "action": "run_full_pvt",
+        "changed_knobs": [],
+        "evidence_ids": [
+          "m2",
+          "m5"
+        ],
+        "id": "p6"
+      }
+    ],
+    "review_policy": {
+      "conditional_plan": "Only the OP-recovery experiment is authorized now; downstream sizing remains contingent on a passing fresh OP.",
+      "controlled_pair": "One known current knob, same bench/corner, hash-bound baseline and candidate, followed by current OP and affected-metric checks.",
+      "evidence_order": [
+        "current_hash_bound_measurement",
+        "unbound_old_measurement",
+        "analytical_prior"
+      ],
+      "hard_gate": "A critical device in triode blocks performance sizing and full qualification until OP recovery is measured on the current hash.",
+      "missing_knob": "Do not propose a delta from an unknown current value.",
+      "proposal_status_rules": {
+        "admissible_op_recovery": "Directly repairs the current measured OP blocker with one known knob.",
+        "blocked_missing_current_knob": "Requires a delta from an unknown current knob value.",
+        "blocked_qualification_gate": "Attempts qualification while a prerequisite hard gate is open.",
+        "contingent_after_op": "Has a relevant measured controlled-pair result, but that result is bound to an older candidate and must be repeated only after OP recovery.",
+        "deferred_topology": "Changes topology before bounded same-architecture levers are exhausted.",
+        "unsupported_before_op": "Has no supporting evidence and does not directly repair the measured OP blocker."
+      },
+      "topology_change": "Defer until bounded same-architecture levers have current evidence."
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Review a proposed gain-improvement plan for an existing capless LDO. Separate what current evidence authorizes now from contingent hypotheses and qualification-only work.",
+  "schema_version": "3.0",
+  "task_id": "v07-architecture-01-advice-gates"
+}

@@ -16,7 +16,7 @@ from evoldo_bench.discovery import discover_tasks, inventory
 from evoldo_bench.grading import grade_one
 from evoldo_bench.utils import load_json
 
-TRACK = ROOT / "benchmarks" / "ldo_v06"
+TRACK = ROOT / "benchmarks" / "ldo_v07"
 TASKS = TRACK / "tasks"
 ORACLES = TRACK / "dev_reference" / "oracles"
 
@@ -24,13 +24,14 @@ ORACLES = TRACK / "dev_reference" / "oracles"
 def main() -> int:
     tasks = discover_tasks(TASKS)
     inv = inventory(tasks)
-    assert inv["task_count"] == 69 and inv["family_count"] == 54, inv
+    assert inv["task_count"] == 27 and inv["family_count"] == 27, inv
     audit = audit_task_collection(TASKS, ORACLES)
     assert audit["passed"], audit
     scores = []
     for task in tasks:
         score = grade_one(TASKS, ORACLES, task.root / "solution" / "answer.json")
         assert score["score"] == 100.0, (task.task_id, score)
+        assert score["deployment_tier"] == task.data["deployment_tier"], task.task_id
         scores.append(score)
     report = aggregate_scores(scores, mode="public_dev_self_check")
     assert report["family_macro_score"] == 100.0, report

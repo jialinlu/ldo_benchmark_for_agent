@@ -1,0 +1,9 @@
+{
+  "model_entry": "libs.tech/ngspice/sky130.lib.spice",
+  "model_entry_sha256": "5efa041a988893c1a3580d0ecd57870ea3146b27741c7d42b56baaa336b9549e",
+  "provider": "sky130",
+  "repository": "https://github.com/opensource-analog-circuits/sky130_pdk",
+  "revision": "e8308aa273c1a6737a5dee89178c4d48270ff87e",
+  "simulator": "ngspice",
+  "validated_version": "46"
+}

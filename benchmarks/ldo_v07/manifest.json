@@ -1,0 +1,35 @@
+{
+  "benchmark_version": "0.7.0",
+  "knowledge_effect_expectation_counts": {
+    "benefit_expected": 20,
+    "neutral_expected": 1,
+    "override_resistant": 6
+  },
+  "pure_model_core": 27,
+  "required_treatments": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "rollouts_per_model": 3,
+  "suite_counts": {
+    "architecture_choice": 3,
+    "design_closure": 5,
+    "diagnosis": 5,
+    "eda_tool": 3,
+    "migration": 1,
+    "sizing": 6,
+    "structure": 1,
+    "system_impact": 1,
+    "trend": 2
+  },
+  "task_count": 27,
+  "task_ids_sha256": "a074735e3690844b50bd9fbdd38450f4a383561d3bb0bbfe628527aafb4eb79d",
+  "tier_counts": {
+    "T0_foundation": 4,
+    "T1_local_advice": 5,
+    "T2_bounded_workflow": 8,
+    "T3_multi_constraint_closure": 7,
+    "T4_end_to_end_planning": 3
+  },
+  "web_search_policy": "forbidden_all_treatments"
+}

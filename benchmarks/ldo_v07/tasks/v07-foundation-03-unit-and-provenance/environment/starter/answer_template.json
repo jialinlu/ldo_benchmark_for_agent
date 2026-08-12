@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "decision": "CONTROLLED_VALUE",
+    "dropout_mv": 0.0,
+    "evidence_used": [],
+    "iq_ua": 0.0,
+    "record_classes": {}
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-03-unit-and-provenance"
+}

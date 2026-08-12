@@ -1,0 +1,20 @@
+{
+  "artifact": {
+    "admissible_cards": [
+      "x1"
+    ],
+    "card_classes": {
+      "x1": "validated_single_variable",
+      "x2": "multi_knob_confounded",
+      "x3": "bench_corner_confounded",
+      "x4": "identity_not_distinct",
+      "x5": "nonnumeric_or_missing"
+    },
+    "narrative_level": "candidate_correlation",
+    "next_action": "admit_x1_only"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-05-causal-ledger"
+}

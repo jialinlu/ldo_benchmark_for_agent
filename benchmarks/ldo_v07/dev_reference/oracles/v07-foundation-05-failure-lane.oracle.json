@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "dimension": "failure_classification",
+      "expected": {
+        "f1": "provider_infrastructure",
+        "f2": "circuit",
+        "f3": "measurement",
+        "f4": "format",
+        "f5": "eda_infrastructure"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.failure_classes",
+      "weight": 50
+    },
+    {
+      "critical": true,
+      "critical_credit_threshold": 0.01,
+      "dimension": "retry_policy",
+      "expected": [
+        "f1",
+        "f3",
+        "f5"
+      ],
+      "id": "retry",
+      "kind": "set_f1",
+      "path": "artifact.must_retry_not_score",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "dimension": "model_failure_attribution",
+      "expected": [
+        "f4"
+      ],
+      "id": "answer",
+      "kind": "set_f1",
+      "path": "artifact.model_answer_failures",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-foundation-05-failure-lane",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-gated-qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-foundation-05-failure-lane"
+}

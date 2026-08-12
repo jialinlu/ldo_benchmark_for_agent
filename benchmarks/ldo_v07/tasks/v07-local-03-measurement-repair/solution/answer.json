@@ -1,0 +1,22 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "restore_same_ac_normalization",
+      "restore_same_load",
+      "probe_vout",
+      "fresh_run",
+      "compare_same_hash"
+    ],
+    "claim_scope": "no_circuit_claim",
+    "contract_mismatches": [
+      "ac_amplitude",
+      "load",
+      "probe_node"
+    ],
+    "failure_class": "measurement_contract_changed"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-local-03-measurement-repair"
+}

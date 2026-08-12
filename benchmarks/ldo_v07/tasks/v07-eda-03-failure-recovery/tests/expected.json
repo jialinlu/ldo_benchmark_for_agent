@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "dimension": "failure_classification",
+      "expected": {
+        "v1": "transport_infrastructure",
+        "v2": "healthy_control",
+        "v3": "cdf_netlisting",
+        "v4": "pdk_fixture",
+        "v5": "measurement_fixture",
+        "v6": "circuit"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.failure_classes",
+      "weight": 40
+    },
+    {
+      "dimension": "recovery_order",
+      "expected": [
+        "retry_transport",
+        "fix_cdf_mapping",
+        "fix_model_section",
+        "fix_save_selection",
+        "diagnose_circuit_op"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.repair_sequence",
+      "weight": 30
+    },
+    {
+      "critical": true,
+      "dimension": "evidence_boundary",
+      "expected": "v6",
+      "id": "circuit",
+      "kind": "exact",
+      "path": "artifact.first_circuit_evidence",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "attribution_policy",
+      "expected": [
+        "v1",
+        "v3",
+        "v4",
+        "v5"
+      ],
+      "id": "not_score",
+      "kind": "set_f1",
+      "path": "artifact.not_scoreable_as_model_circuit_failure",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-eda-03-failure-recovery",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-cdf-netlist",
+    "kg-gated-qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-eda-03-failure-recovery"
+}

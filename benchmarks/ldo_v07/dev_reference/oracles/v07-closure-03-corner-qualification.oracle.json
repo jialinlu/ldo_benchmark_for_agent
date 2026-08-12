@@ -1,0 +1,62 @@
+{
+  "checks": [
+    {
+      "dimension": "row_audit",
+      "expected": {
+        "r1": "valid_pass",
+        "r2": "metric_missing",
+        "r3": "stale_hash",
+        "r4": "hard_fail"
+      },
+      "id": "rows",
+      "kind": "mapping_credit",
+      "path": "artifact.row_classes",
+      "weight": 30
+    },
+    {
+      "critical": true,
+      "dimension": "qualification_decision",
+      "expected": "not_qualified",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "gate_accounting",
+      "expected": [
+        "pm_r2",
+        "current_hash_r3",
+        "pm_r4",
+        "startup_r4"
+      ],
+      "id": "gates",
+      "kind": "set_f1",
+      "path": "artifact.missing_or_failed_gates",
+      "weight": 25
+    },
+    {
+      "dimension": "worst_corner_analysis",
+      "expected": {
+        "dropout": "ss_low_hot_heavy",
+        "iq": "ff_high_cold_light",
+        "phase_margin": "sf_low_cold_light",
+        "startup": "sf_low_cold_light"
+      },
+      "id": "worst",
+      "kind": "mapping_credit",
+      "path": "artifact.metric_worst_corners",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-03-corner-qualification",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-gated-qualification",
+    "kg-metric-specific-worst"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-03-corner-qualification"
+}

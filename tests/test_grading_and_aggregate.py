@@ -30,7 +30,7 @@ class GradingAndAggregateTests(unittest.TestCase):
         validate_oracle(oracle)
         # Avoid task-bound case validation; this isolates deterministic oracle behavior.
         from unittest.mock import patch
-        with patch("evoldo_bench.graders.deterministic.validate_answer", return_value=answer):
+        with patch("evoldo_bench.graders.deterministic.validate_answer_for_grading", return_value=answer):
             score = grade_answer(task, answer, oracle)
         self.assertEqual(60.0, score["score"])
         self.assertEqual(0.6, score["checks"][0]["credit_fraction"])
@@ -47,7 +47,7 @@ class GradingAndAggregateTests(unittest.TestCase):
                   "checks": [{"id": "q1", "path": "answers.q1", "kind": "set_f1",
                               "expected": ["E1", "E3"], "weight": 100}], "pass_threshold": 70}
         from unittest.mock import patch
-        with patch("evoldo_bench.graders.deterministic.validate_answer", return_value=answer):
+        with patch("evoldo_bench.graders.deterministic.validate_answer_for_grading", return_value=answer):
             score = grade_answer(task, answer, oracle)
         self.assertEqual(80.0, score["score"])
         self.assertEqual(0.8, score["checks"][0]["credit_fraction"])
@@ -64,7 +64,7 @@ class GradingAndAggregateTests(unittest.TestCase):
                   "checks": [{"id": "q1", "path": "answers.q1", "kind": "ranking_pairwise",
                               "expected": ["A", "B", "C", "D"], "weight": 100}], "pass_threshold": 70}
         from unittest.mock import patch
-        with patch("evoldo_bench.graders.deterministic.validate_answer", return_value=answer):
+        with patch("evoldo_bench.graders.deterministic.validate_answer_for_grading", return_value=answer):
             score = grade_answer(task, answer, oracle)
         self.assertAlmostEqual(5.0 / 6.0, score["checks"][0]["credit_fraction"])
         self.assertAlmostEqual(83.333333, score["score"])

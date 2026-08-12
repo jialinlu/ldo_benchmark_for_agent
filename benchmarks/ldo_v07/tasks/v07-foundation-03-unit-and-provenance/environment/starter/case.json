@@ -1,0 +1,128 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "decision": {
+        "allowed": [
+          "advice_ready",
+          "full_qualification",
+          "insufficient_current_evidence"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "dropout_mv": {
+        "type": "number"
+      },
+      "evidence_used": {
+        "allowed": [
+          "r1",
+          "r4",
+          "r5",
+          "r2",
+          "r3"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "iq_ua": {
+        "type": "number"
+      },
+      "record_classes": {
+        "allowed_keys": [
+          "r1",
+          "r3",
+          "r2",
+          "r4",
+          "r5"
+        ],
+        "required_keys": [
+          "r3",
+          "r2",
+          "r5",
+          "r1",
+          "r4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "quarantine_sentinel",
+          "stale_unbound",
+          "narrative_not_measurement",
+          "admissible_current"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "decisions": [
+      "insufficient_current_evidence",
+      "full_qualification",
+      "advice_ready"
+    ],
+    "evidence_ids": [
+      "r3",
+      "r2",
+      "r1",
+      "r4",
+      "r5"
+    ],
+    "record_classes": [
+      "admissible_current",
+      "narrative_not_measurement",
+      "stale_unbound",
+      "quarantine_sentinel"
+    ]
+  },
+  "materials": {
+    "current_candidate_hash": "cand-91",
+    "records": [
+      {
+        "candidate_hash": "cand-91",
+        "id": "r1",
+        "metric": "iq",
+        "status": "measured",
+        "unit": "A",
+        "value": 8.4e-05
+      },
+      {
+        "candidate_hash": "cand-91",
+        "id": "r2",
+        "metric": "dropout",
+        "status": "measured",
+        "unit": "mV",
+        "value": 73
+      },
+      {
+        "candidate_hash": "cand-77",
+        "id": "r3",
+        "metric": "phase_margin",
+        "status": "measured",
+        "unit": "deg",
+        "value": 64
+      },
+      {
+        "candidate_hash": "cand-91",
+        "id": "r4",
+        "metric": "noise",
+        "status": "sentinel",
+        "unit": "uVrms",
+        "value": "failed"
+      },
+      {
+        "candidate_hash": null,
+        "id": "r5",
+        "metric": "startup",
+        "status": "narrative",
+        "unit": "boolean",
+        "value": true
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A review table mixes units and candidate hashes. Normalize only admissible records and classify each record.",
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-03-unit-and-provenance"
+}

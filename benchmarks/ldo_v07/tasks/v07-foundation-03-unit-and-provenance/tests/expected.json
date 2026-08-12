@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "dimension": "evidence_classification",
+      "expected": {
+        "r1": "admissible_current",
+        "r2": "admissible_current",
+        "r3": "stale_unbound",
+        "r4": "quarantine_sentinel",
+        "r5": "narrative_not_measurement"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.record_classes",
+      "weight": 35
+    },
+    {
+      "dimension": "unit_conversion",
+      "expected": 84,
+      "full_tolerance": 0.1,
+      "id": "iq",
+      "kind": "numeric_score",
+      "path": "artifact.iq_ua",
+      "weight": 15,
+      "zero_tolerance": 30
+    },
+    {
+      "dimension": "unit_conversion",
+      "expected": 73,
+      "full_tolerance": 0.1,
+      "id": "dropout",
+      "kind": "numeric_score",
+      "path": "artifact.dropout_mv",
+      "weight": 15,
+      "zero_tolerance": 30
+    },
+    {
+      "critical": false,
+      "dimension": "evidence_selection",
+      "expected": [
+        "r1",
+        "r2"
+      ],
+      "id": "used",
+      "kind": "set_f1",
+      "path": "artifact.evidence_used",
+      "weight": 20
+    },
+    {
+      "critical": true,
+      "dimension": "claim_boundary",
+      "expected": "insufficient_current_evidence",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-foundation-03-unit-and-provenance",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-evidence-admission"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-foundation-03-unit-and-provenance"
+}

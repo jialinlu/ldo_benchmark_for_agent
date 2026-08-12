@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "artifact_classes": {},
+    "blocking_artifacts": [],
+    "claim_scope": "CONTROLLED_VALUE",
+    "decision": "CONTROLLED_VALUE",
+    "next_action": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-05-artifact-consistency"
+}

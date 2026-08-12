@@ -1,0 +1,127 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "experiment": {
+        "allowed": [
+          "rz_only_12_18_24",
+          "change_ccomp_rz_driver",
+          "full_random_search",
+          "ccomp_4_5_6_7_fixed_others"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "held_fixed": {
+        "allowed": [
+          "load_matrix",
+          "pass_w",
+          "rz",
+          "bias",
+          "driver_w",
+          "ccomp",
+          "bench"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "measurements": {
+        "allowed": [
+          "startup_only",
+          "heavy_pm",
+          "heavy_ugb",
+          "light_pm",
+          "light_ugb",
+          "op",
+          "iq",
+          "settling"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "stop_rule": {
+        "allowed": [
+          "stop_after_best_nominal",
+          "never_stop",
+          "stop_if_no_light_pm_gain_or_settling_fails"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "experiments": [
+      "full_random_search",
+      "change_ccomp_rz_driver",
+      "ccomp_4_5_6_7_fixed_others",
+      "rz_only_12_18_24"
+    ],
+    "held": [
+      "driver_w",
+      "bench",
+      "pass_w",
+      "load_matrix",
+      "bias",
+      "rz",
+      "ccomp"
+    ],
+    "measurements": [
+      "light_ugb",
+      "settling",
+      "light_pm",
+      "heavy_pm",
+      "heavy_ugb",
+      "startup_only",
+      "iq",
+      "op"
+    ],
+    "stop_rules": [
+      "stop_if_no_light_pm_gain_or_settling_fails",
+      "never_stop",
+      "stop_after_best_nominal"
+    ]
+  },
+  "materials": {
+    "analytic_priors": [
+      "Increasing Ccomp often lowers crossover but may improve PM.",
+      "Rz can move a zero and may worsen the wrong load regime."
+    ],
+    "baseline": {
+      "ccomp_pf": 5.0,
+      "driver_w_um": 12,
+      "heavy_pm_deg": 58,
+      "heavy_ugb_mhz": 3.1,
+      "light_pm_deg": 43,
+      "light_ugb_mhz": 1.8,
+      "rz_kohm": 18,
+      "settling_limit_us": 8.0,
+      "settling_us": 5.8
+    },
+    "legal_values": {
+      "ccomp_pf": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "driver_w_um": [
+        10,
+        12,
+        14
+      ],
+      "rz_kohm": [
+        12,
+        18,
+        24
+      ]
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A capless LDO fails light-load PM but passes heavy load. Choose a one-variable compensation experiment that preserves interpretability.",
+  "schema_version": "3.0",
+  "task_id": "v07-local-04-compensation-plan"
+}

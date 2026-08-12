@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "candidate_gate_map": {},
+    "next_action": "CONTROLLED_VALUE",
+    "selected_candidate": "CONTROLLED_VALUE",
+    "selected_current_ua": 0.0,
+    "selected_vout_mv": 0.0
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-04-divider-candidates"
+}

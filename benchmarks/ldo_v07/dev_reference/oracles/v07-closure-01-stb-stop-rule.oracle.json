@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "dimension": "stb_interpretation",
+      "expected": {
+        "s1": "valid_pass",
+        "s2": "valid_pass",
+        "s3": "undefined_no_crossing",
+        "s4": "ambiguous_multiple_crossings"
+      },
+      "id": "rows",
+      "kind": "mapping_credit",
+      "path": "artifact.row_classes",
+      "weight": 40
+    },
+    {
+      "critical": true,
+      "dimension": "stop_rule",
+      "expected": "repair_stb_then_repeat_quick",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "diagnostic_action",
+      "expected": "inspect_loop_break_and_pole_order",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "safety",
+      "expected": [
+        "treat_no_crossing_pm_as_pass",
+        "average_phase_margin",
+        "run_full_matrix_before_stb_repair"
+      ],
+      "id": "prohibited",
+      "kind": "set_f1",
+      "path": "artifact.prohibited_actions",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-01-stb-stop-rule",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-stb-crossing",
+    "kg-gated-qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-01-stb-stop-rule"
+}

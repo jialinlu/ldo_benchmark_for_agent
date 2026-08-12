@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "candidate_gate_map": {},
+    "formal_checks": [],
+    "next_action": "CONTROLLED_VALUE",
+    "selected_candidate": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-04-candidate-pareto"
+}

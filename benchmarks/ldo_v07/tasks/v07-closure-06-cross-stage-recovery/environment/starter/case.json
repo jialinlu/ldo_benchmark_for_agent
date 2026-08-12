@@ -1,0 +1,174 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "fresh_op_startup",
+          "fresh_netlist",
+          "full_qualification",
+          "quick_stb_transient_iq",
+          "save_close_reopen",
+          "single_driver_experiment",
+          "register",
+          "reconcile_source_oa"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "history_classes": {
+        "allowed_keys": [
+          "c2",
+          "c3",
+          "c1"
+        ],
+        "required_keys": [
+          "c3",
+          "c2",
+          "c1"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "invalid",
+          "confounded_multi_variable",
+          "bench_confounded",
+          "valid_single_variable"
+        ]
+      },
+      "primary_root_cause": {
+        "allowed": [
+          "source_oa_hash_divergence",
+          "infrastructure",
+          "stb_and_transient_coupled",
+          "pass_width_only"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "increase_pass_width",
+          "apply_c2_as_causal",
+          "discard_hash_bound_c1",
+          "run_full_on_h19",
+          "register_without_readback"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "stop_rule": {
+        "allowed": [
+          "never_stop",
+          "stop_if_pm_or_undershoot_or_iq_fails",
+          "stop_if_readback_or_hash_mismatch"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "history_classes": [
+      "confounded_multi_variable",
+      "valid_single_variable",
+      "bench_confounded",
+      "invalid"
+    ],
+    "prohibited": [
+      "register_without_readback",
+      "increase_pass_width",
+      "run_full_on_h19",
+      "discard_hash_bound_c1",
+      "apply_c2_as_causal"
+    ],
+    "root_causes": [
+      "stb_and_transient_coupled",
+      "source_oa_hash_divergence",
+      "pass_width_only",
+      "infrastructure"
+    ],
+    "stages": [
+      "register",
+      "single_driver_experiment",
+      "reconcile_source_oa",
+      "fresh_op_startup",
+      "quick_stb_transient_iq",
+      "full_qualification",
+      "save_close_reopen",
+      "fresh_netlist"
+    ],
+    "stop_rules": [
+      "stop_if_pm_or_undershoot_or_iq_fails",
+      "never_stop",
+      "stop_if_readback_or_hash_mismatch"
+    ]
+  },
+  "materials": {
+    "candidate_history": [
+      {
+        "change": "driver_w_plus_15pct",
+        "hash_bound": true,
+        "id": "c1",
+        "iq_delta_ua": 6,
+        "light_pm_delta_deg": 5,
+        "same_bench_corner": true,
+        "undershoot_delta_mv": -9
+      },
+      {
+        "change": "ccomp_plus_20pct_and_driver_plus_20pct",
+        "hash_bound": true,
+        "id": "c2",
+        "iq_delta_ua": 8,
+        "light_pm_delta_deg": 9,
+        "same_bench_corner": true,
+        "undershoot_delta_mv": -14
+      },
+      {
+        "change": "pass_w_plus_30pct",
+        "hash_bound": true,
+        "id": "c3",
+        "iq_delta_ua": 0,
+        "light_pm_delta_deg": -7,
+        "same_bench_corner": false,
+        "undershoot_delta_mv": -3
+      }
+    ],
+    "limits": {
+      "current_light_pm_deg": 46,
+      "current_undershoot_mv": 68,
+      "iq_margin_ua": 12,
+      "light_pm_min_deg": 50,
+      "undershoot_max_mv": 60
+    },
+    "recovery_contract": {
+      "artifact_gate": "Resolve source/OA/netlist identity and persistent readback before interpreting downstream simulation evidence.",
+      "causal_gate": "Only a hash-bound, same-bench, same-corner, one-knob comparison is a reusable local sensitivity.",
+      "qualification_gate": "After readback and a fresh netlist, re-establish OP/startup, run one bounded causal experiment, repeat quick STB/transient/IQ, and stop on any failed quick limit before full qualification.",
+      "registration_gate": "Register only after full qualification and final OA readback are current."
+    },
+    "state": {
+      "connectivity": "pass",
+      "full": "not_run",
+      "netlist_hash": "h19",
+      "oa_hash": "h19",
+      "oa_readback": "parameter_mismatch",
+      "op": "pass",
+      "quick": {
+        "dropout": "pass",
+        "iq": "pass",
+        "noise": "pass",
+        "transient": "undershoot_fail"
+      },
+      "source_hash": "h20",
+      "startup": "pass",
+      "stb": "light_load_pm_fail"
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A partially materialized candidate fails at several stages. Produce a minimal, gate-respecting recovery plan with one causal change per loop.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-06-cross-stage-recovery"
+}

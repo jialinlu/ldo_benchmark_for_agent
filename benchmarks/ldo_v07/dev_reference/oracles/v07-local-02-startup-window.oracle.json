@@ -1,0 +1,53 @@
+{
+  "checks": [
+    {
+      "dimension": "constraint_accounting",
+      "expected": {
+        "k1": "no_start",
+        "k2": "slow_start",
+        "k3": "hard_pass",
+        "k4": "accuracy_fail",
+        "k5": "leakage_and_accuracy_fail"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.candidate_classes",
+      "weight": 40
+    },
+    {
+      "critical": true,
+      "dimension": "candidate_selection",
+      "expected": "k3",
+      "id": "selected",
+      "kind": "exact",
+      "path": "artifact.selected_candidate",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "physical_mechanism",
+      "expected": "minimum_injection_vs_hot_exit_leakage",
+      "id": "tradeoff",
+      "kind": "exact",
+      "path": "artifact.dominant_tradeoff",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "validation_plan",
+      "expected": "verify_k3_full_startup_matrix",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-local-02-startup-window",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-startup-evidence"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-local-02-startup-window"
+}

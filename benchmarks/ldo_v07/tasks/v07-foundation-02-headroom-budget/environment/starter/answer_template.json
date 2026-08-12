@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "available_headroom_mv": 0.0,
+    "next_action": "CONTROLLED_VALUE",
+    "primary_blocker": "CONTROLLED_VALUE",
+    "prohibited_actions": [],
+    "stack_deficit_mv": 0.0
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-02-headroom-budget"
+}

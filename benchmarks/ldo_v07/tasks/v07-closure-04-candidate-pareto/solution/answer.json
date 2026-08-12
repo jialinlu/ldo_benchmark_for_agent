@@ -1,0 +1,25 @@
+{
+  "artifact": {
+    "candidate_gate_map": {
+      "a": "hard_pass",
+      "b": "pm_fail",
+      "c": "iq_fail",
+      "d": "startup_fail",
+      "e": "area_fail"
+    },
+    "formal_checks": [
+      "fresh_op",
+      "startup_matrix",
+      "stb_load_corners",
+      "noise",
+      "full_pvt",
+      "materialization_readback"
+    ],
+    "next_action": "formal_verify_a",
+    "selected_candidate": "a"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-04-candidate-pareto"
+}

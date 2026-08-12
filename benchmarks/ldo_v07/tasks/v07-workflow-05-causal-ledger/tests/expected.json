@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "dimension": "card_validation",
+      "expected": {
+        "x1": "validated_single_variable",
+        "x2": "multi_knob_confounded",
+        "x3": "bench_corner_confounded",
+        "x4": "identity_not_distinct",
+        "x5": "nonnumeric_or_missing"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.card_classes",
+      "weight": 45
+    },
+    {
+      "critical": true,
+      "critical_credit_threshold": 0.01,
+      "dimension": "knowledge_admission",
+      "expected": [
+        "x1"
+      ],
+      "id": "admissible",
+      "kind": "set_f1",
+      "path": "artifact.admissible_cards",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "causal_boundary",
+      "expected": "candidate_correlation",
+      "id": "narrative",
+      "kind": "exact",
+      "path": "artifact.narrative_level",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "next_action",
+      "expected": "admit_x1_only",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-workflow-05-causal-ledger",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-controlled-experiment"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-workflow-05-causal-ledger"
+}

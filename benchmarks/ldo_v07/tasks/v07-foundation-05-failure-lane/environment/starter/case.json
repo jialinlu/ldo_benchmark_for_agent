@@ -1,0 +1,134 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "failure_classes": {
+        "allowed_keys": [
+          "f5",
+          "f1",
+          "f2",
+          "f4",
+          "f3"
+        ],
+        "required_keys": [
+          "f1",
+          "f4",
+          "f2",
+          "f3",
+          "f5"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "circuit",
+          "provider_infrastructure",
+          "measurement",
+          "eda_infrastructure",
+          "format"
+        ]
+      },
+      "model_answer_failures": {
+        "allowed": [
+          "f3",
+          "f2",
+          "f5",
+          "f1",
+          "f4"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "must_retry_not_score": {
+        "allowed": [
+          "f3",
+          "f2",
+          "f4",
+          "f5",
+          "f1"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      }
+    }
+  },
+  "catalogs": {
+    "classes": [
+      "format",
+      "circuit",
+      "provider_infrastructure",
+      "measurement",
+      "eda_infrastructure"
+    ],
+    "event_ids": [
+      "f3",
+      "f1",
+      "f5",
+      "f2",
+      "f4"
+    ],
+    "retry_ids": [
+      "f2",
+      "f4",
+      "f1",
+      "f5",
+      "f3"
+    ],
+    "score_ids": [
+      "f2",
+      "f3",
+      "f1",
+      "f5",
+      "f4"
+    ]
+  },
+  "materials": {
+    "events": [
+      {
+        "facts": [
+          "provider HTTP 502",
+          "no model response",
+          "no answer artifact"
+        ],
+        "id": "f1"
+      },
+      {
+        "facts": [
+          "ngspice exit 0",
+          "VOUT=0.12V",
+          "target=0.80V",
+          "bias branches measured active"
+        ],
+        "id": "f2"
+      },
+      {
+        "facts": [
+          "spectre run completed",
+          "requested vector absent",
+          "testbench saved wrong node"
+        ],
+        "id": "f3"
+      },
+      {
+        "facts": [
+          "answer JSON present",
+          "uses undeclared option ID",
+          "provider healthy"
+        ],
+        "id": "f4"
+      },
+      {
+        "facts": [
+          "license checkout denied",
+          "simulator did not start"
+        ],
+        "id": "f5"
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Route independent failures to the correct lane before deciding which runs can be scored.",
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-05-failure-lane"
+}

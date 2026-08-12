@@ -1,0 +1,30 @@
+{
+  "artifact": {
+    "failure_classes": {
+      "v1": "transport_infrastructure",
+      "v2": "healthy_control",
+      "v3": "cdf_netlisting",
+      "v4": "pdk_fixture",
+      "v5": "measurement_fixture",
+      "v6": "circuit"
+    },
+    "first_circuit_evidence": "v6",
+    "not_scoreable_as_model_circuit_failure": [
+      "v1",
+      "v3",
+      "v4",
+      "v5"
+    ],
+    "repair_sequence": [
+      "retry_transport",
+      "fix_cdf_mapping",
+      "fix_model_section",
+      "fix_save_selection",
+      "diagnose_circuit_op"
+    ]
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-eda-03-failure-recovery"
+}

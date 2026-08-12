@@ -1,0 +1,167 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "decision": {
+        "allowed": [
+          "partial_bank_only",
+          "qualified",
+          "infrastructure_retry",
+          "not_qualified"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "metric_worst_corners": {
+        "allowed_keys": [
+          "phase_margin",
+          "dropout",
+          "startup",
+          "iq"
+        ],
+        "required_keys": [
+          "iq",
+          "startup",
+          "phase_margin",
+          "dropout"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "ff_high_cold_light",
+          "undefined",
+          "tt_nom_room_heavy",
+          "sf_low_cold_light",
+          "ss_low_hot_heavy"
+        ]
+      },
+      "missing_or_failed_gates": {
+        "allowed": [
+          "none",
+          "current_hash_r3",
+          "startup_r4",
+          "pm_r4",
+          "pm_r2"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "row_classes": {
+        "allowed_keys": [
+          "r2",
+          "r3",
+          "r4",
+          "r1"
+        ],
+        "required_keys": [
+          "r3",
+          "r2",
+          "r1",
+          "r4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "hard_fail",
+          "metric_missing",
+          "valid_pass",
+          "stale_hash",
+          "infrastructure_fail"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "corner_ids": [
+      "ff_high_cold_light",
+      "undefined",
+      "tt_nom_room_heavy",
+      "ss_low_hot_heavy",
+      "sf_low_cold_light"
+    ],
+    "decisions": [
+      "qualified",
+      "partial_bank_only",
+      "not_qualified",
+      "infrastructure_retry"
+    ],
+    "missing_gates": [
+      "none",
+      "current_hash_r3",
+      "startup_r4",
+      "pm_r2",
+      "pm_r4"
+    ],
+    "row_classes": [
+      "stale_hash",
+      "metric_missing",
+      "infrastructure_fail",
+      "hard_fail",
+      "valid_pass"
+    ],
+    "worst_keys": [
+      "dropout",
+      "phase_margin",
+      "startup",
+      "iq"
+    ]
+  },
+  "materials": {
+    "current_candidate_hash": "h42",
+    "expected_corner_count": 18,
+    "limits": {
+      "dropout_max_mv": 90,
+      "iq_max_ua": 120,
+      "pm_min_deg": 50,
+      "startup_required": true
+    },
+    "note": "The other 14 rows are current-hash complete and pass all four limits.",
+    "rows": [
+      {
+        "corner": "ss_low_hot_heavy",
+        "dropout_mv": 88,
+        "hash": "h42",
+        "id": "r1",
+        "iq_ua": 105,
+        "pm_deg": 53,
+        "startup": true
+      },
+      {
+        "corner": "ff_high_cold_light",
+        "dropout_mv": 61,
+        "hash": "h42",
+        "id": "r2",
+        "iq_ua": 119,
+        "pm_deg": null,
+        "startup": true
+      },
+      {
+        "corner": "tt_nom_room_heavy",
+        "dropout_mv": 70,
+        "hash": "h-old",
+        "id": "r3",
+        "iq_ua": 101,
+        "pm_deg": 58,
+        "startup": true
+      },
+      {
+        "corner": "sf_low_cold_light",
+        "dropout_mv": 77,
+        "hash": "h42",
+        "id": "r4",
+        "iq_ua": 108,
+        "pm_deg": 49,
+        "startup": false
+      }
+    ],
+    "summary": {
+      "completed_rows": 18,
+      "reported_hard_pass": true
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "An 18-corner qualification summary contains missing metrics, mixed candidate hashes, and metric-specific worst corners. Audit it without inventing one global worst corner.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-03-corner-qualification"
+}

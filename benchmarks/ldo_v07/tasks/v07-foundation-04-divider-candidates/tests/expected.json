@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "dimension": "constraint_accounting",
+      "expected": {
+        "d1": "hard_pass",
+        "d2": "resistance_fail",
+        "d3": "hard_pass",
+        "d4": "resistance_fail"
+      },
+      "id": "gates",
+      "kind": "mapping_credit",
+      "path": "artifact.candidate_gate_map",
+      "weight": 35
+    },
+    {
+      "critical": false,
+      "dimension": "candidate_selection",
+      "expected": "d1",
+      "id": "selected",
+      "kind": "exact",
+      "path": "artifact.selected_candidate",
+      "weight": 20
+    },
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 1200,
+      "full_tolerance": 0.5,
+      "id": "vout",
+      "kind": "numeric_score",
+      "path": "artifact.selected_vout_mv",
+      "weight": 15,
+      "zero_tolerance": 50
+    },
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 2,
+      "full_tolerance": 0.02,
+      "id": "current",
+      "kind": "numeric_score",
+      "path": "artifact.selected_current_ua",
+      "weight": 15,
+      "zero_tolerance": 1
+    },
+    {
+      "critical": false,
+      "dimension": "action_selection",
+      "expected": "select_d1",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-foundation-04-divider-candidates",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [],
+  "schema_version": "1.0",
+  "task_id": "v07-foundation-04-divider-candidates"
+}

@@ -1,0 +1,56 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "workflow_planning",
+    "sizing",
+    "qualification",
+    "eda_tool",
+    "evidence_integrity"
+  ],
+  "deployment_tier": "T4_end_to_end_planning",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-closure-06-cross-stage-recovery",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v07-closure-06-cross-stage-recovery",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "evidence_classification",
+    "root_cause",
+    "safety",
+    "stop_rule",
+    "workflow_order"
+  ],
+  "split": "dev",
+  "suite": "design_closure",
+  "task_id": "v07-closure-06-cross-stage-recovery",
+  "title": "Plan a cross-stage LDO closure recovery",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

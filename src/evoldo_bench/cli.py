@@ -11,7 +11,7 @@ from .aggregate import aggregate_rollouts, aggregate_scores, failed_rollout_scor
 from .bundle import build_runtime_bundle
 from .calibration import calibrate_judges, combine_judges
 from .contamination import audit_task_collection
-from .contracts import load_task, validate_answer, validate_oracle
+from .contracts import ALLOWED_MODES, load_task, validate_answer, validate_oracle
 from .discovery import discover_tasks, get_task, inventory, validate_registry
 from .errors import BenchmarkError, PolicyError
 from .exam import create_private_canary, freeze_exam, redact_exam_manifest, verify_exam
@@ -19,6 +19,7 @@ from .experiment import compare_treatments, run_experiment
 from .grading import grade_directory, grade_one
 from .leaderboard import write_leaderboard
 from .live_verify import verify_live_task
+from .outcomes import is_infrastructure_status
 from .report import write_markdown
 from .recovery import recover_experiment
 from .probes import evaluate_probe_contract
@@ -29,8 +30,8 @@ from .telemetry import summarize_effort
 from .utils import dump_json, load_json
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_TASKS = ROOT / "benchmarks" / "ldo_v06" / "tasks"
-DEFAULT_ORACLES = ROOT / "benchmarks" / "ldo_v06" / "dev_reference" / "oracles"
+DEFAULT_TASKS = ROOT / "benchmarks" / "ldo_v07" / "tasks"
+DEFAULT_ORACLES = ROOT / "benchmarks" / "ldo_v07" / "dev_reference" / "oracles"
 
 
 def _path(value: str) -> Path:
@@ -43,7 +44,7 @@ def _print_json(value: Any) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="evoldo-bench", description="EvoLDO v0.6.2 LDO reasoning, sizing, and EDA benchmark")
+    parser = argparse.ArgumentParser(prog="evoldo-bench", description="EvoLDO v0.7 LDO model, knowledge, sizing, and EDA benchmark")
     sub = parser.add_subparsers(dest="command_name", required=True)
 
     listing = sub.add_parser("list", help="list and inventory tasks")
@@ -119,10 +120,12 @@ def build_parser() -> argparse.ArgumentParser:
     experiment.add_argument("--oracle-root", type=_path, default=DEFAULT_ORACLES)
     experiment.add_argument("--output", type=_path, required=True)
     experiment.add_argument("--model-id", required=True)
-    experiment.add_argument("--mode", choices=sorted({"direct_reasoning", "agentic_skill", "simulation_assisted", "full_design", "weak_agent_airgap", "sizing_assisted", "eda_assisted"}), required=True)
+    experiment.add_argument("--mode", choices=sorted(ALLOWED_MODES), required=True)
     experiment.add_argument("--rollouts", type=int, default=3)
     experiment.add_argument("--base-seed", type=int, default=2026)
     experiment.add_argument("--context-dir", type=_path)
+    experiment.add_argument("--knowledge-corpus", type=_path)
+    experiment.add_argument("--knowledge-top-k", type=int, default=4)
     experiment.add_argument("--task-id", action="append", dest="task_ids")
     experiment.add_argument("--timeout", type=int)
     experiment.add_argument("--paired-modes", help="comma-separated modes; restrict every treatment to tasks eligible in all modes")
@@ -214,7 +217,7 @@ def build_parser() -> argparse.ArgumentParser:
     leaderboard.add_argument("reports", nargs="+", type=_path)
     leaderboard.add_argument("--output-dir", type=_path, required=True)
 
-    compare = sub.add_parser("compare-treatments", help="verify paired treatments hold model, tasks, seeds, budgets, and answer contract fixed")
+    compare = sub.add_parser("compare-treatments", help="verify paired treatments and report score/token lift, harm, and KG retrieval recall")
     compare.add_argument("manifests", nargs="+", type=_path)
 
     closure = sub.add_parser("closure-metrics", help="summarize evaluations and wall time to first qualified candidate")
@@ -334,6 +337,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 args.model_id, args.mode, args.rollouts, args.base_seed, args.context_dir,
                 args.task_ids, args.timeout,
                 [value.strip() for value in args.paired_modes.split(",") if value.strip()] if args.paired_modes else None,
+                args.knowledge_corpus, args.knowledge_top_k,
             )
             _print_json({"output": str(args.output), "run_count": result["run_count"], "context_snapshot": result["context_snapshot"]["snapshot_id"]})
             return 0
@@ -354,7 +358,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return 0 if result["capability_complete"] else 12
         if args.command_name == "experiment-report":
             manifest = load_json(args.experiment_root / "experiment_manifest.json")
-            if manifest.get("capability_complete") is False:
+            unresolved_infrastructure = [
+                row for row in manifest.get("rows", [])
+                if is_infrastructure_status(row.get("status"))
+            ]
+            if manifest.get("capability_complete") is False or unresolved_infrastructure:
                 raise PolicyError(
                     "capability report is blocked while infrastructure retries remain unresolved"
                 )

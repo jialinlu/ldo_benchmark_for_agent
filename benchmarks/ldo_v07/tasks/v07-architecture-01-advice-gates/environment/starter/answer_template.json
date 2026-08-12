@@ -1,0 +1,15 @@
+{
+  "artifact": {
+    "authorized_action_sequence": [],
+    "contingent_next_action": "CONTROLLED_VALUE",
+    "evidence_labels": {},
+    "max_authorized_stage": "CONTROLLED_VALUE",
+    "primary_gate": "CONTROLLED_VALUE",
+    "proposal_status": {},
+    "stop_rule": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-architecture-01-advice-gates"
+}

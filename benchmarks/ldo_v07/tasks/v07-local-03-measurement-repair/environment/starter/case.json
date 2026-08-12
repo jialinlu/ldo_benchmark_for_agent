@@ -1,0 +1,105 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "resize_pass",
+          "probe_vout",
+          "fresh_run",
+          "restore_same_load",
+          "compare_same_hash",
+          "accept_report",
+          "restore_same_ac_normalization"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "claim_scope": {
+        "allowed": [
+          "psrr_improved",
+          "full_qualification",
+          "no_circuit_claim"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "contract_mismatches": {
+        "allowed": [
+          "probe_node",
+          "dc_supply",
+          "ac_amplitude",
+          "load",
+          "candidate_hash"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "failure_class": {
+        "allowed": [
+          "circuit_improvement",
+          "provider_infrastructure",
+          "measurement_contract_changed",
+          "roundoff_only"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "claim_scopes": [
+      "psrr_improved",
+      "no_circuit_claim",
+      "full_qualification"
+    ],
+    "classes": [
+      "roundoff_only",
+      "circuit_improvement",
+      "provider_infrastructure",
+      "measurement_contract_changed"
+    ],
+    "mismatches": [
+      "ac_amplitude",
+      "candidate_hash",
+      "load",
+      "dc_supply",
+      "probe_node"
+    ],
+    "steps": [
+      "accept_report",
+      "compare_same_hash",
+      "restore_same_load",
+      "fresh_run",
+      "restore_same_ac_normalization",
+      "resize_pass",
+      "probe_vout"
+    ]
+  },
+  "materials": {
+    "after": {
+      "candidate_hash": "c88",
+      "load_ma": 0.5,
+      "probe": "vfb",
+      "reported_psrr_100khz_db": 66,
+      "vin_ac_v": 0.001,
+      "vin_dc_v": 1.8
+    },
+    "before": {
+      "candidate_hash": "c88",
+      "load_ma": 5,
+      "probe": "vout",
+      "psrr_100khz_db": 24,
+      "vin_ac_v": 1.0,
+      "vin_dc_v": 1.8
+    },
+    "circuit_changed": false
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A surprising PSRR improvement appears after a testbench edit. Determine whether it is circuit evidence and define the shortest valid repair.",
+  "schema_version": "3.0",
+  "task_id": "v07-local-03-measurement-repair"
+}

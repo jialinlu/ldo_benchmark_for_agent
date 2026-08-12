@@ -59,6 +59,75 @@ class ModelAgentAdapterTests(unittest.TestCase):
             self.assertIn("instruction", prompt)
             self.assertNotIn("secret", prompt)
 
+    def test_prompt_includes_only_frozen_kg_retrieval_and_forbids_web(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "context").mkdir()
+            (root / "task_contract.json").write_text(json.dumps({
+                "prompt_file": "instruction.md", "answer_template_file": "answer_template.json",
+                "input_files": ["case.json"],
+            }))
+            (root / "instruction.md").write_text("instruction")
+            (root / "answer_template.json").write_text("{}")
+            (root / "case.json").write_text("{}")
+            (root / "context" / "kg_retrieval.json").write_text('{"entries":[{"id":"kg-1"}]}')
+            prompt = ADAPTER._prompt(root)
+            self.assertIn("kg-1", prompt)
+            self.assertIn("Web search", prompt)
+
+    def test_codex_command_removes_web_search_tool(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            state = Path(temporary) / "state"
+            state.mkdir()
+            with mock.patch.object(ADAPTER.shutil, "which", return_value="/usr/local/bin/codex"), \
+                 mock.patch.object(ADAPTER, "_copy_required"):
+                command, _, _ = ADAPTER._container_command(
+                    "codex", "model", "prompt", root, state, None
+                )
+            rendered = " ".join(command)
+            self.assertIn('web_search="disabled"', rendered)
+            self.assertIn("tools.web_search=false", rendered)
+            self.assertIn("features.shell_tool=false", rendered)
+            self.assertIn("features.browser_use=false", rendered)
+            self.assertFalse(ADAPTER._audit_forbidden_command(command))
+
+    def test_web_search_event_is_a_policy_violation(self):
+        output = json.dumps({
+            "type": "item.completed", "item": {"type": "web_search_call", "name": "web_search"}
+        })
+        self.assertTrue(ADAPTER._audit_forbidden_remote_tools("codex", output))
+
+    def test_any_pure_model_tool_event_is_a_policy_violation(self):
+        output = json.dumps({
+            "type": "item.completed", "item": {"type": "command_execution", "name": "shell"}
+        })
+        self.assertTrue(ADAPTER._audit_forbidden_remote_tools("codex", output))
+
+    def test_openai_compatible_tool_metadata_is_a_policy_violation(self):
+        output = json.dumps({
+            "choices": [{"message": {
+                "content": "",
+                "tool_calls": [{"type": "function", "function": {"name": "search"}}],
+            }}],
+        })
+        self.assertEqual(
+            ["openai_compatible_tool_call"],
+            ADAPTER._audit_forbidden_remote_tools("openai-compatible", output),
+        )
+
+    def test_openai_compatible_length_finish_is_explicit_budget_exhaustion(self):
+        self.assertEqual(
+            "length", ADAPTER._openai_finish_reason({"choices": [{"finish_reason": "length"}]})
+        )
+        self.assertIsNone(ADAPTER._openai_finish_reason({"choices": []}))
+
+    def test_kimi_agent_has_an_empty_tool_set(self):
+        with TemporaryDirectory() as temporary:
+            skills, agent = ADAPTER._write_kimi_agent(Path(temporary))
+            self.assertTrue(skills.is_dir())
+            self.assertIn("tools: []", agent.read_text())
+
     def test_codex_usage_normalization_avoids_cache_and_reasoning_double_count(self):
         telemetry = ADAPTER._telemetry_base("m", 1.0)
         ADAPTER._normalize_codex("m", {
@@ -112,12 +181,41 @@ class ModelAgentAdapterTests(unittest.TestCase):
         response.__enter__.return_value.read.return_value = b'{}'
         with mock.patch.object(ADAPTER.urllib.request, "urlopen", return_value=response) as urlopen:
             result = ADAPTER._run_openai_compatible(
-                "prompt", "provider/model", "https://example.invalid/v1", "secret", 30, 8192
+                "prompt", "provider/model", "https://example.invalid/v1", "secret", 30, 8192,
+                True, None, 0.2, 17
             )
         request = urlopen.call_args.args[0]
         payload = json.loads(request.data)
         self.assertEqual(8192, payload["max_tokens"])
+        self.assertNotIn("tools", payload)
+        self.assertIs(payload["enable_thinking"], False)
+        self.assertEqual(0.2, payload["temperature"])
+        self.assertEqual(17, payload["seed"])
         self.assertEqual(0, result[0])
+
+    def test_openai_compatible_can_freeze_thinking_budget(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b'{}'
+        with mock.patch.object(ADAPTER.urllib.request, "urlopen", return_value=response) as urlopen:
+            ADAPTER._run_openai_compatible(
+                "prompt", "provider/model", "https://example.invalid/v1", "secret", 30, 16384,
+                False, 4096, 0.0, 9
+            )
+        payload = json.loads(urlopen.call_args.args[0].data)
+        self.assertIs(payload["enable_thinking"], True)
+        self.assertEqual(4096, payload["thinking_budget"])
+
+    def test_requested_model_parameters_disclose_reasoning_configuration(self):
+        args = mock.MagicMock(
+            agent="openai-compatible", max_output_tokens=8192,
+            disable_reasoning=False, thinking_budget=2048, temperature=0.3,
+        )
+        parameters = ADAPTER._requested_model_parameters(args, 270)
+        self.assertEqual("fixed_budget", parameters["reasoning_mode"])
+        self.assertEqual(2048, parameters["thinking_budget"])
+        self.assertEqual(270, parameters["output_timeout_seconds"])
+        self.assertEqual(0.3, parameters["temperature"])
+        self.assertEqual("none", parameters["tool_registration"])
 
     def test_container_boundary_mounts_only_the_task_read_only(self):
         command = ADAPTER._docker_base(Path("/isolated/task"))
@@ -142,6 +240,7 @@ class ModelAgentAdapterTests(unittest.TestCase):
                     "schema_version": "1.0", "model_id": "m", "mode": "direct_reasoning",
                     "rollouts_per_task": 1, "base_seed": 7, "seed_semantics": "test",
                     "pairing_modes": ["direct_reasoning"], "context_snapshot": {"included": False},
+                    "requested_model_parameters": {"reasoning_mode": "disabled"},
                     "task_count": 1, "run_count": 1,
                     "rows": [{
                         "task_id": task_id, "rollout": 0, "seed": 7,
@@ -153,6 +252,7 @@ class ModelAgentAdapterTests(unittest.TestCase):
                 shards.append(shard)
             merged = MERGER.merge_shards(root, shards)
             self.assertEqual(2, merged["task_count"])
+            self.assertTrue(merged["capability_complete"])
             self.assertTrue(merged["rows"][0]["telemetry_file"].startswith("shard-00/"))
             with self.assertRaises(ContractError):
                 MERGER.merge_shards(root, [shards[0], shards[0]])

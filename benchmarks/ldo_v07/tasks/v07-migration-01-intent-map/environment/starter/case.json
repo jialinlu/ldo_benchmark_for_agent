@@ -1,0 +1,181 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "startup",
+          "stb",
+          "pvt",
+          "device_smoke",
+          "intent_mapping",
+          "nominal_op"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "blocked_roles": {
+        "allowed": [
+          "src_start",
+          "src_pass",
+          "src_ccomp",
+          "src_input"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "role_actions": {
+        "allowed_keys": [
+          "src_input",
+          "src_pass",
+          "src_ccomp",
+          "src_start"
+        ],
+        "required_keys": [
+          "src_ccomp",
+          "src_start",
+          "src_input",
+          "src_pass"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "characterize_idw_and_headroom",
+          "characterize_gmid_and_gain",
+          "copy_source_geometry",
+          "compute_area_then_pvt",
+          "verify_startup_primitive_pins_and_leakage"
+        ]
+      },
+      "role_mapping": {
+        "allowed_keys": [
+          "src_ccomp",
+          "src_input",
+          "src_pass",
+          "src_start"
+        ],
+        "required_keys": [
+          "src_ccomp",
+          "src_input",
+          "src_pass",
+          "src_start"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "t_diode",
+          "t_pass",
+          "t_input",
+          "t_mim",
+          "unresolved"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "verify_startup_primitive_pins_and_leakage",
+      "characterize_idw_and_headroom",
+      "compute_area_then_pvt",
+      "characterize_gmid_and_gain",
+      "copy_source_geometry"
+    ],
+    "source_ids": [
+      "src_start",
+      "src_pass",
+      "src_ccomp",
+      "src_input"
+    ],
+    "stages": [
+      "pvt",
+      "device_smoke",
+      "intent_mapping",
+      "nominal_op",
+      "startup",
+      "stb"
+    ],
+    "target_ids": [
+      "t_mim",
+      "t_pass",
+      "t_input",
+      "unresolved",
+      "t_diode"
+    ]
+  },
+  "materials": {
+    "sky130_survey": [
+      {
+        "id": "t_pass",
+        "legal_l_um": [
+          0.15,
+          0.18,
+          0.5
+        ],
+        "pins_verified": true,
+        "primitive": "sky130_fd_pr__pfet_01v8"
+      },
+      {
+        "id": "t_input",
+        "legal_l_um": [
+          0.15,
+          0.5,
+          1.0
+        ],
+        "pins_verified": true,
+        "primitive": "sky130_fd_pr__nfet_01v8"
+      },
+      {
+        "id": "t_mim",
+        "pins_verified": true,
+        "primitive": "sky130_fd_pr__cap_mim_m3_1",
+        "voltage_rating_v": 2.0
+      },
+      {
+        "id": "t_diode",
+        "pins_verified": false,
+        "primitive": "sky130_fd_pr__diode_pw2nd_05v5"
+      }
+    ],
+    "source_roles": [
+      {
+        "id": "src_pass",
+        "intent": {
+          "current_ma": 12,
+          "gm_id": 8.5,
+          "headroom_mv": 95,
+          "type": "pmos_pass"
+        }
+      },
+      {
+        "id": "src_input",
+        "intent": {
+          "branch_ua": 18,
+          "gm_id": 14.0,
+          "intrinsic_gain_min": 20,
+          "type": "nmos_input_pair"
+        }
+      },
+      {
+        "id": "src_ccomp",
+        "intent": {
+          "cap_pf": 7.5,
+          "type": "mim_compensation",
+          "voltage_v": 1.8
+        }
+      },
+      {
+        "id": "src_start",
+        "intent": {
+          "cold_na": 2.2,
+          "hot_leakage_max_na": 45,
+          "type": "startup_injection"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Translate source-process sizing intent into a legal SKY130 first-pass plan. Do not copy W/L literally or assume CDF names from another PDK.",
+  "schema_version": "3.0",
+  "task_id": "v07-migration-01-intent-map"
+}

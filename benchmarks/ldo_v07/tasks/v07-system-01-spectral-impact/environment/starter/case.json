@@ -1,0 +1,94 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "combination_rule": {
+        "allowed": [
+          "linear_sum",
+          "max_only",
+          "rss"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "dominant_path": {
+        "allowed": [
+          "equal",
+          "ldo_noise",
+          "high_frequency_ripple",
+          "low_frequency_ripple"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "downstream_total_uv_rms": {
+        "type": "number"
+      },
+      "high_frequency_downstream_uv_rms": {
+        "type": "number"
+      },
+      "low_frequency_downstream_uv_rms": {
+        "type": "number"
+      },
+      "next_action": {
+        "allowed": [
+          "no_change",
+          "improve_high_frequency_feedthrough",
+          "reduce_reference_noise",
+          "increase_dc_loop_gain"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "reduce_reference_noise",
+      "increase_dc_loop_gain",
+      "no_change",
+      "improve_high_frequency_feedthrough"
+    ],
+    "combination_rules": [
+      "max_only",
+      "rss",
+      "linear_sum"
+    ],
+    "dominant_paths": [
+      "equal",
+      "low_frequency_ripple",
+      "ldo_noise",
+      "high_frequency_ripple"
+    ]
+  },
+  "materials": {
+    "assumption": "The three paths are independent RMS sources.",
+    "definitions": {
+      "downstream_transfer": "Multiply each LDO-output disturbance by load_sensitivity_v_per_v.",
+      "independent_rms_combination": "Take the square root of the sum of squared downstream RMS paths.",
+      "psrr_db": "20*log10(VIN_ripple_rms / VOUT_ripple_rms)"
+    },
+    "ldo_output_noise_uv_rms": 24.0,
+    "load_sensitivity_v_per_v": 0.65,
+    "supply_ripple": [
+      {
+        "frequency_hz": 1000,
+        "psrr_db": 44.0,
+        "vin_mv_rms": 12.0
+      },
+      {
+        "frequency_hz": 2000000,
+        "psrr_db": 18.0,
+        "vin_mv_rms": 4.0
+      }
+    ],
+    "system_limit_uv_rms": 80.0
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Compute downstream RMS error from independent LDO noise and supply-ripple paths, then identify which mitigation is supported by the spectrum.",
+  "schema_version": "3.0",
+  "task_id": "v07-system-01-spectral-impact"
+}

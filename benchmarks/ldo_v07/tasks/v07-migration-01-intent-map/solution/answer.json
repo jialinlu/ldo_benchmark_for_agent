@@ -1,0 +1,31 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "device_smoke",
+      "intent_mapping",
+      "nominal_op",
+      "startup",
+      "stb",
+      "pvt"
+    ],
+    "blocked_roles": [
+      "src_start"
+    ],
+    "role_actions": {
+      "src_ccomp": "compute_area_then_pvt",
+      "src_input": "characterize_gmid_and_gain",
+      "src_pass": "characterize_idw_and_headroom",
+      "src_start": "verify_startup_primitive_pins_and_leakage"
+    },
+    "role_mapping": {
+      "src_ccomp": "t_mim",
+      "src_input": "t_input",
+      "src_pass": "t_pass",
+      "src_start": "unresolved"
+    }
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-migration-01-intent-map"
+}

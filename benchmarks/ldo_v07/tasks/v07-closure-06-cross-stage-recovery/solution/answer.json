@@ -1,0 +1,31 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "reconcile_source_oa",
+      "save_close_reopen",
+      "fresh_netlist",
+      "fresh_op_startup",
+      "single_driver_experiment",
+      "quick_stb_transient_iq",
+      "full_qualification",
+      "register"
+    ],
+    "history_classes": {
+      "c1": "valid_single_variable",
+      "c2": "confounded_multi_variable",
+      "c3": "bench_confounded"
+    },
+    "primary_root_cause": "source_oa_hash_divergence",
+    "prohibited_actions": [
+      "run_full_on_h19",
+      "apply_c2_as_causal",
+      "increase_pass_width",
+      "register_without_readback"
+    ],
+    "stop_rule": "stop_if_pm_or_undershoot_or_iq_fails"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-06-cross-stage-recovery"
+}

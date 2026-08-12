@@ -1,0 +1,16 @@
+{
+  "artifact": {
+    "claim_scope": "polarity_only",
+    "evidence_used": [
+      "e1",
+      "e2",
+      "e3"
+    ],
+    "loop_conclusion": "negative_feedback_small_signal",
+    "next_probe": "bias_preserving_return_ratio"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-01-feedback-trace"
+}

@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 150,
+      "full_tolerance": 1,
+      "id": "available",
+      "kind": "numeric_score",
+      "path": "artifact.available_headroom_mv",
+      "weight": 20,
+      "zero_tolerance": 80
+    },
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 160,
+      "full_tolerance": 1,
+      "id": "deficit",
+      "kind": "numeric_score",
+      "path": "artifact.stack_deficit_mv",
+      "weight": 20,
+      "zero_tolerance": 80
+    },
+    {
+      "critical": true,
+      "dimension": "diagnosis",
+      "expected": "cascode_headroom",
+      "id": "blocker",
+      "kind": "exact",
+      "path": "artifact.primary_blocker",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "action_selection",
+      "expected": "recover_cascode_headroom",
+      "id": "action",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "safety",
+      "expected": [
+        "full_pvt_before_op",
+        "blind_multi_knob_sweep",
+        "ideal_cascode_force"
+      ],
+      "id": "prohibited",
+      "kind": "set_f1",
+      "path": "artifact.prohibited_actions",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-foundation-02-headroom-budget",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-op-first"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-foundation-02-headroom-budget"
+}

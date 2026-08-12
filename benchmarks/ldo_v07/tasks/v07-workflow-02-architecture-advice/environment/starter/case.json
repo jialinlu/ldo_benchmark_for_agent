@@ -1,0 +1,185 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "evidence_labels": {
+        "allowed_keys": [
+          "e3",
+          "e1",
+          "e2",
+          "e4"
+        ],
+        "required_keys": [
+          "e2",
+          "e3",
+          "e1",
+          "e4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "measured_current",
+          "analytical_prior",
+          "not_evidence",
+          "unbound_old"
+        ]
+      },
+      "next_action": {
+        "allowed": [
+          "run_full_pvt",
+          "add_gain_boost_stage",
+          "small_bidirectional_cascode_bias_test",
+          "increase_recycle_ratio",
+          "increase_all_lengths"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "ranked_actions": {
+        "allowed": [
+          "small_bidirectional_cascode_bias_test",
+          "increase_all_lengths",
+          "run_full_pvt",
+          "increase_recycle_ratio",
+          "add_gain_boost_stage"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "required_checks": {
+        "allowed": [
+          "phase_margin",
+          "iq",
+          "op_headroom",
+          "worst_corner",
+          "screenshot_only",
+          "startup",
+          "gain"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "state": {
+        "allowed": [
+          "operating_point_first",
+          "advice_ready_measured",
+          "hypothesis_only",
+          "problem_not_reproduced"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "increase_recycle_ratio",
+      "small_bidirectional_cascode_bias_test",
+      "run_full_pvt",
+      "add_gain_boost_stage",
+      "increase_all_lengths"
+    ],
+    "evidence_ids": [
+      "e1",
+      "e4",
+      "e2",
+      "e3"
+    ],
+    "labels": [
+      "unbound_old",
+      "measured_current",
+      "analytical_prior",
+      "not_evidence"
+    ],
+    "required_checks": [
+      "iq",
+      "phase_margin",
+      "startup",
+      "gain",
+      "worst_corner",
+      "screenshot_only",
+      "op_headroom"
+    ],
+    "states": [
+      "operating_point_first",
+      "problem_not_reproduced",
+      "hypothesis_only",
+      "advice_ready_measured"
+    ]
+  },
+  "materials": {
+    "admission_policy": {
+      "action_ranking": [
+        "first: the smallest reversible one-knob experiment directly tied to a measured weak margin",
+        "then: other bounded current knobs, preserving their listed order",
+        "then: global geometry changes",
+        "last: topology changes",
+        "exclude actions that are verification stages rather than design experiments",
+        "do not rank an action whose current knob value is missing"
+      ],
+      "advice_ready_requires": [
+        "current_hash_bound_problem_measurement",
+        "healthy_critical_operating_point"
+      ],
+      "analytical_prior_definition": "A literature or device-physics prior without a current-candidate measurement.",
+      "healthy_critical_operating_point": "Every supplied device-region fact passes and cascode_headroom_mv is at least cascode_headroom_min_mv.",
+      "measured_current_definition": "A hash-bound current-candidate measurement or operating-point fact.",
+      "required_checks": "Any retained design experiment must preserve OP headroom, gain, phase margin, IQ, startup, and worst-corner qualification.",
+      "unbound_old_definition": "A measurement bound to another candidate hash."
+    },
+    "constraints": {
+      "max_iq_ua": 120,
+      "min_phase_margin_deg": 50
+    },
+    "current_knobs": {
+      "cascode_bias_v": 0.51,
+      "input_l_um": 0.5,
+      "recycle_ratio": null
+    },
+    "current_netlist_sha256": "sha-new",
+    "evidence": [
+      {
+        "facts": {
+          "cascode_headroom_min_mv": 15,
+          "cascode_headroom_mv": 22,
+          "input_pair": "saturation"
+        },
+        "hash": "sha-new",
+        "id": "e1",
+        "kind": "op"
+      },
+      {
+        "facts": {
+          "gain_db": 41,
+          "phase_margin_deg": 58,
+          "target_db": 55
+        },
+        "hash": "sha-new",
+        "id": "e2",
+        "kind": "ac"
+      },
+      {
+        "facts": {
+          "longer_l_gain_db": 59
+        },
+        "hash": "sha-old",
+        "id": "e3",
+        "kind": "sweep"
+      },
+      {
+        "facts": {
+          "claim": "gain boost may raise gain"
+        },
+        "hash": null,
+        "id": "e4",
+        "kind": "literature_prior"
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A designer asks how to improve low gain. Apply the declared admission and ranking policy to current measurements, unbound history, and analytical priors; do not smuggle an unstated architecture preference into the answer.",
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-02-architecture-advice"
+}

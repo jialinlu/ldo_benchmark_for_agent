@@ -1,10 +1,10 @@
 # Model test matrix
 
-This is the retained v0.5 pre-run inventory frozen on 2026-08-10. Access probes are infrastructure checks,
-not benchmark scores. New v0.6 runs use the 69-task matrix in `BENCHMARK_V06.md`; this document preserves
-model-access provenance only.
+This document retains prior access provenance and the v0.7 calibration cohort. Access probes are
+infrastructure checks, not benchmark scores. New runs use the 27-task pure-model matrix in
+`BENCHMARK_V07.md`; prior v0.5/v0.6 entries remain historical evidence only.
 
-The selected first run is GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. Its pre-run policy
+The historical first run selected GPT-5.6-sol, Kimi K3, DeepSeek V4 Pro, and DeepSeek V4 Flash. Its pre-run policy
 used base seed `20260810`, a 300-second timeout, three new sessions per task, and zero automatic retries.
 After framework and gateway failures were diagnosed, the benchmark owner authorized the versioned recovery
 policy below. This provenance is retained rather than rewriting the original policy. A model-attributable
@@ -26,6 +26,14 @@ cannot consume its full retry allowance before other rows are attempted.
 
 Supplemental candidates are DeepSeek V4 Flash and DeepSeek Reasoner. Both completed access probes. The Reasoner probe also reported an auxiliary Flash usage entry, so the formal adapter must disable prompt suggestions and sum every provider-reported model usage entry. Claude Opus 4.6 and Sonnet 4.6 are discovered but are not currently scheduled.
 
+## v0.7 discrimination cohort
+
+The one-rollout development calibration uses DeepSeek V4 Flash and MiniMax M2.5 across families, plus
+Qwen3.5 4B/9B/27B/35B-A3B/122B-A10B/397B-A17B for the within-family deployment curve. This calibration
+is not a formal leaderboard: the release policy still requires three independent sessions and seeds per
+task/treatment. Model names, provider-reported identity, temperature, reasoning/thinking configuration,
+output ceiling, token accounting status, and no-Web policy are recorded for every rollout.
+
 The machine-readable inventory is [`benchmarks/model_matrix.json`](../benchmarks/model_matrix.json). It deliberately contains no credentials, credential paths, or private configuration values.
 
 ## Token policy
@@ -36,6 +44,11 @@ Model failures score zero. A provider failure before inference, interrupted prov
 timeout, or reported-model mismatch is an infrastructure event. Those attempts are excluded from the
 capability denominator only after a same-row retry replaces them, while all attempts appear in the
 operational-efficiency report. A capability report is blocked if any infrastructure row is unresolved.
+
+An explicit provider `finish_reason=length` is `output_budget_exhausted`, not a model-format zero. It
+requires a new, uniformly frozen sufficient output ceiling (or a separately labelled budget treatment);
+the truncated attempt remains in operational token/time accounting and is never silently mixed into a
+different model configuration.
 
 `numeric_results` is optional, unscored supporting JSON. It may contain nested values of any JSON type.
 This contract was corrected in v0.5.0 after the original runner incorrectly required every value to be a
@@ -55,8 +68,9 @@ agent/model explicitly; Claude's DeepSeek profile is supplied at runtime and is 
 repository. The adapter disables persistence/custom skills where each CLI supports it, serializes only
 manifest-declared task files, and writes telemetry plus a structured outcome even when no answer is produced.
 
-Each direct-reasoning invocation runs inside a fresh, read-only Docker container with one runtime task bundle
-mounted at `/task`, a minimal ephemeral authentication state, no repository/oracle/solution mount, one CPU,
-2 GiB memory, a 256-process limit, all Linux capabilities dropped, and a pinned base-image digest. Docker
-bridge networking remains enabled solely because the four provider CLIs require network access; this is an
-explicit limitation of the public-development treatment.
+CLI-agent direct-reasoning invocations run inside a fresh, read-only Docker container with one runtime task
+bundle mounted at `/task`, a minimal ephemeral authentication state, no repository/oracle/solution mount,
+one CPU, 2 GiB memory, a 256-process limit, all Linux capabilities dropped, and a pinned base-image digest.
+The OpenAI-compatible calibration adapter uses a host controller that serializes only the file-minimal bundle
+into one provider request and registers no tools; this weaker host boundary is disclosed and is acceptable only
+for public development calibration. Provider connectivity is never permission for model Web Search.

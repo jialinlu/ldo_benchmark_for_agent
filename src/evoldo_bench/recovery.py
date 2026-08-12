@@ -10,37 +10,14 @@ from typing import Any, Dict, List, Optional, Tuple
 from .adapters import AgentAdapter
 from .contracts import Task
 from .discovery import get_task
-from .errors import ContractError, PolicyError
-from .experiment import _load_agent_telemetry, _normalize_tool_ledger
+from .errors import BenchmarkError, ContractError, PolicyError
+from .experiment import _load_agent_telemetry, _normalize_tool_ledger, _task_contract_hash
 from .grading import grade_one
+from .outcomes import classify_attempt
 from .provenance import repository_fingerprint
 from .runner import run_agent_command
 from .telemetry import empty_telemetry
 from .utils import dump_json, load_json, safe_relative_path, sha256_file, utc_timestamp
-
-
-INFRASTRUCTURE_STATUSES = frozenset({
-    "controller_interrupted",
-    "failed",
-    "provider_infra_fail",
-    "provider_timeout",
-    "timeout",
-    "model_identity_mismatch",
-})
-
-
-def classify_attempt(record: Dict[str, Any], telemetry: Dict[str, Any]) -> str:
-    """Separate provider/runner failures from model-attributable outcomes."""
-    if telemetry.get("model_identity_status") == "mismatch":
-        return "infrastructure"
-    adapter_status = (record.get("adapter_outcome") or {}).get("status")
-    if adapter_status in {"provider_infra_fail", "provider_timeout"}:
-        return "infrastructure"
-    if record.get("timed_out") is True:
-        return "infrastructure"
-    if record.get("status") in INFRASTRUCTURE_STATUSES:
-        return "infrastructure"
-    return "model"
 
 
 def _source_run_dir(source_root: Path, row: Dict[str, Any]) -> Path:
@@ -78,6 +55,72 @@ def _load_normalized_telemetry(
     return fallback, None
 
 
+def _explicit_output_budget_exhaustion(run_dir: Path) -> Optional[str]:
+    """Recover provider finish metadata emitted before the structured outcome existed."""
+    stdout_path = run_dir / "stdout.log"
+    if not stdout_path.is_file():
+        return None
+    try:
+        raw = load_json(stdout_path)
+    except (OSError, ValueError):
+        return None
+    choices = raw.get("choices", []) if isinstance(raw, dict) else []
+    if not choices or not isinstance(choices[0], dict):
+        return None
+    reason = choices[0].get("finish_reason")
+    return str(reason) if reason in {"length", "max_tokens"} else None
+
+
+def _verify_row_bindings(task: Task, row: Dict[str, Any], oracle_root: Path) -> None:
+    """Refuse to regrade or retry a row against changed benchmark content."""
+    oracle_path = oracle_root / (task.task_id + ".oracle.json")
+    actual = {
+        "task_manifest_sha256": sha256_file(task.manifest_path),
+        "task_contract_sha256": _task_contract_hash(task),
+        "prompt_sha256": sha256_file(task.prompt_path),
+        "input_files_sha256": {
+            value: sha256_file(task.source_path(value)) for value in task.data["input_files"]
+        },
+        "answer_contract_sha256": sha256_file(
+            task.source_path(task.data["answer_template_file"])
+        ),
+        "oracle_sha256": sha256_file(oracle_path) if oracle_path.is_file() else None,
+    }
+    for field, value in actual.items():
+        if field not in row:
+            raise PolicyError("source experiment row lacks required content binding: %s" % field)
+        if row[field] != value:
+            raise ContractError(
+                "source experiment content binding changed for %s: %s"
+                % (task.task_id, field)
+            )
+
+
+def _knowledge_retry_context(output_root: Path, row: Dict[str, Any]) -> Path:
+    attempt_zero = (
+        output_root / "runs" / str(row["task_id"])
+        / ("rollout-%03d" % int(row["rollout"])) / "attempt-000" / "app" / "context"
+    )
+    retrieval_path = attempt_zero / "kg_retrieval.json"
+    if not retrieval_path.is_file():
+        raise PolicyError("knowledge retry is missing the frozen per-task retrieval snapshot")
+    retrieval = load_json(retrieval_path)
+    expected = row.get("knowledge_context")
+    if not isinstance(expected, dict):
+        raise PolicyError("knowledge retry row is missing retrieval provenance")
+    if retrieval.get("corpus_sha256") != expected.get("corpus_sha256"):
+        raise PolicyError("knowledge retry corpus binding changed")
+    if retrieval.get("query_sha256") != expected.get("query_sha256"):
+        raise PolicyError("knowledge retry query binding changed")
+    returned = [entry.get("id") for entry in retrieval.get("entries", [])]
+    if returned != expected.get("returned_ids"):
+        raise PolicyError("knowledge retry returned-id binding changed")
+    snapshot_sha = expected.get("snapshot_sha256")
+    if snapshot_sha is not None and sha256_file(retrieval_path) != snapshot_sha:
+        raise PolicyError("knowledge retry snapshot hash changed")
+    return attempt_zero
+
+
 def _normalize_attempt(
     run_dir: Path,
     task: Task,
@@ -88,6 +131,7 @@ def _normalize_attempt(
     rollout: int,
     seed: int,
     preserve_source: bool,
+    knowledge_context: Optional[Dict[str, Any]] = None,
 ) -> Tuple[Dict[str, Any], Dict[str, Any], Optional[Dict[str, Any]], bool]:
     record_path = run_dir / "run_record.json"
     if not record_path.is_file():
@@ -106,6 +150,8 @@ def _normalize_attempt(
     telemetry, telemetry_error = _load_normalized_telemetry(
         run_dir, task, model_id, mode, rollout, seed, record,
     )
+    if knowledge_context is not None:
+        telemetry["knowledge_retrieval"] = knowledge_context
     if telemetry_error:
         record["telemetry_error"] = telemetry_error
     try:
@@ -134,6 +180,13 @@ def _normalize_attempt(
             "requested_model_id": model_id,
             "provider_reported_model_id": telemetry.get("provider_reported_model_id"),
         }
+    finish_reason = _explicit_output_budget_exhaustion(run_dir)
+    if finish_reason is not None:
+        record["status"] = "output_budget_exhausted"
+        record["budget_failure"] = {
+            "provider_finish_reason": finish_reason,
+            "classification": "configuration_invalid",
+        }
 
     original_status = record.get("status")
     score = None
@@ -142,8 +195,13 @@ def _normalize_attempt(
         answer_path = run_dir / "app" / "answer.json"
         if answer_path.is_file() and original_status in {"ok", "format_fail"}:
             try:
+                candidate_answer = load_json(answer_path)
+                if candidate_answer.get("task_id") != task.task_id:
+                    raise ContractError(
+                        "answer.task_id must match scheduled task %s" % task.task_id
+                    )
                 score = grade_one(tasks_root, oracle_root, answer_path)
-            except (ContractError, ValueError, OSError) as exc:
+            except (BenchmarkError, ValueError, OSError) as exc:
                 record["status"] = "format_fail"
                 record["answer_error"] = str(exc)
             else:
@@ -197,10 +255,57 @@ def _attempt_summary(
         "cost_measurement_status": telemetry.get("cost_measurement_status", "unavailable"),
         "model_identity_status": telemetry.get("model_identity_status", "unavailable"),
         "provider_reported_model_id": telemetry.get("provider_reported_model_id"),
+        "wall_seconds": telemetry.get("wall_seconds"),
+        "terminal_tokens": telemetry.get("milestones", {}).get("terminal_tokens"),
+        "terminal_tokens_status": telemetry.get("milestones", {}).get(
+            "terminal_tokens_status", telemetry.get("token_measurement_status")
+        ),
+        "token_breakdown": telemetry.get("token_breakdown"),
+        "requested_model_parameters": telemetry.get("requested_model_parameters"),
+        "provider_seed": telemetry.get("provider_seed"),
+        "knowledge_context": telemetry.get("knowledge_retrieval"),
         "run_record_file": str((run_dir / "run_record.json").relative_to(output_root)),
         "telemetry_file": str((run_dir / "telemetry.normalized.json").relative_to(output_root)),
         "score_file": str((run_dir / "score.json").relative_to(output_root)) if score else None,
     }
+
+
+def _enforce_retry_controls(
+    row: Dict[str, Any], attempt: Dict[str, Any], run_dir: Path,
+) -> None:
+    """Turn a retry with changed model controls into an infrastructure-invalid attempt."""
+    violations = []
+    expected_parameters = row.get("requested_model_parameters")
+    actual_parameters = attempt.get("requested_model_parameters")
+    # Pre-v0.7.0-final manifests did not normalize the adapter's inner provider timeout.
+    # Preserve replay compatibility for those manifests while requiring exact equality for
+    # every newly generated manifest that contains the field.
+    comparable_actual = actual_parameters
+    if isinstance(expected_parameters, dict) and "output_timeout_seconds" not in expected_parameters:
+        comparable_actual = dict(actual_parameters) if isinstance(actual_parameters, dict) else actual_parameters
+        if isinstance(comparable_actual, dict):
+            comparable_actual.pop("output_timeout_seconds", None)
+    if comparable_actual != expected_parameters:
+        violations.append("requested_model_parameters")
+    expected_seed = row.get("provider_seed")
+    if expected_seed is not None and attempt.get("provider_seed") != expected_seed:
+        violations.append("provider_seed")
+    expected_knowledge = row.get("knowledge_context")
+    if expected_knowledge is not None and attempt.get("knowledge_context") != expected_knowledge:
+        violations.append("knowledge_context")
+    if not violations:
+        return
+    attempt["classification"] = "infrastructure"
+    attempt["status"] = "control_mismatch"
+    attempt["score"] = None
+    attempt["passed"] = False
+    attempt["score_file"] = None
+    attempt["control_violations"] = violations
+    record_path = run_dir / "run_record.json"
+    record = load_json(record_path)
+    record["status"] = "control_mismatch"
+    record["control_violations"] = violations
+    dump_json(record_path, record)
 
 
 def _set_rollout_environment(seed: int, rollout: int) -> Dict[str, Optional[str]]:
@@ -227,6 +332,11 @@ def _apply_accepted_attempt(row: Dict[str, Any], attempt: Dict[str, Any]) -> Non
     row["passed"] = attempt["passed"]
     row["telemetry_file"] = attempt["telemetry_file"]
     row["score_file"] = attempt["score_file"]
+    for field in (
+        "wall_seconds", "terminal_tokens", "terminal_tokens_status", "token_breakdown",
+        "requested_model_parameters", "provider_seed", "knowledge_context",
+    ):
+        row[field] = attempt.get(field)
 
 
 def _refresh_recovery_summary(manifest: Dict[str, Any]) -> None:
@@ -351,12 +461,20 @@ def recover_experiment(
                 "maximum_infrastructure_retries_per_rollout": max_infrastructure_retries,
                 "framework_repository": repository_fingerprint(Path(__file__).resolve().parents[2]),
                 "answer_schema_sha256": sha256_file(
-                    Path(__file__).resolve().parents[2] / "schemas" / "answer.schema.json"
+                    Path(__file__).resolve().parents[2] / "schemas" / (
+                        "answer-v3.schema.json"
+                        if source_manifest.get("rows")
+                        and get_task(
+                            tasks_root, source_manifest["rows"][0]["task_id"]
+                        ).data.get("schema_version") == "3.0"
+                        else "answer.schema.json"
+                    )
                 ),
             },
         })
         for source_row in source_manifest.get("rows", []):
             task = get_task(tasks_root, source_row["task_id"])
+            _verify_row_bindings(task, source_row, oracle_root)
             rollout = int(source_row["rollout"])
             seed = int(source_row["seed"])
             run_dir = output_root / "runs" / task.task_id / ("rollout-%03d" % rollout) / "attempt-000"
@@ -364,6 +482,7 @@ def recover_experiment(
             record, telemetry, score, regraded = _normalize_attempt(
                 run_dir, task, tasks_root, oracle_root, source_manifest["model_id"],
                 source_manifest["mode"], rollout, seed, True,
+                source_row.get("knowledge_context"),
             )
             attempt = _attempt_summary(output_root, run_dir, 0, record, telemetry, score, regraded)
             row = dict(source_row)
@@ -382,17 +501,25 @@ def recover_experiment(
             _checkpoint(output_root, manifest)
 
     manifest["recovery"]["maximum_infrastructure_retries_per_rollout"] = max_infrastructure_retries
+    if any(
+        attempt.get("status") == "output_budget_exhausted"
+        for row in manifest["rows"] for attempt in row.get("attempts", [])
+    ):
+        raise PolicyError(
+            "output budget exhaustion requires a new uniformly frozen budget treatment; "
+            "automatic same-configuration retries are invalid"
+        )
     scheduler_repository = repository_fingerprint(Path(__file__).resolve().parents[2])
     scheduler_history = manifest["recovery"].setdefault("scheduler_repository_history", [])
     if scheduler_repository not in scheduler_history:
         scheduler_history.append(scheduler_repository)
     manifest["recovery"]["retry_scheduling"] = "round_robin_one_attempt_per_unresolved_row"
-    retry_context = None
+    shared_retry_context = None
     if manifest.get("context_snapshot", {}).get("included"):
         candidate = output_root / "frozen_context" / "context"
         if not candidate.is_dir():
             raise PolicyError("recovery is missing the frozen context snapshot")
-        retry_context = candidate
+        shared_retry_context = candidate
     while True:
         attempted_this_round = False
         for row in manifest["rows"]:
@@ -403,6 +530,12 @@ def recover_experiment(
                 continue
             attempted_this_round = True
             task = get_task(tasks_root, row["task_id"])
+            _verify_row_bindings(task, row, oracle_root)
+            retry_context = (
+                _knowledge_retry_context(output_root, row)
+                if manifest["mode"] == "knowledge_assisted"
+                else shared_retry_context
+            )
             attempt_index = len(row["attempts"])
             run_dir = (
                 output_root / "runs" / task.task_id / ("rollout-%03d" % int(row["rollout"]))
@@ -428,10 +561,12 @@ def recover_experiment(
             record, telemetry, score, regraded = _normalize_attempt(
                 run_dir, task, tasks_root, oracle_root, manifest["model_id"], manifest["mode"],
                 int(row["rollout"]), int(row["seed"]), False,
+                row.get("knowledge_context"),
             )
             attempt = _attempt_summary(
                 output_root, run_dir, attempt_index, record, telemetry, score, regraded,
             )
+            _enforce_retry_controls(row, attempt, run_dir)
             row["attempts"].append(attempt)
             row["telemetry_file"] = attempt["telemetry_file"]
             row["status"] = attempt["status"]

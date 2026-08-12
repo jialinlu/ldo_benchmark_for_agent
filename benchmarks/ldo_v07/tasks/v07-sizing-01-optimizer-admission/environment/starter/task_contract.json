@@ -1,0 +1,58 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "sizing",
+    "failure_classification",
+    "evidence_integrity",
+    "controlled_experiment",
+    "candidate_selection"
+  ],
+  "deployment_tier": "T4_end_to_end_planning",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-sizing-01-optimizer-admission",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v07-sizing-01-optimizer-admission",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "budget_accounting",
+    "candidate_selection",
+    "evaluation_admission",
+    "experiment_design",
+    "held_fixed",
+    "stop_rule",
+    "surrogate_admission"
+  ],
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v07-sizing-01-optimizer-admission",
+  "title": "Admit sizing evaluations and design the next probe",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

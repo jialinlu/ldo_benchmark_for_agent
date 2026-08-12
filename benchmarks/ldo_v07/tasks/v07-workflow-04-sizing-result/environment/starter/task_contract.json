@@ -1,0 +1,55 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "sizing",
+    "candidate_selection",
+    "evidence_integrity",
+    "controlled_experiment"
+  ],
+  "deployment_tier": "T3_multi_constraint_closure",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-workflow-04-sizing-result",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "override_resistant",
+  "language": "en",
+  "level": "L4",
+  "lineage_id": "v07-workflow-04-sizing-result",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "candidate_selection",
+    "constraint_accounting",
+    "failure_classification",
+    "next_action",
+    "terminal_decision"
+  ],
+  "split": "dev",
+  "suite": "sizing",
+  "task_id": "v07-workflow-04-sizing-result",
+  "title": "Interpret an autosizer result without overclaiming",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

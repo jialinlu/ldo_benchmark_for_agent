@@ -1,0 +1,11 @@
+{
+  "artifact": {
+    "failure_classes": {},
+    "model_answer_failures": [],
+    "must_retry_not_score": []
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-05-failure-lane"
+}

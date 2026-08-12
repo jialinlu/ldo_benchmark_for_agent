@@ -1,0 +1,82 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "available_headroom_mv": {
+        "type": "number"
+      },
+      "next_action": {
+        "allowed": [
+          "increase_pass_width",
+          "run_full_pvt",
+          "change_feedback_ratio",
+          "recover_cascode_headroom"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "primary_blocker": {
+        "allowed": [
+          "none",
+          "pass_drive",
+          "feedback_ratio",
+          "cascode_headroom"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "blind_multi_knob_sweep",
+          "ideal_cascode_force",
+          "full_pvt_before_op",
+          "reuse_old_op"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "stack_deficit_mv": {
+        "type": "number"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "increase_pass_width",
+      "recover_cascode_headroom",
+      "run_full_pvt",
+      "change_feedback_ratio"
+    ],
+    "blockers": [
+      "pass_drive",
+      "feedback_ratio",
+      "cascode_headroom",
+      "none"
+    ],
+    "prohibited": [
+      "blind_multi_knob_sweep",
+      "ideal_cascode_force",
+      "reuse_old_op",
+      "full_pvt_before_op"
+    ]
+  },
+  "materials": {
+    "measured_ea_low_limit_v": 0.055,
+    "op": {
+      "cascode": "triode",
+      "input_pair": "saturation",
+      "pass": "conducting"
+    },
+    "pass_gate_required_v": 0.03,
+    "required_stack_headroom_v": 0.31,
+    "vin_min_v": 1.05,
+    "vout_target_v": 0.9
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A two-stack error-amplifier branch is reviewed at the lowest supply. Compute its remaining voltage and choose the earliest admissible action.",
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-02-headroom-budget"
+}

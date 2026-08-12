@@ -1,0 +1,18 @@
+{
+  "artifact": {
+    "candidate_classes": {
+      "k1": "no_start",
+      "k2": "slow_start",
+      "k3": "hard_pass",
+      "k4": "accuracy_fail",
+      "k5": "leakage_and_accuracy_fail"
+    },
+    "dominant_tradeoff": "minimum_injection_vs_hot_exit_leakage",
+    "next_action": "verify_k3_full_startup_matrix",
+    "selected_candidate": "k3"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-local-02-startup-window"
+}

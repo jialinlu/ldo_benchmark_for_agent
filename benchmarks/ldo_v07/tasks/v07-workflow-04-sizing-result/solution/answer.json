@@ -1,0 +1,18 @@
+{
+  "artifact": {
+    "best_admissible_candidate": "c3",
+    "candidate_gate_map": {
+      "c1": "pm_fail",
+      "c2": "dropout_fail",
+      "c3": "hard_pass",
+      "c4": "iq_fail"
+    },
+    "decision": "search_only_not_final",
+    "failure_class": "pipeline",
+    "next_action": "formal_backannotation_and_fresh_final"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-04-sizing-result"
+}

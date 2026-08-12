@@ -1,0 +1,26 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "connectivity_cdf",
+      "dc_op_bias",
+      "cascode_headroom",
+      "pass_regulation",
+      "zero_state_startup",
+      "stb_crossing",
+      "quick_qualification",
+      "full_qualification"
+    ],
+    "primary_root_cause": "terminal_order_and_cdf",
+    "prohibited_actions": [
+      "accept_nodeset_as_final",
+      "run_full_before_stb",
+      "sweep_pass_width_before_connectivity",
+      "force_internal_bias"
+    ],
+    "stop_after_stage": "connectivity_cdf"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-01-op-recovery-order"
+}

@@ -1,0 +1,53 @@
+{
+  "checks": [
+    {
+      "dimension": "evidence_classification",
+      "expected": {
+        "o1": "visual_only",
+        "o2": "logical_connectivity",
+        "o3": "geometry_gap",
+        "o4": "netlist_evidence",
+        "o5": "checker_evidence"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.observation_classes",
+      "weight": 40
+    },
+    {
+      "critical": true,
+      "dimension": "repair_decision",
+      "expected": "repair_logical_and_visible",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 25
+    },
+    {
+      "dimension": "eda_workflow",
+      "expected": [
+        "read_terminal_pin_geometry",
+        "create_named_net",
+        "create_wire_to_pin",
+        "schematic_check",
+        "save_close",
+        "reopen_connectivity",
+        "fresh_netlist",
+        "visual_screenshot"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.action_sequence",
+      "weight": 35
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-eda-02-net-vs-wire",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-oa-net-vs-wire",
+    "kg-oa-save-readback"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-eda-02-net-vs-wire"
+}

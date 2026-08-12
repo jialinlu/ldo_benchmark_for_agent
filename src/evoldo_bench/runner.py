@@ -85,7 +85,8 @@ def run_agent_command(
         except (OSError, ValueError):
             candidate = None
         if isinstance(candidate, dict) and candidate.get("status") in {
-            "ok", "model_incomplete", "format_fail", "provider_timeout", "provider_infra_fail"
+            "ok", "model_incomplete", "format_fail", "provider_timeout", "provider_infra_fail",
+            "output_budget_exhausted", "policy_fail"
         }:
             adapter_outcome = candidate
             if candidate["status"] != "ok" or (return_code == 0 and answer_path.is_file()):

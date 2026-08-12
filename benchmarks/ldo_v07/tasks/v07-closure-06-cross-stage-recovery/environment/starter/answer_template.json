@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "action_sequence": [],
+    "history_classes": {},
+    "primary_root_cause": "CONTROLLED_VALUE",
+    "prohibited_actions": [],
+    "stop_rule": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-06-cross-stage-recovery"
+}

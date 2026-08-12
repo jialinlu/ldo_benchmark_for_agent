@@ -1,0 +1,52 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "physical_conclusion",
+      "expected": "negative_feedback_small_signal",
+      "id": "loop",
+      "kind": "exact",
+      "path": "artifact.loop_conclusion",
+      "weight": 35
+    },
+    {
+      "critical": false,
+      "dimension": "evidence_selection",
+      "expected": [
+        "e1",
+        "e2",
+        "e3"
+      ],
+      "id": "evidence",
+      "kind": "set_f1",
+      "path": "artifact.evidence_used",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": "polarity_only",
+      "id": "scope",
+      "kind": "exact",
+      "path": "artifact.claim_scope",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "validation_plan",
+      "expected": "bias_preserving_return_ratio",
+      "id": "probe",
+      "kind": "exact",
+      "path": "artifact.next_probe",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-foundation-01-feedback-trace",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-feedback-return-ratio"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-foundation-01-feedback-trace"
+}

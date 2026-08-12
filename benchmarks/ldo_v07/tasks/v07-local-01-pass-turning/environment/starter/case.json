@@ -1,0 +1,135 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "dominant_tradeoff": {
+        "allowed": [
+          "reference_noise",
+          "startup_leakage",
+          "ron_vs_gate_capacitance",
+          "divider_loading"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "hard_pass_candidates": {
+        "allowed": [
+          "w2",
+          "w4",
+          "w3",
+          "w1",
+          "w5"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "next_action": {
+        "allowed": [
+          "increase_width_unbounded",
+          "verify_w3_across_corners",
+          "change_reference",
+          "choose_w5_lowest_dropout"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "selected_candidate": {
+        "allowed": [
+          "w3",
+          "w4",
+          "w2",
+          "w1",
+          "w5",
+          "none"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "choose_w5_lowest_dropout",
+      "increase_width_unbounded",
+      "verify_w3_across_corners",
+      "change_reference"
+    ],
+    "candidate_ids": [
+      "w1",
+      "w3",
+      "w4",
+      "w5",
+      "w2",
+      "none"
+    ],
+    "hard_pass_ids": [
+      "w4",
+      "w5",
+      "w2",
+      "w3",
+      "w1"
+    ],
+    "mechanisms": [
+      "reference_noise",
+      "ron_vs_gate_capacitance",
+      "divider_loading",
+      "startup_leakage"
+    ]
+  },
+  "materials": {
+    "limits": {
+      "dropout_max_mv": 90,
+      "pm_min_deg": 50,
+      "settling_max_us": 8.0
+    },
+    "sweep": [
+      {
+        "dropout_mv": 121,
+        "gate_cap_pf": 8,
+        "id": "w1",
+        "pm_deg": 61,
+        "settling_us": 6.2,
+        "width_um": 400
+      },
+      {
+        "dropout_mv": 94,
+        "gate_cap_pf": 12,
+        "id": "w2",
+        "pm_deg": 57,
+        "settling_us": 6.8,
+        "width_um": 600
+      },
+      {
+        "dropout_mv": 86,
+        "gate_cap_pf": 16,
+        "id": "w3",
+        "pm_deg": 53,
+        "settling_us": 7.5,
+        "width_um": 800
+      },
+      {
+        "dropout_mv": 78,
+        "gate_cap_pf": 20,
+        "id": "w4",
+        "pm_deg": 47,
+        "settling_us": 9.4,
+        "width_um": 1000
+      },
+      {
+        "dropout_mv": 72,
+        "gate_cap_pf": 24,
+        "id": "w5",
+        "pm_deg": 41,
+        "settling_us": 12.1,
+        "width_um": 1200
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Select the smallest robust pass width from a characterized sweep and state why the trend is not monotonic in total quality.",
+  "schema_version": "3.0",
+  "task_id": "v07-local-01-pass-turning"
+}

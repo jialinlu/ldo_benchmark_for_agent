@@ -65,6 +65,16 @@ def render_markdown(report: Dict[str, Any]) -> str:
     lines.extend(["", "## Levels", "", "| Level | Count | Mean |", "|---|---:|---:|"])
     for level, values in sorted(report.get("by_level", {}).items()):
         lines.append("| %s | %d | %.2f |" % (level, values["count"], values["mean"]))
+    if report.get("by_deployment_tier"):
+        readiness = report.get("tier_readiness", {})
+        lines.extend(["", "## Deployment tiers", "", "| Tier | Count | Mean | Pass@1 | Gate |", "|---|---:|---:|---:|---|"])
+        for tier, values in sorted(report["by_deployment_tier"].items()):
+            gate = readiness.get(tier)
+            lines.append("| %s | %d | %.2f | %s | %s |" % (
+                tier, values["count"], values["mean"],
+                "%.1f%%" % (100.0 * gate["pass_at_1"]) if gate else "unavailable",
+                "PASS" if gate and gate["gate_passed"] else ("FAIL" if gate else "unavailable"),
+            ))
     if report.get("by_scoring_dimension"):
         lines.extend(["", "## Scoring dimensions", "", "| Dimension | Count | Mean credit | Stddev |", "|---|---:|---:|---:|"])
         for dimension, values in sorted(report["by_scoring_dimension"].items()):

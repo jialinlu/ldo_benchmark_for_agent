@@ -1,0 +1,149 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "candidate_classes": {
+        "allowed_keys": [
+          "k4",
+          "k1",
+          "k2",
+          "k3",
+          "k5"
+        ],
+        "required_keys": [
+          "k4",
+          "k2",
+          "k3",
+          "k5",
+          "k1"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "slow_start",
+          "no_start",
+          "hard_pass",
+          "accuracy_fail",
+          "leakage_and_accuracy_fail"
+        ]
+      },
+      "dominant_tradeoff": {
+        "allowed": [
+          "loop_gain_only",
+          "pass_ron_only",
+          "measurement_error",
+          "minimum_injection_vs_hot_exit_leakage"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "choose_k5",
+          "change_all_biases",
+          "accept_k4",
+          "verify_k3_full_startup_matrix"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "selected_candidate": {
+        "allowed": [
+          "k4",
+          "k1",
+          "k2",
+          "none",
+          "k3",
+          "k5"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "change_all_biases",
+      "choose_k5",
+      "accept_k4",
+      "verify_k3_full_startup_matrix"
+    ],
+    "candidate_ids": [
+      "k3",
+      "k4",
+      "k2",
+      "k1",
+      "none",
+      "k5"
+    ],
+    "classes": [
+      "leakage_and_accuracy_fail",
+      "accuracy_fail",
+      "slow_start",
+      "no_start",
+      "hard_pass"
+    ],
+    "mechanisms": [
+      "minimum_injection_vs_hot_exit_leakage",
+      "loop_gain_only",
+      "measurement_error",
+      "pass_ron_only"
+    ]
+  },
+  "materials": {
+    "held_fixed": [
+      "bench",
+      "candidate_except_helper",
+      "corner_endpoints",
+      "load"
+    ],
+    "limits": {
+      "cold_start_max_us": 25,
+      "hot_leakage_max_na": 50,
+      "vout_error_max_mv": 8
+    },
+    "sweep": [
+      {
+        "cold_start_us": null,
+        "hot_leakage_na": 9,
+        "id": "k1",
+        "strength": 0.5,
+        "vout_error_mv": 1
+      },
+      {
+        "cold_start_us": 31,
+        "hot_leakage_na": 18,
+        "id": "k2",
+        "strength": 1.0,
+        "vout_error_mv": 2
+      },
+      {
+        "cold_start_us": 18,
+        "hot_leakage_na": 31,
+        "id": "k3",
+        "strength": 1.5,
+        "vout_error_mv": 4
+      },
+      {
+        "cold_start_us": 13,
+        "hot_leakage_na": 47,
+        "id": "k4",
+        "strength": 2.0,
+        "vout_error_mv": 9
+      },
+      {
+        "cold_start_us": 8,
+        "hot_leakage_na": 79,
+        "id": "k5",
+        "strength": 3.0,
+        "vout_error_mv": 17
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Interpret a one-variable startup-helper sweep across cold and hot conditions, then choose the bounded next experiment.",
+  "schema_version": "3.0",
+  "task_id": "v07-local-02-startup-window"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact": {
+    "best_admissible_candidate": "CONTROLLED_VALUE",
+    "candidate_gate_map": {},
+    "decision": "CONTROLLED_VALUE",
+    "failure_class": "CONTROLLED_VALUE",
+    "next_action": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-04-sizing-result"
+}

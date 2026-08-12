@@ -9,8 +9,8 @@ Delivered task, answer, oracle, score, probe, telemetry, exam, candidate, and qu
 Python 3.9 validators; lineage/split rules; public-task/private-oracle architecture; contamination and
 public-release security policy; dual licensing and clean-room statement.
 
-Current gate: all 69 v0.6.2 task contracts and public development oracles validate in CI; 48 pure core,
-eight pure companions, six live sizing, six live EDA, and one EDA companion are frozen in the registry.
+Current gate: all 27 v0.7 pure-model task contracts and public development oracles validate in CI;
+the earlier 69-task v0.6.2 track remains in-tree as historical compatibility data.
 
 ## Phase 1 — public benchmark core: implemented
 
@@ -37,12 +37,14 @@ Delivered:
 Remaining empirical gate: run direct/skill/simulation treatments with frozen real adapters and confirm that
 results replay exactly. A host sandbox remains deployment infrastructure, not part of the Python runner.
 
-## Phase 3 — v0.6.2 diagnostic pilot: corpus and release tooling implemented
+## Phase 3 — v0.7 diagnostic core and KG pairing: implemented, calibration in progress
 
 Delivered:
 
-- 48 pure core cases, eight metamorphic companions, six sizing treatments, and seven EDA tasks;
-- six-dimension pure-case grading with scenario-local ordered-choice credit, pairwise challenge ranking, and evidence-set F1;
+- 27 structured pure-model cases across five deployment tiers, with historical v0.6 tool tracks retained;
+- continuous numeric, mapping, multilabel-record, sequence, set-F1, critical-cap, and dimension-level scoring;
+- deterministic clean-room KG retrieval and direct/KG-on treatment comparison including lift, harm, recall, token and time overhead;
+- machine-enforced no-Web/no-tool pure-model adapters;
 - architecture-choice and L4 development coverage;
 - cryptographic freeze/verify manifest for sealed stores and treatment snapshots;
 - two-judge calibration metrics and automatic human-review routing;
@@ -88,7 +90,9 @@ Private PDK assets must never enter the public repository, model context, or pub
 
 Planned:
 
-- 80 families / 240–400 instances covering L1–L4; L5 remains experimental;
+- a compact expert-reviewed hidden matrix with lineage-disjoint variants covering every required deployment
+  capability; add instances only when power analysis or observed blind spots justify them, rather than targeting
+  an arbitrary large case count;
 - genuinely hidden family lineages and private oracle store;
 - frozen model, skill, tool, simulator, judge, budget, and rollout policy;
 - reproducibility/regression dashboard and release canaries;

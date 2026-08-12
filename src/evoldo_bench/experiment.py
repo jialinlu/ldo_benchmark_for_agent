@@ -8,12 +8,24 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence
 from .adapters import AgentAdapter
 from .contracts import ALLOWED_MODES, Task
 from .discovery import discover_tasks
-from .errors import ContractError, PolicyError
+from .errors import BenchmarkError, ContractError, PolicyError
 from .grading import grade_one
+from .knowledge import materialize_retrieval, retrieval_metrics
+from .outcomes import is_infrastructure_status
 from .probes import evaluate_probe_contract
 from .runner import run_agent_command
 from .telemetry import empty_telemetry, validate_telemetry
 from .utils import dump_json, load_json, relative_hashes, sha256_file, sha256_text, utc_timestamp
+
+
+def _task_contract_hash(task: Task) -> str:
+    """Hash the actual task contract for both legacy and demo-task packages."""
+    if task.package_style == "demo_task":
+        path = task.root / "environment" / "starter" / "task_contract.json"
+        if path.is_file():
+            return sha256_file(path)
+    legacy = task.root / "task.json"
+    return sha256_file(legacy if legacy.is_file() else task.manifest_path)
 
 
 def snapshot_context(source: Optional[Path], snapshot_root: Path) -> Dict[str, Any]:
@@ -105,11 +117,17 @@ def run_experiment(
     task_ids: Optional[Iterable[str]] = None,
     timeout_seconds: Optional[int] = None,
     pairing_modes: Optional[Iterable[str]] = None,
+    knowledge_corpus: Optional[Path] = None,
+    knowledge_top_k: int = 4,
 ) -> Dict[str, Any]:
     if mode not in ALLOWED_MODES:
         raise ContractError("unsupported experiment mode: %s" % mode)
     if rollouts <= 0:
         raise ContractError("rollouts must be positive")
+    if mode == "knowledge_assisted" and knowledge_corpus is None:
+        raise ContractError("knowledge_assisted mode requires a frozen knowledge corpus")
+    if mode != "knowledge_assisted" and knowledge_corpus is not None:
+        raise ContractError("a knowledge corpus may only be supplied in knowledge_assisted mode")
     if output_root.exists() and any(output_root.iterdir()):
         raise PolicyError("experiment output directory must be empty: %s" % output_root)
     output_root.mkdir(parents=True, exist_ok=True)
@@ -132,12 +150,17 @@ def run_experiment(
             seed = base_seed + rollout
             run_dir = output_root / "runs" / task.task_id / ("rollout-%03d" % rollout)
             command = adapter.command(task.task_id, rollout, seed)
+            run_context = frozen_context
+            retrieval = None
+            if mode == "knowledge_assisted":
+                run_context = run_dir / "kg_context"
+                retrieval = materialize_retrieval(task, knowledge_corpus, run_context, knowledge_top_k)
             previous_seed = os.environ.get("EVOLDO_SEED")
             previous_rollout = os.environ.get("EVOLDO_ROLLOUT")
             os.environ["EVOLDO_SEED"] = str(seed)
             os.environ["EVOLDO_ROLLOUT"] = str(rollout)
             try:
-                record = run_agent_command(task, run_dir, command, mode, frozen_context, timeout_seconds)
+                record = run_agent_command(task, run_dir, command, mode, run_context, timeout_seconds)
             finally:
                 if previous_seed is None:
                     os.environ.pop("EVOLDO_SEED", None)
@@ -149,11 +172,20 @@ def run_experiment(
                     os.environ["EVOLDO_ROLLOUT"] = previous_rollout
             fallback = empty_telemetry(task.task_id, model_id, mode, rollout, seed, float(record["duration_seconds"]))
             telemetry = _load_agent_telemetry(run_dir / "app" / "telemetry.json", fallback)
+            if telemetry.get("model_identity_status") == "mismatch":
+                record["status"] = "model_identity_mismatch"
+                record["identity_failure"] = {
+                    "requested_model_id": model_id,
+                    "provider_reported_model_id": telemetry.get("provider_reported_model_id"),
+                }
             telemetry.setdefault("milestones", {})
             telemetry["milestones"].setdefault("terminal_seconds", float(record["duration_seconds"]))
             terminal_status = {
                 "ok": "completed", "provider_timeout": "infra_fail", "provider_infra_fail": "infra_fail",
-                "timeout": "timeout", "format_fail": "format_fail", "model_incomplete": "model_incomplete",
+                "failed": "infra_fail", "model_identity_mismatch": "infra_fail", "timeout": "timeout",
+                "output_budget_exhausted": "infra_fail",
+                "format_fail": "format_fail", "model_incomplete": "model_incomplete",
+                "policy_fail": "policy_fail",
             }.get(str(record["status"]), "model_incomplete")
             if telemetry.get("source") == "runner_fallback":
                 telemetry["milestones"]["terminal_status"] = terminal_status
@@ -168,6 +200,19 @@ def run_experiment(
             telemetry["probe_calls"] = declared_calls
             telemetry["ineffective_probe_calls"] = ledger["ineffective_calls"]
             telemetry["policy_rejected_probe_calls"] = ledger["policy_rejections"]
+            if retrieval is not None:
+                relevant_ids = []
+                oracle_path = oracle_root / (task.task_id + ".oracle.json")
+                if oracle_path.is_file():
+                    relevant_ids = load_json(oracle_path).get("relevant_knowledge_ids", [])
+                telemetry["knowledge_retrieval"] = {
+                    "corpus_sha256": retrieval["corpus_sha256"],
+                    "query_sha256": retrieval["query_sha256"],
+                    "snapshot_sha256": sha256_file(run_context / "kg_retrieval.json"),
+                    "returned_ids": [entry["id"] for entry in retrieval["entries"]],
+                    "metrics": retrieval_metrics(retrieval, relevant_ids),
+                    "retrieval_calls": 1,
+                }
             if declared_calls > int(task.data["budget"]["max_tool_calls"]):
                 record["status"] = "policy_fail"
                 record["policy_failure"] = "tool_budget_exceeded"
@@ -178,8 +223,13 @@ def run_experiment(
             score = None
             if record["answer_present"]:
                 try:
+                    candidate_answer = load_json(run_dir / "app" / "answer.json")
+                    if candidate_answer.get("task_id") != task.task_id:
+                        raise ContractError(
+                            "answer.task_id must match scheduled task %s" % task.task_id
+                        )
                     score = grade_one(tasks_root, oracle_root, run_dir / "app" / "answer.json")
-                except (ContractError, ValueError, OSError) as exc:
+                except (BenchmarkError, ValueError, OSError) as exc:
                     record["status"] = "format_fail"
                     record["answer_error"] = str(exc)
                 else:
@@ -195,13 +245,33 @@ def run_experiment(
                 "family_id": task.family_id,
                 "suite": task.suite,
                 "level": task.data["level"],
+                "deployment_tier": task.data.get("deployment_tier", "legacy"),
+                "evaluation_role": task.data.get("evaluation_role", "legacy"),
+                "knowledge_effect_expectation": task.data.get("knowledge_effect_expectation", "legacy"),
                 "variant": task.variant,
                 "rollout": rollout,
                 "seed": seed,
                 "mode": mode,
                 "task_manifest_sha256": sha256_file(task.manifest_path),
+                "task_contract_sha256": _task_contract_hash(task),
+                "prompt_sha256": sha256_file(task.prompt_path),
+                "input_files_sha256": {
+                    value: sha256_file(task.source_path(value)) for value in task.data["input_files"]
+                },
                 "answer_contract_sha256": sha256_file(task.source_path(task.data["answer_template_file"])),
+                "oracle_sha256": (
+                    sha256_file(oracle_root / (task.task_id + ".oracle.json"))
+                    if (oracle_root / (task.task_id + ".oracle.json")).is_file() else None
+                ),
                 "budget": task.data["budget"],
+                "web_search_policy": task.data.get("network_policy", {}).get("model_web_search", "legacy_unspecified"),
+                "knowledge_context": telemetry.get("knowledge_retrieval"),
+                "wall_seconds": telemetry.get("wall_seconds"),
+                "terminal_tokens": telemetry.get("milestones", {}).get("terminal_tokens"),
+                "terminal_tokens_status": telemetry.get("milestones", {}).get("terminal_tokens_status", telemetry.get("token_measurement_status")),
+                "token_breakdown": telemetry.get("token_breakdown"),
+                "requested_model_parameters": telemetry.get("requested_model_parameters"),
+                "provider_seed": telemetry.get("provider_seed"),
                 "status": record["status"],
                 "answer_present": record["answer_present"],
                 "score": score["score"] if score else None,
@@ -209,6 +279,16 @@ def run_experiment(
                 "telemetry_file": str((run_dir / "telemetry.normalized.json").relative_to(output_root)),
                 "score_file": str((run_dir / "score.json").relative_to(output_root)) if score else None,
             })
+    infrastructure_rollout_count = sum(
+        is_infrastructure_status(row.get("status")) for row in rows
+    )
+    provider_identity_values = set()
+    identity_status_values = set()
+    for row in rows:
+        row_telemetry = load_json(output_root / row["telemetry_file"])
+        if row_telemetry.get("provider_reported_model_id"):
+            provider_identity_values.add(str(row_telemetry["provider_reported_model_id"]))
+        identity_status_values.add(str(row_telemetry.get("model_identity_status", "unavailable")))
     manifest = {
         "schema_version": "1.0",
         "created_at": utc_timestamp(),
@@ -220,7 +300,18 @@ def run_experiment(
         "pairing_modes": sorted(required_modes),
         "task_count": len({row["task_id"] for row in rows}),
         "run_count": len(rows),
+        "capability_complete": infrastructure_rollout_count == 0,
+        "infrastructure_rollout_count": infrastructure_rollout_count,
+        "provider_reported_model_ids": sorted(provider_identity_values),
+        "model_identity_statuses": sorted(identity_status_values),
         "context_snapshot": context_manifest,
+        "requested_model_parameters": (
+            rows[0].get("requested_model_parameters")
+            if rows and all(
+                row.get("requested_model_parameters") == rows[0].get("requested_model_parameters")
+                for row in rows
+            ) else None
+        ),
         "rows": rows,
     }
     dump_json(output_root / "experiment_manifest.json", manifest)
@@ -234,11 +325,30 @@ def compare_treatments(manifests: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     violations: List[Dict[str, str]] = []
     if len(model_ids) != 1:
         violations.append({"code": "MODEL_MISMATCH", "detail": "paired treatments must use the same model_id"})
+    baseline_parameters = manifests[0].get("requested_model_parameters")
+    for manifest in manifests[1:]:
+        if manifest.get("requested_model_parameters") != baseline_parameters:
+            violations.append({
+                "code": "MODEL_PARAMETER_MISMATCH",
+                "detail": "paired treatments must use the same frozen model parameters",
+            })
 
     def index(manifest: Dict[str, Any]) -> Dict[Any, Dict[str, Any]]:
         return {(row["task_id"], row["rollout"], row["seed"]): row for row in manifest.get("rows", [])}
 
     baseline = index(manifests[0])
+    for manifest in manifests:
+        unresolved = [
+            row for row in manifest.get("rows", [])
+            if is_infrastructure_status(row.get("status"))
+        ]
+        if manifest.get("capability_complete") is False or unresolved:
+            violations.append({
+                "code": "UNRESOLVED_INFRASTRUCTURE",
+                "detail": "%s contains %d unresolved infrastructure rollout(s)"
+                % (manifest.get("mode"), len(unresolved)),
+            })
+    paired_deltas: Dict[str, Dict[str, Any]] = {}
     for manifest in manifests[1:]:
         current = index(manifest)
         if set(current) != set(baseline):
@@ -246,14 +356,85 @@ def compare_treatments(manifests: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             continue
         for key in sorted(baseline):
             left, right = baseline[key], current[key]
-            for field in ("task_manifest_sha256", "answer_contract_sha256", "budget"):
+            for field in (
+                "task_manifest_sha256", "task_contract_sha256", "prompt_sha256",
+                "input_files_sha256", "answer_contract_sha256", "oracle_sha256", "budget",
+                "web_search_policy", "requested_model_parameters",
+            ):
                 if left.get(field) != right.get(field):
                     violations.append({"code": "CONTROL_MISMATCH", "detail": "%s differs for %s" % (field, key[0])})
+        mode = str(manifest.get("mode"))
+        def capability_score(row: Dict[str, Any]) -> Optional[float]:
+            if row.get("status") in {"format_fail", "model_incomplete", "policy_fail"}:
+                return 0.0
+            if row.get("score") is not None:
+                return float(row["score"])
+            return None
+
+        valid_score_deltas = []
+        for key in sorted(baseline):
+            left_score = capability_score(baseline[key])
+            right_score = capability_score(current[key])
+            if left_score is not None and right_score is not None:
+                valid_score_deltas.append(right_score - left_score)
+        valid_token_deltas = [
+            float(current[key]["terminal_tokens"]) - float(baseline[key]["terminal_tokens"])
+            for key in sorted(baseline)
+            if current[key].get("terminal_tokens") is not None and baseline[key].get("terminal_tokens") is not None
+        ]
+        valid_wall_deltas = [
+            float(current[key]["wall_seconds"]) - float(baseline[key]["wall_seconds"])
+            for key in sorted(baseline)
+            if current[key].get("wall_seconds") is not None and baseline[key].get("wall_seconds") is not None
+        ]
+        knowledge_rows = [row.get("knowledge_context") for row in current.values() if row.get("knowledge_context")]
+        recalls = [
+            float(row["metrics"]["recall_at_k"])
+            for row in knowledge_rows
+            if row.get("metrics", {}).get("recall_at_k") is not None
+        ]
+        precisions = [
+            float(row["metrics"]["precision_at_k"])
+            for row in knowledge_rows
+            if row.get("metrics", {}).get("precision_at_k") is not None
+        ]
+        paired_deltas[mode] = {
+            "score_pair_count": len(valid_score_deltas),
+            "mean_score_delta": round(sum(valid_score_deltas) / len(valid_score_deltas), 6) if valid_score_deltas else None,
+            "improvement_rate": round(sum(value > 0 for value in valid_score_deltas) / len(valid_score_deltas), 6) if valid_score_deltas else None,
+            "harm_rate": round(sum(value < 0 for value in valid_score_deltas) / len(valid_score_deltas), 6) if valid_score_deltas else None,
+            "token_pair_count": len(valid_token_deltas),
+            "mean_terminal_token_delta": round(sum(valid_token_deltas) / len(valid_token_deltas), 6) if valid_token_deltas else None,
+            "wall_time_pair_count": len(valid_wall_deltas),
+            "mean_wall_seconds_delta": round(sum(valid_wall_deltas) / len(valid_wall_deltas), 6) if valid_wall_deltas else None,
+            "mean_retrieval_recall_at_k": round(sum(recalls) / len(recalls), 6) if recalls else None,
+            "mean_retrieval_precision_at_k": round(sum(precisions) / len(precisions), 6) if precisions else None,
+            "by_knowledge_effect_expectation": {},
+        }
+        expectation_groups = sorted({
+            str(current[key].get("knowledge_effect_expectation", "legacy")) for key in baseline
+        })
+        for expectation in expectation_groups:
+            deltas = []
+            for key in sorted(baseline):
+                if str(current[key].get("knowledge_effect_expectation", "legacy")) != expectation:
+                    continue
+                left_score = capability_score(baseline[key])
+                right_score = capability_score(current[key])
+                if left_score is not None and right_score is not None:
+                    deltas.append(right_score - left_score)
+            paired_deltas[mode]["by_knowledge_effect_expectation"][expectation] = {
+                "count": len(deltas),
+                "mean_score_delta": round(sum(deltas) / len(deltas), 6) if deltas else None,
+                "harm_rate": round(sum(value < 0 for value in deltas) / len(deltas), 6) if deltas else None,
+            }
     return {
         "schema_version": "1.0",
         "passed": not violations,
         "model_id": next(iter(model_ids)) if len(model_ids) == 1 else None,
         "modes": [manifest.get("mode") for manifest in manifests],
         "paired_rows": len(baseline),
+        "baseline_mode": manifests[0].get("mode"),
+        "paired_deltas": paired_deltas,
         "violations": violations,
     }

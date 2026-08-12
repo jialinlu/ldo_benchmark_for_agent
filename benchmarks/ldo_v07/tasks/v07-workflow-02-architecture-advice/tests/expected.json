@@ -1,0 +1,72 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "admission_state",
+      "expected": "advice_ready_measured",
+      "id": "state",
+      "kind": "exact",
+      "path": "artifact.state",
+      "weight": 20
+    },
+    {
+      "dimension": "evidence_hierarchy",
+      "expected": {
+        "e1": "measured_current",
+        "e2": "measured_current",
+        "e3": "unbound_old",
+        "e4": "analytical_prior"
+      },
+      "id": "labels",
+      "kind": "mapping_credit",
+      "path": "artifact.evidence_labels",
+      "weight": 25
+    },
+    {
+      "dimension": "action_ranking",
+      "expected": [
+        "small_bidirectional_cascode_bias_test",
+        "increase_all_lengths",
+        "add_gain_boost_stage"
+      ],
+      "id": "rank",
+      "kind": "sequence_alignment",
+      "path": "artifact.ranked_actions",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "bounded_action",
+      "expected": "small_bidirectional_cascode_bias_test",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "regression_plan",
+      "expected": [
+        "op_headroom",
+        "gain",
+        "phase_margin",
+        "iq",
+        "startup",
+        "worst_corner"
+      ],
+      "id": "checks",
+      "kind": "set_f1",
+      "path": "artifact.required_checks",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-workflow-02-architecture-advice",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-evidence-admission",
+    "kg-architecture-advice-order"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-workflow-02-architecture-advice"
+}

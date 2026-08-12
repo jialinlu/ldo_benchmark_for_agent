@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "failure_classes": {},
+    "first_circuit_evidence": "CONTROLLED_VALUE",
+    "not_scoreable_as_model_circuit_failure": [],
+    "repair_sequence": []
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-eda-03-failure-recovery"
+}

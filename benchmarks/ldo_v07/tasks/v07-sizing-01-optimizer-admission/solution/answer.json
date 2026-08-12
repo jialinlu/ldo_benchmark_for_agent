@@ -1,0 +1,68 @@
+{
+  "artifact": {
+    "admitted_evaluations": [
+      "e1",
+      "e4",
+      "e5",
+      "e6",
+      "e7"
+    ],
+    "best_hard_pass_candidate": "e6",
+    "design_budget_consumed": 5,
+    "evaluation_tags": {
+      "e1": [
+        "measured",
+        "objective_observation",
+        "design_budget"
+      ],
+      "e2": [
+        "infrastructure",
+        "retry",
+        "exclude"
+      ],
+      "e3": [
+        "measurement",
+        "retry",
+        "exclude"
+      ],
+      "e4": [
+        "invalid_candidate",
+        "feasibility_observation",
+        "design_budget"
+      ],
+      "e5": [
+        "measured",
+        "objective_observation",
+        "design_budget"
+      ],
+      "e6": [
+        "measured",
+        "objective_observation",
+        "design_budget"
+      ],
+      "e7": [
+        "measured",
+        "objective_observation",
+        "design_budget"
+      ],
+      "e8": [
+        "evidence_integrity",
+        "retry",
+        "exclude"
+      ],
+      "e9": [
+        "infrastructure",
+        "retry",
+        "exclude"
+      ]
+    },
+    "next_ccomp_pf": 6,
+    "next_driver_w_um": 20,
+    "next_experiment_basis": "isolate_driver_from_e6",
+    "stop_rule": "stop_if_iq_fails_or_no_score_gain"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-sizing-01-optimizer-admission"
+}

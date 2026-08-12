@@ -1,0 +1,102 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "claim_scope": {
+        "allowed": [
+          "polarity_only",
+          "full_qualification",
+          "polarity_and_stability"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "evidence_used": {
+        "allowed": [
+          "e2",
+          "e1",
+          "e5",
+          "e4",
+          "e3"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "loop_conclusion": {
+        "allowed": [
+          "sign_unknown",
+          "positive_feedback",
+          "negative_feedback_small_signal"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_probe": {
+        "allowed": [
+          "none",
+          "reuse_old_phase_margin",
+          "startup_only",
+          "bias_preserving_return_ratio"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "claim_scope": [
+      "polarity_only",
+      "full_qualification",
+      "polarity_and_stability"
+    ],
+    "evidence_ids": [
+      "e1",
+      "e2",
+      "e4",
+      "e3",
+      "e5"
+    ],
+    "loop_conclusion": [
+      "negative_feedback_small_signal",
+      "sign_unknown",
+      "positive_feedback"
+    ],
+    "probes": [
+      "startup_only",
+      "bias_preserving_return_ratio",
+      "none",
+      "reuse_old_phase_margin"
+    ]
+  },
+  "materials": {
+    "observations": [
+      {
+        "fact": "A +8 mV forced VOUT perturbation makes VFB increase by 4 mV.",
+        "id": "e1"
+      },
+      {
+        "fact": "The error-amplifier output rises by 22 mV after VFB rises.",
+        "id": "e2"
+      },
+      {
+        "fact": "Raising a PMOS pass gate voltage reduces delivered current.",
+        "id": "e3"
+      },
+      {
+        "fact": "A nominal transient settles monotonically once.",
+        "id": "e4"
+      },
+      {
+        "fact": "An old report says phase margin was 67 degrees on another netlist.",
+        "id": "e5"
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A PMOS-pass LDO review contains sign measurements plus distractor prose. Reconstruct the physical loop and decide what has actually been established.",
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-01-feedback-trace"
+}

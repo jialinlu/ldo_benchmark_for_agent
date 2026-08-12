@@ -1,0 +1,216 @@
+{
+  "corpus_id": "evoldo-v07-clean-room-kg",
+  "entries": [
+    {
+      "id": "kg-feedback-return-ratio",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "feedback",
+        "polarity",
+        "return ratio"
+      ],
+      "text": "A perturbation sign chain can establish local negative feedback, but stability requires a bias-preserving return-ratio measurement at the same operating point.",
+      "title": "Feedback polarity and return ratio"
+    },
+    {
+      "id": "kg-op-first",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "operating point",
+        "headroom",
+        "workflow"
+      ],
+      "text": "Verify generated-netlist connectivity, terminal order, body and CDF semantics before restoring DC bias, cascode headroom, pass regulation, startup, STB, and qualification in that order.",
+      "title": "Operating-point-first recovery"
+    },
+    {
+      "id": "kg-startup-evidence",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "startup",
+        "nodeset",
+        "force"
+      ],
+      "text": "Convergence with a nodeset, initial condition, or internal force is diagnostic evidence only. Final startup evidence must begin from the required physical zero state without those crutches.",
+      "title": "Startup evidence boundary"
+    },
+    {
+      "id": "kg-stb-crossing",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "stb",
+        "phase margin",
+        "crossing"
+      ],
+      "text": "Phase margin is meaningful only for the declared loop and a valid crossing rule. Missing or multiple zero-dB crossings require diagnosis rather than accepting a finite printed number.",
+      "title": "STB crossing validity"
+    },
+    {
+      "id": "kg-evidence-admission",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "hash",
+        "evidence",
+        "provenance"
+      ],
+      "text": "Current measured facts must be bound to the candidate, profile, bench, and corner. Old or unbound measurements and literature priors may rank tests but cannot authorize a design change.",
+      "title": "Evidence admission"
+    },
+    {
+      "id": "kg-architecture-advice-order",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "architecture",
+        "gain",
+        "cascode"
+      ],
+      "text": "For low gain, repair unhealthy operating points and cascode headroom first, then test architecture-specific bounded levers, output resistance, transconductance efficiency, loading, and only then topology changes.",
+      "title": "Architecture advice order"
+    },
+    {
+      "id": "kg-sizing-two-pass",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "sizing",
+        "parameter space",
+        "roles"
+      ],
+      "text": "Use the production pipeline to inventory exact legal parameter paths first, then build a role-aware reduced space. Do not invent aliases, matching couplings, or rewrite integer legal domains.",
+      "title": "Two-pass sizing space"
+    },
+    {
+      "id": "kg-search-is-not-final",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "search",
+        "backannotation",
+        "final"
+      ],
+      "text": "Optimization-only results are search evidence. Acceptance requires callback-aware backannotation, immutable result artifacts, and a fresh final verification on the materialized candidate.",
+      "title": "Search is not final"
+    },
+    {
+      "id": "kg-final-artifact-consistency",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "manifest",
+        "candidate",
+        "final"
+      ],
+      "text": "A final result requires mutually consistent report and manifest status, candidate identity, score, hard-gate state, and fresh-final provenance. Missing or contradictory artifacts mean insufficient evidence.",
+      "title": "Final artifact consistency"
+    },
+    {
+      "id": "kg-controlled-experiment",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "controlled experiment",
+        "causal",
+        "ledger"
+      ],
+      "text": "Causal or local-sensitivity language requires exactly one changed knob, the same bench/profile/corner, distinct candidate hashes, numeric paired metrics, and verified evidence hashes.",
+      "title": "Controlled experiment admission"
+    },
+    {
+      "id": "kg-gated-qualification",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "qualification",
+        "gates",
+        "stop rule"
+      ],
+      "text": "Run cheap prerequisite gates before expensive matrices. Missing operating point, startup, or STB evidence blocks full qualification and is reported separately from simulator infrastructure failure.",
+      "title": "Gated qualification"
+    },
+    {
+      "id": "kg-banked-scope",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "banked",
+        "scope",
+        "startup"
+      ],
+      "text": "A candidate may bank a hash-bound performance improvement while startup, enable, full-corner, or materialization gates remain open. Banked scope is not complete design qualification.",
+      "title": "Banked scope"
+    },
+    {
+      "id": "kg-metric-specific-worst",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "corner",
+        "worst case",
+        "pvt"
+      ],
+      "text": "Different metrics often have different worst corners. Preserve each metric's stress point and do not average hard constraints or invent one universal worst corner.",
+      "title": "Metric-specific worst corners"
+    },
+    {
+      "id": "kg-hard-gates-before-score",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "hard gate",
+        "pareto",
+        "candidate"
+      ],
+      "text": "A higher objective score never compensates for a failed hard gate. Select among hard-pass candidates before comparing Pareto performance and resource cost.",
+      "title": "Hard gates before scores"
+    },
+    {
+      "id": "kg-psrr-system-budget",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "psrr",
+        "ripple",
+        "rss"
+      ],
+      "text": "Convert each supply-ripple tone through the linear PSRR attenuation, apply downstream sensitivity, and combine independent RMS paths by root-sum-square.",
+      "title": "PSRR system budgeting"
+    },
+    {
+      "id": "kg-migration-intent",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "migration",
+        "gmid",
+        "pdk"
+      ],
+      "text": "Migrate current density, gm over ID, intrinsic gain, headroom, passive value and voltage rating into target-PDK legal devices. Do not copy source geometry or CDF names literally.",
+      "title": "Process migration by intent"
+    },
+    {
+      "id": "kg-oa-save-readback",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "virtuoso",
+        "oa",
+        "readback"
+      ],
+      "text": "For a Virtuoso edit, work in a scratch copy, save, close, reopen, read OA properties and connectivity back, then produce a fresh netlist or simulation before acceptance.",
+      "title": "OA persistence evidence"
+    },
+    {
+      "id": "kg-cdf-netlist",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "cdf",
+        "netlist",
+        "skill"
+      ],
+      "text": "PDK instance edits may require CDF callbacks before netlisting. Verify the generated netlist parameter rather than assuming an OA display property changed simulation semantics.",
+      "title": "CDF parameter semantics"
+    },
+    {
+      "id": "kg-oa-net-vs-wire",
+      "source_class": "clean_room_design_rule",
+      "tags": [
+        "oa",
+        "wire",
+        "connectivity"
+      ],
+      "text": "A visible shape or label does not prove OA terminal connectivity, and a logical net alone may not satisfy schematic readability. Verify both connectivity and persistent geometry when both are required.",
+      "title": "Logical net versus visible wire"
+    }
+  ],
+  "license": "Apache-2.0",
+  "schema_version": "1.0"
+}

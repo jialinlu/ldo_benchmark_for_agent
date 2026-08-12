@@ -1,0 +1,159 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "failure_classes": {
+        "allowed_keys": [
+          "v6",
+          "v4",
+          "v2",
+          "v3",
+          "v5",
+          "v1"
+        ],
+        "required_keys": [
+          "v3",
+          "v1",
+          "v6",
+          "v5",
+          "v4",
+          "v2"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "healthy_control",
+          "measurement_fixture",
+          "cdf_netlisting",
+          "circuit",
+          "pdk_fixture",
+          "transport_infrastructure"
+        ]
+      },
+      "first_circuit_evidence": {
+        "allowed": [
+          "v6",
+          "v2",
+          "v1",
+          "v5",
+          "v4",
+          "v3"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "not_scoreable_as_model_circuit_failure": {
+        "allowed": [
+          "v6",
+          "v1",
+          "v3",
+          "v4",
+          "v2",
+          "v5"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "repair_sequence": {
+        "allowed": [
+          "retry_transport",
+          "resize_dut",
+          "fix_cdf_mapping",
+          "fix_model_section",
+          "diagnose_circuit_op",
+          "fix_save_selection"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "fix_cdf_mapping",
+      "diagnose_circuit_op",
+      "fix_model_section",
+      "fix_save_selection",
+      "retry_transport",
+      "resize_dut"
+    ],
+    "classes": [
+      "circuit",
+      "cdf_netlisting",
+      "transport_infrastructure",
+      "healthy_control",
+      "pdk_fixture",
+      "measurement_fixture"
+    ],
+    "event_ids": [
+      "v5",
+      "v6",
+      "v1",
+      "v4",
+      "v3",
+      "v2"
+    ],
+    "scoreable_ids": [
+      "v2",
+      "v6",
+      "v5",
+      "v3",
+      "v4",
+      "v1"
+    ]
+  },
+  "materials": {
+    "attempt_order": [
+      "v1",
+      "v2",
+      "v3",
+      "v4",
+      "v5",
+      "v6"
+    ],
+    "events": [
+      {
+        "id": "v1",
+        "message": "connection reset",
+        "returncode": 255,
+        "stage": "ssh_preflight"
+      },
+      {
+        "id": "v2",
+        "message": "cellview opens read-only",
+        "returncode": 0,
+        "stage": "oa_open"
+      },
+      {
+        "id": "v3",
+        "message": "unknown CDF parameter fingers on MPASS",
+        "returncode": 1,
+        "stage": "netlist"
+      },
+      {
+        "id": "v4",
+        "message": "model section ff not found",
+        "returncode": 1,
+        "stage": "spectre"
+      },
+      {
+        "id": "v5",
+        "message": "VOUT vector absent because save selection excludes it",
+        "returncode": 0,
+        "stage": "measure"
+      },
+      {
+        "id": "v6",
+        "message": "with corrected fixture VOUT remains 0.18V at target 0.8V",
+        "returncode": 0,
+        "stage": "dc_op"
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A VM-based IC618 run reports several failures. Route each failure and choose the first repair without modifying the DUT to hide infrastructure or bench defects.",
+  "schema_version": "3.0",
+  "task_id": "v07-eda-03-failure-recovery"
+}

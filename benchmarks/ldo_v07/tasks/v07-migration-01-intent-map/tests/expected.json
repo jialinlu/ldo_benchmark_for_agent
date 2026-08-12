@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "dimension": "intent_mapping",
+      "expected": {
+        "src_ccomp": "t_mim",
+        "src_input": "t_input",
+        "src_pass": "t_pass",
+        "src_start": "unresolved"
+      },
+      "id": "mapping",
+      "kind": "mapping_credit",
+      "path": "artifact.role_mapping",
+      "weight": 35
+    },
+    {
+      "dimension": "migration_plan",
+      "expected": {
+        "src_ccomp": "compute_area_then_pvt",
+        "src_input": "characterize_gmid_and_gain",
+        "src_pass": "characterize_idw_and_headroom",
+        "src_start": "verify_startup_primitive_pins_and_leakage"
+      },
+      "id": "actions",
+      "kind": "mapping_credit",
+      "path": "artifact.role_actions",
+      "weight": 30
+    },
+    {
+      "dimension": "workflow_order",
+      "expected": [
+        "device_smoke",
+        "intent_mapping",
+        "nominal_op",
+        "startup",
+        "stb",
+        "pvt"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.action_sequence",
+      "weight": 20
+    },
+    {
+      "critical": true,
+      "critical_credit_threshold": 0.01,
+      "dimension": "blocker_recognition",
+      "expected": [
+        "src_start"
+      ],
+      "id": "blocked",
+      "kind": "set_f1",
+      "path": "artifact.blocked_roles",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-migration-01-intent-map",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-migration-intent",
+    "kg-op-first"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-migration-01-intent-map"
+}

@@ -11,7 +11,7 @@ import hashlib
 import json
 import shutil
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -107,7 +107,7 @@ def main() -> None:
     write(score / 100.0, results, "ok", score=score, critical=critical)
 
 
-def write(reward: float, results: list, outcome: str, score: float = 0.0, critical: list | None = None) -> None:
+def write(reward: float, results: list, outcome: str, score: float = 0.0, critical: Optional[List[Any]] = None) -> None:
     passed = sum(result.get("status") == "passed" for result in results)
     total = len(results) or 8
     payload = {

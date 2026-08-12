@@ -1,0 +1,160 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "admissible_cards": {
+        "allowed": [
+          "x5",
+          "x3",
+          "x2",
+          "x1",
+          "x4"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "card_classes": {
+        "allowed_keys": [
+          "x3",
+          "x2",
+          "x1",
+          "x5",
+          "x4"
+        ],
+        "required_keys": [
+          "x3",
+          "x1",
+          "x2",
+          "x5",
+          "x4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "nonnumeric_or_missing",
+          "multi_knob_confounded",
+          "identity_not_distinct",
+          "validated_single_variable",
+          "bench_corner_confounded",
+          "analytical_prior"
+        ]
+      },
+      "narrative_level": {
+        "allowed": [
+          "hypothesis",
+          "candidate_correlation",
+          "measured_fact",
+          "validated_local_sensitivity"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "discard_all",
+          "rewrite_cards_as_pass",
+          "admit_all_numeric",
+          "admit_x1_only"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "rewrite_cards_as_pass",
+      "admit_x1_only",
+      "admit_all_numeric",
+      "discard_all"
+    ],
+    "card_ids": [
+      "x1",
+      "x5",
+      "x2",
+      "x4",
+      "x3"
+    ],
+    "classes": [
+      "multi_knob_confounded",
+      "validated_single_variable",
+      "bench_corner_confounded",
+      "nonnumeric_or_missing",
+      "identity_not_distinct",
+      "analytical_prior"
+    ],
+    "knowledge_levels": [
+      "candidate_correlation",
+      "validated_local_sensitivity",
+      "hypothesis",
+      "measured_fact"
+    ]
+  },
+  "materials": {
+    "cards": [
+      {
+        "changed_knobs": [
+          "ccomp"
+        ],
+        "distinct_candidate_hashes": true,
+        "evidence_hashes_valid": true,
+        "id": "x1",
+        "numeric_metrics": true,
+        "same_bench": true,
+        "same_corner": true
+      },
+      {
+        "changed_knobs": [
+          "ccomp",
+          "driver_w"
+        ],
+        "distinct_candidate_hashes": true,
+        "evidence_hashes_valid": true,
+        "id": "x2",
+        "numeric_metrics": true,
+        "same_bench": true,
+        "same_corner": true
+      },
+      {
+        "changed_knobs": [
+          "pass_w"
+        ],
+        "distinct_candidate_hashes": true,
+        "evidence_hashes_valid": true,
+        "id": "x3",
+        "numeric_metrics": true,
+        "same_bench": false,
+        "same_corner": false
+      },
+      {
+        "changed_knobs": [
+          "bias_i"
+        ],
+        "distinct_candidate_hashes": false,
+        "evidence_hashes_valid": true,
+        "id": "x4",
+        "numeric_metrics": true,
+        "same_bench": true,
+        "same_corner": true
+      },
+      {
+        "changed_knobs": [
+          "input_l"
+        ],
+        "distinct_candidate_hashes": true,
+        "evidence_hashes_valid": true,
+        "id": "x5",
+        "numeric_metrics": false,
+        "same_bench": true,
+        "same_corner": true
+      }
+    ],
+    "narrative": "Across 40 unrelated candidates, larger pass width correlates with lower dropout."
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Classify experiment cards before using them as sizing knowledge. A correlation or a prose lesson is not automatically a local sensitivity.",
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-05-causal-ledger"
+}

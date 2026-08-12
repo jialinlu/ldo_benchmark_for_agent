@@ -1,0 +1,129 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "decision": {
+        "allowed": [
+          "infrastructure_retry",
+          "repair_stb_then_repeat_quick",
+          "run_full_matrix",
+          "accept_finite_pm"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "run_noise",
+          "increase_pass_width",
+          "inspect_loop_break_and_pole_order",
+          "accept_s3_pm"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "treat_no_crossing_pm_as_pass",
+          "discard_valid_crossing_rows",
+          "average_phase_margin",
+          "run_full_matrix_before_stb_repair"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "row_classes": {
+        "allowed_keys": [
+          "s1",
+          "s2",
+          "s4",
+          "s3"
+        ],
+        "required_keys": [
+          "s3",
+          "s4",
+          "s2",
+          "s1"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "undefined_no_crossing",
+          "valid_pass",
+          "ambiguous_multiple_crossings",
+          "valid_fail"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "increase_pass_width",
+      "run_noise",
+      "inspect_loop_break_and_pole_order",
+      "accept_s3_pm"
+    ],
+    "decisions": [
+      "run_full_matrix",
+      "accept_finite_pm",
+      "repair_stb_then_repeat_quick",
+      "infrastructure_retry"
+    ],
+    "prohibited": [
+      "average_phase_margin",
+      "treat_no_crossing_pm_as_pass",
+      "run_full_matrix_before_stb_repair",
+      "discard_valid_crossing_rows"
+    ],
+    "row_classes": [
+      "valid_fail",
+      "undefined_no_crossing",
+      "valid_pass",
+      "ambiguous_multiple_crossings"
+    ]
+  },
+  "materials": {
+    "full_matrix_cost_runs": 72,
+    "quick_metrics": {
+      "dropout_pass": true,
+      "iq_pass": true,
+      "startup_pass": true
+    },
+    "stb_rows": [
+      {
+        "corner": "tt_1v8_27c_light",
+        "crossings": 1,
+        "gm_db": 12,
+        "id": "s1",
+        "pm_deg": 56
+      },
+      {
+        "corner": "ss_1v62_125c_heavy",
+        "crossings": 1,
+        "gm_db": 9,
+        "id": "s2",
+        "pm_deg": 51
+      },
+      {
+        "corner": "ff_1v98_m40c_light",
+        "crossings": 0,
+        "gm_db": null,
+        "id": "s3",
+        "pm_deg": 74
+      },
+      {
+        "corner": "ff_1v98_27c_heavy",
+        "crossings": 2,
+        "gm_db": -2,
+        "id": "s4",
+        "pm_deg": 38
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A nominal candidate looks good, but some load/corner STB rows lack a unique 0 dB crossing. Decide whether the expensive full matrix is authorized.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-01-stb-stop-rule"
+}

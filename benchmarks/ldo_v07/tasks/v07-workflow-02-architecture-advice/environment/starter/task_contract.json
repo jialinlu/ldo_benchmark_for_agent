@@ -1,0 +1,55 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "architecture_choice",
+    "evidence_integrity",
+    "operating_point",
+    "controlled_experiment"
+  ],
+  "deployment_tier": "T2_bounded_workflow",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-workflow-02-architecture-advice",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "override_resistant",
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v07-workflow-02-architecture-advice",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "action_ranking",
+    "admission_state",
+    "bounded_action",
+    "evidence_hierarchy",
+    "regression_plan"
+  ],
+  "split": "dev",
+  "suite": "architecture_choice",
+  "task_id": "v07-workflow-02-architecture-advice",
+  "title": "Issue evidence-bound architecture advice",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

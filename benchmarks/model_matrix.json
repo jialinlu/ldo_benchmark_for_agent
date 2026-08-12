@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "probed_at": "2026-08-10",
+  "probed_at": "2026-08-12",
   "formal_run_started": false,
   "rollouts_per_task": 3,
   "selected_models": [
@@ -9,6 +9,22 @@
     "claude-code/deepseek-v4-pro",
     "claude-code/deepseek-v4-flash"
   ],
+  "v07_calibration_models": {
+    "cross_family": [
+      "deepseek-ai/DeepSeek-V4-Flash",
+      "MiniMaxAI/MiniMax-M2.5"
+    ],
+    "same_family_qwen3_5": [
+      "Qwen/Qwen3.5-4B",
+      "Qwen/Qwen3.5-9B",
+      "Qwen/Qwen3.5-27B",
+      "Qwen/Qwen3.5-35B-A3B",
+      "Qwen/Qwen3.5-122B-A10B",
+      "Qwen/Qwen3.5-397B-A17B"
+    ],
+    "source": "OpenAI-compatible provider catalog attested on 2026-08-12",
+    "credentials_in_repository": false
+  },
   "models": [
     {
       "agent": "codex",
@@ -93,13 +109,16 @@
     }
   ],
   "formal_policy": {
-    "base_seed": 20260810,
+    "base_seed": 20260812,
     "timeout_seconds": 300,
-    "automatic_infrastructure_retries": 0,
+    "automatic_infrastructure_retries": 5,
     "new_session_per_task_rollout": true,
     "disable_resume_memory_plugins_and_prompt_suggestions": true,
     "execution_isolation": "fresh Docker container with only the runtime task bundle mounted",
-    "network_policy": "Docker bridge network required only for model provider access",
+    "network_policy": "Provider control plane only; web search, browser, remote fetch, shell, MCP, and undeclared tools are unavailable to the answer model",
+    "knowledge_pairing": "Every v0.7 model is evaluated KG-off and KG-on with the same task, answer contract, seed, and budget; KG-on receives only a frozen local retrieval snapshot",
+    "result_binding": "Every row binds task manifest, task contract, prompt, all declared inputs, answer contract, and oracle hashes",
+    "provider_sampling": "Three rollouts use independent sessions and distinct provider seeds; temperature, reasoning mode, thinking budget, and output ceiling are frozen and disclosed",
     "node_image": "node@sha256:b21fe589dfbe5cc39365d0544b9be3f1f33f55f3c86c87a76ff65a02f8f5848e",
     "claude_image": "debian@sha256:7b140f374b289a7c2befc338f42ebe6441b7ea838a042bbd5acbfca6ec875818",
     "model_failures_score_zero": true,

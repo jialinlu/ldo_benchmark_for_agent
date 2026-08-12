@@ -1,0 +1,27 @@
+{
+  "artifact": {
+    "experiment": "ccomp_4_5_6_7_fixed_others",
+    "held_fixed": [
+      "rz",
+      "driver_w",
+      "pass_w",
+      "bias",
+      "bench",
+      "load_matrix"
+    ],
+    "measurements": [
+      "light_pm",
+      "light_ugb",
+      "heavy_pm",
+      "heavy_ugb",
+      "settling",
+      "op",
+      "iq"
+    ],
+    "stop_rule": "stop_if_no_light_pm_gain_or_settling_fails"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-local-04-compensation-plan"
+}

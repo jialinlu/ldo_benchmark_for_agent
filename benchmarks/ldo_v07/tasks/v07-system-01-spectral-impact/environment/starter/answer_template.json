@@ -1,0 +1,14 @@
+{
+  "artifact": {
+    "combination_rule": "CONTROLLED_VALUE",
+    "dominant_path": "CONTROLLED_VALUE",
+    "downstream_total_uv_rms": 0.0,
+    "high_frequency_downstream_uv_rms": 0.0,
+    "low_frequency_downstream_uv_rms": 0.0,
+    "next_action": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-system-01-spectral-impact"
+}

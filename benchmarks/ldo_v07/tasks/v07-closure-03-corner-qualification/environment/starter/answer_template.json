@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "decision": "CONTROLLED_VALUE",
+    "metric_worst_corners": {},
+    "missing_or_failed_gates": [],
+    "row_classes": {}
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-03-corner-qualification"
+}

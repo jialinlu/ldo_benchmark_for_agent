@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "experiment": "CONTROLLED_VALUE",
+    "held_fixed": [],
+    "measurements": [],
+    "stop_rule": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-local-04-compensation-plan"
+}

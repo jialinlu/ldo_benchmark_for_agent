@@ -1,0 +1,111 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "full_qualification",
+          "stb_crossing",
+          "pass_regulation",
+          "cascode_headroom",
+          "quick_qualification",
+          "zero_state_startup",
+          "dc_op_bias",
+          "connectivity_cdf"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "primary_root_cause": {
+        "allowed": [
+          "startup_only",
+          "terminal_order_and_cdf",
+          "stability_only",
+          "pass_width_only"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "run_full_before_stb",
+          "skip_body_check",
+          "accept_nodeset_as_final",
+          "force_internal_bias",
+          "sweep_pass_width_before_connectivity"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "stop_after_stage": {
+        "allowed": [
+          "cascode_headroom",
+          "stb_crossing",
+          "zero_state_startup",
+          "dc_op_bias",
+          "full_qualification",
+          "connectivity_cdf",
+          "pass_regulation",
+          "quick_qualification"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "prohibited": [
+      "sweep_pass_width_before_connectivity",
+      "accept_nodeset_as_final",
+      "skip_body_check",
+      "run_full_before_stb",
+      "force_internal_bias"
+    ],
+    "root_causes": [
+      "startup_only",
+      "stability_only",
+      "pass_width_only",
+      "terminal_order_and_cdf"
+    ],
+    "stages": [
+      "stb_crossing",
+      "connectivity_cdf",
+      "dc_op_bias",
+      "pass_regulation",
+      "cascode_headroom",
+      "zero_state_startup",
+      "full_qualification",
+      "quick_qualification"
+    ]
+  },
+  "materials": {
+    "connectivity": {
+      "body_connections_verified": true,
+      "cdf_parameters_netlisted": false,
+      "feedback_closed": true,
+      "terminal_order_verified": false
+    },
+    "dc_op": {
+      "bias_branch_a": 0.0,
+      "cascode_region": "cutoff",
+      "pass_region": "cutoff",
+      "target_v": 0.8,
+      "vout_v": 0.02
+    },
+    "startup": {
+      "nodeset_success": true,
+      "zero_state_success": false
+    },
+    "stb": {
+      "phase_margin_deg": null,
+      "single_0db_crossing": false
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "The initial netlist converges, but internal bias is dead. Build the admissible recovery plan without using qualification-only crutches.",
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-01-op-recovery-order"
+}

@@ -1,0 +1,52 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "diagnosis",
+    "failure_classification",
+    "workflow_planning"
+  ],
+  "deployment_tier": "T0_foundation",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-foundation-05-failure-lane",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L1",
+  "lineage_id": "v07-foundation-05-failure-lane",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "failure_classification",
+    "model_failure_attribution",
+    "retry_policy"
+  ],
+  "split": "dev",
+  "suite": "diagnosis",
+  "task_id": "v07-foundation-05-failure-lane",
+  "title": "Separate circuit, measurement, and infrastructure failures",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

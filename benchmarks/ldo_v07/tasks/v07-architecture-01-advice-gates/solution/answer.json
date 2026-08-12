@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "authorized_action_sequence": [
+      "small_cascode_bias_pair",
+      "verify_op_headroom",
+      "remeasure_gain_pm_iq_startup"
+    ],
+    "contingent_next_action": "input_length_controlled_pair",
+    "evidence_labels": {
+      "m1": "measured_current",
+      "m2": "measured_current",
+      "m3": "unbound_old",
+      "m4": "analytical_prior",
+      "m5": "measured_current"
+    },
+    "max_authorized_stage": "op_recovery_experiment",
+    "primary_gate": "recover_operating_point",
+    "proposal_status": {
+      "p1": "unsupported_before_op",
+      "p2": "admissible_op_recovery",
+      "p3": "blocked_missing_current_knob",
+      "p4": "contingent_after_op",
+      "p5": "deferred_topology",
+      "p6": "blocked_qualification_gate"
+    },
+    "stop_rule": "stop_if_op_headroom_or_pm_or_iq_worsens"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-architecture-01-advice-gates"
+}

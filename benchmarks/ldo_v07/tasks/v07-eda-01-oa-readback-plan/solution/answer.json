@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "open_source_read_only",
+      "create_scratch_copy",
+      "edit_parameter",
+      "invoke_cdf_callback",
+      "schematic_check",
+      "save_close",
+      "reopen_readback",
+      "fresh_netlist",
+      "fresh_op",
+      "accept_or_revert"
+    ],
+    "decision": "execute_in_scratch",
+    "prohibited_actions": [
+      "edit_source_library",
+      "skip_cdf_callback",
+      "accept_without_reopen",
+      "claim_from_screenshot"
+    ],
+    "required_proofs": [
+      "oa_property_readback",
+      "netlist_parameter_readback",
+      "fresh_op_provenance"
+    ]
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-eda-01-oa-readback-plan"
+}

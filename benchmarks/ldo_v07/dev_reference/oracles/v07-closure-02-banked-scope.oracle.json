@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "dimension": "scope_accounting",
+      "expected": {
+        "complete_design": "open_fail",
+        "enable_restart": "open_fail",
+        "full_corner": "open_missing",
+        "materialization": "open_missing",
+        "startup": "open_fail",
+        "steady_state_performance": "banked"
+      },
+      "id": "scope",
+      "kind": "mapping_credit",
+      "path": "artifact.scope_status",
+      "weight": 45
+    },
+    {
+      "critical": true,
+      "dimension": "qualification_decision",
+      "expected": "bank_partial_continue",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "next_action",
+      "expected": "repair_startup_and_enable",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": [
+        "steady_state_performance"
+      ],
+      "id": "claim",
+      "kind": "set_f1",
+      "path": "artifact.claimable_scopes",
+      "weight": 15
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-02-banked-scope",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-banked-scope",
+    "kg-startup-evidence"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-02-banked-scope"
+}

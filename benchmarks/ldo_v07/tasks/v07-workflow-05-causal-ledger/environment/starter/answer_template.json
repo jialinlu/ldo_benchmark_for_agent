@@ -1,0 +1,12 @@
+{
+  "artifact": {
+    "admissible_cards": [],
+    "card_classes": {},
+    "narrative_level": "CONTROLLED_VALUE",
+    "next_action": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-05-causal-ledger"
+}

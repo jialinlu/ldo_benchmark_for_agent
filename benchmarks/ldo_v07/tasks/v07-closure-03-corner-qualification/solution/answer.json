@@ -1,0 +1,27 @@
+{
+  "artifact": {
+    "decision": "not_qualified",
+    "metric_worst_corners": {
+      "dropout": "ss_low_hot_heavy",
+      "iq": "ff_high_cold_light",
+      "phase_margin": "sf_low_cold_light",
+      "startup": "sf_low_cold_light"
+    },
+    "missing_or_failed_gates": [
+      "pm_r2",
+      "current_hash_r3",
+      "pm_r4",
+      "startup_r4"
+    ],
+    "row_classes": {
+      "r1": "valid_pass",
+      "r2": "metric_missing",
+      "r3": "stale_hash",
+      "r4": "hard_fail"
+    }
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-03-corner-qualification"
+}

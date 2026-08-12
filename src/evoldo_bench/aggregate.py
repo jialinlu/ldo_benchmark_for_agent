@@ -16,6 +16,8 @@ def failed_rollout_score(row: Mapping[str, Any]) -> Dict[str, Any]:
         "suite": str(row["suite"]),
         "level": str(row.get("level", "unknown")),
         "variant": str(row.get("variant", "unknown")),
+        "evaluation_role": str(row.get("evaluation_role", "legacy")),
+        "deployment_tier": str(row.get("deployment_tier", "legacy")),
         "score": 0.0,
         "raw_score": 0.0,
         "max_score": 100.0,
@@ -48,6 +50,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
     by_level: Dict[str, List[float]] = defaultdict(list)
     by_variant: Dict[str, List[float]] = defaultdict(list)
     by_role: Dict[str, List[float]] = defaultdict(list)
+    by_deployment_tier: Dict[str, List[float]] = defaultdict(list)
     by_dimension: Dict[str, List[float]] = defaultdict(list)
     critical_failures: Dict[str, int] = defaultdict(int)
     for score in scores:
@@ -57,6 +60,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
         by_level[str(score["level"])].append(value)
         by_variant[str(score["variant"])].append(value)
         by_role[str(score.get("evaluation_role", "legacy"))].append(value)
+        by_deployment_tier[str(score.get("deployment_tier", "legacy"))].append(value)
         for failure in score.get("critical_failed", []):
             critical_failures[str(failure)] += 1
         for check in score.get("checks", []):
@@ -82,6 +86,7 @@ def aggregate_scores(scores: Iterable[Mapping[str, Any]], mode: str = "unspecifi
         "by_level": {key: _summary(values) for key, values in sorted(by_level.items())},
         "by_variant": {key: _summary(values) for key, values in sorted(by_variant.items())},
         "by_evaluation_role": {key: _summary(values) for key, values in sorted(by_role.items())},
+        "by_deployment_tier": {key: _summary(values) for key, values in sorted(by_deployment_tier.items())},
         "by_scoring_dimension": {key: _summary(values) for key, values in sorted(by_dimension.items())},
         "critical_failure_counts": dict(sorted(critical_failures.items())),
     }
@@ -122,8 +127,25 @@ def aggregate_rollouts(
     passed = sum(1 for score in scores if bool(score.get("passed")))
     low, high = wilson_interval(passed, len(scores))
     per_task: Dict[str, List[float]] = defaultdict(list)
+    tier_scores: Dict[str, List[float]] = defaultdict(list)
+    tier_passes: Dict[str, int] = defaultdict(int)
     for score in scores:
         per_task[str(score["task_id"])].append(float(score["score"]))
+        tier = str(score.get("deployment_tier", "legacy"))
+        tier_scores[tier].append(float(score["score"]))
+        tier_passes[tier] += int(bool(score.get("passed")))
+    tier_readiness = {}
+    for tier, values in sorted(tier_scores.items()):
+        pass_rate = tier_passes[tier] / len(values)
+        mean_score = mean(values)
+        tier_readiness[tier] = {
+            "rollout_count": len(values),
+            "mean_score": round(mean_score, 6),
+            "pass_at_1": round(pass_rate, 6),
+            "score_gate": 70.0,
+            "pass_at_1_gate": round(2.0 / 3.0, 6),
+            "gate_passed": mean_score >= 70.0 and pass_rate >= 2.0 / 3.0,
+        }
     effort = summarize_effort(telemetry)
     total_tokens = float(effort["total_observed_tokens"])
     token_counts = effort["token_measurement"]
@@ -137,6 +159,7 @@ def aggregate_rollouts(
         "pass_at_1_ci95": [round(low, 6), round(high, 6)],
         "spec_score": round(mean(float(score["score"]) for score in scores) / 100.0, 6) if scores else 0.0,
         "task_results": {task_id: round(mean(values), 6) for task_id, values in sorted(per_task.items())},
+        "tier_readiness": tier_readiness,
         "scheduled_rollouts": len(telemetry),
         "failed_rollouts": sum(float(score["score"]) == 0.0 and bool(score.get("synthetic_failure_score")) for score in scores),
         "effort": effort,

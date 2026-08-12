@@ -1,0 +1,21 @@
+{
+  "artifact": {
+    "decision": "repair_stb_then_repeat_quick",
+    "next_action": "inspect_loop_break_and_pole_order",
+    "prohibited_actions": [
+      "treat_no_crossing_pm_as_pass",
+      "average_phase_margin",
+      "run_full_matrix_before_stb_repair"
+    ],
+    "row_classes": {
+      "s1": "valid_pass",
+      "s2": "valid_pass",
+      "s3": "undefined_no_crossing",
+      "s4": "ambiguous_multiple_crossings"
+    }
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-01-stb-stop-rule"
+}

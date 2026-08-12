@@ -75,7 +75,7 @@ def validate_telemetry(data: Dict[str, Any]) -> Dict[str, Any]:
         if field in milestones:
             _optional_nonnegative_number(milestones[field], "telemetry.milestones.%s" % field)
     if "terminal_status" in milestones and milestones["terminal_status"] not in {
-        "completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout"
+        "completed", "model_declined", "model_incomplete", "format_fail", "infra_fail", "timeout", "policy_fail"
     }:
         raise ContractError("unsupported telemetry.milestones.terminal_status")
     if "terminal_tokens_status" in milestones and milestones["terminal_tokens_status"] not in MEASUREMENT_STATUSES:
@@ -165,7 +165,12 @@ def summarize_effort(rows: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
         if isinstance(row.get("provider_total_cost_usd"), (int, float))
         and not isinstance(row.get("provider_total_cost_usd"), bool)
     ]
-    known_output = [value for field in ("output", "reasoning") for value in token_totals[field]]
+    output_by_rollout = []
+    for row in rows:
+        output = row["token_breakdown"].get("output")
+        reasoning = row["token_breakdown"].get("reasoning")
+        if output is not None or reasoning is not None:
+            output_by_rollout.append(float(output or 0.0) + float(reasoning or 0.0))
     probe_calls = sum(int(row.get("probe_calls", 0)) for row in rows)
     ineffective = sum(int(row.get("ineffective_probe_calls", 0)) for row in rows)
     rejected = sum(int(row.get("policy_rejected_probe_calls", 0)) for row in rows)
@@ -180,10 +185,7 @@ def summarize_effort(rows: Iterable[Mapping[str, Any]]) -> Dict[str, Any]:
         "avg_steps": _avg([float(row["steps"]) for row in rows]),
         "avg_tool_calls": _avg([float(row["tool_calls"]) for row in rows]),
         "avg_wall_seconds": _avg([float(row["wall_seconds"]) for row in rows]),
-        "avg_output_tokens": (
-            round((avg_token_breakdown["output"] or 0.0) + (avg_token_breakdown["reasoning"] or 0.0), 6)
-            if known_output else None
-        ),
+        "avg_output_tokens": _avg(output_by_rollout),
         "total_observed_tokens": round(total_observed_tokens, 6),
         "avg_total_cost_usd": (
             round(mean(provider_costs), 6) if provider_costs and len(provider_costs) == len(rows)

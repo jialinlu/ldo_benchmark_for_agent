@@ -1,0 +1,166 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "artifact_classes": {
+        "allowed_keys": [
+          "a2",
+          "a1",
+          "a5",
+          "a6",
+          "a3",
+          "a4"
+        ],
+        "required_keys": [
+          "a5",
+          "a2",
+          "a4",
+          "a3",
+          "a1",
+          "a6"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "profile_hash_mismatch",
+          "stale",
+          "candidate_hash_mismatch",
+          "unknown",
+          "missing_required",
+          "consistent_current"
+        ]
+      },
+      "blocking_artifacts": {
+        "allowed": [
+          "a6",
+          "a3",
+          "a4",
+          "a2",
+          "a5",
+          "a1"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "claim_scope": {
+        "allowed": [
+          "fully_qualified",
+          "search_improved",
+          "no_final_claim"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "decision": {
+        "allowed": [
+          "insufficient_evidence",
+          "circuit_fail",
+          "infrastructure_retry",
+          "qualified"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "register_h9",
+          "rerun_all_without_reconciling",
+          "accept_majority_hash",
+          "regenerate_manifest_and_qualification_from_h9_p4"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "register_h9",
+      "regenerate_manifest_and_qualification_from_h9_p4",
+      "accept_majority_hash",
+      "rerun_all_without_reconciling"
+    ],
+    "artifact_ids": [
+      "a1",
+      "a6",
+      "a5",
+      "a4",
+      "a3",
+      "a2"
+    ],
+    "claim_scopes": [
+      "search_improved",
+      "no_final_claim",
+      "fully_qualified"
+    ],
+    "classes": [
+      "missing_required",
+      "consistent_current",
+      "unknown",
+      "profile_hash_mismatch",
+      "candidate_hash_mismatch",
+      "stale"
+    ],
+    "decisions": [
+      "insufficient_evidence",
+      "qualified",
+      "infrastructure_retry",
+      "circuit_fail"
+    ]
+  },
+  "materials": {
+    "artifacts": [
+      {
+        "candidate_hash": "h9",
+        "id": "a1",
+        "profile_hash": "p4",
+        "status": "materialized",
+        "type": "candidate_manifest"
+      },
+      {
+        "candidate_hash": "h9",
+        "id": "a2",
+        "profile_hash": "p4",
+        "score": 88.2,
+        "status": "completed_verified",
+        "type": "autosize_report"
+      },
+      {
+        "candidate_hash": "h8",
+        "id": "a3",
+        "profile_hash": "p4",
+        "score": 88.2,
+        "status": "completed_verified",
+        "type": "result_manifest"
+      },
+      {
+        "candidate_hash": "h9",
+        "corners": 18,
+        "id": "a4",
+        "profile_hash": "p3",
+        "status": "hard_pass",
+        "type": "qualification"
+      },
+      {
+        "candidate_hash": "h9",
+        "id": "a5",
+        "profile_hash": "p4",
+        "status": "missing",
+        "type": "oa_readback"
+      },
+      {
+        "candidate_hash": "h9",
+        "id": "a6",
+        "profile_hash": "p4",
+        "status": "pass",
+        "type": "startup"
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A closure package contains contradictory hashes and terminal states. Reconcile the set before any design claim or rerun.",
+  "schema_version": "3.0",
+  "task_id": "v07-closure-05-artifact-consistency"
+}

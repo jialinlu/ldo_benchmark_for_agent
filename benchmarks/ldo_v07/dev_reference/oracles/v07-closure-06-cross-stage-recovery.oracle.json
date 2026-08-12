@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "root_cause",
+      "expected": "source_oa_hash_divergence",
+      "id": "cause",
+      "kind": "exact",
+      "path": "artifact.primary_root_cause",
+      "weight": 20
+    },
+    {
+      "dimension": "evidence_classification",
+      "expected": {
+        "c1": "valid_single_variable",
+        "c2": "confounded_multi_variable",
+        "c3": "bench_confounded"
+      },
+      "id": "history",
+      "kind": "mapping_credit",
+      "path": "artifact.history_classes",
+      "weight": 25
+    },
+    {
+      "dimension": "workflow_order",
+      "expected": [
+        "reconcile_source_oa",
+        "save_close_reopen",
+        "fresh_netlist",
+        "fresh_op_startup",
+        "single_driver_experiment",
+        "quick_stb_transient_iq",
+        "full_qualification",
+        "register"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.action_sequence",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "dimension": "safety",
+      "expected": [
+        "run_full_on_h19",
+        "apply_c2_as_causal",
+        "increase_pass_width",
+        "register_without_readback"
+      ],
+      "id": "prohibited",
+      "kind": "set_f1",
+      "path": "artifact.prohibited_actions",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "stop_rule",
+      "expected": "stop_if_pm_or_undershoot_or_iq_fails",
+      "id": "stop",
+      "kind": "exact",
+      "path": "artifact.stop_rule",
+      "weight": 10
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-06-cross-stage-recovery",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-oa-save-readback",
+    "kg-controlled-experiment",
+    "kg-gated-qualification"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-06-cross-stage-recovery"
+}

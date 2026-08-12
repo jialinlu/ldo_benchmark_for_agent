@@ -1,0 +1,17 @@
+{
+  "artifact": {
+    "available_headroom_mv": 150.0,
+    "next_action": "recover_cascode_headroom",
+    "primary_blocker": "cascode_headroom",
+    "prohibited_actions": [
+      "full_pvt_before_op",
+      "blind_multi_knob_sweep",
+      "ideal_cascode_force"
+    ],
+    "stack_deficit_mv": 160.0
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-02-headroom-budget"
+}

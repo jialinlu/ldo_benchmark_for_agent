@@ -1,0 +1,31 @@
+{
+  "artifact": {
+    "held_parameters": [
+      "p5",
+      "p6"
+    ],
+    "metric_priority": [
+      "dropout",
+      "phase_margin",
+      "iq"
+    ],
+    "next_action": "formal_callback_aware_run",
+    "prohibited_actions": [
+      "invent_matching_coupling",
+      "rewrite_integer_domain",
+      "include_unmapped_p6",
+      "treat_search_as_final"
+    ],
+    "selected_parameters": [
+      "p1",
+      "p2",
+      "p3",
+      "p4"
+    ],
+    "state": "sizing_config_ready"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-03-search-space"
+}

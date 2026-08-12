@@ -1,0 +1,54 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "operating_point",
+    "startup_enable",
+    "feedback_stability",
+    "workflow_planning"
+  ],
+  "deployment_tier": "T2_bounded_workflow",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-workflow-01-op-recovery-order",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L3",
+  "lineage_id": "v07-workflow-01-op-recovery-order",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "diagnosis",
+    "safety",
+    "stop_rule",
+    "workflow_order"
+  ],
+  "split": "dev",
+  "suite": "diagnosis",
+  "task_id": "v07-workflow-01-op-recovery-order",
+  "title": "Recover an LDO operating point in gate order",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

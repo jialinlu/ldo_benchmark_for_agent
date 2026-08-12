@@ -1,0 +1,124 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "create_named_net",
+          "visual_screenshot",
+          "save_close",
+          "create_wire_to_pin",
+          "schematic_check",
+          "reopen_connectivity",
+          "fresh_netlist",
+          "read_terminal_pin_geometry"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "decision": {
+        "allowed": [
+          "add_label_only",
+          "repair_logical_and_visible",
+          "accept_visual",
+          "infrastructure_retry"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "observation_classes": {
+        "allowed_keys": [
+          "o2",
+          "o1",
+          "o4",
+          "o3",
+          "o5"
+        ],
+        "required_keys": [
+          "o2",
+          "o1",
+          "o3",
+          "o5",
+          "o4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "geometry_gap",
+          "visual_only",
+          "checker_evidence",
+          "netlist_evidence",
+          "logical_connectivity"
+        ]
+      }
+    }
+  },
+  "catalogs": {
+    "classes": [
+      "netlist_evidence",
+      "visual_only",
+      "logical_connectivity",
+      "checker_evidence",
+      "geometry_gap"
+    ],
+    "decisions": [
+      "add_label_only",
+      "repair_logical_and_visible",
+      "infrastructure_retry",
+      "accept_visual"
+    ],
+    "observation_ids": [
+      "o1",
+      "o3",
+      "o2",
+      "o5",
+      "o4"
+    ],
+    "steps": [
+      "reopen_connectivity",
+      "schematic_check",
+      "fresh_netlist",
+      "read_terminal_pin_geometry",
+      "create_named_net",
+      "visual_screenshot",
+      "create_wire_to_pin",
+      "save_close"
+    ]
+  },
+  "materials": {
+    "observations": [
+      {
+        "fact": "A drawn wire visually touches MPASS gate.",
+        "id": "o1",
+        "source": "screenshot"
+      },
+      {
+        "fact": "MPASS/G has net=nil.",
+        "id": "o2",
+        "source": "oa"
+      },
+      {
+        "fact": "A shape labeled VCTRL ends 0.0625 grid units from the pin figure.",
+        "id": "o3",
+        "source": "oa"
+      },
+      {
+        "fact": "MPASS gate is emitted as an unconnected generated net.",
+        "id": "o4",
+        "source": "netlist"
+      },
+      {
+        "fact": "One dangling terminal is reported.",
+        "id": "o5",
+        "source": "schematic_check"
+      }
+    ],
+    "scratch_cell": true
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "An LDO schematic looks connected, but extracted connectivity and netlisting disagree. Classify observations and order a non-destructive repair.",
+  "schema_version": "3.0",
+  "task_id": "v07-eda-02-net-vs-wire"
+}

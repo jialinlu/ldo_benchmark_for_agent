@@ -78,11 +78,16 @@ class Phase2AndClosureTests(unittest.TestCase):
         for row in telemetry:
             validate_telemetry(row)
         scores = [
-            {"task_id": "a", "family_id": "fa", "suite": "trend", "level": "L2", "variant": "canonical", "score": value, "passed": value >= 70, "critical_failed": []}
+            {"task_id": "a", "family_id": "fa", "suite": "trend", "level": "L2",
+             "deployment_tier": "T2_bounded_workflow", "variant": "canonical",
+             "score": value, "passed": value >= 70, "critical_failed": []}
             for value in (100, 80, 40)
         ]
         report = aggregate_rollouts(scores, telemetry, "model", "direct_reasoning")
         self.assertAlmostEqual(2 / 3, report["pass_at_1"], places=6)
+        tier = report["tier_readiness"]["T2_bounded_workflow"]
+        self.assertTrue(tier["gate_passed"])
+        self.assertEqual(73.333333, tier["mean_score"])
         self.assertEqual(0, report["effort"]["avg_tool_calls"])
         low, high = wilson_interval(2, 3)
         self.assertLess(low, 2 / 3)
@@ -99,6 +104,15 @@ class Phase2AndClosureTests(unittest.TestCase):
         report = aggregate_rollouts([score], [row], "model", "direct_reasoning")
         self.assertFalse(report["token_efficiency"]["measurement_complete"])
         self.assertIsNone(report["token_efficiency"]["tokens_per_score_point"])
+
+    def test_average_output_tokens_uses_one_combined_total_per_rollout(self):
+        rows = [empty_telemetry("a", "m", "direct_reasoning", i, i, 1.0) for i in range(2)]
+        rows[0]["token_breakdown"].update({"output": 10, "reasoning": 30})
+        rows[1]["token_breakdown"].update({"output": 20, "reasoning": None})
+        for row in rows:
+            row["token_measurement_status"] = "partial"
+        from evoldo_bench.telemetry import summarize_effort
+        self.assertEqual(30.0, summarize_effort(rows)["avg_output_tokens"])
 
     def test_exam_manifest_detects_tamper(self):
         with TemporaryDirectory() as temporary:
@@ -165,7 +179,14 @@ class Phase2AndClosureTests(unittest.TestCase):
             self.assertTrue(board["entries"][0]["pareto"])
 
     def test_paired_treatment_comparator_rejects_seed_drift(self):
-        row = {"task_id": "a", "rollout": 0, "seed": 7, "task_manifest_sha256": "a", "answer_contract_sha256": "b", "budget": {"timeout_seconds": 1, "max_tool_calls": 0}}
+        row = {
+            "task_id": "a", "rollout": 0, "seed": 7,
+            "task_manifest_sha256": "a", "task_contract_sha256": "c",
+            "prompt_sha256": "p", "input_files_sha256": {"case.json": "i"},
+            "answer_contract_sha256": "b", "oracle_sha256": "o",
+            "budget": {"timeout_seconds": 1, "max_tool_calls": 0},
+            "web_search_policy": "forbidden", "requested_model_parameters": None,
+        }
         direct = {"model_id": "m", "mode": "direct_reasoning", "rows": [row]}
         skill = {"model_id": "m", "mode": "agentic_skill", "rows": [dict(row)]}
         self.assertTrue(compare_treatments([direct, skill])["passed"])

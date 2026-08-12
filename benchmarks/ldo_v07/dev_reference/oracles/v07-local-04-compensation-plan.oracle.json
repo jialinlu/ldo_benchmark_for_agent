@@ -1,0 +1,64 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "experiment_design",
+      "expected": "ccomp_4_5_6_7_fixed_others",
+      "id": "experiment",
+      "kind": "exact",
+      "path": "artifact.experiment",
+      "weight": 30
+    },
+    {
+      "critical": false,
+      "dimension": "held_fixed",
+      "expected": [
+        "rz",
+        "driver_w",
+        "pass_w",
+        "bias",
+        "bench",
+        "load_matrix"
+      ],
+      "id": "held",
+      "kind": "set_f1",
+      "path": "artifact.held_fixed",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "measurement_plan",
+      "expected": [
+        "light_pm",
+        "light_ugb",
+        "heavy_pm",
+        "heavy_ugb",
+        "settling",
+        "op",
+        "iq"
+      ],
+      "id": "measure",
+      "kind": "set_f1",
+      "path": "artifact.measurements",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "stop_rule",
+      "expected": "stop_if_no_light_pm_gain_or_settling_fails",
+      "id": "stop",
+      "kind": "exact",
+      "path": "artifact.stop_rule",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-local-04-compensation-plan",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-controlled-experiment",
+    "kg-stb-crossing"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-local-04-compensation-plan"
+}

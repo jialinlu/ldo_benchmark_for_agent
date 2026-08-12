@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 49.2,
+      "full_tolerance": 1.0,
+      "id": "low",
+      "kind": "numeric_score",
+      "path": "artifact.low_frequency_downstream_uv_rms",
+      "weight": 15,
+      "zero_tolerance": 30
+    },
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 327.3,
+      "full_tolerance": 4.0,
+      "id": "high",
+      "kind": "numeric_score",
+      "path": "artifact.high_frequency_downstream_uv_rms",
+      "weight": 20,
+      "zero_tolerance": 120
+    },
+    {
+      "dimension": "numeric_reasoning",
+      "expected": 331.4,
+      "full_tolerance": 4.0,
+      "id": "total",
+      "kind": "numeric_score",
+      "path": "artifact.downstream_total_uv_rms",
+      "weight": 20,
+      "zero_tolerance": 100
+    },
+    {
+      "critical": true,
+      "dimension": "system_diagnosis",
+      "expected": "high_frequency_ripple",
+      "id": "dominant",
+      "kind": "exact",
+      "path": "artifact.dominant_path",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "assumption_handling",
+      "expected": "rss",
+      "id": "rule",
+      "kind": "exact",
+      "path": "artifact.combination_rule",
+      "weight": 10
+    },
+    {
+      "critical": false,
+      "dimension": "action_selection",
+      "expected": "improve_high_frequency_feedthrough",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-system-01-spectral-impact",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-psrr-system-budget"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-system-01-spectral-impact"
+}

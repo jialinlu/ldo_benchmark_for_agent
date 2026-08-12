@@ -1,0 +1,14 @@
+{
+  "artifact": {
+    "combination_rule": "rss",
+    "dominant_path": "high_frequency_ripple",
+    "downstream_total_uv_rms": 331.4,
+    "high_frequency_downstream_uv_rms": 327.3,
+    "low_frequency_downstream_uv_rms": 49.2,
+    "next_action": "improve_high_frequency_feedthrough"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-system-01-spectral-impact"
+}

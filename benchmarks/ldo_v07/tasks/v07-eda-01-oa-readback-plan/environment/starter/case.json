@@ -1,0 +1,118 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "action_sequence": {
+        "allowed": [
+          "invoke_cdf_callback",
+          "edit_parameter",
+          "fresh_netlist",
+          "accept_or_revert",
+          "open_source_read_only",
+          "schematic_check",
+          "fresh_op",
+          "reopen_readback",
+          "create_scratch_copy",
+          "save_close"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "decision": {
+        "allowed": [
+          "accept_visual_only",
+          "execute_in_scratch",
+          "edit_source_directly",
+          "insufficient_contract"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "prohibited_actions": {
+        "allowed": [
+          "claim_from_screenshot",
+          "edit_source_library",
+          "skip_cdf_callback",
+          "use_scratch_copy",
+          "accept_without_reopen"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      },
+      "required_proofs": {
+        "allowed": [
+          "netlist_parameter_readback",
+          "source_python_bom",
+          "oa_property_readback",
+          "fresh_op_provenance",
+          "screenshot_only"
+        ],
+        "min_items": 1,
+        "type": "string_list"
+      }
+    }
+  },
+  "catalogs": {
+    "decisions": [
+      "accept_visual_only",
+      "insufficient_contract",
+      "edit_source_directly",
+      "execute_in_scratch"
+    ],
+    "prohibited": [
+      "skip_cdf_callback",
+      "claim_from_screenshot",
+      "edit_source_library",
+      "accept_without_reopen",
+      "use_scratch_copy"
+    ],
+    "proofs": [
+      "netlist_parameter_readback",
+      "screenshot_only",
+      "fresh_op_provenance",
+      "oa_property_readback",
+      "source_python_bom"
+    ],
+    "steps": [
+      "fresh_op",
+      "edit_parameter",
+      "schematic_check",
+      "create_scratch_copy",
+      "invoke_cdf_callback",
+      "fresh_netlist",
+      "accept_or_revert",
+      "save_close",
+      "open_source_read_only",
+      "reopen_readback"
+    ]
+  },
+  "materials": {
+    "constraints": {
+      "existing_libraries_read_only": true,
+      "fresh_netlist_required": true,
+      "pdk_parameter_requires_cdf_callback": true,
+      "scratch_copy_required": true
+    },
+    "observed_state": {
+      "saved": false,
+      "scratch_created": false,
+      "source_oa_open": true
+    },
+    "target": {
+      "cell": "ldo_candidate",
+      "from": "120u",
+      "instance": "MPASS",
+      "library": "EVOLDO_SCRATCH",
+      "parameter": "w",
+      "to": "160u",
+      "view": "schematic"
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Given an IC618 scratch-cell task, plan one parameter edit and prove it persists. The answer must distinguish logical OA connectivity, visible geometry, CDF callbacks, and fresh netlist evidence.",
+  "schema_version": "3.0",
+  "task_id": "v07-eda-01-oa-readback-plan"
+}

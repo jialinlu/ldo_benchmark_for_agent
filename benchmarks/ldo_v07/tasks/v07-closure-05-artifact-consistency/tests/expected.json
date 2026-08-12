@@ -1,0 +1,68 @@
+{
+  "checks": [
+    {
+      "dimension": "artifact_reconciliation",
+      "expected": {
+        "a1": "consistent_current",
+        "a2": "consistent_current",
+        "a3": "candidate_hash_mismatch",
+        "a4": "profile_hash_mismatch",
+        "a5": "missing_required",
+        "a6": "consistent_current"
+      },
+      "id": "classes",
+      "kind": "mapping_credit",
+      "path": "artifact.artifact_classes",
+      "weight": 40
+    },
+    {
+      "critical": true,
+      "dimension": "terminal_decision",
+      "expected": "insufficient_evidence",
+      "id": "decision",
+      "kind": "exact",
+      "path": "artifact.decision",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "blocker_identification",
+      "expected": [
+        "a3",
+        "a4",
+        "a5"
+      ],
+      "id": "blocking",
+      "kind": "set_f1",
+      "path": "artifact.blocking_artifacts",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "recovery_plan",
+      "expected": "regenerate_manifest_and_qualification_from_h9_p4",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 15
+    },
+    {
+      "critical": false,
+      "dimension": "claim_boundary",
+      "expected": "no_final_claim",
+      "id": "scope",
+      "kind": "exact",
+      "path": "artifact.claim_scope",
+      "weight": 10
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-closure-05-artifact-consistency",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-final-artifact-consistency",
+    "kg-oa-save-readback"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-closure-05-artifact-consistency"
+}

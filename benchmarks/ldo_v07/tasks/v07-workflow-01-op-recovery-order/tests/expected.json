@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "critical": true,
+      "dimension": "diagnosis",
+      "expected": "terminal_order_and_cdf",
+      "id": "cause",
+      "kind": "exact",
+      "path": "artifact.primary_root_cause",
+      "weight": 25
+    },
+    {
+      "dimension": "workflow_order",
+      "expected": [
+        "connectivity_cdf",
+        "dc_op_bias",
+        "cascode_headroom",
+        "pass_regulation",
+        "zero_state_startup",
+        "stb_crossing",
+        "quick_qualification",
+        "full_qualification"
+      ],
+      "id": "sequence",
+      "kind": "sequence_alignment",
+      "path": "artifact.action_sequence",
+      "weight": 35
+    },
+    {
+      "critical": false,
+      "dimension": "stop_rule",
+      "expected": "connectivity_cdf",
+      "id": "stop",
+      "kind": "exact",
+      "path": "artifact.stop_after_stage",
+      "weight": 20
+    },
+    {
+      "critical": false,
+      "dimension": "safety",
+      "expected": [
+        "accept_nodeset_as_final",
+        "run_full_before_stb",
+        "sweep_pass_width_before_connectivity",
+        "force_internal_bias"
+      ],
+      "id": "prohibited",
+      "kind": "set_f1",
+      "path": "artifact.prohibited_actions",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-workflow-01-op-recovery-order",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-op-first",
+    "kg-startup-evidence",
+    "kg-stb-crossing"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-workflow-01-op-recovery-order"
+}

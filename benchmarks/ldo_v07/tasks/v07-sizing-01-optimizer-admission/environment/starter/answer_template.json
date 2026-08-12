@@ -1,0 +1,16 @@
+{
+  "artifact": {
+    "admitted_evaluations": [],
+    "best_hard_pass_candidate": "CONTROLLED_VALUE",
+    "design_budget_consumed": 0.0,
+    "evaluation_tags": {},
+    "next_ccomp_pf": 0.0,
+    "next_driver_w_um": 0.0,
+    "next_experiment_basis": "CONTROLLED_VALUE",
+    "stop_rule": "CONTROLLED_VALUE"
+  },
+  "claim_boundary": "State only what the supplied evidence establishes.",
+  "confidence": 0.0,
+  "schema_version": "3.0",
+  "task_id": "v07-sizing-01-optimizer-admission"
+}

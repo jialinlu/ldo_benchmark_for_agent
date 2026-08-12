@@ -1,0 +1,14 @@
+{
+  "artifact": {
+    "dominant_tradeoff": "ron_vs_gate_capacitance",
+    "hard_pass_candidates": [
+      "w3"
+    ],
+    "next_action": "verify_w3_across_corners",
+    "selected_candidate": "w3"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-local-01-pass-turning"
+}

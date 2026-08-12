@@ -1,0 +1,58 @@
+{
+  "answer_template_file": "answer_template.json",
+  "benchmark_version": "0.7.0",
+  "budget": {
+    "max_tool_calls": 0,
+    "timeout_seconds": 420
+  },
+  "capabilities": [
+    "architecture_choice",
+    "operating_point",
+    "evidence_integrity",
+    "controlled_experiment",
+    "workflow_planning"
+  ],
+  "deployment_tier": "T4_end_to_end_planning",
+  "eligible_modes": [
+    "direct_reasoning",
+    "knowledge_assisted"
+  ],
+  "evaluation_role": "core",
+  "family_id": "v07-architecture-01-advice-gates",
+  "input_files": [
+    "case.json",
+    "answer_template.json"
+  ],
+  "knowledge_effect_expectation": "benefit_expected",
+  "language": "en",
+  "level": "L5",
+  "lineage_id": "v07-architecture-01-advice-gates",
+  "network_policy": {
+    "external_network": "provider_control_plane_only",
+    "model_web_search": "forbidden"
+  },
+  "prompt_file": "instruction.md",
+  "schema_version": "3.0",
+  "scoring_dimensions": [
+    "claim_boundary",
+    "conditional_plan",
+    "evidence_hierarchy",
+    "operating_point_gate",
+    "proposal_admission",
+    "stop_rule",
+    "workflow_order"
+  ],
+  "split": "dev",
+  "suite": "architecture_choice",
+  "task_id": "v07-architecture-01-advice-gates",
+  "title": "Gate an existing-architecture optimization plan",
+  "tool_policy": {
+    "allowed_tools": [],
+    "forbidden_tools": [
+      "web_search",
+      "browser",
+      "remote_fetch"
+    ]
+  },
+  "variant": "canonical"
+}

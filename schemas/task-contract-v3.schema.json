@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EvoLDO v0.7 task contract",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "task_id", "family_id", "lineage_id", "split", "variant", "suite", "level", "capabilities", "title", "language", "prompt_file", "input_files", "answer_template_file", "eligible_modes", "budget", "network_policy", "tool_policy", "benchmark_version", "evaluation_role", "deployment_tier", "knowledge_effect_expectation"],
+  "properties": {
+    "schema_version": {"const": "3.0"},
+    "task_id": {"type": "string", "minLength": 1},
+    "family_id": {"type": "string", "minLength": 1},
+    "lineage_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["dev", "validation", "test", "sealed"]},
+    "variant": {"enum": ["canonical", "metamorphic", "counterexample", "regime", "difficulty"]},
+    "suite": {"type": "string", "minLength": 1},
+    "level": {"enum": ["L1", "L2", "L3", "L4", "L5"]},
+    "capabilities": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "title": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 1},
+    "prompt_file": {"type": "string", "minLength": 1},
+    "input_files": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "answer_template_file": {"type": "string", "minLength": 1},
+    "eligible_modes": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "budget": {
+      "type": "object",
+      "required": ["timeout_seconds", "max_tool_calls"],
+      "properties": {
+        "timeout_seconds": {"type": "integer", "minimum": 1},
+        "max_tool_calls": {"type": "integer", "minimum": 0}
+      }
+    },
+    "network_policy": {
+      "type": "object",
+      "required": ["model_web_search", "external_network"],
+      "properties": {
+        "model_web_search": {"const": "forbidden"},
+        "external_network": {"enum": ["no_network", "provider_control_plane_only"]}
+      }
+    },
+    "tool_policy": {
+      "type": "object",
+      "required": ["allowed_tools", "forbidden_tools"],
+      "properties": {
+        "allowed_tools": {"type": "array", "maxItems": 0, "items": {"type": "string"}, "uniqueItems": true},
+        "forbidden_tools": {
+          "type": "array",
+          "allOf": [
+            {"contains": {"const": "web_search"}},
+            {"contains": {"const": "browser"}},
+            {"contains": {"const": "remote_fetch"}}
+          ],
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "benchmark_version": {"const": "0.7.0"},
+    "evaluation_role": {"type": "string", "minLength": 1},
+    "deployment_tier": {"enum": ["T0_foundation", "T1_local_advice", "T2_bounded_workflow", "T3_multi_constraint_closure", "T4_end_to_end_planning"]},
+    "knowledge_effect_expectation": {"enum": ["benefit_expected", "neutral_expected", "override_resistant"]}
+  }
+}

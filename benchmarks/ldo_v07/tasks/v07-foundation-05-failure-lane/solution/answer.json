@@ -1,0 +1,23 @@
+{
+  "artifact": {
+    "failure_classes": {
+      "f1": "provider_infrastructure",
+      "f2": "circuit",
+      "f3": "measurement",
+      "f4": "format",
+      "f5": "eda_infrastructure"
+    },
+    "model_answer_failures": [
+      "f4"
+    ],
+    "must_retry_not_score": [
+      "f1",
+      "f3",
+      "f5"
+    ]
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-05-failure-lane"
+}

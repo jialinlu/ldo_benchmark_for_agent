@@ -1,0 +1,173 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "best_admissible_candidate": {
+        "allowed": [
+          "none",
+          "c1",
+          "c2",
+          "c4",
+          "c3"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "candidate_gate_map": {
+        "allowed_keys": [
+          "c3",
+          "c1",
+          "c2",
+          "c4"
+        ],
+        "required_keys": [
+          "c3",
+          "c4",
+          "c1",
+          "c2"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "hard_pass",
+          "iq_fail",
+          "dropout_fail",
+          "pm_fail",
+          "multiple_fail"
+        ]
+      },
+      "decision": {
+        "allowed": [
+          "search_no_feasible_candidate",
+          "search_only_not_final",
+          "final_verified_no_gain",
+          "final_verified_improved",
+          "insufficient_evidence"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "failure_class": {
+        "allowed": [
+          "none",
+          "pipeline",
+          "circuit",
+          "infrastructure",
+          "evidence_integrity"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "next_action": {
+        "allowed": [
+          "formal_backannotation_and_fresh_final",
+          "change_topology",
+          "expand_all_bounds",
+          "register_c3"
+        ],
+        "required": true,
+        "type": "string"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "register_c3",
+      "expand_all_bounds",
+      "change_topology",
+      "formal_backannotation_and_fresh_final"
+    ],
+    "candidate_ids": [
+      "c4",
+      "c2",
+      "none",
+      "c1",
+      "c3"
+    ],
+    "decisions": [
+      "search_no_feasible_candidate",
+      "final_verified_no_gain",
+      "final_verified_improved",
+      "search_only_not_final",
+      "insufficient_evidence"
+    ],
+    "failure_classes": [
+      "none",
+      "infrastructure",
+      "pipeline",
+      "evidence_integrity",
+      "circuit"
+    ]
+  },
+  "materials": {
+    "autosize_report": {
+      "best_candidate": "c3",
+      "best_hard_pass": true,
+      "best_score": 87.4,
+      "terminal_status": "completed_verified"
+    },
+    "baseline_score": 79.0,
+    "candidates": [
+      {
+        "dropout_mv": 89,
+        "id": "c1",
+        "iq_ua": 102,
+        "pm_deg": 49,
+        "score": 81.0
+      },
+      {
+        "dropout_mv": 93,
+        "id": "c2",
+        "iq_ua": 109,
+        "pm_deg": 56,
+        "score": 83.1
+      },
+      {
+        "dropout_mv": 86,
+        "id": "c3",
+        "iq_ua": 117,
+        "pm_deg": 53,
+        "score": 87.4
+      },
+      {
+        "dropout_mv": 82,
+        "id": "c4",
+        "iq_ua": 128,
+        "pm_deg": 54,
+        "score": 91.2
+      }
+    ],
+    "hard_limits": {
+      "dropout_max_mv": 90,
+      "iq_max_ua": 120,
+      "pm_min_deg": 50
+    },
+    "result_contract": {
+      "candidate_selection": "Among admissible candidates select the highest score.",
+      "final_acceptance": "Final verification requires matching report/manifest status, callback-aware backannotation, and a fresh final run. With result_manifest=optimization_only, the decision is search_only_not_final and the failure lane is pipeline.",
+      "hard_gate_precedence": "A candidate is admissible only if every hard limit passes; raw score cannot compensate.",
+      "status_authority": "The immutable result_manifest controls acceptance status; autosize_report terminal_status is progress metadata and cannot upgrade it.",
+      "terminal_precedence": [
+        "report/manifest identity or metric disagreement -> evidence_integrity",
+        "optimization-only, missing callback backannotation, or missing fresh final -> pipeline",
+        "verified hard-gate failure -> circuit",
+        "provider or simulator launch failure -> infrastructure",
+        "otherwise -> none"
+      ]
+    },
+    "result_manifest": {
+      "backannotation": false,
+      "best_candidate": "c3",
+      "best_hard_pass": true,
+      "best_score": 87.4,
+      "fresh_final": false,
+      "terminal_status": "optimization_only"
+    }
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "A sizing run produced several artifacts and candidate metrics. Apply the supplied result contract and hard limits to determine the terminal decision, best admissible candidate, failure lane, and next action.",
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-04-sizing-result"
+}

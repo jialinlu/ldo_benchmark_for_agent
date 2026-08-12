@@ -9,4 +9,4 @@ one EDA companion. Every task uses the `task_examples` layout (`task.toml`, `ins
 runtime bundle. Tool-task answer grading is only semantic; an official tool score additionally requires
 `evoldo-bench verify-live`, whose infrastructure-invalid result must be retried rather than scored zero.
 Pure reasoning tasks use six dimensions with ordered-choice partial credit, pairwise ranking credit, and evidence-set F1 scoring.
-See `docs/BENCHMARK_V06.md` for the protocol and score definitions.
+This track is retained for historical result replay; the current protocol is `docs/BENCHMARK_V07.md`.

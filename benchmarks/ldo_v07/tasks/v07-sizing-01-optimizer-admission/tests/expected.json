@@ -1,0 +1,140 @@
+{
+  "checks": [
+    {
+      "dimension": "evaluation_admission",
+      "expected": {
+        "e1": [
+          "measured",
+          "objective_observation",
+          "design_budget"
+        ],
+        "e2": [
+          "infrastructure",
+          "retry",
+          "exclude"
+        ],
+        "e3": [
+          "measurement",
+          "retry",
+          "exclude"
+        ],
+        "e4": [
+          "invalid_candidate",
+          "feasibility_observation",
+          "design_budget"
+        ],
+        "e5": [
+          "measured",
+          "objective_observation",
+          "design_budget"
+        ],
+        "e6": [
+          "measured",
+          "objective_observation",
+          "design_budget"
+        ],
+        "e7": [
+          "measured",
+          "objective_observation",
+          "design_budget"
+        ],
+        "e8": [
+          "evidence_integrity",
+          "retry",
+          "exclude"
+        ],
+        "e9": [
+          "infrastructure",
+          "retry",
+          "exclude"
+        ]
+      },
+      "id": "tags",
+      "kind": "multilabel_mapping_credit",
+      "path": "artifact.evaluation_tags",
+      "weight": 40
+    },
+    {
+      "critical": false,
+      "dimension": "surrogate_admission",
+      "expected": [
+        "e1",
+        "e4",
+        "e5",
+        "e6",
+        "e7"
+      ],
+      "id": "admitted",
+      "kind": "set_f1",
+      "path": "artifact.admitted_evaluations",
+      "weight": 15
+    },
+    {
+      "dimension": "budget_accounting",
+      "expected": 5,
+      "full_tolerance": 0,
+      "id": "budget",
+      "kind": "numeric_score",
+      "path": "artifact.design_budget_consumed",
+      "weight": 10,
+      "zero_tolerance": 3
+    },
+    {
+      "critical": true,
+      "dimension": "candidate_selection",
+      "expected": "e6",
+      "id": "best",
+      "kind": "exact",
+      "path": "artifact.best_hard_pass_candidate",
+      "weight": 15
+    },
+    {
+      "dimension": "experiment_design",
+      "expected": 20,
+      "full_tolerance": 0,
+      "id": "driver",
+      "kind": "numeric_score",
+      "path": "artifact.next_driver_w_um",
+      "weight": 7.5,
+      "zero_tolerance": 5
+    },
+    {
+      "dimension": "held_fixed",
+      "expected": 6,
+      "full_tolerance": 0,
+      "id": "ccomp",
+      "kind": "numeric_score",
+      "path": "artifact.next_ccomp_pf",
+      "weight": 7.5,
+      "zero_tolerance": 2
+    },
+    {
+      "critical": false,
+      "dimension": "experiment_design",
+      "expected": "isolate_driver_from_e6",
+      "id": "basis",
+      "kind": "exact",
+      "path": "artifact.next_experiment_basis",
+      "weight": 3
+    },
+    {
+      "critical": false,
+      "dimension": "stop_rule",
+      "expected": "stop_if_iq_fails_or_no_score_gain",
+      "id": "stop",
+      "kind": "exact",
+      "path": "artifact.stop_rule",
+      "weight": 2
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-sizing-01-optimizer-admission",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-controlled-experiment",
+    "kg-hard-gates-before-score",
+    "kg-search-is-not-final"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-sizing-01-optimizer-admission"
+}

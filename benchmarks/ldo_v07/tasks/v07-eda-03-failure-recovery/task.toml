@@ -1,0 +1,27 @@
+schema_version = "1.3"
+artifacts = ["/app/answer.json"]
+
+[task]
+name = "evoldo/v07-eda-03-failure-recovery"
+description = "Route a Virtuoso and simulator failure stack"
+authors = [{ name = "EvoLDO-Bench contributors" }]
+
+[metadata]
+checker_allow_ideal = []
+task_id = "v07-eda-03-failure-recovery"
+revision = 1
+maturity = "L4"
+maturity_note = "Public clean-room development task with deterministic structured grading."
+maturity_updated_at = "2026-08-12T00:00:00+08:00"
+benchmark_version = "0.7.0"
+execution_mode = "direct_reasoning"
+
+[verifier]
+environment_mode = "separate"
+
+[environment]
+network_mode = "no-network"
+build_timeout_sec = 1800.0
+cpus = 8
+memory_mb = 4096
+storage_mb = 10240

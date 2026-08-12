@@ -1,0 +1,24 @@
+{
+  "artifact": {
+    "artifact_classes": {
+      "a1": "consistent_current",
+      "a2": "consistent_current",
+      "a3": "candidate_hash_mismatch",
+      "a4": "profile_hash_mismatch",
+      "a5": "missing_required",
+      "a6": "consistent_current"
+    },
+    "blocking_artifacts": [
+      "a3",
+      "a4",
+      "a5"
+    ],
+    "claim_scope": "no_final_claim",
+    "decision": "insufficient_evidence",
+    "next_action": "regenerate_manifest_and_qualification_from_h9_p4"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-closure-05-artifact-consistency"
+}

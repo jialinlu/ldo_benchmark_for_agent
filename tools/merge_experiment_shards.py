@@ -5,21 +5,22 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Tuple
 
 from evoldo_bench.errors import ContractError
+from evoldo_bench.outcomes import is_infrastructure_status
 from evoldo_bench.utils import dump_json, sha256_file, utc_timestamp
 
 
 IDENTITY_FIELDS = (
     "schema_version", "model_id", "mode", "rollouts_per_task", "base_seed",
-    "seed_semantics", "pairing_modes",
+    "seed_semantics", "pairing_modes", "requested_model_parameters",
 )
 
 
 def merge_shards(output_root: Path, shard_roots: Iterable[Path]) -> Dict[str, Any]:
     output_root = output_root.resolve()
-    manifests: List[tuple[Path, Path, Dict[str, Any]]] = []
+    manifests: List[Tuple[Path, Path, Dict[str, Any]]] = []
     for shard_root in shard_roots:
         root = shard_root.resolve()
         try:
@@ -75,12 +76,15 @@ def merge_shards(output_root: Path, shard_roots: Iterable[Path]) -> Dict[str, An
     if len(rows) != len(task_ids) * expected_rollouts:
         raise ContractError("merged rollout matrix is incomplete")
 
-    merged = {field: baseline[field] for field in IDENTITY_FIELDS}
+    merged = {field: baseline.get(field) for field in IDENTITY_FIELDS}
+    infrastructure_rollouts = sum(is_infrastructure_status(row.get("status")) for row in rows)
     merged.update({
         "created_at": utc_timestamp(),
         "task_count": len(task_ids),
         "run_count": len(rows),
         "context_snapshot": baseline["context_snapshot"],
+        "capability_complete": infrastructure_rollouts == 0,
+        "infrastructure_rollout_count": infrastructure_rollouts,
         "merge": {"shard_count": len(manifests), "shards": shard_records},
         "rows": rows,
     })

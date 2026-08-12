@@ -43,6 +43,7 @@ def _prompt(task_dir: Path) -> str:
     sections = [
         "Solve the following EvoLDO public-development task.",
         "Use only the supplied file contents. Do not access other paths, prior runs, solutions, tests, or oracles.",
+        "Web search, browsers, remote retrieval, and undeclared network tools are forbidden.",
         "Return exactly one JSON object matching answer_template.json, without Markdown fences or commentary.",
     ]
     for value in paths:
@@ -50,6 +51,14 @@ def _prompt(task_dir: Path) -> str:
         path = (task_dir / relative).resolve()
         path.relative_to(task_dir.resolve())
         sections.extend(("", "===== %s =====" % relative.as_posix(), path.read_text(encoding="utf-8", errors="replace")))
+    retrieval = task_dir / "context" / "kg_retrieval.json"
+    if retrieval.is_file():
+        sections.extend((
+            "",
+            "===== context/kg_retrieval.json =====",
+            retrieval.read_text(encoding="utf-8", errors="replace"),
+            "Treat this frozen retrieval as general prior knowledge, not measured evidence.",
+        ))
     return "\n".join(sections)
 
 
@@ -173,6 +182,122 @@ def _openai_compatible(command_output: str) -> Tuple[str, Dict[str, Any], Option
     return str(message.get("content", "")), result, result.get("model")
 
 
+def _openai_finish_reason(raw: Dict[str, Any]) -> Optional[str]:
+    choices = raw.get("choices", []) if isinstance(raw, dict) else []
+    if not choices or not isinstance(choices[0], dict):
+        return None
+    reason = choices[0].get("finish_reason")
+    return str(reason) if reason is not None else None
+
+
+FORBIDDEN_REMOTE_TOOL_RE = re.compile(
+    r"(?:web[_ .-]?search|search_query|browser(?:_search|\.search)?|google[_ .-]?search|bing[_ .-]?search)",
+    re.I,
+)
+
+
+def _audit_forbidden_remote_tools(agent: str, command_output: str) -> List[str]:
+    """Reject every observed model tool call in the pure-model track.
+
+    Web search is specifically forbidden by benchmark policy, and these tasks declare
+    ``allowed_tools: []``.  Auditing all tool-call events also catches a provider or CLI
+    accidentally exposing shell, browser, MCP, or another retrieval path.
+    """
+    violations: List[str] = []
+    if agent == "codex":
+        for line in command_output.splitlines():
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            item = event.get("item", {})
+            item_type = str(item.get("type", ""))
+            text = " ".join(str(item.get(field, "")) for field in ("type", "name", "tool_name"))
+            if item_type and item_type not in {"agent_message", "reasoning", "error"}:
+                violations.append("codex_tool_call:%s" % (text.strip() or item_type))
+            elif FORBIDDEN_REMOTE_TOOL_RE.search(text):
+                violations.append(text.strip() or "codex_remote_search")
+    elif agent == "kimi":
+        for line in command_output.splitlines():
+            try:
+                event = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if event.get("type") in {"tool_call", "tool.call", "tool_use"}:
+                text = " ".join(str(event.get(field, "")) for field in ("name", "tool", "tool_name"))
+                violations.append("kimi_tool_call:%s" % (text.strip() or "unknown"))
+    elif agent == "claude":
+        try:
+            event = json.loads(command_output)
+        except json.JSONDecodeError:
+            event = {}
+        tool_uses = event.get("tool_use", [])
+        permission_denials = event.get("permission_denials", [])
+        if tool_uses:
+            violations.append("claude_tool_call")
+        if permission_denials:
+            violations.append("claude_permission_denial")
+    elif agent == "openai-compatible":
+        try:
+            event = json.loads(command_output)
+        except json.JSONDecodeError:
+            event = {}
+        choices = event.get("choices", []) if isinstance(event, dict) else []
+        for choice in choices:
+            message = choice.get("message", {}) if isinstance(choice, dict) else {}
+            if message.get("tool_calls"):
+                violations.append("openai_compatible_tool_call")
+            if message.get("function_call"):
+                violations.append("openai_compatible_function_call")
+    return sorted(set(violations))
+
+
+def _audit_forbidden_command(command: List[str]) -> List[str]:
+    rendered = " ".join(command)
+    violations = []
+    if "--search" in command or 'web_search="live"' in rendered or "tools.web_search=true" in rendered:
+        violations.append("adapter_enabled_web_search")
+    return violations
+
+
+def _requested_model_parameters(
+    args: argparse.Namespace, effective_timeout_seconds: Optional[int] = None,
+) -> Dict[str, Any]:
+    parameters: Dict[str, Any] = {
+        "agent": args.agent,
+        "max_output_tokens": args.max_output_tokens if args.agent == "openai-compatible" else None,
+        "reasoning_mode": "provider_or_cli_default",
+        "thinking_budget": None,
+        "temperature": args.temperature if args.agent == "openai-compatible" else None,
+        "output_timeout_seconds": effective_timeout_seconds,
+        "tool_registration": "none",
+        "web_search": "disabled",
+    }
+    if args.disable_reasoning:
+        parameters["reasoning_mode"] = "disabled"
+    elif args.thinking_budget is not None:
+        parameters["reasoning_mode"] = "fixed_budget"
+        parameters["thinking_budget"] = args.thinking_budget
+    return parameters
+
+
+def _write_kimi_agent(temporary: Path) -> Tuple[Path, Path]:
+    skills = temporary / "empty-skills"
+    skills.mkdir(exist_ok=True)
+    agent_file = temporary / "benchmark-direct.md"
+    agent_file.write_text(
+        "---\n"
+        "name: benchmark-direct\n"
+        "description: Answer one isolated benchmark task without tools.\n"
+        "tools: []\n"
+        "---\n"
+        "Reason from the user-supplied task content only. Do not call tools, browse, or search the web. "
+        "Return exactly the requested final JSON object without commentary or Markdown fences.\n",
+        encoding="utf-8",
+    )
+    return skills, agent_file
+
+
 def _run_openai_compatible(
     prompt: str,
     model: str,
@@ -180,6 +305,10 @@ def _run_openai_compatible(
     credential_value: str,
     timeout: int,
     max_output_tokens: int,
+    disable_reasoning: bool = False,
+    thinking_budget: Optional[int] = None,
+    temperature: float = 0.0,
+    seed: Optional[int] = None,
 ) -> Tuple[int, str, str, bool, float]:
     """Call an OpenAI-compatible endpoint without placing the credential in argv."""
     started = time.monotonic()
@@ -190,9 +319,20 @@ def _run_openai_compatible(
             {"role": "user", "content": prompt},
         ],
         "max_tokens": max_output_tokens,
-        "temperature": 0.0,
+        "temperature": temperature,
         "response_format": {"type": "json_object"},
     }
+    if seed is not None:
+        payload["seed"] = seed
+    if disable_reasoning and thinking_budget is not None:
+        raise ValueError("disable_reasoning and thinking_budget are mutually exclusive")
+    if disable_reasoning:
+        # SiliconFlow and several compatible gateways use ``enable_thinking``.
+        # The nested ``reasoning`` form is not equivalent on those endpoints.
+        payload["enable_thinking"] = False
+    elif thinking_budget is not None:
+        payload["enable_thinking"] = True
+        payload["thinking_budget"] = thinking_budget
     request = urllib.request.Request(
         base_url.rstrip("/") + "/chat/completions",
         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
@@ -277,7 +417,11 @@ def _container_command(
             "--env", "CODEX_HOME=/state", NODE_IMAGE,
             "node", "/opt/node_modules/@openai/codex/bin/codex.js", "exec", "--ephemeral",
             "--skip-git-repo-check", "--ignore-user-config", "--ignore-rules",
-            "-c", 'approval_policy="never"', "-s", "read-only", "-m", model, "--json", prompt,
+            "--strict-config", "-c", 'approval_policy="never"',
+            "-c", 'web_search="disabled"', "-c", "tools.web_search=false",
+            "-c", "features.shell_tool=false", "-c", "features.browser_use=false",
+            "-c", "features.browser_use_external=false", "-c", "features.computer_use=false",
+            "-s", "read-only", "-m", model, "--json", prompt,
         ]
         return command, None, NODE_IMAGE
 
@@ -295,19 +439,7 @@ def _container_command(
         oauth = source / "oauth" / "kimi-code"
         if oauth.is_file():
             _copy_required(oauth, home / ".kimi-code" / "oauth" / "kimi-code")
-        skills = temporary / "empty-skills"
-        skills.mkdir()
-        agent_file = temporary / "benchmark-direct.md"
-        agent_file.write_text(
-            "---\n"
-            "name: benchmark-direct\n"
-            "description: Answer one isolated benchmark task without tools.\n"
-            "tools: []\n"
-            "---\n"
-            "Reason from the user-supplied task content only. Do not call tools. "
-            "Return exactly the requested final JSON object without commentary or Markdown fences.\n",
-            encoding="utf-8",
-        )
+        skills, agent_file = _write_kimi_agent(temporary)
         command = base + [
             "--mount", "type=bind,src=%s,dst=/opt/kimi,readonly" % runtime,
             "--mount", "type=bind,src=%s,dst=/state-home" % home,
@@ -329,12 +461,15 @@ def _container_command(
     state = temporary / "claude-state"
     _copy_required(Path(settings_value).expanduser().resolve(), state / "settings.json")
     (state / "home").mkdir()
+    empty_mcp = state / "empty-mcp.json"
+    empty_mcp.write_text('{"mcpServers": {}}\n', encoding="utf-8")
     command = base + [
         "--mount", "type=bind,src=%s,dst=/opt/claude,readonly" % Path(executable).resolve(),
         "--mount", "type=bind,src=%s,dst=/state" % state,
         "--env", "HOME=/state/home", CLAUDE_IMAGE,
         "/opt/claude", "-p", "--model", model, "--effort", "medium", "--safe-mode",
         "--bare", "--disable-slash-commands", "--tools", "", "--no-session-persistence",
+        "--strict-mcp-config", "--mcp-config", "/state/empty-mcp.json",
         "--prompt-suggestions", "false", "--output-format", "json",
         "--settings", "/state/settings.json", prompt,
     ]
@@ -456,10 +591,28 @@ def main() -> int:
         help="OpenAI-compatible completion-token ceiling (default: 4096)",
     )
     parser.add_argument("--containerized", action="store_true")
+    parser.add_argument(
+        "--disable-reasoning", action="store_true",
+        help="request a provider's no-thinking mode (OpenAI-compatible adapter only)",
+    )
+    parser.add_argument(
+        "--thinking-budget", type=int,
+        help="request provider thinking mode with this fixed token budget (OpenAI-compatible adapter only)",
+    )
+    parser.add_argument(
+        "--temperature", type=float, default=0.0,
+        help="OpenAI-compatible sampling temperature (default: 0.0)",
+    )
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
     if args.max_output_tokens <= 0:
         parser.error("--max-output-tokens must be positive")
+    if args.disable_reasoning and args.thinking_budget is not None:
+        parser.error("--disable-reasoning and --thinking-budget are mutually exclusive")
+    if args.thinking_budget is not None and args.thinking_budget <= 0:
+        parser.error("--thinking-budget must be positive")
+    if not 0.0 <= args.temperature <= 2.0:
+        parser.error("--temperature must be in [0, 2]")
 
     task_dir = Path(os.environ["EVOLDO_TASK_DIR"]).resolve()
     prompt = _prompt(task_dir)
@@ -475,7 +628,9 @@ def main() -> int:
             if not credential_value:
                 raise ValueError("OpenAI-compatible credential environment variable is unavailable")
             return_code, stdout, stderr, timed_out, wall = _run_openai_compatible(
-                prompt, args.model, args.base_url, credential_value, timeout, args.max_output_tokens
+                prompt, args.model, args.base_url, credential_value, timeout,
+                args.max_output_tokens, args.disable_reasoning, args.thinking_budget,
+                args.temperature, int(os.environ.get("EVOLDO_SEED", "0")),
             )
             command = []
         elif args.containerized:
@@ -485,18 +640,27 @@ def main() -> int:
         elif args.agent == "codex":
             command = [
                 "codex", "exec", "--ephemeral", "--skip-git-repo-check", "--ignore-user-config",
-                "--ignore-rules", "-c", 'approval_policy="never"', "-s", "read-only",
+                "--ignore-rules", "--strict-config", "-c", 'approval_policy="never"',
+                "-c", 'web_search="disabled"', "-c", "tools.web_search=false",
+                "-c", "features.shell_tool=false", "-c", "features.browser_use=false",
+                "-c", "features.browser_use_external=false", "-c", "features.computer_use=false",
+                "-s", "read-only",
                 "-m", args.model, "--json", prompt,
             ]
         elif args.agent == "kimi":
+            skills, agent_file = _write_kimi_agent(temporary)
             command = [
-                "kimi", "-m", args.model, "--skills-dir", str(temporary),
+                "kimi", "-m", args.model, "--skills-dir", str(skills),
+                "--agent-file", str(agent_file),
                 "-p", prompt, "--output-format", "stream-json",
             ]
         else:
+            empty_mcp = temporary / "empty-mcp.json"
+            empty_mcp.write_text('{"mcpServers": {}}\n', encoding="utf-8")
             command = [
                 "claude", "-p", "--model", args.model, "--effort", "medium", "--safe-mode",
-                "--tools", "", "--no-session-persistence", "--prompt-suggestions", "false",
+                "--bare", "--disable-slash-commands", "--tools", "", "--no-session-persistence",
+                "--strict-mcp-config", "--mcp-config", str(empty_mcp), "--prompt-suggestions", "false",
                 "--output-format", "json",
             ]
             settings_value = args.claude_settings or os.environ.get("EVOLDO_CLAUDE_SETTINGS")
@@ -506,6 +670,8 @@ def main() -> int:
         if args.agent != "openai-compatible":
             return_code, stdout, stderr, timed_out, wall = _run(command, task_dir, timeout)
         telemetry = _telemetry_base(args.model, wall)
+        telemetry["requested_model_parameters"] = _requested_model_parameters(args, timeout)
+        telemetry["provider_seed"] = int(os.environ.get("EVOLDO_SEED", "0"))
         if args.agent == "codex":
             final, raw, _thread = _codex(stdout)
             _normalize_codex(args.model, raw, telemetry)
@@ -519,6 +685,10 @@ def main() -> int:
             final, raw, reported = _openai_compatible(stdout)
             _normalize_openai_compatible(args.model, raw, reported, telemetry)
 
+    policy_violations = _audit_forbidden_remote_tools(args.agent, stdout)
+    policy_violations.extend(_audit_forbidden_command(command))
+    policy_violations = sorted(set(policy_violations))
+
     sys.stdout.write(stdout)
     sys.stderr.write(stderr)
     telemetry["execution_isolation"] = "docker_task_only" if args.containerized else "host_cli"
@@ -526,11 +696,19 @@ def main() -> int:
 
     status = "ok"
     reason = None
-    if timed_out:
+    if policy_violations:
+        status, reason = "policy_fail", "forbidden remote-search tool observed"
+        telemetry["infra_status"] = "not_used"
+    elif timed_out:
         status, reason = "provider_timeout", "adapter inner timeout"
         telemetry["infra_status"] = "infra_fail"
     elif return_code != 0 or (isinstance(raw, dict) and raw.get("is_error")):
         status, reason = "provider_infra_fail", "provider CLI returned an error"
+        telemetry["infra_status"] = "infra_fail"
+    elif args.agent == "openai-compatible" and _openai_finish_reason(raw) in {
+        "length", "max_tokens",
+    }:
+        status, reason = "output_budget_exhausted", "provider stopped at the frozen output-token ceiling"
         telemetry["infra_status"] = "infra_fail"
     else:
         try:
@@ -549,6 +727,8 @@ def main() -> int:
     terminal_status = {
         "ok": "completed", "model_incomplete": "model_incomplete", "format_fail": "format_fail",
         "provider_timeout": "infra_fail", "provider_infra_fail": "infra_fail",
+        "output_budget_exhausted": "infra_fail",
+        "policy_fail": "policy_fail",
     }[status]
     telemetry["milestones"] = {
         "first_feasible_seconds": round(wall, 6) if status == "ok" else None,
@@ -566,6 +746,7 @@ def main() -> int:
         "provider_return_code": return_code, "timed_out": timed_out,
         "execution_isolation": telemetry["execution_isolation"],
         "container_image": container_image,
+        "policy_violations": policy_violations,
     }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0 if status == "ok" else 2
 

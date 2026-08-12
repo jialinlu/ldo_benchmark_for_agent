@@ -1,10 +1,12 @@
-# v0.6.2 task-family authoring guide
+# EvoLDO task-family authoring guide
 
 ## Required family structure
 
-Each pure suite contains three atomic cases, two coupled cases, and one existing-architecture optimization
-capstone. One selected parent per suite also has a metamorphic companion. Parent and companion share
-`family_id`/`lineage_id` and remain in one split. Tool-sizing treatments share lineage with the matching
+The v0.7 public development core is a compact diagnostic matrix, not a fixed quota per suite. Every named
+capability must have at least one atomic discriminator; sizing, diagnosis, architecture advice, design
+closure, and EDA workflow receive additional coupled or capstone cases in proportion to deployment value.
+Do not add near-duplicate cases merely to make suite counts equal. Future canonical/metamorphic companions
+share `family_id`/`lineage_id` and remain in one split; tool-sizing treatments share lineage with the matching
 pure-sizing task but retain a separate score dimension.
 
 ## Authoring workflow
@@ -14,12 +16,11 @@ pure-sizing task but retain a separate score dimension.
 3. Identify the smallest structural or evidence change that should alter the conclusion.
 4. Define scenario-local distractors. Do not borrow options with different units, candidate names, or analysis
    regimes from another case merely to fill an option list.
-5. Write deterministic checks for conclusion, mechanism, action, boundary, a quantitative/counterfactual
-   discriminator, and evidence attribution. Ordered choices require an explicit credit map; the hard discriminator
-   ranks every alternative and uses pairwise-order credit; evidence selection uses set F1 so omissions and false
-   positives are both visible.
+5. Write deterministic checks for the applicable conclusion, mechanism, action, boundary,
+   quantitative/counterfactual discriminator, and evidence attribution. Prefer continuous numeric credit,
+   per-record mapping/multilabel credit, set F1, and sequence alignment over coarse all-or-nothing checks.
 6. Confirm weights sum to 100 and mark physically fatal checks as critical.
-7. Generate all assets with `tools/generate_v06_tasks.py` in the demo-task layout.
+7. Generate all assets with `tools/generate_v07_tasks.py` in the demo-task layout.
 8. Run unit tests, `tools/run_self_check.py`, and contamination audit.
 9. Obtain two analog-engineer reviews for any numeric or design-closure task.
 10. Record source provenance and originality review before moving a family into a sealed split.
@@ -29,7 +30,7 @@ specific missing constraint or incomplete inference; it must not be a second equ
 goldens should be the shortest sufficient chain, and a reviewer must be able to explain why each omitted record
 is contextual rather than decisive.
 
-Use [`BENCHMARK_V06.md`](BENCHMARK_V06.md) for the frozen coverage, scoring, independence, and live-tool gates.
+Use [`BENCHMARK_V07.md`](BENCHMARK_V07.md) for current coverage, scoring, KG pairing, independence, and no-Web gates.
 
 ## Rules for numeric tasks
 

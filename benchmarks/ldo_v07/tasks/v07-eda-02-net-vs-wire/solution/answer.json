@@ -1,0 +1,26 @@
+{
+  "artifact": {
+    "action_sequence": [
+      "read_terminal_pin_geometry",
+      "create_named_net",
+      "create_wire_to_pin",
+      "schematic_check",
+      "save_close",
+      "reopen_connectivity",
+      "fresh_netlist",
+      "visual_screenshot"
+    ],
+    "decision": "repair_logical_and_visible",
+    "observation_classes": {
+      "o1": "visual_only",
+      "o2": "logical_connectivity",
+      "o3": "geometry_gap",
+      "o4": "netlist_evidence",
+      "o5": "checker_evidence"
+    }
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-eda-02-net-vs-wire"
+}

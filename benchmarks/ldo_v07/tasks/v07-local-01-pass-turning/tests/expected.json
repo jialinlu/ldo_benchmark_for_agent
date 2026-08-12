@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "critical": false,
+      "dimension": "constraint_accounting",
+      "expected": [
+        "w3"
+      ],
+      "id": "pass",
+      "kind": "set_f1",
+      "path": "artifact.hard_pass_candidates",
+      "weight": 30
+    },
+    {
+      "critical": true,
+      "dimension": "candidate_selection",
+      "expected": "w3",
+      "id": "selected",
+      "kind": "exact",
+      "path": "artifact.selected_candidate",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "physical_mechanism",
+      "expected": "ron_vs_gate_capacitance",
+      "id": "mechanism",
+      "kind": "exact",
+      "path": "artifact.dominant_tradeoff",
+      "weight": 25
+    },
+    {
+      "critical": false,
+      "dimension": "validation_plan",
+      "expected": "verify_w3_across_corners",
+      "id": "next",
+      "kind": "exact",
+      "path": "artifact.next_action",
+      "weight": 20
+    }
+  ],
+  "critical_failure_cap": 49,
+  "family_id": "v07-local-01-pass-turning",
+  "pass_threshold": 70,
+  "relevant_knowledge_ids": [
+    "kg-hard-gates-before-score"
+  ],
+  "schema_version": "1.0",
+  "task_id": "v07-local-01-pass-turning"
+}

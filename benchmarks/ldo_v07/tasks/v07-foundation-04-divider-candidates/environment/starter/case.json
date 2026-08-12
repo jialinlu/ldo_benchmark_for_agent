@@ -1,0 +1,118 @@
+{
+  "answer_contract": {
+    "additional_fields": false,
+    "fields": {
+      "candidate_gate_map": {
+        "allowed_keys": [
+          "d2",
+          "d3",
+          "d1",
+          "d4"
+        ],
+        "required_keys": [
+          "d2",
+          "d3",
+          "d1",
+          "d4"
+        ],
+        "type": "string_map",
+        "value_allowed": [
+          "accuracy_fail",
+          "hard_pass",
+          "multiple_fail",
+          "current_fail",
+          "resistance_fail"
+        ]
+      },
+      "next_action": {
+        "allowed": [
+          "select_d1",
+          "respec",
+          "select_d4",
+          "select_d3",
+          "select_d2"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "selected_candidate": {
+        "allowed": [
+          "d3",
+          "d2",
+          "none",
+          "d4",
+          "d1"
+        ],
+        "required": true,
+        "type": "string"
+      },
+      "selected_current_ua": {
+        "type": "number"
+      },
+      "selected_vout_mv": {
+        "type": "number"
+      }
+    }
+  },
+  "catalogs": {
+    "actions": [
+      "select_d4",
+      "select_d1",
+      "select_d2",
+      "select_d3",
+      "respec"
+    ],
+    "candidate_ids": [
+      "d4",
+      "d3",
+      "none",
+      "d2",
+      "d1"
+    ],
+    "gate_classes": [
+      "accuracy_fail",
+      "hard_pass",
+      "multiple_fail",
+      "resistance_fail",
+      "current_fail"
+    ]
+  },
+  "materials": {
+    "candidates": [
+      {
+        "id": "d1",
+        "rbot_kohm": 300,
+        "rtop_kohm": 300
+      },
+      {
+        "id": "d2",
+        "rbot_kohm": 500,
+        "rtop_kohm": 499
+      },
+      {
+        "id": "d3",
+        "rbot_kohm": 241,
+        "rtop_kohm": 240
+      },
+      {
+        "id": "d4",
+        "rbot_kohm": 680,
+        "rtop_kohm": 680
+      }
+    ],
+    "limits": {
+      "abs_error_max_mv": 3.0,
+      "divider_current_max_ua": 3.0,
+      "rtop_plus_rbot_max_kohm": 900
+    },
+    "target_vout_v": 1.2,
+    "vref_v": 0.6
+  },
+  "provenance": {
+    "origin": "clean-room synthetic fixture",
+    "private_pdk_content": false
+  },
+  "scenario": "Compute divider behavior and screen candidates against accuracy, current, and noise-resistance gates. Among hard-pass candidates, select minimum absolute output error; break a tie by lower total resistance.",
+  "schema_version": "3.0",
+  "task_id": "v07-foundation-04-divider-candidates"
+}

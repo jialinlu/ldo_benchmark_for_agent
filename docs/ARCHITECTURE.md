@@ -16,7 +16,7 @@ EvoLDO-Bench is designed around six constraints:
 
 ### Public task plane
 
-The canonical v0.6 package has only `task.toml`, `instruction.md`, `environment/`, `tests/`, and
+The canonical v0.7 package has only `task.toml`, `instruction.md`, `environment/`, `tests/`, and
 `solution/` at its top level, matching the supplied `task_examples` demos. Detailed task contract,
 case, answer template, and approved tools live under `environment/starter`. `build_runtime_bundle` copies
 only the starter contents and instruction; it never copies tests, solutions, or external oracles. Legacy
@@ -46,15 +46,18 @@ an ignored runtime checkout and must match the pinned source commit and entry-fi
 
 | Module | Responsibility |
 |---|---|
-| `contracts.py` | strict task, answer, oracle, and probe validation |
+| `contracts.py` | strict task/answer/oracle/probe validation plus grading-envelope validation |
 | `discovery.py` | task discovery, duplicate-ID protection, inventory |
 | `bundle.py` | minimal runtime bundle and forbidden-file audit |
 | `runner.py` | timeout-bounded command execution and provenance |
-| `experiment.py` | immutable context snapshots, repeated rollouts, paired-treatment controls |
+| `experiment.py` | immutable context/KG snapshots, repeated rollouts, hash-bound paired-treatment controls |
+| `knowledge.py` | deterministic answer-free local retrieval and recall/precision evidence |
+| `outcomes.py` | shared infrastructure-versus-model terminal-status classification |
+| `recovery.py` | content-bound regrading and infrastructure-only retries with attempt preservation |
 | `probes.py` | semantic probe-policy gate and anti-confounding checks |
 | `adapters.py` | model, simulator, ngspice, and private-site interfaces |
 | `telemetry.py` | token/cost/cache/tool/time normalization and confidence intervals |
-| `graders/deterministic.py` | exact/set/numeric checks and critical caps |
+| `graders/deterministic.py` | atomic exact/set/mapping/numeric checks, local malformed-field zeroes, and critical caps |
 | `grading.py` | external-oracle resolution and batch grading |
 | `aggregate.py` | family macro, Pass@1/spec score, suite vectors, lift and harm |
 | `contamination.py` | split lineage, leak, identity, and similarity guardrails |

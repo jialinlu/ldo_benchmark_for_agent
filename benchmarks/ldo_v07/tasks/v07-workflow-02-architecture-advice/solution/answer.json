@@ -1,0 +1,29 @@
+{
+  "artifact": {
+    "evidence_labels": {
+      "e1": "measured_current",
+      "e2": "measured_current",
+      "e3": "unbound_old",
+      "e4": "analytical_prior"
+    },
+    "next_action": "small_bidirectional_cascode_bias_test",
+    "ranked_actions": [
+      "small_bidirectional_cascode_bias_test",
+      "increase_all_lengths",
+      "add_gain_boost_stage"
+    ],
+    "required_checks": [
+      "op_headroom",
+      "gain",
+      "phase_margin",
+      "iq",
+      "startup",
+      "worst_corner"
+    ],
+    "state": "advice_ready_measured"
+  },
+  "claim_boundary": "Limited to supplied evidence and named conditions.",
+  "confidence": 0.95,
+  "schema_version": "3.0",
+  "task_id": "v07-workflow-02-architecture-advice"
+}

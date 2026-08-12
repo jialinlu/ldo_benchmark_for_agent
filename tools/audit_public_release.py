@@ -52,7 +52,7 @@ CONTENT_RULES: Sequence[Tuple[str, re.Pattern[bytes]]] = [
 ]
 
 EMAIL_RE = re.compile(rb"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b")
-ALLOWED_EMAIL_SUFFIXES = (b"@users.noreply.github.com",)
+ALLOWED_EMAIL_SUFFIXES = (b"@users.noreply.github.com", b"@example.invalid")
 
 SUSPICIOUS_BASENAMES = {
     ".env",
@@ -103,6 +103,10 @@ def scan_bytes(label: str, data: bytes, violations: List[Dict[str, object]]) -> 
 
 def scan_tree(violations: List[Dict[str, object]]) -> None:
     for path in tracked_files():
+        # A tracked path may be intentionally deleted in the release worktree before
+        # the deletion is staged.  It contributes no bytes to the candidate tree.
+        if not path.is_file():
+            continue
         relative = path.relative_to(ROOT).as_posix()
         if path.name.lower() in SUSPICIOUS_BASENAMES:
             violations.append({"rule": "suspicious_file_name", "location": relative})

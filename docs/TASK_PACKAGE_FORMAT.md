@@ -1,6 +1,6 @@
-# v0.6.2 task package format
+# v0.7 task package format
 
-v0.6.2 只接受与 Windows Desktop `task_examples` demo 一致的顶层布局：
+每个 task 严格采用 Analog Arena / Windows Desktop `task_examples` demo 顶层布局：
 
 ```text
 <task-id>/
@@ -22,20 +22,22 @@ v0.6.2 只接受与 Windows Desktop `task_examples` demo 一致的顶层布局�
     └── solve.sh
 ```
 
-工具任务可在 `starter` 增加受预算约束的 tool wrapper/netlist，在 `solution` 增加 `candidate.json` 或 `solution.il`。禁止在顶层增加旧版 `task.json`、`prompt.md`、`package_manifest.json`；通用 runner 所需的详细契约放在 starter 内部。
+模型 runtime 只复制 `environment/starter` 和 `instruction.md`。`tests`、`solution`、外部 oracle、其他 task 和历史答卷不可见。
 
-`task.toml` 使用 schema 1.3，声明 artifact、task metadata、separate verifier 和 environment 资源限制。模型容器仅复制 `environment/starter` 到 `/app`，另复制 `instruction.md`；`tests`、`solution` 和 `dev_reference/oracles` 不可见。
+`task_contract.json` 使用 schema 3.0，并声明部署层级、eligible treatments、预算和强制无 Web Search/无工具策略。`case.json` 包含合成场景、原始记录、受控词表及逐字段 answer contract；受控词表顺序是确定性打乱的，不能编码参考排序。
 
-`task_contract.json` 使用 EvoLDO schema 2.0，至少包含 task/family/lineage、suite、level、variant、eligible mode、budget、input files 和 evaluation role。`answer.json` 使用 schema 2.0：
+`answer.json` 使用统一外壳：
 
 ```json
 {
-  "schema_version": "2.0",
-  "task_id": "v06-...",
-  "answers": {"q1": "A", "q2": "C", "q3": "B", "q4": "D", "q5": ["A", "D", "B", "C"], "q6": ["E1", "E4"]},
-  "claim_boundary": "limited to supplied evidence",
+  "schema_version": "3.0",
+  "task_id": "v07-...",
+  "artifact": {"task_specific_field": "CONTROLLED_VALUE"},
+  "claim_boundary": "Only supplied current evidence is claimed.",
   "confidence": 0.8
 }
 ```
 
-通用 `grade` 只计算语义分。`sizing_assisted` 和 `eda_assisted` 的正式分数必须再通过可信侧 `verify-live`；agent 自己写入的 ledger 不能替代 verifier 新鲜执行。
+题目特定字段由 `case.json.answer_contract.fields` 校验。主评分器和 task 内嵌 verifier 都支持连续数值、区间、逐键映射、多标签逐记录 F1、集合 F1、序列对齐和 exact/critical checks；oracle 权重必须合计 100。评分时，无法归属的外壳/必填字段/task-ID 错误整题为 0，已归属答卷中的局部非法字段或记录只在引用它的原子检查内失分；独立的严格 contract validator 仍会拒绝该答卷。集合字段的允许词表必须至少包含一个不属于 golden 的场景内干扰项，防止“全选即满分”。
+
+KG-on 不改变 task package。runner 在每个 rollout 内从版本化 clean-room corpus 生成并冻结 `context/kg_retrieval.json`，记录 corpus/query hash、排序和 retrieval metrics。模型不能自行检索。
