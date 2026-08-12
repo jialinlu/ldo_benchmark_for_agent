@@ -17,6 +17,8 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -159,6 +161,54 @@ def _claude(command_output: str) -> Tuple[str, Dict[str, Any], Optional[str]]:
     if isinstance(model_usage, dict) and model_usage:
         reported = ",".join(sorted(model_usage))
     return str(result.get("result", "")), result, reported
+
+
+def _openai_compatible(command_output: str) -> Tuple[str, Dict[str, Any], Optional[str]]:
+    try:
+        result = json.loads(command_output)
+    except json.JSONDecodeError:
+        return "", {}, None
+    choices = result.get("choices", []) if isinstance(result, dict) else []
+    message = choices[0].get("message", {}) if choices and isinstance(choices[0], dict) else {}
+    return str(message.get("content", "")), result, result.get("model")
+
+
+def _run_openai_compatible(
+    prompt: str,
+    model: str,
+    base_url: str,
+    credential_value: str,
+    timeout: int,
+) -> Tuple[int, str, str, bool, float]:
+    """Call an OpenAI-compatible endpoint without placing the credential in argv."""
+    started = time.monotonic()
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": "Return exactly one JSON object and no commentary."},
+            {"role": "user", "content": prompt},
+        ],
+        "max_tokens": 4096,
+        "temperature": 0.0,
+        "response_format": {"type": "json_object"},
+    }
+    request = urllib.request.Request(
+        base_url.rstrip("/") + "/chat/completions",
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Authorization": "Bearer " + credential_value, "Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            stdout = response.read().decode("utf-8", errors="replace")
+        return 0, stdout, "", False, time.monotonic() - started
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")[-2000:]
+        return int(exc.code), "", "OpenAI-compatible HTTP %s: %s" % (exc.code, body), False, time.monotonic() - started
+    except TimeoutError:
+        return 1, "", "OpenAI-compatible request timed out", True, time.monotonic() - started
+    except (urllib.error.URLError, OSError) as exc:
+        return 1, "", "OpenAI-compatible transport error: %s" % exc, False, time.monotonic() - started
 
 
 def _telemetry_base(model: str, wall: float) -> Dict[str, Any]:
@@ -356,11 +406,48 @@ def _normalize_claude(model: str, raw: Dict[str, Any], reported: Optional[str], 
     }
 
 
+def _normalize_openai_compatible(
+    model: str,
+    raw: Dict[str, Any],
+    reported: Optional[str],
+    telemetry: Dict[str, Any],
+) -> None:
+    usage = raw.get("usage", {}) if isinstance(raw, dict) else {}
+    if isinstance(usage, dict) and usage:
+        prompt_total = usage.get("prompt_tokens")
+        completion_total = usage.get("completion_tokens")
+        prompt_details = usage.get("prompt_tokens_details", {}) or {}
+        completion_details = usage.get("completion_tokens_details", {}) or {}
+        cached = prompt_details.get("cached_tokens", 0)
+        reasoning = completion_details.get("reasoning_tokens")
+        telemetry["token_breakdown"] = {
+            "input": max(float(prompt_total) - float(cached), 0.0) if prompt_total is not None else None,
+            "cached_input": float(cached) if cached is not None else None,
+            "output": (
+                max(float(completion_total) - float(reasoning), 0.0)
+                if completion_total is not None and reasoning is not None
+                else float(completion_total) if completion_total is not None else None
+            ),
+            "reasoning": float(reasoning) if reasoning is not None else None,
+            "cache_write": None,
+        }
+        # OpenAI-compatible responses do not expose cache-write accounting, so
+        # even a reported reasoning-token field is still a partial measurement.
+        telemetry["token_measurement_status"] = "partial"
+        telemetry["provider_usage_raw"] = usage
+    telemetry["provider_reported_model_id"] = reported
+    if reported:
+        telemetry["model_identity_status"] = "attested" if reported == model else "mismatch"
+    telemetry["provider_response_id"] = raw.get("id") if isinstance(raw, dict) else None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--agent", choices=("codex", "kimi", "claude"), required=True)
+    parser.add_argument("--agent", choices=("codex", "kimi", "claude", "openai-compatible"), required=True)
     parser.add_argument("--model", required=True)
     parser.add_argument("--claude-settings")
+    parser.add_argument("--base-url", default=os.environ.get("EVOLDO_OPENAI_BASE_URL", "https://api.siliconflow.cn/v1"))
+    parser.add_argument("--api-key-env", default="EVOLDO_OPENAI_API_KEY")
     parser.add_argument("--containerized", action="store_true")
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
@@ -372,7 +459,17 @@ def main() -> int:
     with tempfile.TemporaryDirectory(prefix="evoldo-adapter-") as temporary_value:
         temporary = Path(temporary_value)
         kimi_home = None
-        if args.containerized:
+        if args.agent == "openai-compatible":
+            if args.containerized:
+                raise ValueError("openai-compatible adapter does not use a provider CLI container")
+            credential_value = os.environ.get(args.api_key_env)
+            if not credential_value:
+                raise ValueError("OpenAI-compatible credential environment variable is unavailable")
+            return_code, stdout, stderr, timed_out, wall = _run_openai_compatible(
+                prompt, args.model, args.base_url, credential_value, timeout
+            )
+            command = []
+        elif args.containerized:
             command, kimi_home, container_image = _container_command(
                 args.agent, args.model, prompt, task_dir, temporary, args.claude_settings
             )
@@ -397,7 +494,8 @@ def main() -> int:
             if settings_value:
                 command.extend(("--settings", settings_value))
             command.append(prompt)
-        return_code, stdout, stderr, timed_out, wall = _run(command, task_dir, timeout)
+        if args.agent != "openai-compatible":
+            return_code, stdout, stderr, timed_out, wall = _run(command, task_dir, timeout)
         telemetry = _telemetry_base(args.model, wall)
         if args.agent == "codex":
             final, raw, _thread = _codex(stdout)
@@ -405,9 +503,12 @@ def main() -> int:
         elif args.agent == "kimi":
             final, raw, reported = _kimi(stdout, home=kimi_home)
             _normalize_kimi(args.model, raw, reported, telemetry)
-        else:
+        elif args.agent == "claude":
             final, raw, reported = _claude(stdout)
             _normalize_claude(args.model, raw, reported, telemetry)
+        else:
+            final, raw, reported = _openai_compatible(stdout)
+            _normalize_openai_compatible(args.model, raw, reported, telemetry)
 
     sys.stdout.write(stdout)
     sys.stderr.write(stderr)

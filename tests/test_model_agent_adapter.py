@@ -84,6 +84,28 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertEqual(0.3, telemetry["provider_total_cost_usd"])
         self.assertEqual("attested", telemetry["model_identity_status"])
 
+    def test_openai_compatible_parses_identity_and_token_details(self):
+        payload = json.dumps({
+            "id": "response-1",
+            "model": "provider/model",
+            "choices": [{"message": {"content": '{"answer": true}'}}],
+            "usage": {
+                "prompt_tokens": 100,
+                "completion_tokens": 40,
+                "prompt_tokens_details": {"cached_tokens": 25},
+                "completion_tokens_details": {"reasoning_tokens": 30},
+            },
+        })
+        final, raw, reported = ADAPTER._openai_compatible(payload)
+        self.assertEqual('{"answer": true}', final)
+        telemetry = ADAPTER._telemetry_base("provider/model", 1.0)
+        ADAPTER._normalize_openai_compatible("provider/model", raw, reported, telemetry)
+        self.assertEqual(75, telemetry["token_breakdown"]["input"])
+        self.assertEqual(10, telemetry["token_breakdown"]["output"])
+        self.assertEqual(30, telemetry["token_breakdown"]["reasoning"])
+        self.assertEqual("attested", telemetry["model_identity_status"])
+        self.assertEqual("partial", telemetry["token_measurement_status"])
+
     def test_container_boundary_mounts_only_the_task_read_only(self):
         command = ADAPTER._docker_base(Path("/isolated/task"))
         rendered = " ".join(command)
