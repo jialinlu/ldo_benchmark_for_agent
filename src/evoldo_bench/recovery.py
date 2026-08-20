@@ -442,6 +442,9 @@ def recover_experiment(
         source_context = source_root / "frozen_context"
         if source_context.is_dir():
             shutil.copytree(str(source_context), str(output_root / "frozen_context"))
+        source_knowledge = source_root / "frozen_knowledge"
+        if source_knowledge.is_dir():
+            shutil.copytree(str(source_knowledge), str(output_root / "frozen_knowledge"))
         rows: List[Dict[str, Any]] = []
         manifest = {
             key: value for key, value in source_manifest.items()

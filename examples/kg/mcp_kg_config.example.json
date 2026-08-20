@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "transport": "sse",
+  "endpoint": "http://127.0.0.1:8702/sse",
+  "tool_name": "benchmark_retrieve",
+  "retrieval_method": "lucene_fulltext",
+  "query_profile": "title_capabilities_scenario_v1",
+  "protocol_version": "2024-11-05",
+  "request_timeout_seconds": 30,
+  "max_response_bytes": 2097152,
+  "max_entry_text_chars": 12000,
+  "max_total_text_chars": 32000,
+  "max_retrieval_attempts": 3,
+  "retry_backoff_seconds": 5,
+  "allow_non_loopback": false,
+  "headers_from_env": {}
+}

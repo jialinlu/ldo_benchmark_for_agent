@@ -15,6 +15,7 @@ from .contracts import ALLOWED_MODES, load_task, validate_answer, validate_oracl
 from .discovery import discover_tasks, get_task, inventory, validate_registry
 from .errors import BenchmarkError, PolicyError
 from .exam import create_private_canary, freeze_exam, redact_exam_manifest, verify_exam
+from .external_kg import freeze_external_retrievals
 from .experiment import compare_treatments, run_experiment
 from .grading import grade_directory, grade_one
 from .leaderboard import write_leaderboard
@@ -126,10 +127,29 @@ def build_parser() -> argparse.ArgumentParser:
     experiment.add_argument("--context-dir", type=_path)
     experiment.add_argument("--knowledge-corpus", type=_path)
     experiment.add_argument("--knowledge-top-k", type=int, default=4)
+    experiment.add_argument("--knowledge-mcp-config", type=_path)
+    experiment.add_argument("--knowledge-snapshot-manifest", type=_path)
+    experiment.add_argument("--knowledge-relevance-manifest", type=_path)
+    experiment.add_argument(
+        "--knowledge-freeze-dir", type=_path,
+        help="reviewed kg-preflight output; avoids contacting KG during the model experiment",
+    )
     experiment.add_argument("--task-id", action="append", dest="task_ids")
     experiment.add_argument("--timeout", type=int)
     experiment.add_argument("--paired-modes", help="comma-separated modes; restrict every treatment to tasks eligible in all modes")
     experiment.add_argument("agent_command", nargs="+", help="command template after --; supports {task_id}, {rollout}, {seed}")
+
+    kg_preflight = sub.add_parser(
+        "kg-preflight",
+        help="freeze and validate external MCP KG retrievals without invoking a model",
+    )
+    kg_preflight.add_argument("--tasks-root", type=_path, default=DEFAULT_TASKS)
+    kg_preflight.add_argument("--output", type=_path, required=True)
+    kg_preflight.add_argument("--knowledge-mcp-config", type=_path, required=True)
+    kg_preflight.add_argument("--knowledge-snapshot-manifest", type=_path, required=True)
+    kg_preflight.add_argument("--knowledge-relevance-manifest", type=_path)
+    kg_preflight.add_argument("--knowledge-top-k", type=int, default=4)
+    kg_preflight.add_argument("--task-id", action="append", dest="task_ids")
 
     experiment_report = sub.add_parser("experiment-report", help="aggregate scores and effort from an experiment directory")
     experiment_report.add_argument("experiment_root", type=_path)
@@ -338,8 +358,36 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 args.task_ids, args.timeout,
                 [value.strip() for value in args.paired_modes.split(",") if value.strip()] if args.paired_modes else None,
                 args.knowledge_corpus, args.knowledge_top_k,
+                args.knowledge_mcp_config, args.knowledge_snapshot_manifest,
+                args.knowledge_relevance_manifest,
+                args.knowledge_freeze_dir,
             )
             _print_json({"output": str(args.output), "run_count": result["run_count"], "context_snapshot": result["context_snapshot"]["snapshot_id"]})
+            return 0
+        if args.command_name == "kg-preflight":
+            wanted = set(args.task_ids or [])
+            tasks = [
+                task for task in discover_tasks(args.tasks_root)
+                if (not wanted or task.task_id in wanted)
+                and "knowledge_assisted" in task.data["eligible_modes"]
+            ]
+            missing = sorted(wanted.difference(task.task_id for task in tasks))
+            if missing:
+                raise PolicyError("unknown or KG-ineligible task ids: %s" % ", ".join(missing))
+            result = freeze_external_retrievals(
+                tasks,
+                args.knowledge_mcp_config,
+                args.knowledge_snapshot_manifest,
+                args.output,
+                args.knowledge_top_k,
+                args.knowledge_relevance_manifest,
+            )
+            _print_json({
+                "output": str(args.output),
+                "task_count": result["task_count"],
+                "source_snapshot_id": result["source_snapshot_id"],
+                "source_snapshot_sha256": result["source_snapshot_sha256"],
+            })
             return 0
         if args.command_name == "recover-experiment":
             command = list(args.agent_command)

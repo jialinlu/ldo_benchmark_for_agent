@@ -23,6 +23,10 @@ EvoLDO-Bench 是面向 LDO 与模拟电路设计自动化的可审计诊断基�
 - `direct_reasoning`：只给 task 文件；
 - `knowledge_assisted`：额外给确定性 TF-IDF 从 clean-room LDO KG 中生成的只读 `kg_retrieval.json`。
 
+内部外部 KG 也可通过 runner-only MCP SSE 适配接入。先用 `kg-preflight` 对全部题目完成只读检索、快照绑定和结果冻结，经专家审阅后，正式 `knowledge_assisted` 实验使用 `--knowledge-freeze-dir` 导入同一份上下文，不再连接 KG。模型侧仍然不注册工具。完整接口、快照和 KG 服务开发合同见 [KG/MCP 接入开发规范](docs/KG_MCP_BENCHMARK_INTEGRATION_SPEC_ZH.md)。
+
+在不可联网内部服务器上执行完整 KG-off/KG-on 评分矩阵时，按 [内部服务器评分执行手册](docs/INTERNAL_KG_BENCHMARK_EXECUTION_RUNBOOK_ZH.md) 逐关完成环境固化、模型 smoke、K=20 专家候选池、正式 K=12 双次确定性冻结、两组 81-rollout 实验、基础设施恢复和严格配对比较。
+
 两种处理固定同一模型、task hash、answer contract、seed 和预算。报告给出逐题 score delta、KG harm rate、检索 recall@k 和 token overhead，并把题目分为 `benefit_expected`、`neutral_expected`、`override_resistant`。最后一类专门检查模型是否会让通用先验压过当前 hash-bound 证据。
 
 v0.7 的正式单模型矩阵是 `27 tasks × 2 treatments × 3 independent rollouts = 162` 个能力 rollout；基础设施重试另计运营开销，不进入能力分母。若只评纯模型、不研究 KG，可单独报告 81 个 KG-off rollout，但不能把它与完整 KG 配对结果混称。

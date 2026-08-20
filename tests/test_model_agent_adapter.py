@@ -158,6 +158,7 @@ class ModelAgentAdapterTests(unittest.TestCase):
         payload = json.dumps({
             "id": "response-1",
             "model": "provider/model",
+            "system_fingerprint": "fp-version-1",
             "choices": [{"message": {"content": '{"answer": true}'}}],
             "usage": {
                 "prompt_tokens": 100,
@@ -175,6 +176,7 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertEqual(30, telemetry["token_breakdown"]["reasoning"])
         self.assertEqual("attested", telemetry["model_identity_status"])
         self.assertEqual("partial", telemetry["token_measurement_status"])
+        self.assertEqual("fp-version-1", telemetry["provider_system_fingerprint"])
 
     def test_openai_compatible_uses_explicit_output_token_ceiling(self):
         response = mock.MagicMock()
@@ -193,6 +195,18 @@ class ModelAgentAdapterTests(unittest.TestCase):
         self.assertEqual(17, payload["seed"])
         self.assertEqual(0, result[0])
 
+    def test_deepseek_official_uses_documented_reasoning_control(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b'{}'
+        with mock.patch.object(ADAPTER.urllib.request, "urlopen", return_value=response) as urlopen:
+            ADAPTER._run_openai_compatible(
+                "prompt", "deepseek-v4-pro", "https://api.deepseek.com", "secret", 30,
+                8192, True, None, 0.0, 17,
+            )
+        payload = json.loads(urlopen.call_args.args[0].data)
+        self.assertEqual({"type": "disabled"}, payload["thinking"])
+        self.assertNotIn("enable_thinking", payload)
+
     def test_openai_compatible_can_freeze_thinking_budget(self):
         response = mock.MagicMock()
         response.__enter__.return_value.read.return_value = b'{}'
@@ -204,6 +218,17 @@ class ModelAgentAdapterTests(unittest.TestCase):
         payload = json.loads(urlopen.call_args.args[0].data)
         self.assertIs(payload["enable_thinking"], True)
         self.assertEqual(4096, payload["thinking_budget"])
+
+    def test_openai_compatible_can_omit_temperature(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b'{}'
+        with mock.patch.object(ADAPTER.urllib.request, "urlopen", return_value=response) as urlopen:
+            ADAPTER._run_openai_compatible(
+                "prompt", "claude-fable-5", "https://gateway.invalid/v1", "secret", 30,
+                16384, False, None, None, 9,
+            )
+        payload = json.loads(urlopen.call_args.args[0].data)
+        self.assertNotIn("temperature", payload)
 
     def test_requested_model_parameters_disclose_reasoning_configuration(self):
         args = mock.MagicMock(

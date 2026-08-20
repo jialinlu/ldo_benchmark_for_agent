@@ -18,6 +18,7 @@ import sys
 import tempfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -263,13 +264,22 @@ def _audit_forbidden_command(command: List[str]) -> List[str]:
 def _requested_model_parameters(
     args: argparse.Namespace, effective_timeout_seconds: Optional[int] = None,
 ) -> Dict[str, Any]:
+    omit_temperature = getattr(args, "omit_temperature", False) is True
+    post_request_delay = getattr(args, "post_request_delay_seconds", 0.0)
+    if not isinstance(post_request_delay, (int, float)):
+        post_request_delay = 0.0
     parameters: Dict[str, Any] = {
         "agent": args.agent,
         "max_output_tokens": args.max_output_tokens if args.agent == "openai-compatible" else None,
         "reasoning_mode": "provider_or_cli_default",
         "thinking_budget": None,
-        "temperature": args.temperature if args.agent == "openai-compatible" else None,
+        "temperature": (
+            None
+            if args.agent != "openai-compatible" or omit_temperature
+            else args.temperature
+        ),
         "output_timeout_seconds": effective_timeout_seconds,
+        "post_request_delay_seconds": float(post_request_delay),
         "tool_registration": "none",
         "web_search": "disabled",
     }
@@ -307,7 +317,7 @@ def _run_openai_compatible(
     max_output_tokens: int,
     disable_reasoning: bool = False,
     thinking_budget: Optional[int] = None,
-    temperature: float = 0.0,
+    temperature: Optional[float] = 0.0,
     seed: Optional[int] = None,
 ) -> Tuple[int, str, str, bool, float]:
     """Call an OpenAI-compatible endpoint without placing the credential in argv."""
@@ -319,17 +329,24 @@ def _run_openai_compatible(
             {"role": "user", "content": prompt},
         ],
         "max_tokens": max_output_tokens,
-        "temperature": temperature,
         "response_format": {"type": "json_object"},
     }
+    if temperature is not None:
+        payload["temperature"] = temperature
     if seed is not None:
         payload["seed"] = seed
     if disable_reasoning and thinking_budget is not None:
         raise ValueError("disable_reasoning and thinking_budget are mutually exclusive")
     if disable_reasoning:
-        # SiliconFlow and several compatible gateways use ``enable_thinking``.
-        # The nested ``reasoning`` form is not equivalent on those endpoints.
-        payload["enable_thinking"] = False
+        hostname = (urllib.parse.urlsplit(base_url).hostname or "").lower()
+        if hostname == "api.deepseek.com":
+            # DeepSeek's official API accepts but ignores ``enable_thinking``;
+            # its documented control is the nested ``thinking`` object.
+            payload["thinking"] = {"type": "disabled"}
+        else:
+            # SiliconFlow and several compatible gateways use ``enable_thinking``.
+            # The nested ``thinking`` form is not equivalent on those endpoints.
+            payload["enable_thinking"] = False
     elif thinking_budget is not None:
         payload["enable_thinking"] = True
         payload["thinking_budget"] = thinking_budget
@@ -575,6 +592,9 @@ def _normalize_openai_compatible(
     if reported:
         telemetry["model_identity_status"] = "attested" if reported == model else "mismatch"
     telemetry["provider_response_id"] = raw.get("id") if isinstance(raw, dict) else None
+    telemetry["provider_system_fingerprint"] = (
+        raw.get("system_fingerprint") if isinstance(raw, dict) else None
+    )
 
 
 def main() -> int:
@@ -603,6 +623,14 @@ def main() -> int:
         "--temperature", type=float, default=0.0,
         help="OpenAI-compatible sampling temperature (default: 0.0)",
     )
+    parser.add_argument(
+        "--omit-temperature", action="store_true",
+        help="omit temperature for models that reject explicit sampling controls",
+    )
+    parser.add_argument(
+        "--post-request-delay-seconds", type=float, default=0.0,
+        help="wait after each provider request to respect a gateway request-rate limit",
+    )
     parser.add_argument("--timeout", type=int, default=None)
     args = parser.parse_args()
     if args.max_output_tokens <= 0:
@@ -613,6 +641,8 @@ def main() -> int:
         parser.error("--thinking-budget must be positive")
     if not 0.0 <= args.temperature <= 2.0:
         parser.error("--temperature must be in [0, 2]")
+    if args.post_request_delay_seconds < 0:
+        parser.error("--post-request-delay-seconds must be non-negative")
 
     task_dir = Path(os.environ["EVOLDO_TASK_DIR"]).resolve()
     prompt = _prompt(task_dir)
@@ -630,7 +660,8 @@ def main() -> int:
             return_code, stdout, stderr, timed_out, wall = _run_openai_compatible(
                 prompt, args.model, args.base_url, credential_value, timeout,
                 args.max_output_tokens, args.disable_reasoning, args.thinking_budget,
-                args.temperature, int(os.environ.get("EVOLDO_SEED", "0")),
+                None if args.omit_temperature else args.temperature,
+                int(os.environ.get("EVOLDO_SEED", "0")),
             )
             command = []
         elif args.containerized:
@@ -748,6 +779,8 @@ def main() -> int:
         "container_image": container_image,
         "policy_violations": policy_violations,
     }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    if args.post_request_delay_seconds:
+        time.sleep(args.post_request_delay_seconds)
     return 0 if status == "ok" else 2
 
 

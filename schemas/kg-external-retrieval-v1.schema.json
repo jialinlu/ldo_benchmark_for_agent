@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evoldo.example/schemas/kg-external-retrieval-v1.schema.json",
+  "title": "EvoLDO benchmark_retrieve response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_snapshot_id",
+    "source_snapshot_sha256",
+    "retrieval_method",
+    "query",
+    "query_sha256",
+    "top_k",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "source_snapshot_id": {"type": "string", "minLength": 1},
+    "source_snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "retrieval_method": {"enum": ["lucene_fulltext", "semantic_vector"]},
+    "query": {"type": "string"},
+    "query_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "top_k": {"type": "integer", "minimum": 1, "maximum": 20},
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rank", "stable_id", "title", "text", "retrieval_score"],
+        "properties": {
+          "rank": {"type": "integer", "minimum": 1},
+          "stable_id": {"type": "string", "minLength": 1, "maxLength": 256},
+          "title": {"type": "string", "minLength": 1},
+          "text": {"type": "string", "minLength": 1},
+          "tags": {"type": "array", "uniqueItems": true, "items": {"type": "string"}, "default": []},
+          "source_class": {"type": ["string", "null"]},
+          "source_name": {"type": ["string", "null"]},
+          "source_uri": {"type": ["string", "null"]},
+          "retrieval_score": {"type": "number"},
+          "updated_at": {"type": ["string", "null"]},
+          "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+          "provenance": {"type": "object", "default": {}}
+        }
+      }
+    }
+  }
+}

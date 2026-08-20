@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evoldo.example/schemas/kg-relevance-manifest-v1.schema.json",
+  "title": "EvoLDO external KG relevance labels",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source_snapshot_sha256", "tasks"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "source_snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "tasks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

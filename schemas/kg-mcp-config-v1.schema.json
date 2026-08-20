@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evoldo.example/schemas/kg-mcp-config-v1.schema.json",
+  "title": "EvoLDO external MCP KG configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "transport",
+    "endpoint",
+    "tool_name",
+    "retrieval_method",
+    "query_profile"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "transport": {"const": "sse"},
+    "endpoint": {"type": "string", "format": "uri"},
+    "tool_name": {"const": "benchmark_retrieve"},
+    "retrieval_method": {
+      "enum": ["lucene_fulltext", "semantic_vector"]
+    },
+    "query_profile": {
+      "const": "title_capabilities_scenario_v1"
+    },
+    "protocol_version": {"type": "string", "default": "2024-11-05"},
+    "request_timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 900, "default": 30},
+    "max_response_bytes": {"type": "integer", "minimum": 1, "maximum": 16777216, "default": 2097152},
+    "max_entry_text_chars": {"type": "integer", "minimum": 1, "maximum": 100000, "default": 12000},
+    "max_total_text_chars": {"type": "integer", "minimum": 1, "maximum": 500000, "default": 32000},
+    "max_retrieval_attempts": {"type": "integer", "minimum": 1, "maximum": 10, "default": 3},
+    "retry_backoff_seconds": {"type": "integer", "minimum": 1, "maximum": 120, "default": 5},
+    "allow_non_loopback": {"type": "boolean", "default": false},
+    "headers_from_env": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[A-Za-z0-9-]+$"},
+      "additionalProperties": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+      "default": {}
+    }
+  }
+}

@@ -75,7 +75,30 @@ def retrieve(corpus: Dict[str, Any], query: str, top_k: int = 4) -> List[Dict[st
     ]
 
 
-def task_query(task: Any) -> str:
+def task_query(task: Any, profile: str = "full_public_task_v1") -> str:
+    """Build a deterministic retrieval query from agent-visible task material.
+
+    The compact external-KG profile intentionally excludes answer schemas, controlled answer
+    vocabularies, and candidate catalogs. It asks the KG for general priors based on the title,
+    capabilities, and scenario only. The legacy full profile is retained byte-for-byte for the
+    bundled clean-room TF-IDF treatment.
+    """
+    if profile == "title_capabilities_scenario_v1":
+        scenario = ""
+        for path in task.input_paths:
+            if path.name != "case.json":
+                continue
+            candidate = load_json(path).get("scenario", "")
+            if isinstance(candidate, str):
+                scenario = candidate
+            break
+        return "\n".join([
+            str(task.data.get("title", "")),
+            " ".join(task.data.get("capabilities", [])),
+            scenario,
+        ])
+    if profile != "full_public_task_v1":
+        raise ContractError("unsupported knowledge query profile: %s" % profile)
     parts = [task.data.get("title", ""), " ".join(task.data.get("capabilities", []))]
     parts.append(task.prompt_path.read_text(encoding="utf-8", errors="replace"))
     for path in task.input_paths:
