@@ -9,6 +9,7 @@ from .adapters import AgentAdapter
 from .contracts import ALLOWED_MODES, Task
 from .discovery import discover_tasks
 from .errors import BenchmarkError, ContractError, PolicyError
+from .external_kg import freeze_external_retrievals, import_external_retrieval_freeze
 from .grading import grade_one
 from .knowledge import materialize_retrieval, retrieval_metrics
 from .outcomes import is_infrastructure_status
@@ -119,15 +120,31 @@ def run_experiment(
     pairing_modes: Optional[Iterable[str]] = None,
     knowledge_corpus: Optional[Path] = None,
     knowledge_top_k: int = 4,
+    knowledge_mcp_config: Optional[Path] = None,
+    knowledge_snapshot_manifest: Optional[Path] = None,
+    knowledge_relevance_manifest: Optional[Path] = None,
+    knowledge_freeze_dir: Optional[Path] = None,
 ) -> Dict[str, Any]:
     if mode not in ALLOWED_MODES:
         raise ContractError("unsupported experiment mode: %s" % mode)
     if rollouts <= 0:
         raise ContractError("rollouts must be positive")
-    if mode == "knowledge_assisted" and knowledge_corpus is None:
-        raise ContractError("knowledge_assisted mode requires a frozen knowledge corpus")
-    if mode != "knowledge_assisted" and knowledge_corpus is not None:
-        raise ContractError("a knowledge corpus may only be supplied in knowledge_assisted mode")
+    if not isinstance(knowledge_top_k, int) or isinstance(knowledge_top_k, bool) or not 1 <= knowledge_top_k <= 20:
+        raise ContractError("knowledge_top_k must be an integer in [1,20]")
+    external_supplied = knowledge_mcp_config is not None or knowledge_snapshot_manifest is not None
+    if external_supplied and (knowledge_mcp_config is None or knowledge_snapshot_manifest is None):
+        raise ContractError("external KG mode requires both MCP config and snapshot manifest")
+    source_count = sum((knowledge_corpus is not None, external_supplied, knowledge_freeze_dir is not None))
+    if source_count > 1:
+        raise ContractError("knowledge corpus, live MCP KG, and reviewed KG freeze are mutually exclusive")
+    if mode == "knowledge_assisted" and source_count == 0:
+        raise ContractError("knowledge_assisted mode requires a frozen corpus or external MCP KG")
+    if mode != "knowledge_assisted" and (
+        source_count or knowledge_relevance_manifest is not None
+    ):
+        raise ContractError("knowledge inputs may only be supplied in knowledge_assisted mode")
+    if knowledge_relevance_manifest is not None and not external_supplied:
+        raise ContractError("external KG relevance labels require an external MCP KG")
     if output_root.exists() and any(output_root.iterdir()):
         raise PolicyError("experiment output directory must be empty: %s" % output_root)
     output_root.mkdir(parents=True, exist_ok=True)
@@ -142,6 +159,60 @@ def run_experiment(
     if wanted.difference(task.task_id for task in tasks):
         raise ContractError("unknown task ids: %s" % ", ".join(sorted(wanted.difference(task.task_id for task in tasks))))
     tasks = [task for task in tasks if required_modes.issubset(set(task.data["eligible_modes"]))]
+    if not tasks:
+        raise ContractError("experiment selected no tasks eligible for all required modes")
+    knowledge_freeze = None
+    knowledge_rows: Dict[str, Dict[str, Any]] = {}
+    frozen_knowledge_root: Optional[Path] = None
+    if mode == "knowledge_assisted":
+        frozen_knowledge_root = output_root / "frozen_knowledge"
+        if knowledge_freeze_dir is not None:
+            knowledge_freeze = import_external_retrieval_freeze(
+                tasks, knowledge_freeze_dir, frozen_knowledge_root, knowledge_top_k,
+                require_relevance=True,
+            )
+        elif external_supplied:
+            knowledge_freeze = freeze_external_retrievals(
+                tasks,
+                knowledge_mcp_config,  # type: ignore[arg-type]
+                knowledge_snapshot_manifest,  # type: ignore[arg-type]
+                frozen_knowledge_root,
+                knowledge_top_k,
+                knowledge_relevance_manifest,
+            )
+        else:
+            frozen_knowledge_root.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(knowledge_corpus), str(frozen_knowledge_root / "knowledge_corpus.json"))
+            freeze_rows = []
+            for task in tasks:
+                destination = frozen_knowledge_root / "tasks" / task.task_id
+                retrieval = materialize_retrieval(
+                    task, knowledge_corpus, destination, knowledge_top_k  # type: ignore[arg-type]
+                )
+                freeze_rows.append({
+                    "task_id": task.task_id,
+                    "query_sha256": retrieval["query_sha256"],
+                    "retrieval_sha256": sha256_file(destination / "kg_retrieval.json"),
+                    "returned_ids": [entry["id"] for entry in retrieval["entries"]],
+                    "metrics": None,
+                    "materialization_seconds": 0.0,
+                })
+            knowledge_freeze = {
+                "schema_version": "1.0",
+                "created_at": utc_timestamp(),
+                "backend": "clean_room_tfidf",
+                "task_count": len(freeze_rows),
+                "top_k": knowledge_top_k,
+                "retrieval_method": "deterministic_token_tfidf_v1",
+                "query_profile": "full_public_task_v1",
+                "corpus_sha256": sha256_file(knowledge_corpus),  # type: ignore[arg-type]
+                "rows": freeze_rows,
+            }
+            dump_json(frozen_knowledge_root / "knowledge_freeze_manifest.json", knowledge_freeze)
+        knowledge_rows = {row["task_id"]: row for row in knowledge_freeze["rows"]}
+        for path in frozen_knowledge_root.rglob("*"):
+            if path.is_file():
+                path.chmod(0o444)
     rows: List[Dict[str, Any]] = []
     for task in tasks:
         if mode not in task.data["eligible_modes"]:
@@ -154,7 +225,11 @@ def run_experiment(
             retrieval = None
             if mode == "knowledge_assisted":
                 run_context = run_dir / "kg_context"
-                retrieval = materialize_retrieval(task, knowledge_corpus, run_context, knowledge_top_k)
+                run_context.mkdir(parents=True, exist_ok=True)
+                frozen_retrieval = frozen_knowledge_root / "tasks" / task.task_id / "kg_retrieval.json"  # type: ignore[operator]
+                shutil.copy2(str(frozen_retrieval), str(run_context / "kg_retrieval.json"))
+                (run_context / "kg_retrieval.json").chmod(0o444)
+                retrieval = load_json(run_context / "kg_retrieval.json")
             previous_seed = os.environ.get("EVOLDO_SEED")
             previous_rollout = os.environ.get("EVOLDO_ROLLOUT")
             os.environ["EVOLDO_SEED"] = str(seed)
@@ -201,17 +276,27 @@ def run_experiment(
             telemetry["ineffective_probe_calls"] = ledger["ineffective_calls"]
             telemetry["policy_rejected_probe_calls"] = ledger["policy_rejections"]
             if retrieval is not None:
-                relevant_ids = []
-                oracle_path = oracle_root / (task.task_id + ".oracle.json")
-                if oracle_path.is_file():
-                    relevant_ids = load_json(oracle_path).get("relevant_knowledge_ids", [])
+                freeze_row = knowledge_rows[task.task_id]
+                if knowledge_freeze.get("backend") == "external_mcp_sse":
+                    metrics = freeze_row["metrics"]
+                else:
+                    relevant_ids = []
+                    oracle_path = oracle_root / (task.task_id + ".oracle.json")
+                    if oracle_path.is_file():
+                        relevant_ids = load_json(oracle_path).get("relevant_knowledge_ids", [])
+                    metrics = retrieval_metrics(retrieval, relevant_ids)
                 telemetry["knowledge_retrieval"] = {
+                    "backend": knowledge_freeze.get("backend"),
                     "corpus_sha256": retrieval["corpus_sha256"],
+                    "source_snapshot_id": retrieval.get("source_snapshot_id"),
+                    "source_snapshot_sha256": retrieval.get("source_snapshot_sha256"),
                     "query_sha256": retrieval["query_sha256"],
                     "snapshot_sha256": sha256_file(run_context / "kg_retrieval.json"),
                     "returned_ids": [entry["id"] for entry in retrieval["entries"]],
-                    "metrics": retrieval_metrics(retrieval, relevant_ids),
+                    "metrics": metrics,
                     "retrieval_calls": 1,
+                    "materialization_seconds": freeze_row.get("materialization_seconds", 0.0),
+                    "raw_response_sha256": freeze_row.get("raw_response_sha256"),
                 }
             if declared_calls > int(task.data["budget"]["max_tool_calls"]):
                 record["status"] = "policy_fail"
@@ -263,7 +348,10 @@ def run_experiment(
                     sha256_file(oracle_root / (task.task_id + ".oracle.json"))
                     if (oracle_root / (task.task_id + ".oracle.json")).is_file() else None
                 ),
-                "budget": task.data["budget"],
+                "budget": {
+                    **task.data["budget"],
+                    "timeout_seconds": timeout_seconds or task.data["budget"]["timeout_seconds"],
+                },
                 "web_search_policy": task.data.get("network_policy", {}).get("model_web_search", "legacy_unspecified"),
                 "knowledge_context": telemetry.get("knowledge_retrieval"),
                 "wall_seconds": telemetry.get("wall_seconds"),
@@ -305,6 +393,7 @@ def run_experiment(
         "provider_reported_model_ids": sorted(provider_identity_values),
         "model_identity_statuses": sorted(identity_status_values),
         "context_snapshot": context_manifest,
+        "knowledge_freeze": knowledge_freeze,
         "requested_model_parameters": (
             rows[0].get("requested_model_parameters")
             if rows and all(
@@ -398,6 +487,12 @@ def compare_treatments(manifests: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             for row in knowledge_rows
             if row.get("metrics", {}).get("precision_at_k") is not None
         ]
+        retrieval_seconds = [
+            float(row["materialization_seconds"])
+            for row in knowledge_rows
+            if isinstance(row.get("materialization_seconds"), (int, float))
+            and not isinstance(row.get("materialization_seconds"), bool)
+        ]
         paired_deltas[mode] = {
             "score_pair_count": len(valid_score_deltas),
             "mean_score_delta": round(sum(valid_score_deltas) / len(valid_score_deltas), 6) if valid_score_deltas else None,
@@ -409,6 +504,10 @@ def compare_treatments(manifests: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             "mean_wall_seconds_delta": round(sum(valid_wall_deltas) / len(valid_wall_deltas), 6) if valid_wall_deltas else None,
             "mean_retrieval_recall_at_k": round(sum(recalls) / len(recalls), 6) if recalls else None,
             "mean_retrieval_precision_at_k": round(sum(precisions) / len(precisions), 6) if precisions else None,
+            "mean_retrieval_materialization_seconds": (
+                round(sum(retrieval_seconds) / len(retrieval_seconds), 6)
+                if retrieval_seconds else None
+            ),
             "by_knowledge_effect_expectation": {},
         }
         expectation_groups = sorted({

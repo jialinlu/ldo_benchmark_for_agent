@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evoldo.example/schemas/kg-snapshot-manifest-v1.schema.json",
+  "title": "EvoLDO frozen external KG snapshot manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "snapshot_sha256",
+    "created_at",
+    "service_code",
+    "corpus",
+    "supported_retrieval_methods",
+    "artifacts",
+    "qualification",
+    "contamination_report_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "snapshot_sha256": {"$ref": "#/$defs/sha256"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "service_code": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["revision", "archive_sha256", "dirty"],
+      "properties": {
+        "revision": {"type": "string", "minLength": 1},
+        "archive_sha256": {"$ref": "#/$defs/sha256"},
+        "dirty": {"const": false}
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["node_count", "relationship_count"],
+      "properties": {
+        "node_count": {"type": "integer", "minimum": 1},
+        "relationship_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "supported_retrieval_methods": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["lucene_fulltext", "semantic_vector"]}
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["role", "name", "sha256", "size_bytes"],
+        "properties": {
+          "role": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "size_bytes": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "qualification": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "dump_restored_and_count_verified",
+        "read_only_enforced",
+        "contamination_audit_passed",
+        "determinism_verified"
+      ],
+      "properties": {
+        "dump_restored_and_count_verified": {"const": true},
+        "read_only_enforced": {"const": true},
+        "contamination_audit_passed": {"const": true},
+        "determinism_verified": {"const": true}
+      }
+    },
+    "contamination_report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

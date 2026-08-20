@@ -56,6 +56,10 @@ v0.7 回答两个部署问题：
 
 KG-off 与 KG-on 必须固定：provider-reported model、任务和 answer-contract hash、rollout/seed、temperature/thinking configuration、timeout 和输出 token 上限。KG-on 的唯一差异是本地冻结检索快照。
 
+当知识来源是内部外部 KG 时，MCP 只能由 runner 在模型启动前调用。正式流程先用 `kg-preflight` 生成逐题原始响应和规范化 `kg_retrieval.json`，完成快照、污染与专家相关性审阅后，模型实验通过 `--knowledge-freeze-dir` 导入该目录；正式推理期间不得再次查询 KG。外部 KG 的相关知识 ID 使用绑定到其自身 snapshot 的独立 relevance manifest，不能复用 clean-room KG 的 ID。详细合同见 `docs/KG_MCP_BENCHMARK_INTEGRATION_SPEC_ZH.md`。
+
+内部 agent 的完整执行命令、停止条件、恢复规则和交付清单见 `docs/INTERNAL_KG_BENCHMARK_EXECUTION_RUNBOOK_ZH.md`。
+
 任务分三类：
 
 - `benefit_expected`：通用工作流知识应帮助恢复缺失的设计规则；

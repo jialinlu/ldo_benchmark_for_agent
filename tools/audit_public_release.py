@@ -53,6 +53,7 @@ CONTENT_RULES: Sequence[Tuple[str, re.Pattern[bytes]]] = [
 
 EMAIL_RE = re.compile(rb"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b")
 ALLOWED_EMAIL_SUFFIXES = (b"@users.noreply.github.com", b"@example.invalid")
+ALLOWED_EMAILS = {b"noreply@github.com"}
 
 SUSPICIOUS_BASENAMES = {
     ".env",
@@ -96,7 +97,7 @@ def scan_bytes(label: str, data: bytes, violations: List[Dict[str, object]]) -> 
             violations.append({"rule": rule, "location": label})
     for match in EMAIL_RE.finditer(data):
         email = match.group(0).lower()
-        if not email.endswith(ALLOWED_EMAIL_SUFFIXES):
+        if email not in ALLOWED_EMAILS and not email.endswith(ALLOWED_EMAIL_SUFFIXES):
             violations.append({"rule": "public_email", "location": label})
             break
 
@@ -140,7 +141,11 @@ def scan_history(violations: List[Dict[str, object]]) -> None:
             continue
         commit, _author, author_email, _committer, committer_email, subject = fields
         for role, email in (("author", author_email), ("committer", committer_email)):
-            if not email.lower().endswith(ALLOWED_EMAIL_SUFFIXES):
+            normalized_email = email.lower()
+            if (
+                normalized_email not in ALLOWED_EMAILS
+                and not normalized_email.endswith(ALLOWED_EMAIL_SUFFIXES)
+            ):
                 violations.append(
                     {
                         "rule": "non_noreply_commit_email",
